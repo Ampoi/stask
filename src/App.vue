@@ -9,80 +9,52 @@
     </v-app-bar>
 
     <v-main class="bg-slate-200 overflow-auto grid">
-      <div class="m-auto flex flex-col items-center p-10"><!--全体-->
+      <div class="m-auto flex flex-col items-center pb-20"><!--全体-->
         <!--きの部分-->
         <div class="flex flex-row gap-4 items-end">
           <!--枝-->
           <div v-for="branch in trees" :key="branch.key" class="flex flex-col items-center">
-            <div class="flex flex-col items-center">
-              <div class="bg-orange-400 h-12 w-12 rounded-full grid">
-                <v-icon class="text-white m-auto text-[30px]">mdi-flag</v-icon>
-              </div>
-              <div class="h-2 w-1 bg-orange-400"/>
-              <button
-                class="border-4 border-solid border-orange-400 bg-orange-300 hover:bg-orange-400 transition py-1 px-2 rounded-full flex flex-row gap-1 items-center"
-                @click="addTask(branch.cards)">
-                <v-icon class="text-white m-auto text-md">mdi-plus</v-icon>
-                <p class="text-sm font-bold text-white drop-shadow-md">新規タスク</p>
-              </button>
-              <div class="h-2 w-1 bg-orange-400"/>
-            </div><!--追加ボタン-->
-            <div
-              class="flex flex-col items-center"
-              v-for="card in branch.cards" :key="card.key"
-            >
-              <v-card class="w-60 border-orange-400 border-4 rounded-lg shadow-lg flex flex-row h-16">
-                <button
-                  class=" h-6 w-6 rounded-full mx-2 my-auto grid transition duration-150"
-                  :class="{
-                    'bg-orange-400 border-orange-300 border-2':card.done,
-                    'bg-orange-100 border-orange-400 border-2 border-solid':!card.done
-                  }"
-                  @click="card.done = !card.done"
-                >
-                  <v-icon
-                    class="text-white text-[18px] m-auto"
-                    v-if="card.done == true">mdi-check</v-icon>
-                </button>
-                <v-text-field label="Name" variant="plain" class="grow" v-model="card.title"/>
-              </v-card>
-              <div class="h-4 w-1 bg-orange-400"/>
-            </div><!--カード-->
+            <addTaskButton @addTask="addTask(branch.cards)"/><!--旗と課題を追加するボタン-->
+            <card v-for="card in branch.cards" :key="card.key" :card="card"/><!--カード-->
           </div>
+        </div>
+        <div class="flex flex-row">
+          <div
+            v-for="i of trees.length - 1" :key="i"
+            class="
+              h-4 w-[252px] box-content border-x-2 border-b-4 border-orange-400
+              first:border-l-4 first:rounded-bl-md
+              last:border-r-4 last:rounded-br-md
+            "/>
         </div>
         <rootCircle/>
       </div>
     </v-main>
-    <addButton class="fixed bottom-0 w-screen"/>
+    <addBranchButton
+      class="fixed bottom-0 w-screen"
+      @clicked="addBranch"
+    />
   </v-app>
 </template>
 
 <script>
-import addButton from './components/addButton.vue';
+import addBranchButton from './components/addBranchButton.vue';
 import rootCircle from './components/rootCircle.vue'
+import card from './components/card.vue'
+import addTaskButton from './components/addTaskButton.vue';
+
 export default{
   components: {
-    addButton,
-    rootCircle
+    addBranchButton,
+    rootCircle,
+    card,
+    addTaskButton
   },
   data(){return{
     cannotScroll: true,
     trees:[
       {
-        cards:[
-          {
-            title: "1",
-            done: false
-          }
-        ]
-      },
-      {
-        cards:[
-          {
-            title: "1",
-            done: false
-          }
-        ]
+        cards:[]
       }
     ]
   }},
@@ -91,6 +63,12 @@ export default{
       branch.unshift({
         title: "",
         done: false
+      })
+    },
+    addBranch(){
+      this.trees.push({
+        cards:[
+        ]
       })
     }
   }
