@@ -5,11 +5,12 @@
   "scripts": {
     "serve": "vite preview",
     "build": "vite build",
-    "dev": "vite",
+    "dev": "vite --host",
     "preview": "vite preview"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
+    "firebase": "^9.9.3",
     "roboto-fontface": "*",
     "vue": "^3.2.37",
     "vue-router": "^4.1.3",
