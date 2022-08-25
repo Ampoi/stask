@@ -4,7 +4,11 @@
       <div class="bg-orange-400 h-20 w-20 rounded-t-full grid">
         <v-icon class="text-white mx-auto mt-3 text-[40px]">mdi-flag</v-icon>
       </div>
-      <input class="bg-orange-300 border-4 border-orange-400 border-solid rounded-md p-0.5 w-40 -mt-7 text-sm text-center text-white font-bold placeholder:text-white/70 drop-shadow-sm" placeholder="目標名">
+      <input
+        class="bg-orange-300 border-4 border-orange-400 border-solid rounded-md p-0.5 w-40 -mt-7 text-sm text-center text-white font-bold placeholder:text-white/70 drop-shadow-sm"
+        placeholder="目標名"
+        @input="updateTitle"
+      >
     </div>
     <div class="h-2 w-1 bg-orange-400"/>
     <button
@@ -18,6 +22,12 @@
 </template>
 <script>
 export default {
-  emits: ["addTask"]
+  emits: ["addTask", "update:title"],
+  props: ["title"],
+  methods: {
+    updateTitle(e){
+      this.$emit("update:title", e.target.value)
+    }
+  }
 }
 </script>
