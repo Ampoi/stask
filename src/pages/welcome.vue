@@ -37,15 +37,8 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_APIKEY,
-  authDomain: "tobe-ampoi.firebaseapp.com",
-  projectId: "tobe-ampoi",
-  storageBucket: "tobe-ampoi.appspot.com",
-  messagingSenderId: import.meta.env.VITE_MESSAGINGSENDERID,
-  appId: import.meta.env.VITE_APPID,
-  measurementId: import.meta.env.VITE_MEASURE
-};
+import { firebaseConfig } from "../data/firebaseConfig.js"
+
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 
