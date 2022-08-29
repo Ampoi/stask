@@ -16,9 +16,11 @@
       temporary
       class="m-4 h-auto rounded-lg bg-white/70 backdrop-blur-md"
     >
-      <v-list
-        :items="navBarList"
-      ></v-list>
+      <NavBar
+        :userImage="userImage"
+        :userName="userName"
+        :updated="updated"
+        @logout="logout"/>
     </v-navigation-drawer>
 
     <v-main class="bg-slate-200 overflow-auto grid">
@@ -26,9 +28,21 @@
         <!--きの部分-->
         <div class="flex flex-row gap-4 items-end">
           <!--枝-->
-          <div v-for="(branch, branchIndex) in trees" :key="branchIndex" class="flex flex-col items-center">
-            <addTaskButton @addTask="addTask(branch.cards)" v-model:title="branch.title"/><!--旗と課題を追加するボタン-->
-            <card v-for="(card, cardIndex) in branch.cards" :key="cardIndex" :card="card" @delete="deleteCard(branchIndex, cardIndex)"/><!--カード-->
+          <div
+            v-for="(branch, branchIndex) in trees"
+            :key="branchIndex"
+            class="flex flex-col items-center"
+          >
+            <addTaskButton
+              @addTask="addTask(branch.cards, branch)"
+              v-model:title="branch.title"
+            /><!--旗と課題を追加するボタン-->
+            <card
+              v-for="(card, cardIndex) in branch.cards"
+              :key="cardIndex"
+              :card="card"
+              @delete="deleteCard(branchIndex, cardIndex)"
+            /><!--カード-->
           </div>
         </div>
         <div class="flex flex-row">
@@ -55,14 +69,16 @@ import addBranchButton from '../components/addBranchButton.vue';
 import rootCircle from '../components/rootCircle.vue'
 import card from '../components/card.vue'
 import addTaskButton from '../components/addTaskButton.vue';
+import navBar from "../components/navBar.vue";
 
 import { initializeApp, getApps } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, child, get, set } from "firebase/database";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
 
 import { firebaseConfig } from "../data/firebaseConfig.js"
+import NavBar from "../components/navBar.vue"
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
@@ -79,28 +95,33 @@ export default{
     addBranchButton,
     rootCircle,
     card,
-    addTaskButton
-  },
+    addTaskButton,
+    navBar,
+    NavBar
+},
   data(){return{
     changed: true,
     SecoundsForChange: 5,
     userName: "",
     trees:[],
-    navBarList: [
-      {title: "apapa"}
-    ],
     showNavbar: false,
     logined: false,
     uid: "",
-    updated: true
+    updated: true,
+    firstUpdate: true,
+    
+    userName: "",
+    userImage: ""
   }},
 
   methods:{
-    addTask(branch){
-      branch.unshift({
-        title: "",
-        done: false
-      })
+    addTask(cards, branch){
+      const newCard = {title: "", done:false}
+      if(cards){
+        cards.unshift(newCard)
+      }else{
+        branch.cards = [newCard]
+      }
     },
     addBranch(){
       this.trees.push({
@@ -116,10 +137,16 @@ export default{
       }
     },
     deleteCard(branchKey, cardKey){
-      console.log(branchKey);
-      console.log(cardKey);
       const cards = this.trees[branchKey].cards
       cards.splice(cardKey, 1)
+    },
+    logout(){
+      console.log("try logout");
+      signOut(auth).then(() => {
+        console.log("logout success!");
+      }).catch((error) => {
+        console.log(error);
+      });
     }
   },
 
@@ -127,13 +154,16 @@ export default{
     trees: {
       deep: true,
       handler(){
-        clearTimeout(timer)
-        this.updated = false
-        timer = setTimeout(function(){
-          console.log("test");
-          set(ref(db, `data/${this.uid}/trees`), this.trees);
-          this.updated = true
-        }.bind(this), 8000)
+        if(this.firstUpdate == true){
+          this.firstUpdate = false
+        }else{
+          clearTimeout(timer)
+          this.updated = false
+          timer = setTimeout(function(){
+            set(ref(db, `data/${this.uid}/trees`), this.trees);
+            this.updated = true
+          }.bind(this), 8000)
+        }
       }
     }
   },
@@ -141,22 +171,20 @@ export default{
   mounted(){
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
         this.uid = user.uid;
+        this.userName = user.displayName
+        this.userImage = user.photoURL
         this.logined = true
-        get(child(dbRef, `data/${this.uid}`)).then((snapshot) => {
+        /*get(child(dbRef, `data/${this.uid}`)).then((snapshot) => {
           if (snapshot.exists()) {
-            console.log(snapshot.val());
             const newData = snapshot.val()
             this.trees = newData.trees
-            clearTimeout(timer)
           } else {
             console.log("No data available");
           }
         }).catch((error) => {
           console.error(error);
-        });
+        });*/
       } else {
         this.$router.push("/welcome")
       }
