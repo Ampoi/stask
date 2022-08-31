@@ -40,7 +40,6 @@
 
     <v-main class="bg-slate-200 overflow-auto grid">
       <div class="m-auto flex flex-col items-center pb-20"><!--全体-->
-        {{trees}}
         <!--きの部分-->
         <div class="flex flex-row gap-4 items-end">
           <!--枝-->
