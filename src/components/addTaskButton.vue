@@ -10,6 +10,7 @@
         class="bg-orange-300 border-4 border-orange-400 border-solid rounded-md p-0.5 w-40 -mt-7 text-sm text-center text-white font-bold placeholder:text-white/70 drop-shadow-sm"
         placeholder="目標名"
         @input="updateTitle"
+        :value="title"
       >
     </div>
     <div class="h-2 w-1 bg-orange-400"/>
