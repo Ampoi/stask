@@ -8,8 +8,21 @@
       <div class="relative">
         <v-app-bar-nav-icon @click.stop="showNavbar = !showNavbar"/>
         <div v-if="!updated" class="w-3 h-3 bg-slate-900 border-2 border-solid border-slate-200 absolute rounded-full top-[11px] right-[8px]"/>
-      </div>
+      </div><!--メニューボタン-->
     </v-app-bar>
+
+    <v-banner
+      lines="one"
+      icon="mdi-information-outline"
+      class="fixed m-2 mt-12 w-[calc(100vw-1rem)] rounded-lg z-50 bg-green-300/70 backdrop-blur-md"
+      v-if="showBanner"
+    >
+      <p>変更を保存しました<br>以降はこのタブを閉じることができます</p>
+
+      <template v-slot:actions>
+        <v-btn @click="this.showBanner = false">閉じる</v-btn>
+      </template>
+    </v-banner>
 
     <v-navigation-drawer
       v-model="showNavbar"
@@ -20,7 +33,9 @@
         :userImage="userImage"
         :userName="userName"
         :updated="updated"
-        @logout="logout"/>
+        :taskDoneAmount="countTaskAmount()"
+        @logout="logout"
+        @save="saveWithBanner"/>
     </v-navigation-drawer>
 
     <v-main class="bg-slate-200 overflow-auto grid">
@@ -31,11 +46,14 @@
           <div
             v-for="(branch, branchIndex) in trees"
             :key="branchIndex"
-            class="flex flex-col items-center"
+            class="flex flex-col items-center relative"
+            @mouseenter="trees_hoverd[branchIndex] = true"
+            @mouseleave="trees_hoverd[branchIndex] = false"
           >
             <addTaskButton
               @addTask="addTask(branch.cards, branch)"
               v-model:title="branch.title"
+              :branchDone="checkBranchDone(branch.cards)"
             /><!--旗と課題を追加するボタン-->
             <card
               v-for="(card, cardIndex) in branch.cards"
@@ -43,6 +61,13 @@
               :card="card"
               @delete="deleteCard(branchIndex, cardIndex)"
             /><!--カード-->
+            <div class="h-4 w-1 bg-orange-400 shadow-lg"/>
+            <button
+              :class="{'scale-0 opacity-0 invisible': !trees_hoverd[branchIndex]}"
+              class="transition h-[28px] w-[28px] absolute bg-orange-400 text-white rounded-full grid -bottom-2 mx-auto"
+              @click="deleteBranch(branchIndex)">
+              <v-icon class="text-[18px] m-auto font-bold">mdi-close</v-icon>
+            </button>
           </div>
         </div>
         <div class="flex flex-row">
@@ -75,10 +100,11 @@ import { initializeApp, getApps } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, get, set, child } from "firebase/database";
 
 import { firebaseConfig } from "../data/firebaseConfig.js"
 import NavBar from "../components/navBar.vue"
+import { onBeforeMount, onBeforeUnmount } from '@vue/runtime-core';
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
@@ -98,12 +124,13 @@ export default{
     addTaskButton,
     navBar,
     NavBar
-},
+  },
   data(){return{
     changed: true,
     SecoundsForChange: 5,
     userName: "",
     trees:[],
+    trees_hoverd:[],
     showNavbar: false,
     logined: false,
     uid: "",
@@ -111,7 +138,9 @@ export default{
     firstUpdate: true,
     
     userName: "",
-    userImage: ""
+    userImage: "",
+
+    showBanner: false
   }},
 
   methods:{
@@ -136,9 +165,35 @@ export default{
         return amount
       }
     },
+    checkBranchDone(cards){
+      if(cards == undefined){
+        return false
+      }else{
+        return cards.every((card)=>{
+          return card.done
+        })
+      }
+    },
+    countTaskAmount(){
+      let all = 0
+      let done = 0
+      this.trees.forEach((branch)=>{
+        if(branch.cards != undefined){
+          branch.cards.forEach((card)=>{
+            all += 1
+            if(card.done){done += 1}
+          })
+        }
+      })
+      return {all: all, done: done}
+    },
     deleteCard(branchKey, cardKey){
       const cards = this.trees[branchKey].cards
       cards.splice(cardKey, 1)
+    },
+    deleteBranch(branchKey){
+      const branch = this.trees[branchKey]
+      this.trees.splice(branchKey, 1)
     },
     logout(){
       console.log("try logout");
@@ -147,6 +202,12 @@ export default{
       }).catch((error) => {
         console.log(error);
       });
+    },
+    saveWithBanner(){
+      set(ref(db, `data/${this.uid}/trees`), this.trees).then(()=>{
+        this.updated = true
+        this.showBanner = true
+      })
     }
   },
 
@@ -159,6 +220,7 @@ export default{
         }else{
           clearTimeout(timer)
           this.updated = false
+          this.showBanner = false
           timer = setTimeout(function(){
             set(ref(db, `data/${this.uid}/trees`), this.trees);
             this.updated = true
@@ -169,22 +231,34 @@ export default{
   },
 
   mounted(){
+    window.addEventListener('beforeunload', (event) => {
+      if(this.updated == false){
+        this.saveWithBanner()
+        console.log("apapa");
+        event.preventDefault()
+        event.returnValue = ""
+      }
+    });
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.uid = user.uid;
         this.userName = user.displayName
         this.userImage = user.photoURL
         this.logined = true
-        /*get(child(dbRef, `data/${this.uid}`)).then((snapshot) => {
+        get(child(dbRef, `data/${this.uid}`)).then((snapshot) => {
           if (snapshot.exists()) {
             const newData = snapshot.val()
             this.trees = newData.trees
           } else {
             console.log("No data available");
+            set(ref(db, `data/${this.uid}`), {
+              trees: []
+            });
           }
         }).catch((error) => {
           console.error(error);
-        });*/
+        });
       } else {
         this.$router.push("/welcome")
       }
