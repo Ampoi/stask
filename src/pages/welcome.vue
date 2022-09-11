@@ -41,9 +41,14 @@
         </div>
         <img src="../assets/mockup.png" class="h-[600px] mx-auto drop-shadow-2xl">
       </div>
-      <div class="mt-2">
-
-      </div>
+      <footer class="my-4">
+        <p class="text-center text-gray-400 text-sm">
+          created by
+          <a href="https://twitter.com/4mpoi">Ampoi</a>
+          , build with Firebase
+        </p>
+        <img src="../assets/logo-standard.svg" class="w-32 mx-auto mt-2" alt="">
+      </footer>
     </v-main>
   </v-app>
 </template>

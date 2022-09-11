@@ -3,7 +3,6 @@
     <div class="text-center border-b-2 border-solid pb-4 border-black/10 relative">
       <div class="w-28 h-28 rounded-full mx-auto bg-cover bg-center" :style="`background: url(${userImage})`"/>
       <p class="text-2xl font-bold mt-2">{{ userName }}</p>
-      <p class="text-sm opacity-60">達成した課題数 : {{taskDoneAmount.done}}/{{taskDoneAmount.all}}</p>
       <button
         class="text-md text-black/40 hover:text-black transition absolute -top-4 right-0"
         @click="$emit('logout')">
@@ -26,7 +25,7 @@
 </template>
 <script>
 export default {
-  props: ["userName", "userImage", "updated","taskDoneAmount"],
+  props: ["userName", "userImage", "updated"],
   emits: ["logout", "save"]
 }
 </script>
