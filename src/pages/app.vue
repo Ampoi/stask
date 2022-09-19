@@ -17,23 +17,15 @@
         <v-card class="max-w-md rounded-2xl" fluid>
           <nSDialog
             @newKadai="addKadai"
-          ></nSDialog>
+          />
         </v-card>
       </v-dialog>
     </v-app-bar>
 
-    <v-banner
-      lines="one"
-      icon="mdi-information-outline"
-      class="fixed m-2 mt-12 w-[calc(100vw-1rem)] rounded-lg z-50 bg-green-300/70 backdrop-blur-md"
+    <sBanner
       v-if="showBanner"
-    >
-      <p>変更を保存しました<br>以降はこのタブを閉じることができます</p>
-
-      <template v-slot:actions>
-        <v-btn @click="this.showBanner = false">閉じる</v-btn>
-      </template>
-    </v-banner>
+      @saved="showBanner = false"
+    />
 
     <v-navigation-drawer
       v-model="showNavbar"
@@ -62,6 +54,7 @@
 import navBar from "../components/navBar.vue";
 import TaskCard from "../components/taskCard.vue"
 import nSDialog from "../components/newStaskDialog.vue"
+import sBanner from "../components/savedBanner.vue"
 
 import { initializeApp, getApps } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -85,7 +78,8 @@ export default{
   components: {
     navBar,
     TaskCard,
-    nSDialog
+    nSDialog,
+    sBanner
   },
   data(){return{
     showNavbar: false,
@@ -116,10 +110,8 @@ export default{
       });
     },
     saveWithBanner(){
-      set(ref(db, `data/${this.uid}/trees`), this.trees).then(()=>{
-        this.updated = true
-        this.showBanner = true
-      })
+      this.updated = true
+      this.showBanner = true
     },
     addKadai(data){
       this.cards.push(data)
