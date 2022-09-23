@@ -15,7 +15,7 @@
           variant="underlined"
           prepend-icon="mdi-book-edit"
           v-model="newKadaiData.title"
-        ></v-text-field>
+        />
         <div class="mt-2 flex flex-row">
           <v-text-field
             label="最初のページ"
@@ -24,7 +24,7 @@
             type="number"
             v-model="newKadaiData.startPage"
             @input="this.setNowPage()"
-          ></v-text-field>
+          />
           <v-text-field
             class="ml-4"
             label="最後のページ"
@@ -32,7 +32,7 @@
             variant="underlined"
             type="number"
             v-model="newKadaiData.lastPage"
-          ></v-text-field>
+          />
         </div>
         <v-text-field
           class="mt-2"
@@ -41,16 +41,16 @@
           variant="underlined"
           type="number"
           v-model="newKadaiData.time"
-        ></v-text-field>
-        <v-radio-group v-model="newKadaiData.selectedSubject">
-          <v-radio
-            color="red-4"
-            v-for="(subject, subjectID) in subjects"
-            :key="subjectID"
-            :label="subject.name"
-            :value="subjectID"
-          ></v-radio>
-        </v-radio-group>
+        />
+        <v-select
+          v-model="newKadaiData.subject"
+          :items="subjects"
+          label="Subject"
+          variant="plain"
+          item-title="title"
+          item-value="color"
+          return-object
+        />
       </v-col>
     </v-container>
     <v-card-actions>
@@ -70,14 +70,17 @@ export default{
       startPage: 10,
       lastPage: 100,
       nowPage: 10,
-      subject: "math",
       showSubMenu: false,
       done: false,      
-      selectedSubject: 0,
+      subject: {title:"",color:""}
     },
 
     subjects: [
-      {name:"aaa",color:""}
+      {title: "国語 (古文/現代文)", color:"red"},
+      {title: "数学 (算数)", color:"blue"},
+      {title: "理科 (物理/地学/生物/化学)", color:"green"},
+      {title: "社会 (公民/地理/歴史)", color:"orange"},
+      {title: "英語 (外国語)", color: "purple"}
     ],
   }},
   emits: ["newKadai"],

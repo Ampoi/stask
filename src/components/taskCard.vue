@@ -1,7 +1,7 @@
 <template>
   <v-card
     flat class="border-2 border-l-8 max-w-xl mx-auto mb-4 drop-shadow-md rounded-xl bg-white/90"
-    :style="`border-color: ${borderColors[card.subject]}6F`"
+    :style="`border-color: ${borderColors[card.subject.color]}6F`"
   >
     <v-card-item>
       <div class="flex flex-row items-center">
@@ -42,8 +42,8 @@
           </div>
           <v-progress-linear
             class="mt-2"
-            :background-color="`${colors[card.subject]} lighten-3`"
-            :color="`${colors[card.subject]} lighten-1`"
+            :background-color="`${colors[card.subject.color]} lighten-3`"
+            :color="`${colors[card.subject.color]} lighten-1`"
             :modelValue="getNowNumber(card.startPage, card.nowPage, card.lastPage)"
           ></v-progress-linear>
         </div>
@@ -57,13 +57,24 @@
               v-model="card.nowPage"
               :min="card.startPage"
               :max="card.lastPage"
-              :background-color="`${colors[card.subject]} lighten-3`"
-              :color="colors[card.subject]"
+              :background-color="`${colors[card.subject.color]} lighten-3`"
+              :color="colors[card.subject.color]"
               thumb-label
               step="1"
             ></v-slider>
             <span>p.<input type="number" v-model="card.lastPage" :min="card.startPage + 1" max="999"></span>
           </div>
+          <v-select
+            v-model="card.subject"
+            :items="subjects"
+            label="Subject"
+            variant="outlined"
+            item-title="title"
+            item-value="color"
+            density="comfortable"
+            :color="colors[card.subject.color]"
+            return-object
+          />
         </div>
       </v-expand-transition>
     </v-card-item>
@@ -75,17 +86,26 @@ export default{
   emits: ["updateData"],
   data(){return{
     colors: {
-      math: "light-blue",
-      japanese: "red",
-      science: "green",
-      social_studies: "amber"
+      blue: "light-blue",
+      red: "red",
+      green: "green",
+      orange: "amber",
+      purple: "purple"
     },
     borderColors: {
-      math: "#2196F3",
-      japanese: "#F44335",
-      science: "#4BAF51",
-      social_studies: "#FFC105"
-    }
+      blue: "#2196F3",
+      red: "#F44335",
+      green: "#4BAF51",
+      orange: "#FFC105",
+      purple: "#E040FB"
+    },
+    subjects: [
+      {title: "国語 (古文/現代文)", color:"red"},
+      {title: "数学 (算数)", color:"blue"},
+      {title: "理科 (物理/地学/生物/化学)", color:"green"},
+      {title: "社会 (公民/地理/歴史)", color:"orange"},
+      {title: "英語 (外国語)", color: "purple"}
+    ]
   }},
   watch: {
     card: {

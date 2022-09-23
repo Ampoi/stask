@@ -41,6 +41,7 @@
     </v-navigation-drawer>
 
     <v-main class="bg-slate-200 overflow-auto">
+      {{ cards }}
       <TaskCard
         v-for="card in cards"
         :key="card.id"
