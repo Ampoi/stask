@@ -18,12 +18,10 @@
           <div class="flex flex-row items-center">
             <div class="flex flex-row items-end gap-x-4">
               <v-card-title>
-                <input
-                  type="text"
-                  v-model="card.title"
-                  maxlength="10"
-                  style="max-width: 200px;"
-                  placeholder="タイトルを入力...">
+              <moreInput
+                v-model:textData="card['title']"
+                placeholder="タイトルを入力"
+              />
               </v-card-title>
               <v-card-subtitle>所要時間<input
                 type="number" min="1" max="999" v-model="card.time"
@@ -81,7 +79,10 @@
   </v-card>
 </template>
 <script>
+import moreInput from './moreInput.vue'
+import MoreInput from './moreInput.vue'
 export default{
+  components: { moreInput, MoreInput },
   props: ["card"],
   emits: ["updateData"],
   data(){return{
