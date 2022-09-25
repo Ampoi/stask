@@ -33,11 +33,11 @@
             <v-btn
               icon
               class="m-0 text-xl bg-transparent"
-              @click.stop="card.showSubMenu = !card.showSubMenu"
+              @click.stop="this.showSubMenu = !this.showSubMenu"
               flat
             >
-              <v-icon v-if="card.showSubMenu">mdi-menu-up</v-icon> <!--詳細を表示しているとき-->
-              <v-icon v-if="!card.showSubMenu">mdi-menu-down</v-icon> <!--詳細を隠しているとき-->
+              <v-icon v-if="this.showSubMenu">mdi-menu-up</v-icon> <!--詳細を表示しているとき-->
+              <v-icon v-if="!this.showSubMenu">mdi-menu-down</v-icon> <!--詳細を隠しているとき-->
             </v-btn>
           </div>
           <v-progress-linear
@@ -49,7 +49,7 @@
         </div>
       </div>
       <v-expand-transition>
-        <div v-if="card.showSubMenu" class="mt-2">
+        <div v-if="this.showSubMenu" class="mt-2">
           <v-divider></v-divider>
           <div class="mt-2 flex flex-row items-baseline gap-x-2 h-8">
             <span>p.<input type="number" v-model="card.startPage" min="0" :max="card.lastPage - 1"></span>
@@ -85,6 +85,7 @@ export default{
   props: ["card"],
   emits: ["updateData"],
   data(){return{
+    showSubMenu: false,
     colors: {
       blue: "light-blue",
       red: "red",

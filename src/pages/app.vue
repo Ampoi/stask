@@ -3,7 +3,7 @@
     <v-app-bar color="transparent" flat>
       <template v-slot:prepend class="relative">
         <v-app-bar-nav-icon @click.stop="showNavbar = !showNavbar"/>
-        <div v-if="!updated" class="w-3 h-3 bg-slate-900 border-2 border-solid border-slate-200 absolute rounded-full top-[11px] right-[8px]"/>
+        <div v-if="!updated" class="w-3 h-3 bg-slate-900 border-2 border-solid border-slate-200 absolute rounded-full top-[18px] left-10"/>
       </template><!--メニューボタン-->
       <v-dialog
         v-model="showDialog"
@@ -41,7 +41,6 @@
     </v-navigation-drawer>
 
     <v-main class="bg-slate-200 overflow-auto">
-      {{ cards }}
       <TaskCard
         v-for="card in cards"
         :key="card.id"
@@ -111,7 +110,9 @@ export default{
       });
     },
     saveWithBanner(){
-      this.updated = true
+      set(ref(db, `data/${this.uid}/cards`), this.cards).then(()=>{
+        this.updated = true
+      })
       this.showBanner = true
     },
     addKadai(data){
@@ -121,18 +122,22 @@ export default{
   },
 
   watch:{
-    trees: {
+    cards: {
       deep: true,
       handler(){
+        console.log("a");
         if(this.firstUpdate == true){
           this.firstUpdate = false
+          console.log("b");
         }else{
+          console.log("c");
           clearTimeout(timer)
           this.updated = false
           this.showBanner = false
           timer = setTimeout(function(){
-            set(ref(db, `data/${this.uid}/trees`), this.trees);
-            this.updated = true
+            set(ref(db, `data/${this.uid}/cards`), this.cards).then(()=>{
+              this.updated = true
+            })
           }.bind(this), 8000)
         }
       }
@@ -143,7 +148,6 @@ export default{
     window.addEventListener('beforeunload', (event) => {
       if(this.updated == false){
         this.saveWithBanner()
-        console.log("apapa");
         event.preventDefault()
         event.returnValue = ""
       }
@@ -155,6 +159,33 @@ export default{
         this.userName = user.displayName
         this.userImage = user.photoURL
         this.logined = true
+        get(child(dbRef, `data/${this.uid}`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            const newData = snapshot.val()
+            this.cards = newData.cards
+            console.log(this.trees);
+          } else {
+            console.log("No data available");
+            set(ref(db, `data/${this.uid}`), {
+              cards: [
+                {
+                  "title": "Staskへようこそ",
+                  "time": 123,
+                  "startPage": 50,
+                  "lastPage": 100,
+                  "nowPage": 75,
+                  "showSubMenu": false,
+                  "done": false,
+                  "subject": { "title": "数学 (算数)", "color": "blue" }
+                }
+              ]
+            }).then(()=>{
+              console.log("aaa");
+            })
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
       } else {
         this.$router.push("/welcome")
       }

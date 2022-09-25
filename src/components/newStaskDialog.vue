@@ -70,7 +70,6 @@ export default{
       startPage: 10,
       lastPage: 100,
       nowPage: 10,
-      showSubMenu: false,
       done: false,      
       subject: {title:"",color:""}
     },

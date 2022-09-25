@@ -3,7 +3,7 @@
     <v-app-bar flat class="bg-transparent backdrop-blur-md">
       <template v-slot:append>
         <button
-          class="bg-orange-400 py-1.5 px-3.5 text-white rounded-full text-md font-[Montserrat]"
+          class="bg-gradient-to-br from-sky-400 to-blue-400 py-1.5 px-3.5 text-white rounded-full text-md font-[Montserrat]"
           @click="login"
         >Get Started</button>
       </template>
@@ -15,27 +15,30 @@
             <img src="../assets/Icon.svg" class="h-5">
             <h2 class="font-bold text-xl">ToBe</h2>
           </div>
-          <h1 class="lg:text-7xl md:text-6xl text-5xl font-black font-[Montserrat]">The Todo app<br>that never loses<br>sight of your goals</h1>
+          <h1 class="lg:text-7xl md:text-6xl text-5xl font-black font-[Montserrat]">Todo app<br>optimized for study</h1>
           <p class="max-w-2xl mt-3 mx-auto">
-            <span class="whitespace-nowrap">Tobeは</span>
-            <span class="whitespace-nowrap">タスクよりも</span>
-            <span class="whitespace-nowrap">タスクを達成した後の</span>
-            <span class="whitespace-nowrap">ゴールに主眼をおいた</span>
-            <span class="whitespace-nowrap">タスク管理アプリです。</span>
-            <span class="whitespace-nowrap">直感的な操作で</span>
-            <span class="whitespace-nowrap">タスクを</span>
-            <span class="whitespace-nowrap">より簡単に</span>
-            <span class="whitespace-nowrap">管理できるように</span>
-            <span class="whitespace-nowrap">なります。</span>
+            <span class="whitespace-nowrap">Staskは</span>
+            <span class="whitespace-nowrap">日々多くの</span>
+            <span class="whitespace-nowrap">課題に追われる</span>
+            <span class="whitespace-nowrap">学生に</span>
+            <span class="whitespace-nowrap">寄り添った</span>
+            <span class="whitespace-nowrap">Todoアプリです。</span><br>
+            <span class="whitespace-nowrap">Staskを</span>
+            <span class="whitespace-nowrap">使うことで</span>
+            <span class="whitespace-nowrap">今ある課題を</span>
+            <span class="whitespace-nowrap">よりわかりやすく</span>
+            <span class="whitespace-nowrap">一覧で</span>
+            <span class="whitespace-nowrap">確認することが</span>
+            <span class="whitespace-nowrap">できます。</span>
           </p>
           <div class="mt-2">
             <button
-              class="bg-orange-400 py-2 px-4 text-white rounded-full font-[Montserrat]"
+              class="bg-gradient-to-br from-sky-400 to-blue-400 py-2 px-4 text-white rounded-full font-[Montserrat]"
               @click="login"
             >Get Started</button>
             <a
-              class="border-orange-400 border-solid border-2 py-1.5 px-3.5 text-orange-400 rounded-full font-[Montserrat] ml-2"
-              href="https://github.com/Ampoi/ToBe"
+              class="border-sky-500 border-solid border-2 py-2 px-4 text-sky-500 rounded-full font-[Montserrat] ml-2"
+              href="https://github.com/Ampoi/Stask"
             >GitHub</a>
           </div>
         </div>
