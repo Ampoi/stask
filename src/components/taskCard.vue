@@ -16,16 +16,13 @@
         </v-btn>
         <div class="ml-2 grow">
           <div class="flex flex-row items-center">
-            <div class="flex flex-row items-end gap-x-4">
+            <div class="basis-full">
               <v-card-title>
-              <moreInput
-                v-model:textData="card['title']"
-                placeholder="タイトルを入力"
-              />
+                <input type="text" class="w-full" placeholder="タイトルを入力...">
               </v-card-title>
-              <v-card-subtitle>所要時間<input
-                type="number" min="1" max="999" v-model="card.time"
-              >:分　{{card.nowPage - card.startPage}}/{{card.lastPage - card.startPage}}</v-card-subtitle>
+              <v-card-subtitle>
+                所要時間<input type="number" min="1" max="999" v-model="card.time">:分　{{card.nowPage - card.startPage}}/{{card.lastPage - card.startPage}}
+              </v-card-subtitle>
             </div>
             <v-spacer></v-spacer>
             <v-btn
@@ -79,10 +76,7 @@
   </v-card>
 </template>
 <script>
-import moreInput from './moreInput.vue'
-import MoreInput from './moreInput.vue'
 export default{
-  components: { moreInput, MoreInput },
   props: ["card"],
   emits: ["updateData"],
   data(){return{
