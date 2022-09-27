@@ -1,7 +1,7 @@
 <template>
   <div class="py-8 px-4">
     <div class="text-center border-b-2 border-solid pb-4 border-black/10 relative">
-      <div class="w-28 h-28 rounded-full mx-auto bg-cover bg-center" :style="`background: url(${userImage})`"/>
+      <div class="w-28 h-28 rounded-full mx-auto bg-cover bg-center" :style='`background: url(${userImage})`'/>
       <p class="text-2xl font-bold mt-2">{{ userName }}</p>
       <button
         class="text-md text-black/40 hover:text-black transition absolute -top-4 right-0"

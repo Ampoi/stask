@@ -41,11 +41,13 @@
     </v-navigation-drawer>
 
     <v-main class="bg-slate-200 overflow-auto">
+      <!--<button @click="countTaskData">aaa</button>-->
       <TaskCard
-        v-for="card in cards"
-        :key="card.id"
+        v-for="(card, cardIndex) in cards"
+        :key="cardIndex"
         :card = "card"
         @updateData="(newData)=>{card = newData}"
+        @deleteTask="deleteTask(cardIndex)"
       />
     </v-main>
   </v-app>
@@ -118,6 +120,25 @@ export default{
     addKadai(data){
       this.cards.push(data)
       this.showDialog = false
+    },
+    deleteTask(index){
+      this.cards.splice(index, 1)
+    },
+    countTaskData(){
+      let sendData = {
+        doneAmount: 0,
+        allPage: 0,
+        donePage: 0,
+        allTime: 0
+      }
+      this.cards.forEach((card)=>{
+        if(card.done){sendData.doneAmount+=1}
+        const allPage = lastPage - startPage + 1
+        const donePage = nowPage - startPage
+        sendData.donePage += donePage
+        sendData.allPage += allPage
+        sendData.allTime += card.time
+      })
     }
   },
 

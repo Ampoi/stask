@@ -18,10 +18,15 @@
           <div class="flex flex-row items-center">
             <div class="basis-full">
               <v-card-title>
-                <input type="text" class="w-full" placeholder="タイトルを入力...">
+                <input type="text" class="w-full" placeholder="タイトルを入力..." v-model="card.title">
               </v-card-title>
-              <v-card-subtitle>
-                所要時間<input type="number" min="1" max="999" v-model="card.time">:分　{{card.nowPage - card.startPage}}/{{card.lastPage - card.startPage}}
+              <v-card-subtitle class="sm:text-[14px] text-[16px]">
+                所要時間<input
+                  type="number"
+                  min="1" max="999"
+                  v-model="card.time"
+                  class="text-right"
+                >:分　{{card.nowPage - card.startPage}}/{{card.lastPage - card.startPage}}
               </v-card-subtitle>
             </div>
             <v-spacer></v-spacer>
@@ -47,7 +52,7 @@
         <div v-if="this.showSubMenu" class="mt-2">
           <v-divider></v-divider>
           <div class="mt-2 flex flex-row items-baseline gap-x-2 h-8">
-            <span>p.<input type="number" v-model="card.startPage" min="0" :max="card.lastPage - 1"></span>
+            <span>p.<input type="number" v-model="card.startPage" min="0" :max="card.nowPage" class="sm:text-[14px] text-[16px]"></span>
             <v-slider
               v-model="card.nowPage"
               :min="card.startPage"
@@ -57,19 +62,25 @@
               thumb-label
               step="1"
             ></v-slider>
-            <span>p.<input type="number" v-model="card.lastPage" :min="card.startPage + 1" max="999"></span>
+            <span>p.<input type="number" v-model="card.lastPage" :min="card.startPage + 1" max="999" class="sm:text-[14px] text-[16px]"></span>
           </div>
-          <v-select
-            v-model="card.subject"
-            :items="subjects"
-            label="Subject"
-            variant="outlined"
-            item-title="title"
-            item-value="color"
-            density="comfortable"
-            :color="colors[card.subject.color]"
-            return-object
-          />
+          <div class="flex flex-row items-start gap-4">
+            <v-select
+              v-model="card.subject"
+              :items="subjects"
+              label="Subject"
+              variant="outlined"
+              item-title="title"
+              item-value="color"
+              density="comfortable"
+              :color="colors[card.subject.color]"
+              return-object
+            />
+            <button
+              class="h-12 p-4 pt-2.5 box-border border-red-400 border-2 border-solid rounded-lg transition-all font-bold text-red-400
+                     hover:bg-red-300 hover:text-white"
+              @click="$emit('deleteTask')">課題を削除</button>
+          </div>
         </div>
       </v-expand-transition>
     </v-card-item>
@@ -78,7 +89,7 @@
 <script>
 export default{
   props: ["card"],
-  emits: ["updateData"],
+  emits: ["updateData", "deleteTask"],
   data(){return{
     showSubMenu: false,
     colors: {

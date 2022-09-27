@@ -1,6 +1,6 @@
 <template>
   <v-form class="text-center p-8 rounded-2xl">
-    <v-icon class="mb-4 text-6xl">
+    <v-icon class="mb-4 text-6xl" color="blue lighten-1">
       mdi-notebook-plus
     </v-icon>
     <v-list-item-title class="text-h5">
@@ -11,7 +11,7 @@
       <v-col>
         <v-text-field
           label="課題名"
-          placeholder="10文字以内"
+          placeholder="課題名を入力してください"
           variant="underlined"
           prepend-icon="mdi-book-edit"
           v-model="newKadaiData.title"
@@ -54,7 +54,7 @@
       </v-col>
     </v-container>
     <v-card-actions>
-      <v-btn color="primary" block @click="$emit('newKadai', this.newKadaiData)">
+      <v-btn color="blue lighten-2" block @click="$emit('newKadai', this.newKadaiData)">
         <v-icon>mdi-check</v-icon>
         完了
       </v-btn>
@@ -65,11 +65,11 @@
 export default{
   data(){return{
     newKadaiData: {
-      title: "Apapa",
-      time: 400,
-      startPage: 10,
-      lastPage: 100,
-      nowPage: 10,
+      title: "",
+      time: 60,
+      startPage: 0,
+      lastPage: 12,
+      nowPage: 0,
       done: false,      
       subject: {title:"",color:""}
     },

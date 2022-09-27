@@ -13,7 +13,7 @@
         <div class="text-center">
           <div class="flex flex-row items-center justify-center">
             <img src="../assets/Icon.svg" class="h-5">
-            <h2 class="font-bold text-xl">ToBe</h2>
+            <h2 class="font-bold text-xl">Stask</h2>
           </div>
           <h1 class="lg:text-7xl md:text-6xl text-5xl font-black font-[Montserrat]">Todo app<br>optimized for study</h1>
           <p class="max-w-2xl mt-3 mx-auto">
@@ -42,7 +42,7 @@
             >GitHub</a>
           </div>
         </div>
-        <img src="../assets/mockup.png" class="h-[600px] mx-auto drop-shadow-2xl">
+        <img src="../assets/mockup.png" class="h-[600px] mx-auto drop-shadow-2xl mt-4">
       </div>
       <footer class="my-4">
         <p class="text-center text-gray-400 text-sm">
