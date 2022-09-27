@@ -1,7 +1,6 @@
-# Vue 3 + Vite
+# Stask
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+![touch icon](https://user-images.githubusercontent.com/71966872/192543583-575191fb-e578-4799-9296-511030d7ac7e.png)
 
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+Staskは日々多くの課題に追われる学生に寄り添ったTodoアプリです。
+Staskを使うことで今ある課題をよりわかりやすく一覧で確認することができます。
