@@ -26,7 +26,7 @@
                   min="1" max="999"
                   v-model="card.time"
                   class="text-right"
-                >:分　{{card.nowPage - card.startPage}}/{{card.lastPage - card.startPage}}
+                >:分　{{card.nowPage - card.startPage}}/{{card.lastPage - card.startPage + 1}}
               </v-card-subtitle>
             </div>
             <v-spacer></v-spacer>
@@ -52,7 +52,7 @@
         <div v-if="this.showSubMenu" class="mt-2">
           <v-divider></v-divider>
           <div class="mt-2 flex flex-row items-baseline gap-x-2 h-8">
-            <span>p.<input type="number" v-model="card.startPage" min="0" :max="card.nowPage" class="sm:text-[14px] text-[16px]"></span>
+            <span>p.<input type="number" v-model="card.startPage" min="1" :max="card.nowPage" class="sm:text-[14px] text-[16px]"></span>
             <v-slider
               v-model="card.nowPage"
               :min="card.startPage"
@@ -127,7 +127,6 @@ export default{
     getNowNumber(start,now,end){
       const ue = now - start
       const sita = end - start
-      //console.log(this.colors[this.card.subject]);
       return ue / sita * 100
     }
   }
