@@ -43,6 +43,30 @@
           </div>
         </div>
         <img src="../assets/mockup.png" class="h-[600px] mx-auto drop-shadow-2xl mt-4">
+        <div class="max-w-xl mx-auto px-4 mt-4 flex flex-col gap-4">
+          <div class="bg-white/80  p-4 rounded-lg border-white/10">
+            <h1 class="text-3xl font-bold">✨ 特徴</h1>
+            <p>Staskは一般的なタスク管理アプリとは違い、学習のために最適化したタスク管理アプリとなっています。学生が開発しているため課題管理のために必要な機能が全て揃っています。</p>
+            <p>また、アップデートは個人開発のため不定期ですがユーザーからの意見はすぐに反映されやすいです。意見や要望がある場合はGithub Issuesからお聞かせください。</p>
+          </div>
+          <div class="bg-white/50  p-4 rounded-lg border-white/10">
+            <h1 class="text-3xl font-bold">🚀 アップデート予定のもの</h1>
+            <p>Staskは一般的なタスク管理アプリとは違い、学習のために最適化したタスク管理アプリとなっています。学生が開発しているため課題管理のために必要な機能が全て揃っています。</p>
+            <div class="flex flex-col gap-4 mt-4">
+              <div
+                v-for="update in updates"
+                :key="update.key"
+                class="bg-white/80 p-4 border-2 border-white/10 rounded-xl"
+              >
+                <h1 class="font-bold text-xl">#{{update.number}} | {{update.title}}</h1>
+                <a
+                  :href="update.html_url"
+                  class="text-sm text-black/40"
+                >このアップデートについて詳しく見る(Github) ></a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <footer class="my-4">
         <p class="text-center text-gray-400 text-sm">
@@ -69,6 +93,9 @@ const auth = getAuth(firebaseApp);
 const provider = new GoogleAuthProvider();
 
 export default {
+  data(){return{
+    updates:[]
+  }},
   methods:{
     login(){
       signInWithPopup(auth, provider)
@@ -86,6 +113,11 @@ export default {
           console.error(error)
         });
     }
+  },
+  async mounted(){
+    const updateData = await fetch("https://api.github.com/repos/ampoi/stask/issues")
+      .then((res)=>res.json())
+    this.updates = updateData.slice().reverse()
   }
 }
 </script>
