@@ -51,7 +51,7 @@
           </div>
           <div class="bg-white/50  p-4 rounded-lg border-white/10">
             <h1 class="text-3xl font-bold">🚀 アップデート予定のもの</h1>
-            <p>Staskは一般的なタスク管理アプリとは違い、学習のために最適化したタスク管理アプリとなっています。学生が開発しているため課題管理のために必要な機能が全て揃っています。</p>
+            <p>近日反映予定のアップデートです。Github Issueで管理していますのでご意見があればぜひ投稿してください。</p>
             <div class="flex flex-col gap-4 mt-4">
               <div
                 v-for="update in updates"
