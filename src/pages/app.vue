@@ -5,21 +5,9 @@
         <v-app-bar-nav-icon @click.stop="showNavbar = !showNavbar"/>
         <div v-if="!updated" class="w-3 h-3 bg-slate-900 border-2 border-solid border-slate-200 absolute rounded-full top-[18px] left-10"/>
       </template><!--メニューボタン-->
-      <v-dialog
-        v-model="showDialog"
-      >        
-        <template v-slot:activator="attrs">
-          <v-btn
-            icon="mdi-plus"
-            v-bind="attrs"
-            @click="showDialog = true"/>
-        </template>
-        <v-card class="max-w-md rounded-2xl" fluid>
-          <nSDialog
-            @newKadai="addKadai"
-          />
-        </v-card>
-      </v-dialog>
+      <v-btn
+        icon="mdi-plus"
+        @click="addTask"/>
     </v-app-bar>
 
     <sBanner
@@ -86,7 +74,6 @@ export default{
   data(){return{
     showNavbar: false,
     showBanner: false,
-    showDialog: false,
 
     updated: true,
     changed: true,
@@ -117,8 +104,16 @@ export default{
       })
       this.showBanner = true
     },
-    addKadai(data){
-      this.cards.push(data)
+    addTask(){
+      this.cards.push({
+        title: "",
+        time: 60,
+        startPage: 0,
+        lastPage: 12,
+        nowPage: 0,
+        done: false,      
+        subject: {title:"",color:""}
+      })
       this.showDialog = false
     },
     deleteTask(index){
