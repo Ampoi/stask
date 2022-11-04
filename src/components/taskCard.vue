@@ -1,6 +1,6 @@
 <template>
   <v-card
-    flat class="border-2 border-l-8 max-w-xl mx-auto mb-4 drop-shadow-md rounded-xl bg-white/90"
+    flat class="border-2 border-l-8 drop-shadow-md rounded-xl bg-white/90"
     :style="`border-color: ${borderColors[card.subject.color]}6F`"
   >
     <v-card-item>

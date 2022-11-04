@@ -30,23 +30,24 @@
 
     <v-main class="bg-slate-200 overflow-auto">
       <!--<button @click="countTaskData">aaa</button>-->
-      <TaskCard
-        v-for="(card, cardIndex) in cards"
-        :key="cardIndex"
-        :card = "card"
-        @updateData="(newData)=>{card = newData}"
-        @deleteTask="deleteTask(cardIndex)"
-      />
+      <div class="flex flex-col mx-auto px-4 gap-4 max-w-xl">
+        <TaskCard
+          v-for="(card, cardIndex) in cards"
+          :key="cardIndex"
+          :card = "card"
+          @updateData="(newData)=>{card = newData}"
+          @deleteTask="deleteTask(cardIndex)"
+        />
+      </div>
     </v-main>
   </v-app>
 </template>
 <script>
 import navBar from "../components/navBar.vue";
 import TaskCard from "../components/taskCard.vue"
-import nSDialog from "../components/newStaskDialog.vue"
 import sBanner from "../components/savedBanner.vue"
 
-import { initializeApp, getApps } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
@@ -68,7 +69,6 @@ export default{
   components: {
     navBar,
     TaskCard,
-    nSDialog,
     sBanner
   },
   data(){return{
@@ -114,7 +114,6 @@ export default{
         done: false,      
         subject: {title:"",color:""}
       })
-      this.showDialog = false
     },
     deleteTask(index){
       this.cards.splice(index, 1)
