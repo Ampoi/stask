@@ -6,7 +6,7 @@
     "serve": "vite preview",
     "build": "vite build",
     "dev": "vite --host",
-    "preview": "vite preview",
+    "preview": "vite preview --host",
     "issue": "gh issue list"
   },
   "dependencies": {

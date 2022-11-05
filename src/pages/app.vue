@@ -18,7 +18,7 @@
     <v-navigation-drawer
       v-model="showNavbar"
       temporary
-      class="m-4 h-auto rounded-lg bg-white/70 backdrop-blur-md"
+      class="m-4 h-auto rounded-lg bg-white/70 backdrop-blur-md dark:bg-black/20 dark:text-white"
     >
       <navBar
         :userImage="userImage"

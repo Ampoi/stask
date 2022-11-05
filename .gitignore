@@ -24,5 +24,6 @@ dist-ssr
 *.sw?
 
 .env
+main.code-workspace
 
 .firebase/*
