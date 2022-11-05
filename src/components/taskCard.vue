@@ -13,7 +13,7 @@
           @click="card.done = !card.done">
           <v-icon
             large
-            :class="{'text-gray-200': !card.done}"
+            :class="{'text-gray-200': card.done}"
           >mdi-check</v-icon>
         </v-btn>
         <div class="ml-2 grow">
@@ -134,8 +134,8 @@ export default{
   },
   computed: {
     checkCardDone(){
-      if(this.onlydone){return !this.card.done}
-      else{return this.card.done}
+      if(this.onlydone){return this.card.done}
+      else{return !this.card.done}
     }
   }
 }

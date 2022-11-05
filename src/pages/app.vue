@@ -125,7 +125,7 @@ export default{
         startPage: 0,
         lastPage: 12,
         nowPage: 0,
-        done: false,      
+        done: false,     
         subject: {title:"",color:""}
       })
     },
