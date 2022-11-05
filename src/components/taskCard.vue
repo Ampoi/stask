@@ -7,13 +7,13 @@
     <v-card-item>
       <div class="flex flex-row items-center">
         <v-btn
-          class="border-2 shadow-none bg-white/80 mt-1 dark:bg-black/30"
+          class="border-2 shadow-none bg-white/80 mt-1 dark:bg-black/30 dark:text-white"
           :style="`border-color: ${borderColors[card.subject.color]}6F`"
           icon
           @click="card.done = !card.done">
           <v-icon
             large
-            :class="{'text-gray-200': card.done}"
+            :class="{'text-gray-200 dark:text-white/20': !card.done}"
           >mdi-check</v-icon>
         </v-btn>
         <div class="ml-2 grow">
