@@ -34,10 +34,21 @@
     >
       <!--<button @click="countTaskData">aaa</button>-->
       <div class="flex flex-col mx-auto px-4 gap-4 max-w-xl">
+        <p class="text-black/40 dark:text-white/30 font-bold">未達成のタスク</p>
         <TaskCard
           v-for="(card, cardIndex) in cards"
           :key="cardIndex"
           :card = "card"
+          :onlydone="false"
+          @updateData="(newData)=>{card = newData}"
+          @deleteTask="deleteTask(cardIndex)"
+        />
+        <p class="text-black/40 dark:text-white/30 font-bold">達成済みのタスク</p>
+        <TaskCard
+          v-for="(card, cardIndex) in cards"
+          :key="cardIndex"
+          :card = "card"
+          :onlydone="true"
           @updateData="(newData)=>{card = newData}"
           @deleteTask="deleteTask(cardIndex)"
         />

@@ -2,6 +2,7 @@
   <v-card
     flat class="border-2 border-l-8 drop-shadow-md rounded-xl bg-white/90 dark:bg-black/30 dark:text-white"
     :style="`border-color: ${borderColors[card.subject.color]}6F`"
+    v-if="checkCardDone"
   >
     <v-card-item>
       <div class="flex flex-row items-center">
@@ -89,7 +90,7 @@
 </template>
 <script>
 export default{
-  props: ["card"],
+  props: ["card", "onlydone"],
   emits: ["updateData", "deleteTask"],
   data(){return{
     showSubMenu: false,
@@ -129,6 +130,12 @@ export default{
       const ue = now - start
       const sita = end - start
       return ue / sita * 100
+    }
+  },
+  computed: {
+    checkCardDone(){
+      if(this.onlydone){return !this.card.done}
+      else{return this.card.done}
     }
   }
 }
