@@ -1,12 +1,13 @@
 <template>
   <v-card
-    flat class="border-2 border-l-8 drop-shadow-md rounded-xl bg-white/90"
+    flat class="border-2 border-l-8 drop-shadow-md rounded-xl bg-white/90 dark:bg-black/30 dark:text-white"
     :style="`border-color: ${borderColors[card.subject.color]}6F`"
   >
     <v-card-item>
       <div class="flex flex-row items-center">
         <v-btn
-          class="border-2 shadow-none bg-white/80 mt-1"
+          class="border-2 shadow-none bg-white/80 mt-1 dark:bg-black/30"
+          :style="`border-color: ${borderColors[card.subject.color]}6F`"
           icon
           @click="card.done = !card.done">
           <v-icon
@@ -77,8 +78,8 @@
               return-object
             />
             <button
-              class="h-12 p-4 pt-2.5 box-border border-red-400 border-2 border-solid rounded-lg transition-all font-bold text-red-400
-                     hover:bg-red-300 hover:text-white"
+              class="h-12 p-4 pt-2.5 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
+                     hover:bg-red-400/50 hover:text-white"
               @click="$emit('deleteTask')">課題を削除</button>
           </div>
         </div>

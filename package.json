@@ -6,7 +6,8 @@
     "serve": "vite preview",
     "build": "vite build",
     "dev": "vite --host",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "issue": "gh issue list"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",

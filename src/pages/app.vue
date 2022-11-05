@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="dark:text-white">
     <v-app-bar color="transparent" flat>
       <template v-slot:prepend class="relative">
         <v-app-bar-nav-icon @click.stop="showNavbar = !showNavbar"/>
@@ -28,7 +28,10 @@
         @save="saveWithBanner"/>
     </v-navigation-drawer>
 
-    <v-main class="bg-slate-200 overflow-auto">
+    <v-main
+      class="bg-slate-200 overflow-auto
+             dark:bg-gradient-to-br from-slate-800 to-black"
+    >
       <!--<button @click="countTaskData">aaa</button>-->
       <div class="flex flex-col mx-auto px-4 gap-4 max-w-xl">
         <TaskCard
