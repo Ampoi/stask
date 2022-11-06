@@ -20,5 +20,8 @@ export default defineConfig({
         // workbox options for generateSW
       }
     })
-	]
+	],
+  build: {
+    emptyOutDir: true
+  }
 })

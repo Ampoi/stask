@@ -24,6 +24,7 @@
         :userImage="userImage"
         :userName="userName"
         :updated="updated"
+        :tasks="cards"
         @logout="logout"
         @save="saveWithBanner"/>
     </v-navigation-drawer>
