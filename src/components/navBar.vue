@@ -6,10 +6,10 @@
         :style='`background: url(${userImage})`'
       />
       <p class="text-2xl font-bold mt-2">{{ userName }}</p>
-      <span class="text-sm text-black/40 flex flex-row items-center gap-1">
+      <span class="text-sm text-black/40 dark:text-white/50 flex flex-row items-center gap-1">
         <v-icon class="text-sm mt-0.5"> mdi-book-check</v-icon>達成した課題数 | {{ getTaskDone.done }}/{{ getTaskDone.all }}
       </span>
-      <span class="text-sm text-black/40 flex flex-row items-center gap-1">
+      <span class="text-sm text-black/40 dark:text-white/50 flex flex-row items-center gap-1">
         <v-icon class="text-sm mt-0.5"> mdi-clock-outline</v-icon>全体の所要時間 | {{ getTaskTime }}分
       </span>
       <!--ログアウトボタン-->
