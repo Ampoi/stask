@@ -52,6 +52,7 @@
           :onlydone="true"
           @updateData="(newData)=>{card = newData}"
           @deleteTask="deleteTask(cardIndex)"
+          class="opacity-50"
         />
       </div>
     </v-main>
