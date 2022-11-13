@@ -1,5 +1,5 @@
 <template>
-  <v-app class="bg-gradient-to-bl from-sky-100 to-white">
+  <v-app class="bg-gradient-to-bl from-sky-100 to-white dark:from-sky-900 dark:to-black dark:text-white">
     <v-app-bar flat class="bg-transparent backdrop-blur-md">
       <template v-slot:append>
         <button
@@ -44,24 +44,24 @@
         </div>
         <img src="../assets/mockup.png" class="h-[600px] mx-auto drop-shadow-2xl mt-4">
         <div class="max-w-xl mx-auto px-4 mt-4 flex flex-col gap-4">
-          <div class="bg-white/80  p-4 rounded-lg border-white/10">
+          <div class="bg-white/50 dark:bg-black/20 p-4 rounded-lg border-white/10">
             <h1 class="text-3xl font-bold">✨ 特徴</h1>
             <p>Staskは一般的なタスク管理アプリとは違い、学習のために最適化したタスク管理アプリとなっています。学生が開発しているため課題管理のために必要な機能が全て揃っています。</p>
             <p>また、アップデートは個人開発のため不定期ですがユーザーからの意見はすぐに反映されやすいです。意見や要望がある場合はGithub Issuesからお聞かせください。</p>
           </div>
-          <div class="bg-white/50  p-4 rounded-lg border-white/10">
+          <div class="bg-white/50 dark:bg-black/40 p-4 rounded-lg border-white/10">
             <h1 class="text-3xl font-bold">🚀 アップデート予定のもの</h1>
             <p>近日反映予定のアップデートです。Github Issueで管理していますのでご意見があればぜひ投稿してください。</p>
             <div class="flex flex-col gap-4 mt-4">
               <div
                 v-for="update in updates"
                 :key="update.key"
-                class="bg-white/80 p-4 border-2 border-white/10 rounded-xl"
+                class="bg-white/80 p-4 border-2 border-white/10 dark:bg-black/30 dark:border-black rounded-xl"
               >
                 <h1 class="font-bold text-xl">#{{update.number}} | {{update.title}}</h1>
                 <a
                   :href="update.html_url"
-                  class="text-sm text-black/40"
+                  class="text-sm text-black/40 dark:text-white/50"
                 >このアップデートについて詳しく見る(Github) ></a>
               </div>
             </div>
