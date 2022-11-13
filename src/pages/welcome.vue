@@ -14,6 +14,7 @@
           <div class="flex flex-row items-center justify-center">
             <img src="../assets/Icon.svg" class="h-5">
             <h2 class="font-bold text-xl">Stask</h2>
+            <p class="font-bold ml-2 border-l-2 pl-2 dark:border-white/40">Version 1.1 has been released 🎉</p>
           </div>
           <h1 class="lg:text-7xl md:text-6xl text-5xl font-black font-[Montserrat]">Todo app<br>optimized for study</h1>
           <p class="max-w-2xl mt-3 mx-auto">
@@ -100,23 +101,17 @@ export default {
     login(){
       signInWithPopup(auth, provider)
         .then((result) => {
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
-          const user = result.user;
           this.$router.push("/")
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          const email = error.customData.email;
-          const credential = GoogleAuthProvider.credentialFromError(error);
           console.error(error)
         });
     }
   },
   async mounted(){
-    const updateData = await fetch("https://api.github.com/repos/ampoi/stask/issues")
+    const updateData = await fetch("https://api.github.com/repos/ampoi/stask/issues?labels=new-release")
       .then((res)=>res.json())
+    
     this.updates = updateData.slice().reverse()
   }
 }
