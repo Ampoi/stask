@@ -14,7 +14,7 @@
           <div class="flex flex-row items-center justify-center">
             <img src="../assets/Icon.svg" class="h-5">
             <h2 class="font-bold text-xl">Stask</h2>
-            <p class="font-bold ml-2 border-l-2 pl-2 dark:border-white/40">Version 1.1 has been released 🎉</p>
+            <p class="font-bold ml-2 border-l-2 pl-2 border-black/30 dark:border-white/40">Version 1.1 has been released 🎉</p>
           </div>
           <h1 class="lg:text-7xl md:text-6xl text-5xl font-black font-[Montserrat]">Todo app<br>optimized for study</h1>
           <p class="max-w-2xl mt-3 mx-auto">
@@ -57,7 +57,7 @@
               <div
                 v-for="update in updates"
                 :key="update.key"
-                class="bg-white/80 p-4 border-2 border-white/10 dark:bg-black/30 dark:border-black rounded-xl"
+                class="bg-white p-4 border-2 border-white/10 dark:bg-black/30 dark:border-black rounded-xl"
               >
                 <h1 class="font-bold text-xl">#{{update.number}} | {{update.title}}</h1>
                 <a
@@ -72,7 +72,7 @@
       <footer class="my-4">
         <p class="text-center text-gray-400 text-sm">
           created by
-          <a href="https://twitter.com/4mpoi">Ampoi</a>
+          <a href="https://twitter.com/4mpoi" class="underline">Ampoi</a>
           , build with Firebase
         </p>
         <img src="../assets/logo-standard.svg" class="w-32 mx-auto mt-2" alt="">
