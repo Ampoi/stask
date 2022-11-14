@@ -57,7 +57,7 @@
               <div
                 v-for="update in updates"
                 :key="update.key"
-                class="bg-white p-4 border-2 border-white/10 dark:bg-black/30 dark:border-black rounded-xl"
+                class="bg-white p-4 border-2 border-white/10 dark:bg-black/30 dark:border-black dark:text-white rounded-xl"
               >
                 <h1 class="font-bold text-xl">#{{update.number}} | {{update.title}}</h1>
                 <a
