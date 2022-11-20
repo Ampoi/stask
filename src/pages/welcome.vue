@@ -2,10 +2,10 @@
   <v-app class="bg-gradient-to-bl from-sky-100 to-white dark:from-sky-900 dark:to-black dark:text-white">
     <v-app-bar flat class="bg-transparent backdrop-blur-md">
       <template v-slot:append>
-        <button
+        <a
           class="bg-gradient-to-br from-sky-400 to-blue-400 py-1.5 px-3.5 text-white rounded-full text-md font-[Montserrat]"
-          @click="login"
-        >Get Started</button>
+          href="/login"
+        >Get Started</a>
       </template>
     </v-app-bar>
     <v-main>
@@ -33,10 +33,10 @@
             <span class="whitespace-nowrap">できます。</span>
           </p>
           <div class="mt-2">
-            <button
+            <a
               class="bg-gradient-to-br from-sky-400 to-blue-400 py-2 px-4 text-white rounded-full font-[Montserrat]"
-              @click="login"
-            >Get Started</button>
+              href="/login"
+            >Get Started</a>
             <a
               class="border-sky-500 border-solid border-2 py-2 px-4 text-sky-500 rounded-full font-[Montserrat] ml-2"
               href="https://github.com/Ampoi/Stask"
@@ -81,7 +81,6 @@
   </v-app>
 </template>
 <script>
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
@@ -90,24 +89,10 @@ import { firebaseConfig } from "../data/firebaseConfig.js"
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 
-const auth = getAuth(firebaseApp);
-const provider = new GoogleAuthProvider();
-
 export default {
   data(){return{
     updates:[]
   }},
-  methods:{
-    login(){
-      signInWithPopup(auth, provider)
-        .then((result) => {
-          this.$router.push("/")
-        })
-        .catch((error) => {
-          console.error(error)
-        });
-    }
-  },
   async mounted(){
     const updateData = await fetch("https://api.github.com/repos/ampoi/stask/issues?labels=new-release")
       .then((res)=>res.json())
