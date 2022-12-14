@@ -41,7 +41,9 @@ export default {
     getTaskTime(){
       let time = 0
       this.tasks.forEach(task => {
-        time += task.time
+        if(!task.done){
+          time += task.time
+        }
       });
       return time
     },

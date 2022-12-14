@@ -8,4 +8,9 @@ body{
   background: #E2E8F0;
   font-family: 'Noto Sans JP', sans-serif;
 }
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #000;
+  }
+}
 </style>

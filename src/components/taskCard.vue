@@ -90,7 +90,7 @@
 </template>
 <script>
 export default{
-  props: ["card", "onlydone"],
+  props: ["card", "onlydone", "beShowed"],
   emits: ["updateData", "deleteTask"],
   data(){return{
     showSubMenu: false,
@@ -134,8 +134,11 @@ export default{
   },
   computed: {
     checkCardDone(){
-      if(this.onlydone){return this.card.done}
-      else{return !this.card.done}
+      if(this.beShowed){return true}
+      else{
+        if(this.onlydone){return this.card.done}
+        else{return !this.card.done}
+      }
     }
   }
 }

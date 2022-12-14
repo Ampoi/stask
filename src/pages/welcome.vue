@@ -32,7 +32,7 @@
             <span class="whitespace-nowrap">確認することが</span>
             <span class="whitespace-nowrap">できます。</span>
           </p>
-          <div class="mt-2">
+          <div class="mt-4">
             <a
               class="bg-gradient-to-br from-sky-400 to-blue-400 py-2 px-4 text-white rounded-full font-[Montserrat]"
               href="/login"
@@ -44,6 +44,16 @@
           </div>
         </div>
         <img src="../assets/mockup.png" class="h-[600px] mx-auto drop-shadow-2xl mt-4">
+        <div class="max-w-xl mx-auto px-4 mt-16 flex flex-col gap-2">
+          <h2 class="text-4xl font-bold">学習に特化したUI</h2>
+          <p>Staskでは課題をカードとして管理します。カードにはページ数の指定や所要時間の表示など、学習に特化したUIが多くあります。</p>
+          <TaskCard
+            class="w-full"
+            :card = "card"
+            :onlydone="true"
+            :beShowed="true"
+          />
+        </div>
         <div class="max-w-xl mx-auto px-4 mt-4 flex flex-col gap-4">
           <div class="bg-white/50 dark:bg-black/20 p-4 rounded-lg border-white/10">
             <h1 class="text-3xl font-bold">✨ 特徴</h1>
@@ -86,12 +96,24 @@ import { getAnalytics } from "firebase/analytics";
 
 import { firebaseConfig } from "../data/firebaseConfig.js"
 
+import TaskCard from "../components/taskCard.vue"
+
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 
 export default {
+  components: {TaskCard},
   data(){return{
-    updates:[]
+    updates:[],
+    card:{
+      title: "",
+      time: 60,
+      startPage: 0,
+      lastPage: 12,
+      nowPage: 0,
+      done: true,     
+      subject: {title:"",color:""}
+    }
   }},
   async mounted(){
     const updateData = await fetch("https://api.github.com/repos/ampoi/stask/issues?labels=new-release")
