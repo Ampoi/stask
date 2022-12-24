@@ -17,13 +17,21 @@
               <v-card-title>
                 <input type="text" class="w-full" placeholder="タイトルを入力..." v-model="card.title">
               </v-card-title>
-              <v-card-subtitle class="sm:text-[14px] text-[16px]">
-                所要時間<input
-                  type="number"
-                  min="1" max="999"
-                  v-model="card.time"
-                  class="text-right"
-                >:分　{{card.nowPage - card.startPage}}/{{card.lastPage - card.startPage + 1}}
+              <v-card-subtitle class="sm:text-[14px] text-[16px] flex flex-row items-center gap-4">
+                <div class="flex flex-row">
+                  <span>所要時間</span>
+                  <input
+                    type="number"
+                    min="1" max="999"
+                    v-model="card.time"
+                    class="text-right"
+                  >
+                  <span>分</span>
+                </div>
+                <div>
+                  <span>期限:</span>
+                  <input type="date">
+                </div>
               </v-card-subtitle>
             </div>
             <v-spacer></v-spacer>
