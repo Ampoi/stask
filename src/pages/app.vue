@@ -44,7 +44,13 @@
           @updateData="(newData)=>{card = newData}"
           @deleteTask="deleteTask(cardIndex)"
         />
-        <p class="text-black/40 dark:text-white/30 font-bold">達成済みのタスク</p>
+        <div class="flex flex-row justify-between">
+          <p class="text-black/40 dark:text-white/30 font-bold">達成済みのタスク</p>
+          <button
+            class="text-black/40 dark:text-white/30 font-bold"
+            @click="deleteDoneTask()"
+          >達成済みのタスクを削除</button>
+        </div>
         <TaskCard
           v-for="(card, cardIndex) in cards"
           :key="cardIndex"
@@ -134,6 +140,15 @@ export default{
     deleteTask(index){
       this.cards.splice(index, 1)
     },
+    deleteDoneTask(){
+      for (let i = 0; i < this.cards.length;){
+        if(this.cards[i].done == true){
+          this.cards.splice(i, 1)
+        }else{
+          i++
+        }
+      }
+    },
     countTaskData(){
       let sendData = {
         doneAmount: 0,
@@ -156,12 +171,9 @@ export default{
     cards: {
       deep: true,
       handler(){
-        console.log("a");
         if(this.firstUpdate == true){
           this.firstUpdate = false
-          console.log("b");
         }else{
-          console.log("c");
           clearTimeout(timer)
           this.updated = false
           this.showBanner = false
@@ -194,7 +206,6 @@ export default{
           if (snapshot.exists()) {
             const newData = snapshot.val()
             this.cards = newData.cards
-            console.log(this.trees);
           } else {
             console.log("No data available");
             set(ref(db, `data/${this.uid}`), {
