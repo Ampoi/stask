@@ -30,7 +30,7 @@
                 </div>
                 <div>
                   <span>期限:</span>
-                  <input type="date">
+                  <input type="date" v-model="card.term">
                 </div>
               </v-card-subtitle>
             </div>
@@ -38,11 +38,11 @@
             <v-btn
               icon
               class="m-0 text-xl bg-transparent"
-              @click.stop="this.showSubMenu = !this.showSubMenu"
+              @click.stop="showSubMenu = !showSubMenu"
               flat
             >
-              <v-icon v-if="this.showSubMenu">mdi-menu-up</v-icon> <!--詳細を表示しているとき-->
-              <v-icon v-if="!this.showSubMenu">mdi-menu-down</v-icon> <!--詳細を隠しているとき-->
+              <v-icon v-if="showSubMenu">mdi-menu-up</v-icon> <!--詳細を表示しているとき-->
+              <v-icon v-if="!showSubMenu">mdi-menu-down</v-icon> <!--詳細を隠しているとき-->
             </v-btn>
           </div>
           <v-progress-linear
