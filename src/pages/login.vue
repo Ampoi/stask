@@ -29,7 +29,7 @@ import { getAuth, GoogleAuthProvider, TwitterAuthProvider, signInWithPopup } fro
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
-import { firebaseConfig } from "../data/firebaseConfig.js"
+import firebaseConfig from "../data/firebaseConfig.js"
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);

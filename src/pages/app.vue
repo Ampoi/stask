@@ -3,11 +3,15 @@
     <v-app-bar color="transparent" flat>
       <template v-slot:prepend class="relative">
         <v-app-bar-nav-icon @click.stop="showNavbar = !showNavbar"/>
-        <div v-if="!updated" class="w-3 h-3 bg-slate-900 border-2 border-solid border-slate-200 absolute rounded-full top-[18px] left-10"/>
+        <div
+          v-if="!updated"
+          class="w-3 h-3 bg-slate-900 border-2 border-solid border-slate-200 absolute rounded-full top-[18px] left-10"
+        />
       </template><!--メニューボタン-->
       <v-btn
         icon="mdi-plus"
-        @click="addTask"/>
+        @click="addTask"
+      />
     </v-app-bar>
 
     <sBanner
@@ -75,7 +79,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
 
-import { firebaseConfig } from "../data/firebaseConfig.js"
+import firebaseConfig from "../data/firebaseConfig.js"
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
@@ -86,6 +90,16 @@ const db = getDatabase()
 const dbRef = ref(db);
 
 var timer = setTimeout(()=>{}, 0)
+
+const defaultCard = {
+  title: "",
+  time: 60,
+  startPage: 0,
+  lastPage: 12,
+  nowPage: 0,
+  done: false,     
+  subject: {title:"",color:""}
+}
 
 export default{
   components: {
@@ -120,26 +134,22 @@ export default{
         console.log(error);
       });
     },
+
     saveWithBanner(){
       set(ref(db, `data/${this.uid}/cards`), this.cards).then(()=>{
         this.updated = true
       })
       this.showBanner = true
     },
+
     addTask(){
-      this.cards.push({
-        title: "",
-        time: 60,
-        startPage: 0,
-        lastPage: 12,
-        nowPage: 0,
-        done: false,     
-        subject: {title:"",color:""}
-      })
+      this.cards.push(defaultCard)
     },
+
     deleteTask(index){
       this.cards.splice(index, 1)
     },
+
     deleteDoneTask(){
       for (let i = 0; i < this.cards.length;){
         if(this.cards[i].done == true){
@@ -149,6 +159,7 @@ export default{
         }
       }
     },
+
     countTaskData(){
       let sendData = {
         doneAmount: 0,
@@ -221,7 +232,8 @@ export default{
                   "subject": { "title": "数学 (算数)", "color": "blue" }
                 }
               ]
-            }).then(()=>{
+            })
+            .then(()=>{
               console.log("aaa");
             })
           }

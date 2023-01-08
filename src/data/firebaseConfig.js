@@ -1,4 +1,4 @@
-export const firebaseConfig = {
+export default {
   apiKey: import.meta.env.VITE_APIKEY,
   authDomain: "stask-ampoi.firebaseapp.com",
   databaseURL: import.meta.env.VITE_DATABASEURL,
