@@ -1,12 +1,12 @@
 <template>
   <v-btn
-    class="border-2 shadow-none bg-white/80 mt-1 dark:bg-black/30 dark:text-white"
+    class="border-2 shadow-none bg-white/80 mt-1"
     :style="`border-color: ${borderColor}6F`"
     icon
     @click="$emit('btnClicked')">
     <v-icon
       large
-      :class="{'text-gray-200 dark:text-white/20': !done}"
+      :class="{'text-gray-200': !done}"
     >mdi-check</v-icon>
   </v-btn>
 </template>

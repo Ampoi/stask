@@ -1,11 +1,15 @@
 <template>
-  <v-app class="dark:text-white">
+  <v-app>
     <v-app-bar color="transparent" flat>
       <template v-slot:prepend class="relative">
-        <v-app-bar-nav-icon @click.stop="showNavbar = !showNavbar"/>
+        <v-app-bar-nav-icon
+          @click.stop="showNavbar = !showNavbar"
+          :class="{'text-white': showNavbar, 'text-slate-900': !showNavbar}"
+        />
         <div
           v-if="!updated"
-          class="w-3 h-3 bg-slate-900 border-2 border-solid border-slate-200 absolute rounded-full top-[18px] left-10"
+          class="w-3 h-3 border-2 border-solid absolute rounded-full top-[18px] left-10"
+          :class="{'bg-white border-slate-900': showNavbar, 'bg-slate-900 border-gray-100': !showNavbar}"
         />
       </template><!--メニューボタン-->
       <v-btn
@@ -22,7 +26,8 @@
     <v-navigation-drawer
       v-model="showNavbar"
       temporary
-      class="m-4 h-auto rounded-lg bg-white/70 backdrop-blur-md dark:bg-black/20 dark:text-white"
+      class="-mt-16 pt-16 h-auto bg-slate-800 text-white"
+      permanent
     >
       <navBar
         :userImage="userImage"
@@ -34,12 +39,10 @@
     </v-navigation-drawer>
 
     <v-main
-      class="bg-slate-200 overflow-auto
-             dark:bg-gradient-to-br from-slate-800 to-black"
+      class="bg-gray-100 overflow-auto pb-20"
     >
-      <!--<button @click="countTaskData">aaa</button>-->
       <div class="flex flex-col mx-auto px-4 gap-4 max-w-xl">
-        <p class="text-black/40 dark:text-white/30 font-bold">未達成のタスク</p>
+        <p class="text-black font-bold">未達成のタスク</p>
         <TaskCard
           v-for="(card, cardIndex) in cards"
           :key="cardIndex"
@@ -48,10 +51,9 @@
           @updateData="(newData)=>{card = newData}"
           @deleteTask="deleteTask(cardIndex)"
         />
-        <div class="flex flex-row justify-between">
-          <p class="text-black/40 dark:text-white/30 font-bold">達成済みのタスク</p>
+        <div class="flex flex-row justify-between text-black font-bold">
+          <p>達成済みのタスク</p>
           <button
-            class="text-black/40 dark:text-white/30 font-bold"
             @click="deleteDoneTask()"
           >達成済みのタスクを削除</button>
         </div>
@@ -158,23 +160,6 @@ export default{
           i++
         }
       }
-    },
-
-    countTaskData(){
-      let sendData = {
-        doneAmount: 0,
-        allPage: 0,
-        donePage: 0,
-        allTime: 0
-      }
-      this.cards.forEach((card)=>{
-        if(card.done){sendData.doneAmount+=1}
-        const allPage = lastPage - startPage + 1
-        const donePage = nowPage - startPage
-        sendData.donePage += donePage
-        sendData.allPage += allPage
-        sendData.allTime += card.time
-      })
     }
   },
 

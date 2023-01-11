@@ -1,6 +1,6 @@
 <template>
   <v-card
-    flat class="border-2 border-l-8 drop-shadow-md rounded-xl bg-white/90 dark:bg-black/30 dark:text-white"
+    flat class="border-2 border-l-8 rounded-xl bg-white"
     :style="`border-color: ${borderColors[card.subject.color]}6F`"
     v-if="checkCardDone"
   >

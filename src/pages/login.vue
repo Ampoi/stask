@@ -1,5 +1,5 @@
 <template>
-  <v-app class="bg-gradient-to-bl from-sky-100 to-white dark:from-sky-900 dark:to-black dark:text-white">
+  <v-app class="bg-gradient-to-bl from-sky-100 to-white">
     <v-app-bar flat class="bg-transparent backdrop-blur-md px-16">
       <a class="flex flex-row items-center justify-center" href="/">
         <img src="../assets/Icon.svg" class="h-5">
@@ -13,11 +13,11 @@
       </div>
       <div class="flex flex-col max-w-[264px] mx-auto mt-4 gap-4">
         <button
-          class="dark:bg-black/40 p-3 mx-[12px] text-lg rounded-lg border-red-400 border-2 border-solid text-red-400 font-bold"
+          class="p-3 mx-[12px] text-lg rounded-lg border-red-400 border-2 border-solid text-red-400 font-bold"
           @click="login('google')"
         >Googleでログイン</button>
         <button
-          class="dark:bg-black/40 p-3 mx-[12px] text-lg rounded-lg border-blue-400 border-2 border-solid text-blue-400 font-bold"
+          class="p-3 mx-[12px] text-lg rounded-lg border-blue-400 border-2 border-solid text-blue-400 font-bold"
           @click="login('twitter')"
         >Twitterでログイン</button>
       </div>
