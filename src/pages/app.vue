@@ -100,7 +100,7 @@ const defaultCard = {
   lastPage: 12,
   nowPage: 0,
   done: false,     
-  subject: {title:"",color:""}
+  subject: 1
 }
 
 export default{

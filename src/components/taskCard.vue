@@ -1,16 +1,18 @@
 <template>
   <v-card
     flat class="border-2 border-l-8 rounded-xl bg-white"
-    :style="`border-color: ${borderColors[card.subject.color]}6F`"
+    :style="`border-color:${subjects[card.subject].color}6F;`"
     v-if="checkCardDone"
   >
     <v-card-item>
       <div class="flex flex-row items-center">
+        <!--達成ボタン-->
         <checkButton
           :done="card.done"
-          :borderColor="borderColors[card.subject.color]"
+          :borderColor="subjects[card.subject].color"
           @btnClicked="card.done = !card.done"
         />
+        <!--右側-->
         <div class="ml-2 grow">
           <div class="flex flex-row items-center">
             <div class="basis-full">
@@ -57,8 +59,9 @@
               :key="pageIndex"
             >
               <button
-                class="text-[12px] p-1 border-2 rounded-full border-purple-300 text-black/20 border-solid"
-                :class="{'bg-purple-300': page.done, 'text-white': page.done}"
+                class="text-[12px] p-1 border-2 rounded-full text-black/20 border-solid"
+                :style="`border-color: ${subjects[card.subject].color}6F;`"
+                :class="{'bg-blue-300': page.done, 'text-white': page.done}"
                 @click="page.done = !page.done"
               >
                 <v-icon>mdi-check</v-icon>
@@ -104,10 +107,9 @@
               label="Subject"
               variant="outlined"
               item-title="title"
-              item-value="color"
+              item-value="index"
               density="comfortable"
-              :color="colors[card.subject.color]"
-              return-object
+              :color="subjects[card.subject].color + '6F'"
             />
             <button
               class="h-12 p-4 pt-2.5 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
@@ -135,19 +137,12 @@ export default{
       orange: "amber",
       purple: "purple"
     },
-    borderColors: {
-      blue: "#2196F3",
-      red: "#F44335",
-      green: "#4BAF51",
-      orange: "#FFC105",
-      purple: "#E040FB"
-    },
     subjects: [
-      {title: "国語 (古文/現代文)", color:"red"},
-      {title: "数学 (算数)", color:"blue"},
-      {title: "理科 (物理/地学/生物/化学)", color:"green"},
-      {title: "社会 (公民/地理/歴史)", color:"orange"},
-      {title: "英語 (外国語)", color: "purple"}
+      {index:0, title: "国語 (古文/現代文)", color:"#F44335"},
+      {index:1, title: "数学 (算数)", color:"#2196F3"},
+      {index:2, title: "理科 (物理/地学/生物/化学)", color:"#4BAF51"},
+      {index:3, title: "社会 (公民/地理/歴史)", color:"#FFC105"},
+      {index:4, title: "英語 (外国語)", color: "#E040FB"}
     ]
   }},
   watch: {
@@ -188,6 +183,9 @@ export default{
   mounted(){
     if(this.card.pages == undefined){
       this.card.pages = []
+    }
+    if(typeof(this.card.subject) != "number"){
+      this.card.subject = 1
     }
   }
 }
