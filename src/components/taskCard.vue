@@ -45,29 +45,20 @@
               <v-icon v-if="!showSubMenu">mdi-menu-down</v-icon> <!--詳細を隠しているとき-->
             </v-btn>
           </div>
-          <v-progress-linear
-            class="mt-2"
-            :background-color="`${colors[card.subject.color]} lighten-3`"
-            :color="`${colors[card.subject.color]} lighten-1`"
-            :modelValue="getNowNumber(card.startPage, card.nowPage, card.lastPage)"
-          ></v-progress-linear>
         </div>
       </div>
       <v-expand-transition>
-        <div v-if="this.showSubMenu" class="mt-2">
-          <v-divider></v-divider>
-          <div class="mt-2 flex flex-row items-baseline gap-x-2 h-8">
-            <span>p.<input type="number" v-model="card.startPage" min="1" :max="card.nowPage" class="sm:text-[14px] text-[16px]"></span>
-            <v-slider
-              v-model="card.nowPage"
-              :min="card.startPage"
-              :max="card.lastPage"
-              :background-color="`${colors[card.subject.color]} lighten-3`"
-              :color="colors[card.subject.color]"
-              thumb-label
-              step="1"
-            ></v-slider>
-            <span>p.<input type="number" v-model="card.lastPage" :min="card.startPage + 1" max="999" class="sm:text-[14px] text-[16px]"></span>
+        <div v-if="this.showSubMenu" class="flex flex-col gap-4">
+          <div class="mt-4 flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
+            <div class="mx-auto flex flex-row gap-2 items-center">
+              <button class="text-[12px] p-1 border-2 rounded-full border-purple-300 border-solid">
+                <v-icon>mdi-check</v-icon>
+              </button>
+              <p>p.4 ~ p.23</p>
+            </div>
+            <button class="text-gray-600 bg-white rounded-md p-2">
+              <v-icon>mdi-plus</v-icon>
+            </button>
           </div>
           <div class="flex flex-row items-start gap-4">
             <v-select
