@@ -60,8 +60,8 @@
             >
               <button
                 class="text-[12px] p-1 border-2 rounded-full text-black/20 border-solid"
-                :style="`border-color: ${subjects[card.subject].color}6F;`"
-                :class="{'bg-blue-300': page.done, 'text-white': page.done}"
+                :style="`border-color: ${subjects[card.subject].color}6F; background-color: ${subjects[card.subject].color}${page.done ? '00' : '6F'};`"
+                :class="{'text-white': !page.done}"
                 @click="page.done = !page.done"
               >
                 <v-icon>mdi-check</v-icon>

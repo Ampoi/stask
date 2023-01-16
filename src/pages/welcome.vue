@@ -49,7 +49,7 @@
           <p>Staskでは課題をカードとして管理します。カードにはページ数の指定や所要時間の表示など、学習に特化したUIが多くあります。</p>
           <TaskCard
             class="w-full"
-            :card = "card"
+            :card="card"
             :onlydone="true"
             :beShowed="true"
           />
@@ -112,7 +112,7 @@ export default {
       lastPage: 12,
       nowPage: 0,
       done: true,     
-      subject: {title:"",color:""}
+      subject: 1
     }
   }},
   async mounted(){
