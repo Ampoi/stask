@@ -130,13 +130,6 @@ export default{
   emits: ["updateData", "deleteTask"],
   data(){return{
     showSubMenu: false,
-    colors: {
-      blue: "light-blue",
-      red: "red",
-      green: "green",
-      orange: "amber",
-      purple: "purple"
-    },
     subjects: [
       {index:0, title: "国語 (古文/現代文)", color:"#F44335"},
       {index:1, title: "数学 (算数)", color:"#2196F3"},
@@ -181,6 +174,7 @@ export default{
     }
   },
   mounted(){
+    console.log(this.card);
     if(this.card.pages == undefined){
       this.card.pages = []
     }

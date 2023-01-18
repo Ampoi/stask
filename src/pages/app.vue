@@ -27,7 +27,7 @@
       v-model="showNavbar"
       temporary
       class="-mt-16 pt-16 h-auto bg-slate-800 text-white"
-      permanent
+      :permanent="checkPermanent()"
     >
       <navBar
         :userImage="userImage"
@@ -99,7 +99,7 @@ const defaultCard = {
   startPage: 0,
   lastPage: 12,
   nowPage: 0,
-  done: false,     
+  done: false,  
   subject: 1
 }
 
@@ -160,6 +160,14 @@ export default{
           i++
         }
       }
+    },
+
+    checkPermanent(){
+      if(window.innerWidth < 832){
+        return false
+      }else{
+        return true
+      }
     }
   },
 
@@ -214,7 +222,7 @@ export default{
                   "nowPage": 75,
                   "showSubMenu": false,
                   "done": false,
-                  "subject": { "title": "数学 (算数)", "color": "blue" }
+                  "subject": 1
                 }
               ]
             })
