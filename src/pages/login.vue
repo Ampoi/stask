@@ -1,5 +1,5 @@
 <template>
-  <v-app class="bg-gradient-to-bl from-sky-100 to-white">
+  <v-app class="bg-gray-100">
     <v-app-bar flat class="bg-transparent backdrop-blur-md px-16">
       <a class="flex flex-row items-center justify-center" href="/">
         <img src="../assets/Icon.svg" class="h-5">

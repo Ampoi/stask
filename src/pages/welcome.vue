@@ -1,9 +1,15 @@
 <template>
-  <v-app>
-    <v-app-bar flat class="bg-transparent backdrop-blur-md">
+  <v-app class="bg-gray-100">
+    <v-app-bar
+      flat class="bg-transparent backdrop-blur-md"
+    >
       <template v-slot:append>
         <a
-          class="border-white border-solid border-2 py-1.5 px-3.5 text-white rounded-full text-md font-[Montserrat]"
+          class="border-solid border-2 py-1.5 px-3.5 rounded-full text-md font-[Montserrat]"
+          :class="{
+            'text-white border-white':headerColor,
+            'text-orange-400 border-orange-400': !headerColor
+          }"
           href="/login"
         >Get Started</a>
       </template>
@@ -18,7 +24,7 @@
         <div class="flex flex-row items-center justify-center">
           <img src="../assets/Icon.svg" class="h-5">
           <h2 class="font-bold text-xl">Stask</h2>
-          <p class="font-bold ml-2 border-l-2 pl-2 border-white/30">Version 2 has been released 🎉</p>
+          <!--<p class="font-bold ml-2 border-l-2 pl-2 border-white/30">Version 2 has been released 🎉</p>-->
         </div>
         <h1 class="lg:text-7xl md:text-6xl text-5xl font-black font-[Montserrat]">Todo app<br>optimized for study</h1>
         <p class="max-w-2xl mt-3 mx-auto">
@@ -119,13 +125,22 @@ export default {
       nowPage: 0,
       done: true,     
       subject: 1
-    }
+    },
+    headerColor: true
   }},
   async mounted(){
     const updateData = await fetch("https://api.github.com/repos/ampoi/stask/issues?labels=new-release")
       .then((res)=>res.json())
     
     this.updates = updateData.slice().reverse()
+    
+    window.onscroll = ()=>{
+      if(window.scrollY < 480){
+        this.headerColor =  true //main bg is orange
+      }else{
+        this.headerColor =  false //main bg is white
+      }
+    }
   }
 }
 </script>
