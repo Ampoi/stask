@@ -93,16 +93,6 @@ const dbRef = ref(db);
 
 var timer = setTimeout(()=>{}, 0)
 
-const defaultCard = {
-  title: "",
-  time: 60,
-  startPage: 0,
-  lastPage: 12,
-  nowPage: 0,
-  done: false,  
-  subject: 1
-}
-
 export default{
   components: {
     navBar,
@@ -145,7 +135,17 @@ export default{
     },
 
     addTask(){
+      const defaultCard = {
+        title: "",
+        time: 60,
+        startPage: 0,
+        lastPage: 12,
+        nowPage: 0,
+        done: false,  
+        subject: 1
+      }
       this.cards.push(defaultCard)
+      console.log(defaultCard);
     },
 
     deleteTask(index){
@@ -212,22 +212,15 @@ export default{
             this.cards = newData.cards
           } else {
             console.log("No data available");
-            set(ref(db, `data/${this.uid}`), {
-              cards: [
-                {
-                  "title": "Staskへようこそ",
-                  "time": 123,
-                  "startPage": 50,
-                  "lastPage": 100,
-                  "nowPage": 75,
-                  "showSubMenu": false,
-                  "done": false,
-                  "subject": 1
-                }
-              ]
-            })
-            .then(()=>{
-              console.log("aaa");
+            this.cards.push({
+              "title": "Staskへようこそ",
+              "time": 123,
+              "startPage": 50,
+              "lastPage": 100,
+              "nowPage": 75,
+              "showSubMenu": false,
+              "done": false,
+              "subject": 1
             })
           }
         }).catch((error) => {
