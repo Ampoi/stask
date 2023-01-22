@@ -174,7 +174,6 @@ export default{
     }
   },
   mounted(){
-    console.log(this.card);
     if(this.card.pages == undefined){
       this.card.pages = []
     }

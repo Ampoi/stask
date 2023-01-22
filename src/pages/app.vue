@@ -172,6 +172,7 @@ export default{
   },
 
   watch:{
+    //カードの情報が変更された際のデータベースへのアップデート
     cards: {
       deep: true,
       handler(){
