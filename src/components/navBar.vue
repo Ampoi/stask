@@ -1,5 +1,6 @@
 <template>
   <div class="py-8 px-4">
+    <!--アカウント-->
     <div class="flex flex-col items-center border-b-2 border-solid pb-4 border-black/10 relative">
       <div
         class="w-28 h-28 rounded-full mx-auto bg-cover bg-center"
@@ -21,16 +22,26 @@
         <v-icon>mdi-account-arrow-right</v-icon>
       </button>
     </div>
+    <!--メニュー-->
     <div class="mt-4 flex flex-col">
+      <!--保存されてるかの表示-->
       <div class="flex flex-row gap-2 items-baseline hover:bg-slate-500/10 p-2 rounded-lg transition">
         <div class="w-2 h-2 rounded-full" :class="{'bg-emerald-400': updated, 'bg-orange-400': !updated}"/>
         <p class="text-sm">{{ updated ? "保存されました" : "保存されていません" }}</p>
       </div>
+      <!--保存ボタン-->
       <button
         class="flex flex-row gap-1.5 items-baseline hover:bg-slate-500/10 p-2 rounded-lg transition"
         @click="$emit('save')">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-content-save</v-icon>
         <p class="text-sm">保存する</p>
+      </button>
+      <!--設定ボタン-->
+      <button
+        class="flex flex-row gap-1.5 items-baseline hover:bg-slate-500/10 p-2 rounded-lg transition"
+        @click="$emit('opensettings')">
+        <v-icon class="text-sm -ml-0.5 opacity-60">mdi-cog</v-icon>
+        <p class="text-sm">設定</p>
       </button>
     </div>
   </div>
@@ -38,7 +49,7 @@
 <script>
 export default {
   props: ["userName", "userImage", "updated", "tasks"],
-  emits: ["logout", "save"],
+  emits: ["logout", "save", "opensettings"],
   computed: {
     getTaskTime(){
       let time = 0

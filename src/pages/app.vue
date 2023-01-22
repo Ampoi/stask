@@ -35,8 +35,27 @@
         :updated="updated"
         :tasks="cards"
         @logout="logout"
-        @save="saveWithBanner"/>
+        @save="saveWithBanner"
+        @opensettings="openSettings"/>
     </v-navigation-drawer>
+
+    <v-dialog v-model="showSettings">
+      <div class="px-4 py-6 bg-white rounded-md">
+        <h1 class="text-3xl font-bold mb-2">設定</h1>
+        <h2 class="text-xl">教科の設定</h2>
+        <p>課題をまとめる教科の色や名前の設定を変更します。</p>
+        <div class="p-4 my-2 bg-orange-100 border-orange-200 border-2 border-solid rounded-md flex flex-row items-center gap-4">
+          <v-icon>mdi-alert-outline</v-icon>
+          <p class="text-sm">設定項目の数を減らしたり順番を変えたりすると課題の表示に影響が出る場合があります。</p>
+        </div>
+        <div class="bg-gray-100 p-4 flex flex-col items-center">
+          <div class="flex flex-row items-center gap-2">
+            <button class="rounded-full h-6 w-6 bg-orange-200"/>
+            <p>国語</p>
+          </div>
+        </div>
+      </div>
+    </v-dialog>
 
     <v-main
       class="bg-gray-100 overflow-auto pb-20"
@@ -102,6 +121,7 @@ export default{
   data(){return{
     showNavbar: false,
     showBanner: false,
+    showSettings: false,
 
     updated: true,
     changed: true,
@@ -168,6 +188,11 @@ export default{
       }else{
         return true
       }
+    },
+
+    openSettings(){
+      this.showSettings = true
+      this.showNavbar = false
     }
   },
 
