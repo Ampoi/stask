@@ -19,7 +19,7 @@
               <v-card-title>
                 <input type="text" class="w-full" placeholder="タイトルを入力..." v-model="card.title">
               </v-card-title>
-              <v-card-subtitle class="sm:text-[14px] text-[16px] flex flex-row items-center gap-4">
+              <v-card-subtitle class="sm:text-[14px] text-[16px] flex sm:flex-row flex-col sm:items-center sm:gap-4">
                 <div class="flex flex-row">
                   <span>所要時間</span>
                   <input
