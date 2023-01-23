@@ -18,11 +18,13 @@
       />
     </v-app-bar>
 
+    <!--保存通知-->
     <sBanner
       v-if="showBanner"
       @saved="showBanner = false"
     />
 
+    <!--ナビゲーションバー-->
     <v-navigation-drawer
       v-model="showNavbar"
       temporary
@@ -39,6 +41,7 @@
         @opensettings="openSettings"/>
     </v-navigation-drawer>
 
+    <!--設定-->
     <v-dialog v-model="showSettings">
       <div class="px-4 py-6 bg-white rounded-md">
         <h1 class="text-3xl font-bold mb-2">設定</h1>
@@ -48,13 +51,36 @@
           <v-icon>mdi-alert-outline</v-icon>
           <p class="text-sm">設定項目の数を減らしたり順番を変えたりすると課題の表示に影響が出る場合があります。</p>
         </div>
-        <div class="bg-gray-100 p-4 flex flex-col items-center">
-          <div class="flex flex-row items-center gap-2">
-            <button class="rounded-full h-6 w-6 bg-orange-200"/>
-            <p>国語</p>
+        <div class="bg-gray-100 p-4 flex flex-col gap-4 items-center">
+          <div
+            class="flex flex-row items-center gap-2"
+            v-for="(subject, subIndex) in subjects"
+            :key="subIndex"
+          >
+            <button
+              class="rounded-full h-6 w-6"
+              :style="`background-color: ${subject.color}6F;`"
+              @click="getSubjectColor(subIndex)"
+            />
+            <p>{{subject.title}}</p>
           </div>
+          <button
+            class="text-gray-600 bg-white rounded-md p-2 w-full"
+          >
+            <v-icon>mdi-plus</v-icon>
+          </button>
         </div>
       </div>
+    </v-dialog>
+
+    <!--設定のカラーピッカー-->
+    <v-dialog v-model="showColorPicker">
+      {{selectedSubjectIndex}}
+      <v-color-picker
+        v-model="subjects[selectedSubjectIndex].color"
+        hide-inputs
+        show-swatches
+      ></v-color-picker>
     </v-dialog>
 
     <v-main
@@ -67,6 +93,7 @@
           :key="cardIndex"
           :card = "card"
           :onlydone="false"
+          :subjects="subjects"
           @updateData="(newData)=>{card = newData}"
           @deleteTask="deleteTask(cardIndex)"
         />
@@ -81,6 +108,7 @@
           :key="cardIndex"
           :card = "card"
           :onlydone="true"
+          :subjects="subjects"
           @updateData="(newData)=>{card = newData}"
           @deleteTask="deleteTask(cardIndex)"
           class="opacity-50"
@@ -123,6 +151,9 @@ export default{
     showBanner: false,
     showSettings: false,
 
+    showColorPicker: false,
+    selectedSubjectIndex: 0,
+
     updated: true,
     changed: true,
     firstUpdate: true,
@@ -134,7 +165,15 @@ export default{
     userName: "",
     userImage: "",
 
-    cards: []
+    cards: [],
+
+    subjects: [
+      {index:0, title: "国語 (古文/現代文)", color:"#F44335"},
+      {index:1, title: "数学 (算数)", color:"#2196F3"},
+      {index:2, title: "理科 (物理/地学/生物/化学)", color:"#4BAF51"},
+      {index:3, title: "社会 (公民/地理/歴史)", color:"#FFC105"},
+      {index:4, title: "英語 (外国語)", color: "#E040FB"}
+    ]
   }},
 
   methods:{
@@ -193,6 +232,11 @@ export default{
     openSettings(){
       this.showSettings = true
       this.showNavbar = false
+    },
+
+    getSubjectColor(index){
+      this.showColorPicker = true
+      this.selectedSubjectIndex = index
     }
   },
 
