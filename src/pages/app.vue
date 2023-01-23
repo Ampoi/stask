@@ -43,7 +43,15 @@
 
     <!--設定-->
     <v-dialog v-model="showSettings">
-      <div class="px-4 py-6 bg-white rounded-md">
+      <div class="px-4 py-6 bg-white rounded-md relative">
+        <!--保存ボタン-->
+        <button
+          class="p-4 rounded-all bg-orange-200 border-2 border-orange-300 border-solid rounded-full absolute right-4 top-6"
+          @click="saveSettings"
+        >
+          <v-icon>mdi-content-save</v-icon>
+        </button>
+
         <h1 class="text-3xl font-bold mb-2">設定</h1>
         <h2 class="text-xl">教科の設定</h2>
         <p>課題をまとめる教科の色や名前の設定を変更します。</p>
@@ -54,7 +62,7 @@
         <div class="bg-gray-100 p-4 flex flex-col gap-4 items-center">
           <div
             class="flex flex-row items-center gap-2"
-            v-for="(subject, subIndex) in subjects"
+            v-for="(subject, subIndex) in settings.subjects"
             :key="subIndex"
           >
             <button
@@ -75,9 +83,8 @@
 
     <!--設定のカラーピッカー-->
     <v-dialog v-model="showColorPicker">
-      {{selectedSubjectIndex}}
       <v-color-picker
-        v-model="subjects[selectedSubjectIndex].color"
+        v-model="settings.subjects[selectedSubjectIndex].color"
         hide-inputs
         show-swatches
       ></v-color-picker>
@@ -93,7 +100,7 @@
           :key="cardIndex"
           :card = "card"
           :onlydone="false"
-          :subjects="subjects"
+          :subjects="settings.subjects"
           @updateData="(newData)=>{card = newData}"
           @deleteTask="deleteTask(cardIndex)"
         />
@@ -108,7 +115,7 @@
           :key="cardIndex"
           :card = "card"
           :onlydone="true"
-          :subjects="subjects"
+          :subjects="settings.subjects"
           @updateData="(newData)=>{card = newData}"
           @deleteTask="deleteTask(cardIndex)"
           class="opacity-50"
@@ -167,13 +174,15 @@ export default{
 
     cards: [],
 
-    subjects: [
-      {index:0, title: "国語 (古文/現代文)", color:"#F44335"},
-      {index:1, title: "数学 (算数)", color:"#2196F3"},
-      {index:2, title: "理科 (物理/地学/生物/化学)", color:"#4BAF51"},
-      {index:3, title: "社会 (公民/地理/歴史)", color:"#FFC105"},
-      {index:4, title: "英語 (外国語)", color: "#E040FB"}
-    ]
+    settings: {
+      subjects: [
+        {index:0, title: "国語 (古文/現代文)", color:"#F44335"},
+        {index:1, title: "数学 (算数)", color:"#2196F3"},
+        {index:2, title: "理科 (物理/地学/生物/化学)", color:"#4BAF51"},
+        {index:3, title: "社会 (公民/地理/歴史)", color:"#FFC105"},
+        {index:4, title: "英語 (外国語)", color: "#E040FB"}
+      ]
+    }
   }},
 
   methods:{
@@ -237,6 +246,10 @@ export default{
     getSubjectColor(index){
       this.showColorPicker = true
       this.selectedSubjectIndex = index
+    },
+
+    saveSettings(){
+      set(ref(db, `data/${this.uid}/settings`), this.settings)
     }
   },
 
@@ -280,6 +293,12 @@ export default{
           if (snapshot.exists()) {
             const newData = snapshot.val()
             this.cards = newData.cards
+            if(newData.settings == undefined){
+              set(ref(db, `data/${this.uid}/settings`), this.settings)
+            }else{
+              this.settings = newData.settings
+            }
+            console.log(this.settings);
           } else {
             console.log("No data available");
             this.cards.push({
