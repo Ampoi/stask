@@ -247,7 +247,6 @@ export default{
     },
 
     addSubject(){
-      console.log("add subject!");
       this.settings.subjects.push({index:0, title: "新規教科", color:"#E7E8E7"})
     },
 

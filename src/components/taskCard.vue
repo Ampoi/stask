@@ -1,7 +1,7 @@
 <template>
   <v-card
     flat class="border-2 border-l-8 rounded-xl bg-white"
-    :style="`border-color:${subjects[card.subject].color}6F;`"
+    :style="`border-color:${getSubjectColor(card.subject)}6F;`"
     v-if="checkCardDone"
   >
     <v-card-item>
@@ -9,7 +9,7 @@
         <!--達成ボタン-->
         <checkButton
           :done="card.done"
-          :borderColor="subjects[card.subject].color"
+          :borderColor="getSubjectColor(card.subject)"
           @btnClicked="card.done = !card.done"
         />
         <!--右側-->
@@ -60,7 +60,7 @@
             >
               <button
                 class="text-[12px] p-1 border-2 rounded-full text-black/20 border-solid"
-                :style="`border-color: ${subjects[card.subject].color}6F; background-color: ${subjects[card.subject].color}${page.done ? '00' : '6F'};`"
+                :style="`border-color: ${getSubjectColor(card.subject)}6F; background-color: ${getSubjectColor(card.subject)}${page.done ? '00' : '6F'};`"
                 :class="{'text-white': !page.done}"
                 @click="page.done = !page.done"
               >
@@ -109,7 +109,7 @@
               item-title="title"
               item-value="index"
               density="comfortable"
-              :color="subjects[card.subject].color + '6F'"
+              :color="getSubjectColor(card.subject) + '6F'"
             />
             <button
               class="h-12 p-4 pt-2.5 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
@@ -155,6 +155,13 @@ export default{
     },
     deletePage(index){
       this.card.pages.splice(index, 1)
+    },
+    getSubjectColor(subject){
+      if(this.subjects[subject] != undefined){
+        return this.subjects[subject].color
+      }else{
+        return "#E7E8E7"
+      }
     }
   },
   computed: {
