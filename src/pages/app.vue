@@ -70,10 +70,15 @@
               :style="`background-color: ${subject.color}6F;`"
               @click="getSubjectColor(subIndex)"
             />
-            <p>{{subject.title}}</p>
+            <input type="text" v-model="subject.title">
+            <button
+              class="rounded-full h-6 w-6 duration-300 hover:bg-white/70 text-[14px] text-red-400/60 grid place-content-center"
+              @click="deleteSubject(subIndex)"
+            ><v-icon>mdi-trash-can</v-icon></button>
           </div>
           <button
             class="text-gray-600 bg-white rounded-md p-2 w-full"
+            @click="addSubject"
           >
             <v-icon>mdi-plus</v-icon>
           </button>
@@ -213,7 +218,10 @@ export default{
         subject: 1
       }
       this.cards.push(defaultCard)
-      console.log(defaultCard);
+    },
+
+    deleteSubject(index){
+      this.settings.subjects.splice(index, 1)
     },
 
     deleteTask(index){
@@ -236,6 +244,11 @@ export default{
       }else{
         return true
       }
+    },
+
+    addSubject(){
+      console.log("add subject!");
+      this.settings.subjects.push({index:0, title: "新規教科", color:"#E7E8E7"})
     },
 
     openSettings(){
@@ -285,20 +298,35 @@ export default{
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        //ユーザー情報の全体への反映
         this.uid = user.uid;
         this.userName = user.displayName
         this.userImage = user.photoURL
         this.logined = true
+        //ユーザー情報から設定やタスクの取得
         get(child(dbRef, `data/${this.uid}`)).then((snapshot) => {
           if (snapshot.exists()) {
             const newData = snapshot.val()
-            this.cards = newData.cards
+            if(newData.cards != undefined){
+              this.cards = newData.cards
+            }else{
+              console.log("No data available");
+              this.cards.push({
+                "title": "Staskへようこそ",
+                "time": 123,
+                "startPage": 50,
+                "lastPage": 100,
+                "nowPage": 75,
+                "showSubMenu": false,
+                "done": false,
+                "subject": 1
+              })
+            }
             if(newData.settings == undefined){
               set(ref(db, `data/${this.uid}/settings`), this.settings)
             }else{
               this.settings = newData.settings
             }
-            console.log(this.settings);
           } else {
             console.log("No data available");
             this.cards.push({
