@@ -9,6 +9,15 @@
         <v-icon>mdi-content-save</v-icon>
       </button>
 
+      <!--保存してない時の通知-->
+      <div
+        class="bg-red-400 text-white font-bold p-4 rounded-md absolute -top-16 -left-0 w-full flex flex-row items-center gap-4"
+        v-if="settingChanged"
+      >
+        <v-icon>mdi-alert</v-icon>
+        <p>保存していない変更があります！</p>
+      </div>
+
       <h1 class="text-3xl font-bold mb-2">設定</h1>
       <h2 class="text-xl">教科の設定</h2>
       <p>課題をまとめる教科の色や名前の設定を変更します。</p>
@@ -48,6 +57,22 @@
 <script>
 export default {
   props: ["showSettings", "settings"],
-  emits: ["saveSettings", "getSubjectColor", "deleteSubject", "addSubject"]
+  emits: ["saveSettings", "getSubjectColor", "deleteSubject", "addSubject"],
+  data(){return{
+    settingChanged: false,
+    firstChange: true
+  }},
+  watch: {
+    settings: {
+      deep: true,
+      handler(){
+        if(this.firstChange){
+          this.firstChange = false
+        }else{
+          this.settingChanged = true
+        }
+      }
+    }
+  }
 }
 </script>
