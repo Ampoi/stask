@@ -16,22 +16,24 @@
         <v-icon>mdi-alert-outline</v-icon>
         <p class="text-sm">設定項目の数を減らしたり順番を変えたりすると課題の表示に影響が出る場合があります。</p>
       </div>
-      <div class="bg-gray-100 p-4 flex flex-col gap-4 items-center">
-        <div
-          class="flex flex-row items-center gap-2"
-          v-for="(subject, subIndex) in settings.subjects"
-          :key="subIndex"
-        >
-          <button
-            class="rounded-full h-6 w-6"
-            :style="`background-color: ${subject.color}6F;`"
-            @click="$emit('getSubjectColor', subIndex)"
-          />
-          <input type="text" v-model="subject.title">
-          <button
-            class="rounded-full h-6 w-6 duration-300 hover:bg-white/70 text-[14px] text-red-400/60 grid place-content-center"
-            @click="$emit('deleteSubject', subIndex)"
-          ><v-icon>mdi-trash-can</v-icon></button>
+      <div class="bg-gray-100 p-4 rounded-md">
+        <div class="pb-4 flex flex-col gap-4 items-center max-h-40 overflow-y-auto">
+          <div
+            class="flex flex-row items-center gap-2"
+            v-for="(subject, subIndex) in settings.subjects"
+            :key="subIndex"
+          >
+            <button
+              class="rounded-full h-6 w-6"
+              :style="`background-color: ${subject.color}6F;`"
+              @click="$emit('getSubjectColor', subIndex)"
+            />
+            <input type="text" v-model="subject.title">
+            <button
+              class="rounded-full h-6 w-6 duration-300 hover:bg-white/70 text-[14px] text-red-400/60 grid place-content-center"
+              @click="$emit('deleteSubject', subIndex)"
+            ><v-icon>mdi-trash-can</v-icon></button>
+          </div>
         </div>
         <button
           class="text-gray-600 bg-white rounded-md p-2 w-full"
