@@ -229,6 +229,8 @@ export default{
 
     saveSettings(){
       set(ref(db, `data/${this.uid}/settings`), this.settings)
+      this.showSettings = false
+      this.showBanner = true
     }
   },
 
