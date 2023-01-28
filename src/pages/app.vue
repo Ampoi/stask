@@ -42,14 +42,16 @@
     </v-navigation-drawer>
 
     <!--設定-->
-    <settingDialog
-      :showSettings="showSettings"
-      :settings="settings"
-      @saveSettings="saveSettings"
-      @getSubjectColor="getSubjectColor"
-      @deleteSubject="deleteSubject"
-      @addSubject="addSubject"
-    />
+    <v-dialog v-model="showSettings">
+      <settingDialog
+        :settings="settings"
+        @saveSettings="saveSettings"
+        @getSubjectColor="getSubjectColor"
+        @deleteSubject="deleteSubject"
+        @addSubject="addSubject"
+        @closeSettings="settings = false"
+      />
+    </v-dialog>
 
     <!--設定のカラーピッカー-->
     <v-dialog v-model="showColorPicker">
