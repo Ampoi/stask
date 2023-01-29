@@ -59,9 +59,9 @@
               :key="pageIndex"
             >
               <button
-                class="text-[12px] p-1 border-2 rounded-full text-black/20 border-solid"
-                :style="`border-color: ${getSubjectColor(card.subject)}6F; background-color: ${getSubjectColor(card.subject)}${page.done ? '00' : '6F'};`"
-                :class="{'text-white': !page.done}"
+                class="text-[12px] p-1 border-2 rounded-full border-solid"
+                :style="`border-color: ${getSubjectColor(card.subject)}6F; background-color: ${getSubjectColor(card.subject)}${page.done ? '6F' : '00'};`"
+                :class="{'text-white': page.done, 'text-black/20': !page.done}"
                 @click="page.done = !page.done"
               >
                 <v-icon>mdi-check</v-icon>
