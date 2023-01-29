@@ -189,10 +189,6 @@ export default{
       this.cards.push(defaultCard)
     },
 
-    deleteSubject(index){
-      this.settings.subjects.splice(index, 1)
-    },
-
     deleteTask(index){
       this.cards.splice(index, 1)
     },
@@ -217,6 +213,22 @@ export default{
 
     addSubject(){
       this.settings.subjects.push({index:0, title: "新規教科", color:"#E7E8E7"})
+      this.setSubjectIndex()
+    },
+
+    deleteSubject(index){
+      this.settings.subjects.splice(index, 1)
+      this.setSubjectIndex()
+    },
+
+    setSubjectIndex(){
+      console.log(this.settings.subjects);
+      let i = 0
+      this.settings.subjects.forEach(()=>{
+        this.settings.subjects[i].index = i
+        i++
+      })
+      console.log(this.settings.subjects);
     },
 
     openSettings(){

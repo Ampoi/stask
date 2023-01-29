@@ -56,10 +56,12 @@
 export default {
   props: ["settings"],
   emits: ["saveSettings", "getSubjectColor", "deleteSubject", "addSubject", "closeSettings"],
+  
   data(){return{
     settingChanged: false,
     firstChange: true
   }},
+  
   watch: {
     settings: {
       deep: true,
@@ -71,6 +73,10 @@ export default {
         }
       }
     }
+  },
+
+  methods: {
+    
   }
 }
 </script>
