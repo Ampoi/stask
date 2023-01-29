@@ -58,25 +58,16 @@ export default {
   emits: ["saveSettings", "getSubjectColor", "deleteSubject", "addSubject", "closeSettings"],
   
   data(){return{
-    settingChanged: false,
-    firstChange: true
+    settingChanged: false
   }},
   
   watch: {
     settings: {
       deep: true,
       handler(){
-        if(this.firstChange){
-          this.firstChange = false
-        }else{
-          this.settingChanged = true
-        }
+        this.settingChanged = true
       }
     }
-  },
-
-  methods: {
-    
   }
 }
 </script>
