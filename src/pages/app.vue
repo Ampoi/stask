@@ -66,6 +66,27 @@
       class="bg-gray-100 overflow-auto pb-20"
     >
       <div class="flex flex-col mx-auto px-4 gap-4 max-w-xl">
+        <p class="text-black font-bold">期限一覧</p>
+        <div class="h-40 flex flex-row gap-4">
+          <button class="p-4 rounded-lg duration-300 hover:bg-white/70">
+            <v-icon class="text-2xl">mdi-plus</v-icon>
+          </button>
+          <div class="flex flex-row overflow-x-auto gap-4">
+            <div class="basis-32 p-4 bg-white rounded-xl border-[#FB923B]/50 border-2 border-solid flex flex-col items-center">
+              <v-progress-circular
+                model-value="100"
+                color="#FDBA74"
+                :size="100"
+                :width="12"
+              >
+                <h2 class="text-4xl font-bold text-orange-400">
+                  32<span class="text-base">日</span>
+                </h2>
+              </v-progress-circular>
+              <p class="text-orange-400 font-bold">期末まで</p>
+            </div>
+          </div>
+        </div>
         <p class="text-black font-bold">未達成のタスク</p>
         <TaskCard
           v-for="(card, cardIndex) in cards"
