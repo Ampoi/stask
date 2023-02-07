@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import app from "../pages/app.vue"
 import home from "../pages/welcome.vue"
 import login from "../pages/login.vue"
+import updating from "../pages/nowUpdating.vue"
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: login
+  },
+  {
+    path: "/updating",
+    name: "Updating",
+    component: updating
   }
 ];
 
