@@ -8,9 +8,8 @@
       <div class="flex flex-row items-center">
         <!--達成ボタン-->
         <checkButton
-          :done="card.done"
+          v-model:done="card.done"
           :borderColor="getSubjectColor(card.subject)"
-          @btnClicked="card.done = !card.done"
         />
         <!--右側-->
         <div class="ml-2 grow">

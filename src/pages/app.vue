@@ -180,7 +180,6 @@ export default{
 
   methods:{
     logout(){
-      console.log("try logout");
       signOut(auth).then(() => {
         console.log("logout success!");
       }).catch((error) => {
@@ -241,13 +240,11 @@ export default{
     },
 
     setSubjectIndex(){
-      console.log(this.settings.subjects);
       let i = 0
       this.settings.subjects.forEach(()=>{
         this.settings.subjects[i].index = i
         i++
       })
-      console.log(this.settings.subjects);
     },
 
     openSettings(){
@@ -311,7 +308,6 @@ export default{
             if(newData.cards != undefined){
               this.cards = newData.cards
             }else{
-              console.log("No data available");
               this.cards.push({
                 "title": "Staskへようこそ",
                 "time": 123,
@@ -329,7 +325,6 @@ export default{
               this.settings = newData.settings
             }
           } else {
-            console.log("No data available");
             this.cards.push({
               "title": "Staskへようこそ",
               "time": 123,
