@@ -127,7 +127,7 @@ import checkButton from "./taskCard/checkButton.vue"
 export default{
   components: {checkButton},
   props: ["card", "onlydone", "beShowed", "subjects"],
-  emits: ["updateData", "deleteTask"],
+  emits: ["update:card", "deleteTask"],
   data(){return{
     showSubMenu: false
   }},
@@ -136,7 +136,7 @@ export default{
       immediate: true,
       deep: true,
       handler: function () {
-        this.$emit("updateData", this.card)
+        this.$emit("update:card", this.card)
       }
     }
   },

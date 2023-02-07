@@ -91,10 +91,9 @@
         <TaskCard
           v-for="(card, cardIndex) in cards"
           :key="cardIndex"
-          :card = "card"
+          v-model:card="cards[cardIndex]"
           :onlydone="false"
           :subjects="settings.subjects"
-          @updateData="(newData)=>{card = newData}"
           @deleteTask="deleteTask(cardIndex)"
         />
         <div class="flex flex-row justify-between text-black font-bold">
@@ -106,10 +105,9 @@
         <TaskCard
           v-for="(card, cardIndex) in cards"
           :key="cardIndex"
-          :card = "card"
+          v-model:card="cards[cardIndex]"
           :onlydone="true"
           :subjects="settings.subjects"
-          @updateData="(newData)=>{card = newData}"
           @deleteTask="deleteTask(cardIndex)"
           class="opacity-50"
         />
