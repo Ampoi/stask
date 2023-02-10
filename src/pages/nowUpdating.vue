@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-100 w-screen h-screen grid place-content-center">
-    <div class="text-center">
+    <div class="text-center mx-4">
       <h1 class="text-6xl font-bold pb-4">Updating...</h1>
       <p>Staskをより良いアプリにするためにご協力お願いします。</p>
       <p>アップデート予定時間: 10分</p>
