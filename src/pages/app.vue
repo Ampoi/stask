@@ -71,7 +71,11 @@
           <button class="p-4 rounded-lg duration-300 hover:bg-white/70">
             <v-icon class="text-2xl">mdi-plus</v-icon>
           </button>
-          <termTimer/>
+          <termTimer
+            v-for="(timer, index) in timers"
+            :key="index"
+            v-model="timers[index]"
+          />
         </div>
         <p class="text-black font-bold">未達成のタスク</p>
         <TaskCard
@@ -148,7 +152,9 @@ export default{
     userImage: "",
 
     cards: [],
-    timers: [],
+    timers: [
+      "2023-3-1"
+    ],
 
     settings: {
       subjects: [
