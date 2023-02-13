@@ -23,6 +23,7 @@
         <input
           type="date"
           class="p-2 rounded-md"
+          :value="modelValue"
           @input="updateDate($event.target.value)"
         >
       </div>
