@@ -208,17 +208,17 @@ function addTask(){
     done: false,  
     subject: 1
   }
-  this.cards.push(defaultCard)
+  cards.value.push(defaultCard)
 }
 
 function deleteTask(index){
-  this.cards.splice(index, 1)
+  cards.value.splice(index, 1)
 }
 
 function deleteDoneTask(){
   for (let i = 0; i < this.cards.length;){
-    if(this.cards[i].done == true){
-      this.cards.splice(i, 1)
+    if(cards.value[i].done == true){
+      cards.value.splice(i, 1)
     }else{
       i++
     }
@@ -234,31 +234,31 @@ function checkPermanent(){
 }
 
 function addSubject(){
-  this.settings.subjects.push({index:0, title: "新規教科", color:"#E7E8E7"})
-  this.setSubjectIndex()
+  settings.value.subjects.push({index:0, title: "新規教科", color:"#E7E8E7"})
+  setSubjectIndex()
 }
 
 function deleteSubject(index){
-  this.settings.subjects.splice(index, 1)
-  this.setSubjectIndex()
+  settings.value.subjects.splice(index, 1)
+  setSubjectIndex()
 }
 
 function setSubjectIndex(){
   let i = 0
-  this.settings.subjects.forEach(()=>{
-    this.settings.subjects[i].index = i
+  settings.value.subjects.forEach(()=>{
+    settings.value.subjects[i].index = i
     i++
   })
 }
 
 function openSettings(){
-  this.showSettings = true
-  this.showNavbar = false
+  showSettings.value = true
+  showNavbar.value = false
 }
 
 function getSubjectColor(index){
-  this.showColorPicker = true
-  this.selectedSubjectIndex = index
+  showColorPicker.value = true
+  selectedSubjectIndex.value = index
 }
 
 function saveSettings(){
