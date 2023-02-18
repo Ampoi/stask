@@ -105,7 +105,9 @@
     </v-main>
   </v-app>
 </template>
-<script>
+<script setup>
+import { ref as vueData, watch, onMounted } from "vue"
+
 import navBar from "../components/navBar.vue"
 import TaskCard from "../components/taskCard.vue"
 import sBanner from "../components/savedBanner.vue"
@@ -148,200 +150,171 @@ const checkServerUpdating = new Promise(()=>{
 
 var timer = setTimeout(()=>{}, 0)
 
-export default{
-  components: {navBar, TaskCard, sBanner, settingDialog, termTimer},
-  data(){return{
-    showNavbar: false,
-    showBanner: false,
-    showSettings: false,
+const showNavbar = vueData(false)
+const showBanner = vueData(false)
+const showSettings = vueData(false)
 
-    showColorPicker: false,
-    selectedSubjectIndex: 0,
+const showColorPicker = vueData(false)
+const selectedSubjectIndex = vueData(0)
 
-    updated: true,
-    changed: true,
-    firstUpdate: true,
-    SecoundsForChange: 5,
-    
-    logined: false,
-    
-    uid: "",
-    userName: "",
-    userImage: "",
+const updated = vueData(true)
+const changed = vueData(true)
+const firstUpdate = vueData(true)
+const SecoundsForChange = vueData(5)
 
-    cards: [],
-    timers: [
-      "2023-03-01"
-    ],
+const logined = vueData(false)
 
-    settings: {
-      subjects: [
-        {index:0, title: "国語 (古文/現代文)", color:"#F44335"},
-        {index:1, title: "数学 (算数)", color:"#2196F3"},
-        {index:2, title: "理科 (物理/地学/生物/化学)", color:"#4BAF51"},
-        {index:3, title: "社会 (公民/地理/歴史)", color:"#FFC105"},
-        {index:4, title: "英語 (外国語)", color: "#E040FB"}
-      ]
+const uid = vueData("")
+const userName = vueData("")
+const userImage = vueData("")
+
+const cards = vueData([])
+const timers = vueData([
+  "2023-03-01"
+])
+
+const settings = vueData({
+  subjects: [
+    {index:0, title: "国語 (古文/現代文)", color:"#F44335"},
+    {index:1, title: "数学 (算数)", color:"#2196F3"},
+    {index:2, title: "理科 (物理/地学/生物/化学)", color:"#4BAF51"},
+    {index:3, title: "社会 (公民/地理/歴史)", color:"#FFC105"},
+    {index:4, title: "英語 (外国語)", color: "#E040FB"}
+  ]
+})
+
+function logout(){
+  signOut(auth).then(() => {
+    console.log("logout success!");
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
+function saveWithBanner(){
+  set(ref(db, `data/${uid.value}/cards`), cards.value).then(()=>{
+    updated.value = true
+  })
+  showBanner.value = true
+}
+
+function addTask(){
+  const defaultCard = {
+    title: "",
+    time: 60,
+    startPage: 0,
+    lastPage: 12,
+    nowPage: 0,
+    done: false,  
+    subject: 1
+  }
+  this.cards.push(defaultCard)
+}
+
+function deleteTask(index){
+  this.cards.splice(index, 1)
+}
+
+function deleteDoneTask(){
+  for (let i = 0; i < this.cards.length;){
+    if(this.cards[i].done == true){
+      this.cards.splice(i, 1)
+    }else{
+      i++
     }
-  }},
+  }
+}
 
-  methods:{
-    logout(){
-      signOut(auth).then(() => {
-        console.log("logout success!");
-      }).catch((error) => {
-        console.log(error);
-      });
-    },
+function checkPermanent(){
+  if(window.innerWidth < 832){
+    return false
+  }else{
+    return true
+  }
+}
 
-    saveWithBanner(){
-      set(ref(db, `data/${this.uid}/cards`), this.cards).then(()=>{
-        this.updated = true
+function addSubject(){
+  this.settings.subjects.push({index:0, title: "新規教科", color:"#E7E8E7"})
+  this.setSubjectIndex()
+}
+
+function deleteSubject(index){
+  this.settings.subjects.splice(index, 1)
+  this.setSubjectIndex()
+}
+
+function setSubjectIndex(){
+  let i = 0
+  this.settings.subjects.forEach(()=>{
+    this.settings.subjects[i].index = i
+    i++
+  })
+}
+
+function openSettings(){
+  this.showSettings = true
+  this.showNavbar = false
+}
+
+function getSubjectColor(index){
+  this.showColorPicker = true
+  this.selectedSubjectIndex = index
+}
+
+function saveSettings(){
+  set(ref(db, `data/${uid.value}/settings`), settings.value)
+  showSettings.value = false
+  showBanner.value = true
+}
+
+watch(cards, ()=>{
+  if(firstUpdate.value == true){
+    firstUpdate.value = false
+  }else{
+    clearTimeout(timer)
+    updated.value = false
+    showBanner.value = false
+    timer = setTimeout(function(){
+      set(ref(db, `data/${uid.value}/cards`), cards.value).then(()=>{
+        updated.value = true
       })
-      this.showBanner = true
-    },
+    }.bind(this), 8000)
+  }
+}, {deep: true})
 
-    addTask(){
-      const defaultCard = {
-        title: "",
-        time: 60,
-        startPage: 0,
-        lastPage: 12,
-        nowPage: 0,
-        done: false,  
-        subject: 1
-      }
-      this.cards.push(defaultCard)
-    },
-
-    deleteTask(index){
-      this.cards.splice(index, 1)
-    },
-
-    deleteDoneTask(){
-      for (let i = 0; i < this.cards.length;){
-        if(this.cards[i].done == true){
-          this.cards.splice(i, 1)
-        }else{
-          i++
-        }
-      }
-    },
-
-    checkPermanent(){
-      if(window.innerWidth < 832){
-        return false
-      }else{
-        return true
-      }
-    },
-
-    addSubject(){
-      this.settings.subjects.push({index:0, title: "新規教科", color:"#E7E8E7"})
-      this.setSubjectIndex()
-    },
-
-    deleteSubject(index){
-      this.settings.subjects.splice(index, 1)
-      this.setSubjectIndex()
-    },
-
-    setSubjectIndex(){
-      let i = 0
-      this.settings.subjects.forEach(()=>{
-        this.settings.subjects[i].index = i
-        i++
-      })
-    },
-
-    openSettings(){
-      this.showSettings = true
-      this.showNavbar = false
-    },
-
-    getSubjectColor(index){
-      this.showColorPicker = true
-      this.selectedSubjectIndex = index
-    },
-
-    saveSettings(){
-      set(ref(db, `data/${this.uid}/settings`), this.settings)
-      this.showSettings = false
-      this.showBanner = true
+onMounted(()=>{
+  window.addEventListener('beforeunload', (event) => {
+    if(updated.value == false){
+      saveWithBanner()
+      event.preventDefault()
+      event.returnValue = ""
     }
-  },
+  });
 
-  watch:{
-    //カードの情報が変更された際のデータベースへのアップデート
-    cards: {
-      deep: true,
-      handler(){
-        if(this.firstUpdate == true){
-          this.firstUpdate = false
-        }else{
-          clearTimeout(timer)
-          this.updated = false
-          this.showBanner = false
-          timer = setTimeout(function(){
-            set(ref(db, `data/${this.uid}/cards`), this.cards).then(()=>{
-              this.updated = true
-            })
-          }.bind(this), 8000)
-        }
-      }
-    }
-  },
+  client
+    .get({
+      endpoint: "stask_settings"
+    })
+    .then((res)=>{if(res.nowUpdating){
+      console.log("updating!");
+      this.$router.push("/updating")
+    }})
 
-  mounted(){
-    window.addEventListener('beforeunload', (event) => {
-      if(this.updated == false){
-        this.saveWithBanner()
-        event.preventDefault()
-        event.returnValue = ""
-      }
-    });
-
-    client
-      .get({
-        endpoint: "stask_settings"
-      })
-      .then((res)=>{if(res.nowUpdating){
-        console.log("updating!");
-        this.$router.push("/updating")
-      }})
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        //ユーザー情報の全体への反映
-        this.uid = user.uid;
-        this.userName = user.displayName
-        this.userImage = user.photoURL
-        this.logined = true
-        //ユーザー情報から設定やタスクの取得
-        get(child(dbRef, `data/${this.uid}`)).then((snapshot) => {
-          if (snapshot.exists()) {
-            const newData = snapshot.val()
-            if(newData.cards != undefined){
-              this.cards = newData.cards
-            }else{
-              this.cards.push({
-                "title": "Staskへようこそ",
-                "time": 123,
-                "startPage": 50,
-                "lastPage": 100,
-                "nowPage": 75,
-                "showSubMenu": false,
-                "done": false,
-                "subject": 1
-              })
-            }
-            if(newData.settings == undefined){
-              set(ref(db, `data/${this.uid}/settings`), this.settings)
-            }else{
-              this.settings = newData.settings
-            }
-          } else {
-            this.cards.push({
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      //ユーザー情報の全体への反映
+      uid.value = user.uid;
+      userName.value = user.displayName
+      userImage.value = user.photoURL
+      logined.value = true
+      //ユーザー情報から設定やタスクの取得
+      get(child(dbRef, `data/${uid.value}`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          const newData = snapshot.val()
+          if(newData.cards != undefined){
+            cards.value = newData.cards
+          }else{
+            cards.value.push({
               "title": "Staskへようこそ",
               "time": 123,
               "startPage": 50,
@@ -352,13 +325,29 @@ export default{
               "subject": 1
             })
           }
-        }).catch((error) => {
-          console.error(error);
-        });
-      } else {
-        this.$router.push("/welcome")
-      }
-    });
-  }
-}
+          if(newData.settings == undefined){
+            set(ref(db, `data/${uid.value}/settings`), settings.value)
+          }else{
+            settings.value = newData.settings
+          }
+        } else {
+          cards.value.push({
+            "title": "Staskへようこそ",
+            "time": 123,
+            "startPage": 50,
+            "lastPage": 100,
+            "nowPage": 75,
+            "showSubMenu": false,
+            "done": false,
+            "subject": 1
+          })
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    } else {
+      this.$router.push("/welcome")
+    }
+  });
+})
 </script>
