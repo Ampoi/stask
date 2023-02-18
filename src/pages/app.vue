@@ -114,9 +114,10 @@ import termTimer from "../components/timer.vue"
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
+
+import { createClient } from "microcms-js-sdk"
 
 import firebaseConfig from "../data/firebaseConfig.js"
 
@@ -127,6 +128,23 @@ const auth = getAuth(firebaseApp);
 
 const db = getDatabase()
 const dbRef = ref(db);
+
+const client = createClient({
+  serviceDomain: import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN,
+  apiKey: import.meta.env.VITE_MICROCMS_APIKEY
+})
+
+const checkServerUpdating = new Promise(()=>{
+  client
+    .get({
+      endpoint: "stask_settings"
+    })
+    .then((res)=>{
+      if(res.nowUpdating){
+        console.log("updating!");
+      }
+    }) 
+})
 
 var timer = setTimeout(()=>{}, 0)
 
@@ -282,6 +300,15 @@ export default{
         event.returnValue = ""
       }
     });
+
+    client
+      .get({
+        endpoint: "stask_settings"
+      })
+      .then((res)=>{if(res.nowUpdating){
+        console.log("updating!");
+        this.$router.push("/updating")
+      }})
 
     onAuthStateChanged(auth, (user) => {
       if (user) {

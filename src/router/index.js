@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import app from "../pages/app.vue"
 import home from "../pages/welcome.vue"
 import login from "../pages/login.vue"
-import Notfound from "../pages/notFound.vue"
+import updating from "../pages/nowUpdating.vue"
 
 const routes = [
   {
@@ -22,9 +22,9 @@ const routes = [
     component: login
   },
   {
-    path: "/:catchAll(.*)",
-    name: "notFound",
-    component: Notfound
+    path: "/updating",
+    name: "Updating",
+    component: updating
   }
 ];
 
