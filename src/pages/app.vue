@@ -123,6 +123,7 @@ import { getDatabase, ref, get, set, child } from "firebase/database";
 import { createClient } from "microcms-js-sdk"
 //コンポーザブル関数
 import useUserData from "../functions/app/useUserData.js"
+import useCards from "../functions/app/useCards.js"
 
 import firebaseConfig from "../data/firebaseConfig.js"
 
@@ -164,7 +165,8 @@ const selectedSubjectIndex = vueData(0)
 const updated = vueData(true)
 const firstUpdate = vueData(true)
 
-const {uid, userName, userImage, logined, cards, settings} = useUserData(useRouter())
+const {uid, userName, userImage, settings} = useUserData(useRouter())
+const {cards} = useCards()
 
 const timers = vueData([
   "2023-03-01"
