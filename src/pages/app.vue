@@ -107,19 +107,21 @@
 </template>
 <script setup>
 import { ref as vueData, watch, onMounted } from "vue"
-
+//コンポーネント
 import navBar from "../components/navBar.vue"
 import TaskCard from "../components/taskCard.vue"
 import sBanner from "../components/savedBanner.vue"
 import settingDialog from "../components/settings.vue"
 import termTimer from "../components/timer.vue"
-
+//firebase
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
-
+//microcms
 import { createClient } from "microcms-js-sdk"
+//コンポーザブル関数
+import useUserData from "../functions/app/useUserData.js"
 
 import firebaseConfig from "../data/firebaseConfig.js"
 
@@ -162,26 +164,11 @@ const changed = vueData(true)
 const firstUpdate = vueData(true)
 const SecoundsForChange = vueData(5)
 
-const logined = vueData(false)
+const {uid, userName, userImage, logined, cards, settings} = useUserData()
 
-const uid = vueData("")
-const userName = vueData("")
-const userImage = vueData("")
-
-const cards = vueData([])
 const timers = vueData([
   "2023-03-01"
 ])
-
-const settings = vueData({
-  subjects: [
-    {index:0, title: "国語 (古文/現代文)", color:"#F44335"},
-    {index:1, title: "数学 (算数)", color:"#2196F3"},
-    {index:2, title: "理科 (物理/地学/生物/化学)", color:"#4BAF51"},
-    {index:3, title: "社会 (公民/地理/歴史)", color:"#FFC105"},
-    {index:4, title: "英語 (外国語)", color: "#E040FB"}
-  ]
-})
 
 function logout(){
   signOut(auth).then(() => {
@@ -299,55 +286,5 @@ onMounted(()=>{
       console.log("updating!");
       this.$router.push("/updating")
     }})
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      //ユーザー情報の全体への反映
-      uid.value = user.uid;
-      userName.value = user.displayName
-      userImage.value = user.photoURL
-      logined.value = true
-      //ユーザー情報から設定やタスクの取得
-      get(child(dbRef, `data/${uid.value}`)).then((snapshot) => {
-        if (snapshot.exists()) {
-          const newData = snapshot.val()
-          if(newData.cards != undefined){
-            cards.value = newData.cards
-          }else{
-            cards.value.push({
-              "title": "Staskへようこそ",
-              "time": 123,
-              "startPage": 50,
-              "lastPage": 100,
-              "nowPage": 75,
-              "showSubMenu": false,
-              "done": false,
-              "subject": 1
-            })
-          }
-          if(newData.settings == undefined){
-            set(ref(db, `data/${uid.value}/settings`), settings.value)
-          }else{
-            settings.value = newData.settings
-          }
-        } else {
-          cards.value.push({
-            "title": "Staskへようこそ",
-            "time": 123,
-            "startPage": 50,
-            "lastPage": 100,
-            "nowPage": 75,
-            "showSubMenu": false,
-            "done": false,
-            "subject": 1
-          })
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-    } else {
-      this.$router.push("/welcome")
-    }
-  });
 })
 </script>
