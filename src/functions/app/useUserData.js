@@ -91,7 +91,7 @@ export default (router)=>{
             settings.value = newSettings.value
 
           } else {
-            cards.value.push(welcomeCard)
+            cards.value = [welcomeCard]
           }
         }).catch((error) => {
           console.error(error);

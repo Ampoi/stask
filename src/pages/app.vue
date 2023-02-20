@@ -153,20 +153,18 @@ const checkServerUpdating = new Promise(()=>{
 
 var timer = setTimeout(()=>{}, 0)
 
+//UIの表示非表示
 const showNavbar = vueData(false)
 const showBanner = vueData(false)
 const showSettings = vueData(false)
-
 const showColorPicker = vueData(false)
+//設定のカラーピッカーの対象
 const selectedSubjectIndex = vueData(0)
-
+//データが変更されているかどうか
 const updated = vueData(true)
-const changed = vueData(true)
 const firstUpdate = vueData(true)
-const SecoundsForChange = vueData(5)
 
-const router = useRouter()
-const {uid, userName, userImage, logined, cards, settings} = useUserData(router)
+const {uid, userName, userImage, logined, cards, settings} = useUserData(useRouter())
 
 const timers = vueData([
   "2023-03-01"
