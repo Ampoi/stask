@@ -24,7 +24,21 @@ const welcomeCard = {
   "subject": 1
 }
 
-export default ()=>{
+class Cards {
+  constructor(data){
+    if(data != undefined){
+      this.data = data
+    }else{
+      this.data = [welcomeCard]
+    }
+  }
+  
+  get value(){
+    return this.data
+  }
+}
+
+export default (router)=>{
   const uid = vueData("")
   const userName = vueData("")
   const userImage = vueData("")
@@ -53,11 +67,9 @@ export default ()=>{
         get(child(dbRef, `data/${uid.value}`)).then((snapshot) => {
           if (snapshot.exists()) {
             const newData = snapshot.val()
-            if(newData.cards != undefined){
-              cards.value = newData.cards
-            }else{
-              cards.value.push(welcomeCard)
-            }
+            const newCards = new Cards(newData.cards)
+            cards.value = newCards.value
+
             if(newData.settings == undefined){
               set(ref(db, `data/${uid.value}/settings`), settings.value)
             }else{
@@ -70,7 +82,7 @@ export default ()=>{
           console.error(error);
         });
       } else {
-        this.$router.push("/welcome")
+        router.push("/welcome")
       }
     });
   })

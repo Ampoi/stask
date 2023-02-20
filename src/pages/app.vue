@@ -107,6 +107,7 @@
 </template>
 <script setup>
 import { ref as vueData, watch, onMounted } from "vue"
+import { useRouter } from "vue-router"
 //コンポーネント
 import navBar from "../components/navBar.vue"
 import TaskCard from "../components/taskCard.vue"
@@ -164,7 +165,8 @@ const changed = vueData(true)
 const firstUpdate = vueData(true)
 const SecoundsForChange = vueData(5)
 
-const {uid, userName, userImage, logined, cards, settings} = useUserData()
+const router = useRouter()
+const {uid, userName, userImage, logined, cards, settings} = useUserData(router)
 
 const timers = vueData([
   "2023-03-01"
