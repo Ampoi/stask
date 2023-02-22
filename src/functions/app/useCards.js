@@ -24,6 +24,16 @@ const welcomeCard = {
   "subject": 1
 }
 
+const defaultCard = {
+  title: "",
+  time: 60,
+  startPage: 0,
+  lastPage: 12,
+  nowPage: 0,
+  done: false,  
+  subject: 1
+}
+
 class Cards {
   constructor(newCards){
     if(newCards != undefined){
@@ -35,6 +45,10 @@ class Cards {
   
   get value(){
     return this.data
+  }
+
+  addCard(){
+    this.data.push(defaultCard)
   }
 }
 
@@ -63,5 +77,11 @@ export default ()=>{
     });
   })
 
-  return { cards }
+  const addCard = ()=>{
+    const newCards = new Cards(cards.value)
+    newCards.addCard()
+    return newCards
+  }
+
+  return { cards, addCard }
 }

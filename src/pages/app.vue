@@ -14,7 +14,7 @@
       </template><!--メニューボタン-->
       <v-btn
         icon="mdi-plus"
-        @click="addTask"
+        @click="addCard"
       />
     </v-app-bar>
 
@@ -167,9 +167,8 @@ const updated = vueData(true)
 const firstUpdate = vueData(true)
 
 const {uid, userName, userImage} = useUserData(useRouter())
-const {cards} = useCards()
+const {cards, addCard} = useCards()
 const {settings} = useSettings()
-console.log(settings.value);
 
 const timers = vueData([
   "2023-03-01"
@@ -188,19 +187,6 @@ function saveWithBanner(){
     updated.value = true
   })
   showBanner.value = true
-}
-
-function addTask(){
-  const defaultCard = {
-    title: "",
-    time: 60,
-    startPage: 0,
-    lastPage: 12,
-    nowPage: 0,
-    done: false,  
-    subject: 1
-  }
-  cards.value.push(defaultCard)
 }
 
 function deleteTask(index){
