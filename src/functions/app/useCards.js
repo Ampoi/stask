@@ -48,11 +48,22 @@ class Cards {
   }
 
   addCard(){
-    this.data.push(defaultCard)
+    const newCard = Object.create(defaultCard)
+    this.data.push(newCard)
   }
 
   deleteCard(cardIndex){
     this.data.splice(cardIndex, 1)
+  }
+
+  deleteDoneCard(){
+    for (let i = 0; i < this.data.length;){
+      if(this.data[i].done == true){
+        this.data.splice(i, 1)
+      }else{
+        i++
+      }
+    }
   }
 }
 
@@ -93,5 +104,11 @@ export default ()=>{
     cards.value = newCards.value
   }
 
-  return { cards, addCard, deleteCard }
+  const deleteDoneCard = ()=>{
+    const newCards = new Cards(cards.value)
+    newCards.deleteDoneCard()
+    cards.value = newCards.value
+  }
+
+  return { cards, addCard, deleteCard, deleteDoneCard }
 }

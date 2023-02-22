@@ -89,7 +89,7 @@
         <div class="flex flex-row justify-between text-black font-bold">
           <p>達成済みのタスク</p>
           <button
-            @click="deleteDoneTask()"
+            @click="deleteDoneCard()"
           >達成済みのタスクを削除</button>
         </div>
         <TaskCard
@@ -167,7 +167,7 @@ const updated = vueData(true)
 const firstUpdate = vueData(true)
 
 const {uid, userName, userImage} = useUserData(useRouter())
-const {cards, addCard, deleteCard} = useCards()
+const {cards, addCard, deleteCard, deleteDoneCard} = useCards()
 const {settings} = useSettings()
 
 const timers = vueData([
@@ -187,16 +187,6 @@ function saveWithBanner(){
     updated.value = true
   })
   showBanner.value = true
-}
-
-function deleteDoneTask(){
-  for (let i = 0; i < this.cards.length;){
-    if(cards.value[i].done == true){
-      cards.value.splice(i, 1)
-    }else{
-      i++
-    }
-  }
 }
 
 function checkPermanent(){
