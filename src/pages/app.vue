@@ -106,7 +106,7 @@
   </v-app>
 </template>
 <script setup>
-import { ref as vueData, watch, onMounted } from "vue"
+import { ref as vueData, onMounted } from "vue"
 import { useRouter } from "vue-router"
 //コンポーネント
 import navBar from "../components/navBar.vue"
@@ -153,21 +153,21 @@ const checkServerUpdating = new Promise(()=>{
     }) 
 })
 
-var timer = setTimeout(()=>{}, 0)
+
 
 //UIの表示非表示
 const showNavbar = vueData(false)
-const showBanner = vueData(false)
 const showSettings = vueData(false)
 const showColorPicker = vueData(false)
 //設定のカラーピッカーの対象
 const selectedSubjectIndex = vueData(0)
-//データが変更されているかどうか
-const updated = vueData(true)
-const firstUpdate = vueData(true)
 
 const {uid, userName, userImage} = useUserData(useRouter())
-const {cards, addCard, deleteCard, deleteDoneCard} = useCards()
+const {
+  cards,
+  addCard, deleteCard, deleteDoneCard,
+  updated, firstUpdate, showBanner
+} = useCards()
 const {settings} = useSettings()
 
 const timers = vueData([
@@ -231,20 +231,7 @@ function saveSettings(){
   showBanner.value = true
 }
 
-watch(cards, ()=>{
-  if(firstUpdate.value == true){
-    firstUpdate.value = false
-  }else{
-    clearTimeout(timer)
-    updated.value = false
-    showBanner.value = false
-    timer = setTimeout(function(){
-      set(ref(db, `data/${uid.value}/cards`), cards.value).then(()=>{
-        updated.value = true
-      })
-    }.bind(this), 8000)
-  }
-}, {deep: true})
+
 
 onMounted(()=>{
   window.addEventListener('beforeunload', (event) => {

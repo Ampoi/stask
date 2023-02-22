@@ -1,8 +1,8 @@
-import { ref as vueData, onBeforeMount } from "vue";
+import { ref as vueData, onBeforeMount, watch } from "vue";
 
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, get, child } from "firebase/database";
+import { getDatabase, ref, get, set, child } from "firebase/database";
 
 import firebaseConfig from "../../data/firebaseConfig.js"
 
@@ -70,10 +70,12 @@ class Cards {
 export default ()=>{
   const cards = vueData([])
 
+  let uid
+
   onBeforeMount(()=>{
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const uid = user.uid
+        uid = user.uid
 
         get(child(dbRef, `data/${uid}`)).then((snapshot) => {
           if (snapshot.exists()) {
@@ -91,6 +93,29 @@ export default ()=>{
       }
     });
   })
+  
+  //データが変更されているかどうか
+  const updated = vueData(true)
+  const firstUpdate = vueData(true)
+
+  const showBanner = vueData(false)
+
+  var timer = setTimeout(()=>{}, 0)
+
+  watch(cards, ()=>{
+    if(firstUpdate.value == true){
+      firstUpdate.value = false
+    }else{
+      clearTimeout(timer)
+      updated.value = false
+      showBanner.value = false
+      timer = setTimeout(function(){
+        set(ref(db, `data/${uid}/cards`), cards.value).then(()=>{
+          updated.value = true
+        })
+      }.bind(this), 8000)
+    }
+  }, {deep: true})
 
   const addCard = ()=>{
     const newCards = new Cards(cards.value)
@@ -110,5 +135,5 @@ export default ()=>{
     cards.value = newCards.value
   }
 
-  return { cards, addCard, deleteCard, deleteDoneCard }
+  return { cards, addCard, deleteCard, deleteDoneCard, updated, firstUpdate, showBanner }
 }
