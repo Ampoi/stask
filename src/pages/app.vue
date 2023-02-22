@@ -84,7 +84,7 @@
           v-model:card="cards[cardIndex]"
           :onlydone="false"
           :subjects="settings.subjects"
-          @deleteTask="deleteTask(cardIndex)"
+          @deleteTask="deleteCard(cardIndex)"
         />
         <div class="flex flex-row justify-between text-black font-bold">
           <p>達成済みのタスク</p>
@@ -98,7 +98,7 @@
           v-model:card="cards[cardIndex]"
           :onlydone="true"
           :subjects="settings.subjects"
-          @deleteTask="deleteTask(cardIndex)"
+          @deleteTask="deleteCard(cardIndex)"
           class="opacity-50"
         />
       </div>
@@ -167,7 +167,7 @@ const updated = vueData(true)
 const firstUpdate = vueData(true)
 
 const {uid, userName, userImage} = useUserData(useRouter())
-const {cards, addCard} = useCards()
+const {cards, addCard, deleteCard} = useCards()
 const {settings} = useSettings()
 
 const timers = vueData([
@@ -187,10 +187,6 @@ function saveWithBanner(){
     updated.value = true
   })
   showBanner.value = true
-}
-
-function deleteTask(index){
-  cards.value.splice(index, 1)
 }
 
 function deleteDoneTask(){

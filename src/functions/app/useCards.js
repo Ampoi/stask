@@ -50,6 +50,10 @@ class Cards {
   addCard(){
     this.data.push(defaultCard)
   }
+
+  deleteCard(cardIndex){
+    this.data.splice(cardIndex, 1)
+  }
 }
 
 export default ()=>{
@@ -80,8 +84,14 @@ export default ()=>{
   const addCard = ()=>{
     const newCards = new Cards(cards.value)
     newCards.addCard()
-    return newCards
+    cards.value = newCards.value
   }
 
-  return { cards, addCard }
+  const deleteCard = (cardIndex)=>{
+    const newCards = new Cards(cards.value)
+    newCards.deleteCard(cardIndex)
+    cards.value = newCards.value
+  }
+
+  return { cards, addCard, deleteCard }
 }
