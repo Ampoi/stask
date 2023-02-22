@@ -1,4 +1,4 @@
-import { ref as vueData, onMounted } from "vue";
+import { ref as vueData, onBeforeMount } from "vue";
 
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -41,13 +41,11 @@ class Cards {
 export default ()=>{
   const cards = vueData([])
 
-  onMounted(()=>{
+  onBeforeMount(()=>{
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        //ユーザー情報の全体への反映
         const uid = user.uid
 
-        //ユーザー情報から設定やタスクの取得
         get(child(dbRef, `data/${uid}`)).then((snapshot) => {
           if (snapshot.exists()) {
             const newData = snapshot.val()

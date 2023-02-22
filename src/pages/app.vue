@@ -124,6 +124,7 @@ import { createClient } from "microcms-js-sdk"
 //コンポーザブル関数
 import useUserData from "../functions/app/useUserData.js"
 import useCards from "../functions/app/useCards.js"
+import useSettings from "../functions/app/useSettings.js"
 
 import firebaseConfig from "../data/firebaseConfig.js"
 
@@ -165,8 +166,10 @@ const selectedSubjectIndex = vueData(0)
 const updated = vueData(true)
 const firstUpdate = vueData(true)
 
-const {uid, userName, userImage, settings} = useUserData(useRouter())
+const {uid, userName, userImage} = useUserData(useRouter())
 const {cards} = useCards()
+const {settings} = useSettings()
+console.log(settings.value);
 
 const timers = vueData([
   "2023-03-01"
