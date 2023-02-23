@@ -105,8 +105,8 @@
     </v-main>
   </v-app>
 </template>
-<script setup>
-import { ref as vueData, onMounted } from "vue"
+<script setup lang="ts">
+import { ref as vueData, onMounted, onBeforeMount } from "vue"
 import { useRouter } from "vue-router"
 //コンポーネント
 import navBar from "../components/navBar.vue"
@@ -153,8 +153,6 @@ const checkServerUpdating = new Promise(()=>{
     }) 
 })
 
-
-
 //UIの表示非表示
 const showNavbar = vueData(false)
 const showSettings = vueData(false)
@@ -162,12 +160,15 @@ const showColorPicker = vueData(false)
 //設定のカラーピッカーの対象
 const selectedSubjectIndex = vueData(0)
 
+//ユーザーデータ関連
 const {uid, userName, userImage} = useUserData(useRouter())
+//課題のカード関連
 const {
   cards,
   addCard, deleteCard, deleteDoneCard,
   updated, firstUpdate, showBanner
 } = useCards()
+//設定
 const {settings} = useSettings()
 
 const timers = vueData([
@@ -241,7 +242,9 @@ onMounted(()=>{
       event.returnValue = ""
     }
   });
+})
 
+onBeforeMount(()=>{
   client
     .get({
       endpoint: "stask_settings"
