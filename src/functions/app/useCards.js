@@ -65,6 +65,19 @@ class Cards {
       }
     }
   }
+
+  saveCards(uid){
+    return new Promise((resolve)=>{
+      const savePath = `data/${uid}/cards`
+      set(ref(db, savePath), this.data)
+        .then(()=>{
+          resolve()
+        })
+        .catch((err)=>{
+          console.error(err);
+        })
+    })
+  }
 }
 
 export default ()=>{
@@ -100,7 +113,7 @@ export default ()=>{
 
   const showBanner = vueData(false)
 
-  var timer = setTimeout(()=>{}, 0)
+  let timer = setTimeout(()=>{}, 0)
 
   watch(cards, ()=>{
     if(firstUpdate.value == true){
@@ -109,11 +122,13 @@ export default ()=>{
       clearTimeout(timer)
       updated.value = false
       showBanner.value = false
-      timer = setTimeout(function(){
-        set(ref(db, `data/${uid}/cards`), cards.value).then(()=>{
-          updated.value = true
-        })
-      }.bind(this), 8000)
+      timer = setTimeout(()=>{
+        const newCards = new Cards(cards.value)
+        newCards.saveCards(uid)
+          .then(()=>{
+            updated.value = true
+          })
+      }, 8000)
     }
   }, {deep: true})
 
