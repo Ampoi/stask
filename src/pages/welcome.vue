@@ -107,7 +107,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
-import firebaseConfig from "../data/firebaseConfig.js"
+import firebaseConfig from "../data/firebaseConfig.ts"
 
 import TaskCard from "../components/taskCard.vue"
 

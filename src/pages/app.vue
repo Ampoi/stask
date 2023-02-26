@@ -122,11 +122,11 @@ import { getDatabase, ref, get, set, child } from "firebase/database";
 //microcms
 import { createClient } from "microcms-js-sdk"
 //コンポーザブル関数
-import useUserData from "../functions/app/useUserData.js"
+import useUserData from "../functions/app/useUserData.ts"
 import useCards from "../functions/app/useCards.js"
 import useSettings from "../functions/app/useSettings.js"
 
-import firebaseConfig from "../data/firebaseConfig.js"
+import firebaseConfig from "../data/firebaseConfig.ts"
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);

@@ -3,20 +3,21 @@ import { ref as vueData, onBeforeMount } from "vue";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-import firebaseConfig from "../../data/firebaseConfig.js"
+import firebaseConfig from "../../data/firebaseConfig"
 
 const firebaseApp = initializeApp(firebaseConfig);
 
 const auth = getAuth(firebaseApp);
 
-export default (router)=>{
-  const uid = vueData("")
-  const userName = vueData("")
-  const userImage = vueData("")
+type Router = {push: Function}
+export default (router: Router)=>{
+  const uid = vueData<string>()
+  const userName = vueData<string|null>()
+  const userImage = vueData<string|null>()
 
   onBeforeMount(()=>{
     onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user != null) {
         uid.value = user.uid;
         userName.value = user.displayName
         userImage.value = user.photoURL
