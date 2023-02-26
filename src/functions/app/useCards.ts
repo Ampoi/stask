@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
 
-import firebaseConfig from "../../data/firebaseConfig.ts"
+import firebaseConfig from "../../data/firebaseConfig"
 
 const firebaseApp = initializeApp(firebaseConfig);
 
@@ -14,28 +14,37 @@ const db = getDatabase()
 const dbRef = ref(db);
 
 const welcomeCard = {
-  "title": "Staskへようこそ",
-  "time": 123,
-  "startPage": 50,
-  "lastPage": 100,
-  "nowPage": 75,
-  "showSubMenu": false,
-  "done": false,
-  "subject": 1
+  title: "Staskへようこそ",
+  time: 123,
+  pages: [],
+  done: false,
+  subject: 1
 }
 
 const defaultCard = {
   title: "",
   time: 60,
-  startPage: 0,
-  lastPage: 12,
-  nowPage: 0,
+  pages: [],
   done: false,  
   subject: 1
 }
 
+type Card = {
+  title: string
+  time: number
+  pages: Array<Object>
+  done: boolean
+  subject: number
+}
+
+type CardsData = Array<Card>
+
+interface Cards {
+  data: CardsData
+}
+
 class Cards {
-  constructor(newCards){
+  constructor(newCards: Array<Card>){
     if(newCards != undefined){
       this.data = newCards
     }else{
@@ -52,7 +61,7 @@ class Cards {
     this.data.push(newCard)
   }
 
-  deleteCard(cardIndex){
+  deleteCard(cardIndex: number){
     this.data.splice(cardIndex, 1)
   }
 
@@ -66,8 +75,8 @@ class Cards {
     }
   }
 
-  saveCards(uid){
-    return new Promise((resolve)=>{
+  saveCards(uid: string){
+    return new Promise<void>((resolve)=>{
       const savePath = `data/${uid}/cards`
       set(ref(db, savePath), this.data)
         .then(()=>{
@@ -81,9 +90,9 @@ class Cards {
 }
 
 export default ()=>{
-  const cards = vueData([])
+  const cards = vueData<CardsData>([])
 
-  let uid
+  let uid: string
 
   onBeforeMount(()=>{
     onAuthStateChanged(auth, (user) => {
@@ -96,7 +105,6 @@ export default ()=>{
             
             const newCards = new Cards(newData.cards)
             cards.value = newCards.value
-
           } else {
             cards.value = [welcomeCard]
           }
@@ -138,7 +146,7 @@ export default ()=>{
     cards.value = newCards.value
   }
 
-  const deleteCard = (cardIndex)=>{
+  const deleteCard = (cardIndex:number)=>{
     const newCards = new Cards(cards.value)
     newCards.deleteCard(cardIndex)
     cards.value = newCards.value
