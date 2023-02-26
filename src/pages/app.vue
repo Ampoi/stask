@@ -124,7 +124,7 @@ import { createClient } from "microcms-js-sdk"
 //コンポーザブル関数
 import useUserData from "../functions/app/useUserData.ts"
 import useCards from "../functions/app/useCards.js"
-import useSettings from "../functions/app/useSettings.js"
+import useSettings from "../functions/app/useSettings.ts"
 
 import firebaseConfig from "../data/firebaseConfig.ts"
 

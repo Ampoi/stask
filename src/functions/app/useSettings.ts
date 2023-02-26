@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
 
-import firebaseConfig from "../../data/firebaseConfig.ts"
+import firebaseConfig from "../../data/firebaseConfig"
 
 const firebaseApp = initializeApp(firebaseConfig);
 
@@ -23,13 +23,16 @@ const defaultSettings = {
   ]
 }
 
+interface Settings {
+  data: Object
+}
 class Settings {
-  constructor(newSettings){
+  constructor(newSettings: Object | undefined, uid: string){
     if(newSettings != undefined){
       this.data = newSettings
     }else{
       this.data = defaultSettings
-      set(ref(db, `data/${uid.value}/settings`), defaultSettings)
+      set(ref(db, `data/${uid}/settings`), defaultSettings)
     }
   }
 
@@ -39,7 +42,7 @@ class Settings {
 }
 
 export default ()=>{
-  const settings = vueData({
+  const settings = vueData<Object>({
     subjects: []
   })
 
@@ -52,7 +55,7 @@ export default ()=>{
           if (snapshot.exists()) {
             const newData = snapshot.val()
 
-            const newSettings = new Settings(newData.settings)
+            const newSettings = new Settings(newData.settings, uid)
             settings.value = newSettings.value
           }
         }).catch((error) => {
