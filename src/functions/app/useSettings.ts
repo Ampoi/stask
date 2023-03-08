@@ -23,11 +23,21 @@ const defaultSettings = {
   ]
 }
 
+interface Subject {
+  index: number
+  title: string
+  color: string
+}
+
+interface SettingsValue {
+  subjects: Array<Subject>
+}
+
 interface Settings {
-  data: Object
+  data: SettingsValue
 }
 class Settings {
-  constructor(newSettings: Object | undefined, uid: string){
+  constructor(newSettings: SettingsValue | undefined, uid: string){
     if(newSettings != undefined){
       this.data = newSettings
     }else{
@@ -42,7 +52,7 @@ class Settings {
 }
 
 export default ()=>{
-  const settings = vueData<Object>({
+  const settings = vueData<SettingsValue>({
     subjects: []
   })
 

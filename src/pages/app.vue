@@ -105,7 +105,7 @@
     </v-main>
   </v-app>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref as vueData, onMounted, onBeforeMount } from "vue"
 import { useRouter } from "vue-router"
 //コンポーネント
@@ -122,11 +122,11 @@ import { getDatabase, ref, get, set, child } from "firebase/database";
 //microcms
 import { createClient } from "microcms-js-sdk"
 //コンポーザブル関数
-import useUserData from "../functions/app/useUserData.ts"
-import useCards from "../functions/app/useCards.ts"
-import useSettings from "../functions/app/useSettings.ts"
+import useUserData from "../functions/app/useUserData"
+import useCards from "../functions/app/useCards"
+import useSettings from "../functions/app/useSettings"
 
-import firebaseConfig from "../data/firebaseConfig.ts"
+import firebaseConfig from "../data/firebaseConfig"
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
@@ -203,7 +203,7 @@ function addSubject(){
   setSubjectIndex()
 }
 
-function deleteSubject(index){
+function deleteSubject(index: number){
   settings.value.subjects.splice(index, 1)
   setSubjectIndex()
 }
@@ -221,7 +221,7 @@ function openSettings(){
   showNavbar.value = false
 }
 
-function getSubjectColor(index){
+function getSubjectColor(index: number){
   showColorPicker.value = true
   selectedSubjectIndex.value = index
 }
@@ -251,7 +251,7 @@ onBeforeMount(()=>{
     })
     .then((res)=>{if(res.nowUpdating){
       console.log("updating!");
-      this.$router.push("/updating")
+      useRouter().push("/updating")
     }})
 })
 </script>
