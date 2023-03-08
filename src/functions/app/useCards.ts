@@ -44,7 +44,7 @@ interface Cards {
 }
 
 class Cards {
-  constructor(newCards: Array<Card>){
+  constructor(newCards: CardsData){
     if(newCards != undefined){
       this.data = newCards
     }else{
@@ -99,11 +99,11 @@ export default ()=>{
       if (user) {
         uid = user.uid
 
-        get(child(dbRef, `data/${uid}`)).then((snapshot) => {
+        get(child(dbRef, `data/${uid}/cards`)).then((snapshot) => {
           if (snapshot.exists()) {
             const newData = snapshot.val()
             
-            const newCards = new Cards(newData.cards)
+            const newCards = new Cards(newData)
             cards.value = newCards.value
           } else {
             cards.value = [welcomeCard]

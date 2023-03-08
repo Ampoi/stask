@@ -11,7 +11,7 @@
           {{getDaysLeft}}<span class="text-base">日</span>
         </h2>
       </v-progress-circular>
-      <p class="text-orange-400 font-bold">期末まで</p>
+      <p class="text-orange-400 font-bold">{{modelValue.name}}まで</p>
     </div>
   </button>
   <v-dialog v-model="getDateModal">
@@ -23,7 +23,7 @@
         <input
           type="date"
           class="p-2 rounded-md"
-          :value="modelValue"
+          :value="modelValue.date"
           @input="updateDate($event.target.value)"
         >
       </div>
@@ -39,13 +39,15 @@ export default {
   }},
   methods: {
     updateDate(newDate){
-      this.$emit("update:modelValue", newDate)
+      let newData = this.modelValue
+      newData.date = newDate
+      this.$emit("update:modelValue", newData)
     }
   },
   computed: {
     getDaysLeft(){
       const today = new Date()
-      const term = new Date(this.modelValue)
+      const term = new Date(this.modelValue.date)
       return Math.ceil((term - today) / 86400000)
     }
   }

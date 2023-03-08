@@ -124,6 +124,7 @@ import { createClient } from "microcms-js-sdk"
 //コンポーザブル関数
 import useUserData from "../functions/app/useUserData"
 import useCards from "../functions/app/useCards"
+import useTimers from "../functions/app/useTimers"
 import useSettings from "../functions/app/useSettings"
 
 import firebaseConfig from "../data/firebaseConfig"
@@ -171,9 +172,7 @@ const {
 //設定
 const {settings} = useSettings()
 
-const timers = vueData([
-  "2023-03-01"
-])
+const {timers} = useTimers()
 
 function logout(){
   signOut(auth).then(() => {

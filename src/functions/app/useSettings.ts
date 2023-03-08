@@ -61,11 +61,11 @@ export default ()=>{
       if (user) {
         const uid = user.uid
 
-        get(child(dbRef, `data/${uid}`)).then((snapshot) => {
+        get(child(dbRef, `data/${uid}/settings`)).then((snapshot) => {
           if (snapshot.exists()) {
             const newData = snapshot.val()
 
-            const newSettings = new Settings(newData.settings, uid)
+            const newSettings = new Settings(newData, uid)
             settings.value = newSettings.value
           }
         }).catch((error) => {
