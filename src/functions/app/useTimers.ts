@@ -75,5 +75,9 @@ export default ()=>{
     });
   })
 
+  watch(timers, ()=>{
+    console.log("updated!");
+  }, {deep: true})
+
   return {timers}
 }

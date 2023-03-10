@@ -158,5 +158,9 @@ export default ()=>{
     cards.value = newCards.value
   }
 
-  return { cards, addCard, deleteCard, deleteDoneCard, updated, firstUpdate, showBanner }
+  return {
+    cards,
+    addCard, deleteCard,
+    deleteDoneCard, updated, showBanner
+  }
 }

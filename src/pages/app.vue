@@ -169,10 +169,13 @@ const {
   addCard, deleteCard, deleteDoneCard,
   updated, firstUpdate, showBanner
 } = useCards()
+//期限関連
+const {
+  timers
+} = useTimers()
 //設定
 const {settings} = useSettings()
 
-const {timers} = useTimers()
 
 function logout(){
   signOut(auth).then(() => {
