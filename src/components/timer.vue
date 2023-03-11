@@ -41,26 +41,26 @@
   </v-dialog>
 </template>
 <script setup lang="ts">
-import {
-  defineProps, defineEmits,
-  ref as vueData,
-  computed
-} from "vue"
+import {ref as vueData, computed} from "vue"
 
 const props = defineProps(["modelValue"])
 const emit = defineEmits(["update:modelValue"])
 
 const showGetDateModal = vueData<Boolean>(false)
 
+let nameInputTimer:number;
 function updateName(newName: string){
-  let newData = props.modelValue
+  clearTimeout(nameInputTimer)
+  let newData = JSON.parse(JSON.stringify(props.modelValue))
   newData.name = newName
-  emit("update:modelValue", newData)
+  nameInputTimer = setTimeout(()=>{
+    emit("update:modelValue", newData)
+  }, 1000)
 }
 
 type Date = `${number}-${number}-${number}`
 function updateDate(newDate: Date){
-  let newData = props.modelValue
+  let newData = JSON.parse(JSON.stringify(props.modelValue))
   newData.date = newDate
   emit("update:modelValue", newData)
 }

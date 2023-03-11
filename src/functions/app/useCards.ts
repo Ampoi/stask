@@ -121,7 +121,7 @@ export default ()=>{
 
   const showBanner = vueData(false)
 
-  let timer = setTimeout(()=>{}, 0)
+  let timer: number
 
   watch(cards, ()=>{
     if(firstUpdate.value == true){
