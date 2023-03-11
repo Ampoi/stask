@@ -74,11 +74,13 @@
           >
             <v-icon class="text-2xl">mdi-plus</v-icon>
           </button>
-          <termTimer
-            v-for="(timer, index) in timers"
-            :key="index"
-            v-model="timers[index]"
-          />
+          <div class="h-40 flex flex-row gap-4 overflow-x-auto">
+            <termTimer
+              v-for="(timer, index) in timers"
+              :key="index"
+              v-model="timers[index]"
+            />
+          </div>
         </div>
         <p class="text-black font-bold">未達成のタスク</p>
         <TaskCard
