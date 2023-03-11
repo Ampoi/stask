@@ -68,7 +68,10 @@
       <div class="flex flex-col mx-auto px-4 gap-4 max-w-xl">
         <p class="text-black font-bold">期限一覧</p>
         <div class="h-40 flex flex-row gap-4">
-          <button class="p-4 rounded-lg duration-300 hover:bg-white/70">
+          <button
+            class="p-4 rounded-lg duration-300 hover:bg-white/70"
+            @click="addTimer"
+          >
             <v-icon class="text-2xl">mdi-plus</v-icon>
           </button>
           <termTimer
@@ -171,7 +174,8 @@ const {
 } = useCards()
 //期限関連
 const {
-  timers
+  timers, 
+  addTimer
 } = useTimers()
 //設定
 const {settings} = useSettings()

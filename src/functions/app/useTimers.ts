@@ -15,7 +15,7 @@ const dbRef = ref(db);
 
 interface Timer {
   name: string
-  date: `${number}-${number}-${number}`
+  date: `${number}-${string}-${string}`
 }
 
 type TimersData = Array<Timer>
@@ -51,6 +51,24 @@ class Timers {
   }
 }
 
+interface TwoDigitNumber {
+  _value: string
+}
+class TwoDigitNumber {
+  constructor(newNumber: number){
+    let addZero: "0"|""
+    if(newNumber.toString().length == 1){
+      addZero = "0"
+    }else{
+      addZero = ""
+    }
+    this._value = `${addZero}${newNumber.toString()}`
+  }
+  get value(){
+    return this._value
+  }
+}
+
 export default ()=>{
   const timers = vueData<TimersData>([])
   
@@ -76,10 +94,20 @@ export default ()=>{
   })
 
   watch(timers, ()=>{
-    console.log("updated!");
     const newTimers = new Timers(timers.value)
     newTimers.saveTimers(uid)
   }, {deep: true})
 
-  return {timers}
+  function addTimer(){
+    const today = new Date()
+    const thisYear = today.getFullYear()
+    const thisMonth = new TwoDigitNumber(today.getMonth()+1).value
+    const thisDate = new TwoDigitNumber(today.getDate()).value
+    timers.value.push({
+      name: "",
+      date: `${thisYear}-${thisMonth}-${thisDate}`
+    })
+  }
+
+  return {timers, addTimer}
 }
