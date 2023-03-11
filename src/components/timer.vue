@@ -17,7 +17,17 @@
   <v-dialog v-model="getDateModal">
     <div class="px-4 py-6 bg-white rounded-md max-w-xl">
       <h1 class="text-3xl font-bold mb-2">タイマーの設定</h1>
-      <h2 class="text-xl">終了日時の設定</h2>
+      <h2 class="text-xl">タイマーの名前の設定</h2>
+      <p>タイマーの名前を設定します。</p>
+      <div class="bg-gray-100 p-4 rounded-md text-center">
+        <input
+          type="text"
+          class="p-2 rounded-md"
+          :value="modelValue.name"
+          @input="updateName($event.target.value)"
+        >
+      </div>
+      <h2 class="text-xl">タイマーの終了日時の設定</h2>
       <p>タイマーの期限を設定します。</p>
       <div class="bg-gray-100 p-4 rounded-md text-center">
         <input
@@ -38,6 +48,11 @@ export default {
     getDateModal: false
   }},
   methods: {
+    updateName(newName){
+      let newData = this.modelValue
+      newData.name = newName
+      this.$emit("update:modelValue", newData)
+    },
     updateDate(newDate){
       let newData = this.modelValue
       newData.date = newDate
