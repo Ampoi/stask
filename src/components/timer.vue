@@ -1,5 +1,5 @@
 <template>
-  <button class="flex flex-row overflow-x-auto gap-4" @click="getDateModal = true">
+  <button class="flex flex-row overflow-x-auto gap-4" @click="showGetDateModal = true">
     <div class="basis-32 p-4 bg-white rounded-xl border-[#FB923B]/50 border-2 border-solid flex flex-col items-center">
       <v-progress-circular
         model-value="100"
@@ -14,7 +14,7 @@
       <p class="text-orange-400 font-bold">{{modelValue.name}}まで</p>
     </div>
   </button>
-  <v-dialog v-model="getDateModal">
+  <v-dialog v-model="showGetDateModal">
     <div class="px-4 py-6 bg-white rounded-md max-w-xl">
       <h1 class="text-3xl font-bold mb-2">タイマーの設定</h1>
       <h2 class="text-xl">タイマーの名前の設定</h2>
@@ -40,31 +40,34 @@
     </div>
   </v-dialog>
 </template>
-<script>
-export default {
-  props: ["modelValue"],
-  emits: ["update:modelValue"],
-  data(){return{
-    getDateModal: false
-  }},
-  methods: {
-    updateName(newName){
-      let newData = this.modelValue
-      newData.name = newName
-      this.$emit("update:modelValue", newData)
-    },
-    updateDate(newDate){
-      let newData = this.modelValue
-      newData.date = newDate
-      this.$emit("update:modelValue", newData)
-    }
-  },
-  computed: {
-    getDaysLeft(){
-      const today = new Date()
-      const term = new Date(this.modelValue.date)
-      return Math.ceil((term - today) / 86400000)
-    }
-  }
+<script setup lang="ts">
+import {
+  defineProps, defineEmits,
+  ref as vueData,
+  computed
+} from "vue"
+
+const props = defineProps(["modelValue"])
+const emit = defineEmits(["update:modelValue"])
+
+const showGetDateModal = vueData<Boolean>(false)
+
+function updateName(newName: string){
+  let newData = props.modelValue
+  newData.name = newName
+  emit("update:modelValue", newData)
 }
+
+type Date = `${number}-${number}-${number}`
+function updateDate(newDate: Date){
+  let newData = props.modelValue
+  newData.date = newDate
+  emit("update:modelValue", newData)
+}
+
+const getDaysLeft = computed(()=>{
+  const today: number = new Date().getTime()
+  const term: number = new Date(props.modelValue.date).getTime()
+  return Math.ceil((term - today) / 86400000)
+})
 </script>
