@@ -37,7 +37,7 @@ class Timers {
     return this._value
   }
 
-  saveCards(uid: string){
+  saveTimers(uid: string){
     return new Promise<void>((resolve)=>{
       const savePath = `data/${uid}/timers`
       set(ref(db, savePath), this._value)
@@ -77,6 +77,8 @@ export default ()=>{
 
   watch(timers, ()=>{
     console.log("updated!");
+    const newTimers = new Timers(timers.value)
+    newTimers.saveTimers(uid)
   }, {deep: true})
 
   return {timers}
