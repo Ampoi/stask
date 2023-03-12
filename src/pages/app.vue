@@ -49,7 +49,7 @@
         @getSubjectColor="getSubjectColor"
         @deleteSubject="deleteSubject"
         @addSubject="addSubject"
-        @closeSettings="settings = false"
+        @closeSettings="showSettings = false"
       />
     </v-dialog>
 

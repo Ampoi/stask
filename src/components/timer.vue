@@ -24,7 +24,7 @@
           class="p-2 rounded-md"
           :value="modelValue.name"
           placeholder="タイマーの名前..."
-          @input="updateName($event.target.value)"
+          @input="updateName"
         >
       </div>
       <h2 class="text-xl">タイマーの終了日時の設定</h2>
@@ -34,7 +34,7 @@
           type="date"
           class="p-2 rounded-md"
           :value="modelValue.date"
-          @input="updateDate($event.target.value)"
+          @input="updateDate"
         >
       </div>
       <h2 class="text-xl">タイマーを削除</h2>
@@ -54,23 +54,29 @@ import {ref as vueData, computed} from "vue"
 const props = defineProps(["modelValue"])
 const emit = defineEmits(["update:modelValue", "deleteTimer"])
 
-const showGetDateModal = vueData<Boolean>(false)
+const showGetDateModal = vueData(false)
 
 let nameInputTimer:number;
-function updateName(newName: string){
-  clearTimeout(nameInputTimer)
-  let newData = JSON.parse(JSON.stringify(props.modelValue))
-  newData.name = newName
-  nameInputTimer = setTimeout(()=>{
-    emit("update:modelValue", newData)
-  }, 1000)
+function updateName(event: any){
+  const newName: string|undefined = event.target.value
+  if(newName != undefined){
+    clearTimeout(nameInputTimer)
+    let newData = JSON.parse(JSON.stringify(props.modelValue))
+    newData.name = newName
+    nameInputTimer = setTimeout(()=>{
+      emit("update:modelValue", newData)
+    }, 1000)
+  }
 }
 
 type Date = `${number}-${number}-${number}`
-function updateDate(newDate: Date){
-  let newData = JSON.parse(JSON.stringify(props.modelValue))
-  newData.date = newDate
-  emit("update:modelValue", newData)
+function updateDate(event: any){
+  const newDate: Date|undefined = event.target.value
+  if(newDate != undefined){
+    let newData = JSON.parse(JSON.stringify(props.modelValue))
+    newData.date = newDate
+    emit("update:modelValue", newData)
+  }
 }
 
 function deleteTimer(){
