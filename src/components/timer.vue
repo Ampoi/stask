@@ -1,7 +1,7 @@
 <template>
   <button class="basis-32 p-4 bg-white rounded-xl border-[#FB923B]/50 border-2 border-solid flex flex-col items-center" @click="showGetDateModal = true">
     <v-progress-circular
-      model-value="100"
+      :model-value="getDaysPercent"
       color="#FDBA74"
       :size="100"
       :width="12"
@@ -88,5 +88,10 @@ const getDaysLeft = computed(()=>{
   const today: number = new Date().getTime()
   const term: number = new Date(props.modelValue.date).getTime()
   return Math.ceil((term - today) / 86400000)
+})
+
+const getDaysPercent = computed(()=>{
+  const allDaysLeft = 14
+  return getDaysLeft.value / allDaysLeft * 100
 })
 </script>
