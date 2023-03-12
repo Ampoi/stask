@@ -1,16 +1,23 @@
 <template>
-  <button class="basis-32 p-4 bg-white rounded-xl border-[#FB923B]/50 border-2 border-solid flex flex-col items-center" @click="showGetDateModal = true">
+  <button
+    class="basis-32 p-4 bg-white rounded-xl border-orange-300 border-2 border-solid flex flex-col items-center"
+   :class="{
+      'bg-red-100 border-red-300 text-red-400': (getDaysLeft <= 0),
+      'text-orange-400': (getDaysLeft > 0)
+    }"
+    @click="showGetDateModal = true"
+  >
     <v-progress-circular
       :model-value="getDaysPercent"
-      color="#FDBA74"
+      :color="(getDaysLeft > 0) ? '#FDBA74' : '#F87271'"
       :size="100"
       :width="12"
     >
-      <h2 class="text-4xl font-bold text-orange-400">
+      <h2 class="text-4xl font-bold">
         {{getDaysLeft}}<span class="text-base">日</span>
       </h2>
     </v-progress-circular>
-    <p class="text-orange-400 font-bold">{{modelValue.name}}まで</p>
+    <p class="font-bold">{{modelValue.name}}まで</p>
   </button>
   
   <v-dialog v-model="showGetDateModal">
