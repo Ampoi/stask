@@ -50,6 +50,17 @@ class Timers {
     })
   }
 
+  addTimer(){
+    const today = new Date()
+    const thisYear = today.getFullYear()
+    const thisMonth = new TwoDigitNumber(today.getMonth()+1).value
+    const thisDate = new TwoDigitNumber(today.getDate()).value
+    this._value.push({
+      name: "",
+      date: `${thisYear}-${thisMonth}-${thisDate}`
+    })
+  }
+
   deleteTimer(index: number){
     this._value.splice(index, 1)
   }
@@ -103,14 +114,9 @@ export default ()=>{
   }, {deep: true})
 
   function addTimer(){
-    const today = new Date()
-    const thisYear = today.getFullYear()
-    const thisMonth = new TwoDigitNumber(today.getMonth()+1).value
-    const thisDate = new TwoDigitNumber(today.getDate()).value
-    timers.value.push({
-      name: "",
-      date: `${thisYear}-${thisMonth}-${thisDate}`
-    })
+    const newTimers = new Timers(timers.value)
+    newTimers.addTimer()
+    timers.value = newTimers.value
   }
 
   function deleteTimer(index: number){
