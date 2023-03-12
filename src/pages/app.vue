@@ -79,6 +79,7 @@
               v-for="(timer, index) in timers"
               :key="index"
               v-model="timers[index]"
+              @deleteTimer="deleteTimer(index)"
             />
           </div>
         </div>
@@ -172,12 +173,12 @@ const {uid, userName, userImage} = useUserData(useRouter())
 const {
   cards,
   addCard, deleteCard, deleteDoneCard,
-  updated, firstUpdate, showBanner
+  updated, showBanner
 } = useCards()
 //期限関連
 const {
   timers, 
-  addTimer
+  addTimer, deleteTimer
 } = useTimers()
 //設定
 const {settings} = useSettings()

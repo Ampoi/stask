@@ -23,6 +23,7 @@
           type="text"
           class="p-2 rounded-md"
           :value="modelValue.name"
+          placeholder="タイマーの名前..."
           @input="updateName($event.target.value)"
         >
       </div>
@@ -36,6 +37,14 @@
           @input="updateDate($event.target.value)"
         >
       </div>
+      <h2 class="text-xl">タイマーを削除</h2>
+      <p>タイマーの期限を削除します。一度消すと元には戻せません。</p>
+      <div class="bg-red-100 p-4 rounded-md text-center border-red-300 border-2">
+        <button
+          class="bg-gradient-to-b from-red-400/90 to-red-400 text-white font-bold py-2 px-3 rounded-xl"
+          @click="deleteTimer"
+        >課題を削除</button>
+      </div>
     </div>
   </v-dialog>
 </template>
@@ -43,7 +52,7 @@
 import {ref as vueData, computed} from "vue"
 
 const props = defineProps(["modelValue"])
-const emit = defineEmits(["update:modelValue"])
+const emit = defineEmits(["update:modelValue", "deleteTimer"])
 
 const showGetDateModal = vueData<Boolean>(false)
 
@@ -62,6 +71,11 @@ function updateDate(newDate: Date){
   let newData = JSON.parse(JSON.stringify(props.modelValue))
   newData.date = newDate
   emit("update:modelValue", newData)
+}
+
+function deleteTimer(){
+  showGetDateModal.value = false
+  emit("deleteTimer")
 }
 
 const getDaysLeft = computed(()=>{

@@ -160,7 +160,7 @@ export default ()=>{
 
   return {
     cards,
-    addCard, deleteCard,
-    deleteDoneCard, updated, showBanner
+    addCard, deleteCard, deleteDoneCard,
+    updated, showBanner
   }
 }

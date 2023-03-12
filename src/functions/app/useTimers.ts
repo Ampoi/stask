@@ -49,6 +49,10 @@ class Timers {
         })
     })
   }
+
+  deleteTimer(index: number){
+    this._value.splice(index, 1)
+  }
 }
 
 interface TwoDigitNumber {
@@ -109,5 +113,14 @@ export default ()=>{
     })
   }
 
-  return {timers, addTimer}
+  function deleteTimer(index: number){
+    const newTimers = new Timers(timers.value)
+    newTimers.deleteTimer(index)
+    timers.value = newTimers.value
+  }
+
+  return {
+    timers,
+    addTimer, deleteTimer
+  }
 }
