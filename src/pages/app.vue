@@ -160,6 +160,16 @@ const checkServerUpdating = new Promise(()=>{
     }) 
 })
 
+function twoDigitNumber(newNumber: number):string {
+  let addZero: "0"|""
+  if(newNumber.toString().length == 1){
+    addZero = "0"
+  }else{
+    addZero = ""
+  }
+  return `${addZero}${newNumber.toString()}`
+}
+
 //UIの表示非表示
 const showNavbar = vueData(false)
 const showSettings = vueData(false)
@@ -174,12 +184,12 @@ const {
   cards,
   addCard, deleteCard, deleteDoneCard,
   updated, showBanner
-} = useCards()
+} = useCards(twoDigitNumber)
 //期限関連
 const {
   timers, 
   addTimer, deleteTimer
-} = useTimers()
+} = useTimers(twoDigitNumber)
 //設定
 const {settings} = useSettings()
 

@@ -18,15 +18,8 @@ const welcomeCard = {
   time: 123,
   pages: [],
   done: false,
-  subject: 1
-}
-
-const defaultCard = {
-  title: "",
-  time: 60,
-  pages: [],
-  done: false,  
-  subject: 1
+  subject: 1,
+  term: "2023-01-01"
 }
 
 type Card = {
@@ -35,6 +28,7 @@ type Card = {
   pages: Array<Object>
   done: boolean
   subject: number
+  term: string
 }
 
 type CardsData = Array<Card>
@@ -42,6 +36,8 @@ type CardsData = Array<Card>
 interface Cards {
   data: CardsData
 }
+
+type TwoDigitNumber = (newNumber: number) => string
 
 class Cards {
   constructor(newCards: CardsData){
@@ -56,8 +52,19 @@ class Cards {
     return this.data
   }
 
-  addCard(){
-    const newCard = Object.create(defaultCard)
+  addCard(twoDigitNumber: TwoDigitNumber){
+    const today = new Date()
+    const thisYear = today.getFullYear()
+    const thisMonth = twoDigitNumber(today.getMonth()+1)
+    const thisDate = twoDigitNumber(today.getDate())
+    const newCard = {
+      title: "",
+      time: 60,
+      pages: [],
+      done: false,
+      subject: 1,
+      term: `${thisYear}-${thisMonth}-${thisDate}`
+    }
     this.data.push(newCard)
   }
 
@@ -89,7 +96,7 @@ class Cards {
   }
 }
 
-export default ()=>{
+export default (twoDigitNumber: TwoDigitNumber)=>{
   const cards = vueData<CardsData>([])
 
   let uid: string
@@ -142,7 +149,7 @@ export default ()=>{
 
   const addCard = ()=>{
     const newCards = new Cards(cards.value)
-    newCards.addCard()
+    newCards.addCard(twoDigitNumber)
     cards.value = newCards.value
   }
 

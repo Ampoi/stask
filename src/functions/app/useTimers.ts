@@ -24,6 +24,8 @@ interface Timers {
   _value: TimersData
 }
 
+type TwoDigitNumber = (newNumber: number) => string
+
 class Timers {
   constructor(newTimers: TimersData){
     if(newTimers == undefined){
@@ -50,11 +52,11 @@ class Timers {
     })
   }
 
-  addTimer(){
+  addTimer(twoDigitNumber: TwoDigitNumber){
     const today = new Date()
     const thisYear = today.getFullYear()
-    const thisMonth = new TwoDigitNumber(today.getMonth()+1).value
-    const thisDate = new TwoDigitNumber(today.getDate()).value
+    const thisMonth = twoDigitNumber(today.getMonth()+1)
+    const thisDate = twoDigitNumber(today.getDate())
     this._value.push({
       name: "",
       date: `${thisYear}-${thisMonth}-${thisDate}`
@@ -66,25 +68,7 @@ class Timers {
   }
 }
 
-interface TwoDigitNumber {
-  _value: string
-}
-class TwoDigitNumber {
-  constructor(newNumber: number){
-    let addZero: "0"|""
-    if(newNumber.toString().length == 1){
-      addZero = "0"
-    }else{
-      addZero = ""
-    }
-    this._value = `${addZero}${newNumber.toString()}`
-  }
-  get value(){
-    return this._value
-  }
-}
-
-export default ()=>{
+export default (twoDigitNumber: TwoDigitNumber)=>{
   const timers = vueData<TimersData>([])
   
   let uid: string
@@ -115,7 +99,7 @@ export default ()=>{
 
   function addTimer(){
     const newTimers = new Timers(timers.value)
-    newTimers.addTimer()
+    newTimers.addTimer(twoDigitNumber)
     timers.value = newTimers.value
   }
 
