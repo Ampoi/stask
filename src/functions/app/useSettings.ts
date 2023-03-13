@@ -33,24 +33,6 @@ interface SettingsValue {
   subjects: Array<Subject>
 }
 
-interface Settings {
-  data: SettingsValue
-}
-class Settings {
-  constructor(newSettings: SettingsValue | undefined, uid: string){
-    if(newSettings != undefined){
-      this.data = newSettings
-    }else{
-      this.data = defaultSettings
-      set(ref(db, `data/${uid}/settings`), defaultSettings)
-    }
-  }
-
-  get value(){
-    return this.data
-  }
-}
-
 export default ()=>{
   const settings = vueData<SettingsValue>({
     subjects: []
@@ -63,10 +45,14 @@ export default ()=>{
 
         get(child(dbRef, `data/${uid}/settings`)).then((snapshot) => {
           if (snapshot.exists()) {
-            const newData = snapshot.val()
-
-            const newSettings = new Settings(newData, uid)
-            settings.value = newSettings.value
+            const newData: SettingsValue = snapshot.val()
+            settings.value = newData
+          }else{
+            set(ref(db, `data/${uid}/settings`), defaultSettings)
+              .catch((err)=>{
+                console.error(err);
+              })
+            settings.value = Object.create(defaultSettings)
           }
         }).catch((error) => {
           console.error(error);
