@@ -25,14 +25,18 @@
           </div>
           <img src="../assets/Mockup.png" class="w-[880px] mx-auto -mt-20 z-0 relative" oncontextmenu="return false;">
         </div>
-        <div class="text-center py-8">
-          <h1 class="text-7xl font-bold">Staskの機能</h1>
+        <div class="py-8">
+          <h1 class="text-7xl font-bold text-center">Staskの機能</h1>
           <div class="max-w-3xl mx-auto  mt-4 grid grid-cols-2 gap-4 grid-rows-1">
-            <div class="bg-white h-[400px] p-8 rounded-sm">
-              <h2 class="text-3xl font-bold text-left">学生の課題に最適な<br>カードの表示</h2>
+            <div class="bg-white h-[440px] rounded-sm relative">
+              <h2 class="text-3xl font-bold text-left px-8 pt-8">学生の課題に最適な<br>カードの表示</h2>
+              <p class="px-8">Staskは一つ一つの課題をカードとして管理して、それらは学生が最も使いやすいようにデザインされています。</p>
+              <img src="../assets/card_demo.png" class="w-full absolute bottom-0">
             </div>
-            <div class="bg-white h-[400px] p-8 rounded-sm">
-              <h2 class="text-3xl font-bold text-left">期限をすぐ見れる<br>タイマー表示</h2>
+            <div class="bg-white h-[440px] rounded-sm relative">
+              <h2 class="text-3xl font-bold text-left px-8 pt-8">期限を見逃さない<br>タイマーの表示</h2>
+              <p class="px-8">Staskはカードとは別に期限のみを管理することもできるタイマー機能を備えています。</p>
+              <img src="../assets/timer_demo.png" class="w-full absolute bottom-0">
             </div>
           </div>
         </div>
