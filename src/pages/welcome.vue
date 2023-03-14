@@ -1,28 +1,54 @@
 <template>
   <v-app class="bg-slate-100">
     <v-app-bar
-      flat class="bg-transparent backdrop-blur-md"
+      flat class="bg-transparent px-8 py-3"
     >
       <template v-slot:append>
         <a
-          class="border-solid border-2 py-1.5 px-3.5 rounded-full text-md font-[Montserrat]"
+          class="bg-gradient-to-bl from-orange-300 to-red-400 font-bold text-white py-2.5 px-6 rounded-full"
           href="/login"
         >Get Started</a>
       </template>
     </v-app-bar>
     <v-main>
-      <main>
+      <main class="flex flex-col">
         <div class="text-center my-12">
-          <div class="flex flex-col gap-2">
-            <h1 class="text-5xl font-bold">課題管理を、もっと楽しく</h1>
+          <div class="flex flex-col gap-4 z-10 relative">
+            <h1 class="text-7xl font-bold">課題管理を、もっと楽しく</h1>
             <p>Staskは学生のために特化した課題管理アプリです。<br>Staskを使うことでより能動的に課題を進めることができるようになります。</p>
             <div>
-              <button
-                class="bg-gradient-to-br from-orange-300 to-red-400 font-bold text-white py-2 px-4 rounded-full"
-              >Get Started</button>
+              <a
+                class="bg-gradient-to-bl from-orange-300 to-red-400 font-bold text-white py-2.5 px-6 rounded-full"
+                href="/login"
+              >Get Started</a>
             </div>
           </div>
-          <img src="../assets/Mockup.png" class="w-[740px] mx-auto -mt-20" oncontextmenu="return false;">
+          <img src="../assets/Mockup.png" class="w-[880px] mx-auto -mt-20 z-0 relative" oncontextmenu="return false;">
+        </div>
+        <div class="text-center py-8">
+          <h1 class="text-7xl font-bold">Staskの機能</h1>
+          <div class="max-w-3xl mx-auto  mt-4 grid grid-cols-2 gap-4 grid-rows-1">
+            <div class="bg-white h-[400px] p-8 rounded-sm">
+              <h2 class="text-3xl font-bold text-left">学生の課題に最適な<br>カードの表示</h2>
+            </div>
+            <div class="bg-white h-[400px] p-8 rounded-sm">
+              <h2 class="text-3xl font-bold text-left">期限をすぐ見れる<br>タイマー表示</h2>
+            </div>
+          </div>
+        </div>
+        <div class="py-8">
+          <h1 class="text-center text-7xl font-bold">Staskの新機能</h1>
+          <div class="max-w-3xl mx-auto  mt-4 flex flex-col gap-4 grid-rows-1">
+            <a
+              class="bg-white p-8 hover:bg-white/20 transition-all duration-300 rounded-sm"
+              v-for="update in updates"
+              :key="update.key"
+              :href="update.html_url"
+            >
+              <h2 class="text-5xl font-bold text-black/10 -ml-5 -mt-3">#{{update.number}}</h2>
+              <h2 class="text-3xl font-bold -mt-6">{{update.title}}</h2>
+            </a>
+          </div>
         </div>
       </main>
       <footer class="my-4">
@@ -53,38 +79,13 @@ const analytics = getAnalytics(firebaseApp);
 export default {
   components: {TaskCard},
   data(){return{
-    updates:[],
-    card:{
-      title: "",
-      time: 60,
-      startPage: 0,
-      lastPage: 12,
-      nowPage: 0,
-      done: true,     
-      subject: 1
-    },
-    headerColor: true,
-    subjects: [
-      {index:0, title: "国語 (古文/現代文)", color:"#F44335"},
-      {index:1, title: "数学 (算数)", color:"#2196F3"},
-      {index:2, title: "理科 (物理/地学/生物/化学)", color:"#4BAF51"},
-      {index:3, title: "社会 (公民/地理/歴史)", color:"#FFC105"},
-      {index:4, title: "英語 (外国語)", color: "#E040FB"}
-    ]
+    updates:[]
   }},
   async mounted(){
     const updateData = await fetch("https://api.github.com/repos/ampoi/stask/issues?labels=new-release")
       .then((res)=>res.json())
     
     this.updates = updateData.slice().reverse()
-    
-    window.onscroll = ()=>{
-      if(window.scrollY < 480){
-        this.headerColor =  true //main bg is orange
-      }else{
-        this.headerColor =  false //main bg is white
-      }
-    }
   }
 }
 </script>
