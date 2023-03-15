@@ -14,7 +14,7 @@
       <main class="flex flex-col">
         <div class="text-center my-12">
           <div class="flex flex-col gap-4 z-10 relative">
-            <h1 class="text-7xl font-bold">課題管理を、もっと楽しく</h1>
+            <h1 class="text-[80px] tablet:text-5xl laptop:text-6xl desktop:text-7xl font-bold leading-none">課題管理を、<br class="tablet:hidden">もっと楽しく</h1>
             <p>Staskは学生のために特化した課題管理アプリです。<br>Staskを使うことでより能動的に課題を進めることができるようになります。</p>
             <div>
               <a
@@ -27,22 +27,26 @@
         </div>
         <div class="py-8">
           <h1 class="text-7xl font-bold text-center">Staskの機能</h1>
-          <div class="max-w-3xl mx-auto  mt-4 grid grid-cols-2 gap-4 grid-rows-1">
-            <div class="bg-white h-[440px] rounded-sm relative">
-              <h2 class="text-3xl font-bold text-left px-8 pt-8">学生の課題に最適な<br>カードの表示</h2>
-              <p class="px-8">Staskは一つ一つの課題をカードとして管理して、それらは学生が最も使いやすいようにデザインされています。</p>
-              <img src="../assets/card_demo.png" class="w-full absolute bottom-0">
+          <div class="max-w-3xl mx-auto px-4 mt-4 grid laptop:grid-cols-2 gap-4 grid-rows-1">
+            <div class="bg-white laptop:h-[440px] h-[200px] rounded-sm laptop:relative flex flex-row">
+              <img src="../assets/card_demo.png" class="laptop:w-full laptop:absolute bottom-0">
+              <div>
+                <h2 class="text-3xl font-bold text-left px-8 pt-8">学生の課題に最適な<br>カードの表示</h2>
+                <p class="px-8">Staskは一つ一つの課題をカードとして管理して、それらは学生が最も使いやすいようにデザインされています。</p>
+              </div>
             </div>
-            <div class="bg-white h-[440px] rounded-sm relative">
-              <h2 class="text-3xl font-bold text-left px-8 pt-8">期限を見逃さない<br>タイマーの表示</h2>
-              <p class="px-8">Staskはカードとは別に期限のみを管理することもできるタイマー機能を備えています。</p>
-              <img src="../assets/timer_demo.png" class="w-full absolute bottom-0">
+            <div class="bg-white laptop:h-[440px] h-[200px] rounded-sm laptop:relative flex flex-row">
+              <img src="../assets/timer_demo.png" class="laptop:w-full laptop:absolute bottom-0">
+              <div>
+                <h2 class="text-3xl font-bold text-left px-8 pt-8">期限を見逃さない<br>タイマーの表示</h2>
+                <p class="px-8">Staskはカードとは別に期限のみを管理することもできるタイマー機能を備えています。</p>
+              </div>
             </div>
           </div>
         </div>
         <div class="py-8">
           <h1 class="text-center text-7xl font-bold">Staskの新機能</h1>
-          <div class="max-w-3xl mx-auto  mt-4 flex flex-col gap-4 grid-rows-1">
+          <div class="max-w-3xl mx-auto px-4 mt-4 flex flex-col gap-4 grid-rows-1">
             <a
               class="bg-white p-8 hover:bg-white/20 transition-all duration-300 rounded-sm"
               v-for="update in updates"
