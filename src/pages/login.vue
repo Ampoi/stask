@@ -1,11 +1,6 @@
 <template>
   <v-app class="bg-gray-100">
-    <v-app-bar flat class="bg-transparent backdrop-blur-md px-16">
-      <a class="flex flex-row items-center justify-center" href="/">
-        <img src="../assets/Icon.svg" class="h-5">
-        <h2 class="font-bold text-xl">Stask</h2>
-      </a>
-    </v-app-bar>
+    <Header/>
     <v-main class="text-center pt-32">
       <div>
         <h1 class="text-5xl font-black">Login / CreateAccount</h1>
@@ -29,6 +24,8 @@ import { getAuth, GoogleAuthProvider, TwitterAuthProvider, signInWithPopup } fro
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
+import Header from "../components/header.vue"
+
 import firebaseConfig from "../data/firebaseConfig.ts"
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -39,6 +36,7 @@ const googleProvider = new GoogleAuthProvider();
 const twitterProvider = new TwitterAuthProvider();
 
 export default {
+  components: {Header},
   methods:{
     login(loginProvider){
       let useProvider
