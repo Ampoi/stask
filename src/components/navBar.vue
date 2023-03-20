@@ -46,34 +46,33 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  props: ["userName", "userImage", "updated", "tasks"],
-  emits: ["logout", "save", "opensettings"],
-  computed: {
-    getTaskTime(){
-      let time = 0
-      this.tasks.forEach(task => {
-        if(!task.done){
-          time += task.time
-        }
-      });
-      return time
-    },
-    getTaskDone(){
-      let allTaskAmount = 0
-      let doneTaskAmount = 0
-      this.tasks.forEach(task => {
-        allTaskAmount += 1
-        if(task.done == true){
-          doneTaskAmount += 1
-        }
-      })
-      return {
-        "all": allTaskAmount,
-        "done": doneTaskAmount
-      }
+<script setup>
+import { computed } from 'vue';
+const props = defineProps(["userName", "userImage", "updated", "tasks"])
+const emit = defineEmits(["logout", "save", "opensettings"])
+
+const getTaskTime = computed(()=>{
+  let time = 0
+  props.tasks.forEach(task => {
+    if(!task.done){
+      time += task.time
     }
+  });
+  return time
+})
+
+const getTaskDone = computed(()=>{
+  let allTaskAmount = 0
+  let doneTaskAmount = 0
+  props.tasks.forEach(task => {
+    allTaskAmount += 1
+    if(task.done == true){
+      doneTaskAmount += 1
+    }
+  })
+  return {
+    "all": allTaskAmount,
+    "done": doneTaskAmount
   }
-}
+})
 </script>
