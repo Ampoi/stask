@@ -11,12 +11,11 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  methods: {
-    goToWelcome(){
-      this.$router.push("/welcome")
-    }
-  }
+<script setup>
+import { useRouter } from "vue-router"
+
+const router = useRouter()
+function goToWelcome(){
+  router.push("/welcome")
 }
 </script>
