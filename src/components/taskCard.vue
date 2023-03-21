@@ -7,7 +7,7 @@
     <v-card-item>
       <div class="flex flex-row items-center">
         <!--達成ボタン-->
-        <checkButton
+        <CheckButton
           v-model:done="card.done"
           :borderColor="getSubjectColor(card.subject)"
         />
@@ -120,65 +120,54 @@
     </v-card-item>
   </v-card>
 </template>
-<script>
-import checkButton from "./taskCard/checkButton.vue"
+<script setup>
+import CheckButton from "./taskCard/checkButton.vue"
 
-export default{
-  components: {checkButton},
-  props: ["card", "onlydone", "beShowed", "subjects"],
-  emits: ["update:card", "deleteTask"],
-  data(){return{
-    showSubMenu: false
-  }},
-  watch: {
-    card: {
-      immediate: true,
-      deep: true,
-      handler: function () {
-        this.$emit("update:card", this.card)
-      }
-    }
-  },
-  methods: {
-    getNowNumber(start,now,end){
-      const ue = now - start
-      const sita = end - start
-      return ue / sita * 100
-    },
-    addPage(){
-      this.card.pages.push({
-        startPage: 1,
-        lastPage: 2,
-        done: false
-      })
-    },
-    deletePage(index){
-      this.card.pages.splice(index, 1)
-    },
-    getSubjectColor(subject){
-      if(this.subjects[subject] != undefined){
-        return this.subjects[subject].color
-      }else{
-        return "#E7E8E7"
-      }
-    }
-  },
-  computed: {
-    checkCardDone(){
-      if(this.beShowed){return true}
-      else{
-        if(this.onlydone){return this.card.done}
-        else{return !this.card.done}
-      }
-    }
-  },
-  mounted(){
-    if(this.card.pages == undefined){
-      this.card.pages = []
-    }
-    if(typeof(this.card.subject) != "number"){
-      this.card.subject = 1
-    }
+import { computed, onMounted, ref as vueData, defineProps, defineEmits, watch } from "vue"
+
+const props = defineProps(["card", "onlydone", "beShowed", "subjects"])
+const emit = defineEmits(["update:card", "deleteTask"])
+
+const showSubMenu = vueData(false)
+
+watch(props.card, ()=>{
+  emit("update:card", props.card)
+}, {deep: true, immediate: true})
+
+function addPage(){
+  props.card.pages.push({
+    startPage: 1,
+    lastPage: 2,
+    done: false
+  })
+}
+
+function deletePage(index){
+  props.card.pages.splice(index, 1)
+}
+
+function getSubjectColor(subject){
+  if(props.subjects[subject] != undefined){
+    return props.subjects[subject].color
+  }else{
+    return "#E7E8E7"
   }
 }
+
+const checkCardDone = computed(()=>{
+  if(props.beShowed){return true}
+  else{
+    if(props.onlydone){return props.card.done}
+    else{return !props.card.done}
+  }
+})
+
+onMounted(()=>{
+  if(props.card.pages == undefined){
+    props.card.pages = []
+  }
+  if(typeof(props.card.subject) != "number"){
+    props.card.subject = 1
+  }
+})
 </script>
