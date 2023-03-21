@@ -64,28 +64,24 @@
     </v-main>
   </v-app>
 </template>
-<script>
+<script setup lang="ts">
+import { ref as vueData, onMounted } from "vue"
+
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
-import firebaseConfig from "../data/firebaseConfig.ts"
+import firebaseConfig from "../data/firebaseConfig"
 
-import TaskCard from "../components/taskCard.vue"
 import Header from "../components/header.vue"
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 
-export default {
-  components: {TaskCard, Header},
-  data(){return{
-    updates:[]
-  }},
-  async mounted(){
-    const updateData = await fetch("https://api.github.com/repos/ampoi/stask/issues?labels=new-release")
-      .then((res)=>res.json())
-    
-    this.updates = updateData.slice().reverse()
-  }
-}
+const updates = vueData<Array<Object>>([])
+
+onMounted(async ()=>{
+  const updateData = await fetch("https://api.github.com/repos/ampoi/stask/issues?labels=new-release")
+    .then((res)=>res.json())
+  updates.value = updateData.slice().reverse()
+})
 </script>

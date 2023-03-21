@@ -112,6 +112,7 @@
     </v-main>
   </v-app>
 </template>
+
 <script setup lang="ts">
 import { ref as vueData, onMounted, onBeforeMount } from "vue"
 import { useRouter } from "vue-router"
