@@ -14,8 +14,8 @@
   </div>
 </template>
 
-<script>
-export default{
-  emits: ["saved"]  
-}
+<script setup lang="ts">
+const emit = defineEmits<{
+  (e: "saved"): void
+}>()
 </script>
