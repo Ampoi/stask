@@ -10,14 +10,17 @@
     >mdi-check</v-icon>
   </v-btn>
 </template>
-<script>
-export default {
-  props:["done","borderColor"],
-  emits:["update:done"],
-  methods: {
-    changeDone(){
-      this.$emit("update:done", !this.done)
-    }
-  }
+<script setup lang="ts">
+const props = defineProps<{
+  done: boolean,
+  borderColor: string
+}>()
+
+const emit = defineEmits<{
+  (e: "update:done", done: boolean): void
+}>()
+
+function changeDone(){
+  emit("update:done", !props.done)
 }
 </script>
