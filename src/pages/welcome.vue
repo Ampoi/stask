@@ -40,8 +40,8 @@
           <div class="max-w-3xl mx-auto px-4 mt-4 flex flex-col gap-4 grid-rows-1">
             <a
               class="bg-white p-8 hover:bg-white/20 transition-all duration-300 rounded-sm"
-              v-for="update in updates"
-              :key="update.key"
+              v-for="(update, index) in updates"
+              :key="index"
               :href="update.html_url"
             >
               <h2 class="text-5xl font-bold text-black/10 -ml-5 -mt-3">#{{update.number}}</h2>
@@ -77,7 +77,13 @@ import Header from "../components/header.vue"
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 
-const updates = vueData<Array<Object>>([])
+type Update = {
+  html_url: string,
+  number: number,
+  title: string
+}
+
+const updates = vueData<Array<Update>>([])
 
 onMounted(async ()=>{
   const updateData = await fetch("https://api.github.com/repos/ampoi/stask/issues?labels=new-release")
