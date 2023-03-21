@@ -30,24 +30,23 @@
         <p class="text-sm">{{ updated ? "保存されました" : "保存されていません" }}</p>
       </div>
       <!--保存ボタン-->
-      <button
-        class="flex flex-row gap-1.5 items-baseline hover:bg-slate-500/10 p-2 rounded-lg transition"
-        @click="$emit('save')">
+      <NavBarButton @buttonClicked="$emit('save')">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-content-save</v-icon>
         <p class="text-sm">保存する</p>
-      </button>
+      </NavBarButton>
       <!--設定ボタン-->
-      <button
-        class="flex flex-row gap-1.5 items-baseline hover:bg-slate-500/10 p-2 rounded-lg transition"
-        @click="$emit('opensettings')">
+      <NavBarButton @buttonClicked="$emit('opensettings')">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-cog</v-icon>
         <p class="text-sm">設定</p>
-      </button>
+      </NavBarButton>
     </div>
   </div>
 </template>
 <script setup>
 import { computed } from 'vue';
+
+import NavBarButton from "../components/navBar/button.vue"
+
 const props = defineProps(["userName", "userImage", "updated", "tasks"])
 const emit = defineEmits(["logout", "save", "opensettings"])
 
