@@ -120,13 +120,36 @@
     </v-card-item>
   </v-card>
 </template>
-<script setup>
+<script setup lang="ts">
 import CheckButton from "./taskCard/checkButton.vue"
 
-import { computed, onMounted, ref as vueData, defineProps, defineEmits, watch } from "vue"
+import { computed, onMounted, ref as vueData, watch } from "vue"
 
-const props = defineProps(["card", "onlydone", "beShowed", "subjects"])
-const emit = defineEmits(["update:card", "deleteTask"])
+type Card = {
+  title: string
+  time: number
+  pages: Array<Object>
+  done: boolean
+  subject: number
+  term: string
+}
+
+type Subject = {
+  index: number
+  title: string
+  color: string
+}
+
+const props = defineProps<{
+  card: Card,
+  onlydone: boolean,
+  subjects: Array<Subject>
+}>()
+
+const emit = defineEmits<{
+  (e:"update:card", card: Card): void,
+  (e: "deleteTask"): void
+}>()
 
 const showSubMenu = vueData(false)
 
@@ -142,11 +165,11 @@ function addPage(){
   })
 }
 
-function deletePage(index){
+function deletePage(index: number){
   props.card.pages.splice(index, 1)
 }
 
-function getSubjectColor(subject){
+function getSubjectColor(subject: number){
   if(props.subjects[subject] != undefined){
     return props.subjects[subject].color
   }else{
@@ -155,10 +178,10 @@ function getSubjectColor(subject){
 }
 
 const checkCardDone = computed(()=>{
-  if(props.beShowed){return true}
-  else{
-    if(props.onlydone){return props.card.done}
-    else{return !props.card.done}
+  if(props.onlydone){
+    return props.card.done
+  }else{
+    return !props.card.done
   }
 })
 
