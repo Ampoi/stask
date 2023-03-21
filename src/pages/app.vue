@@ -19,7 +19,7 @@
     </v-app-bar>
 
     <!--保存通知-->
-    <sBanner
+    <SavedBanner
       v-if="showBanner"
       @saved="showBanner = false"
     />
@@ -31,19 +31,20 @@
       class="-mt-16 pt-16 h-auto bg-slate-800 text-white"
       :permanent="checkPermanent()"
     >
-      <navBar
+      <NavBar
         :userImage="userImage"
         :userName="userName"
         :updated="updated"
         :tasks="cards"
         @logout="logout"
         @save="saveWithBanner"
-        @opensettings="openSettings"/>
+        @opensettings="openSettings"
+      />
     </v-navigation-drawer>
 
     <!--設定-->
     <v-dialog v-model="showSettings">
-      <settingDialog
+      <SettingDialog
         :settings="settings"
         @saveSettings="saveSettings"
         @getSubjectColor="getSubjectColor"
@@ -75,7 +76,7 @@
             <v-icon class="text-2xl">mdi-plus</v-icon>
           </button>
           <div class="h-40 flex flex-row gap-4 overflow-x-auto">
-            <termTimer
+            <TermTimer
               v-for="(timer, index) in timers"
               :key="index"
               v-model="timers[index]"
@@ -114,19 +115,23 @@
 <script setup lang="ts">
 import { ref as vueData, onMounted, onBeforeMount } from "vue"
 import { useRouter } from "vue-router"
+
 //コンポーネント
-import navBar from "../components/navBar.vue"
+import NavBar from "../components/navBar.vue"
 import TaskCard from "../components/taskCard.vue"
-import sBanner from "../components/savedBanner.vue"
-import settingDialog from "../components/settings.vue"
-import termTimer from "../components/timer.vue"
+import SavedBanner from "../components/savedBanner.vue"
+import SettingDialog from "../components/settings.vue"
+import TermTimer from "../components/timer.vue"
+
 //firebase
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
+
 //microcms
 import { createClient } from "microcms-js-sdk"
+
 //コンポーザブル関数
 import useUserData from "../functions/app/useUserData"
 import useCards from "../functions/app/useCards"
