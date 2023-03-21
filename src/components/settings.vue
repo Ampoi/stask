@@ -55,8 +55,18 @@
 <script setup lang="ts">
 import { ref as vueData, watch } from "vue"
 
+type Subject = {
+  index: number
+  title: string
+  color: string
+}
+
+type Settings = {
+  subjects: Array<Subject>
+}
+
 const props = defineProps<{
-  settings: Object
+  settings: Settings
 }>()
 
 const emits = defineEmits<{
