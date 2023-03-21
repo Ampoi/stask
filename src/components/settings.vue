@@ -52,22 +52,23 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  props: ["settings"],
-  emits: ["saveSettings", "getSubjectColor", "deleteSubject", "addSubject", "closeSettings"],
-  
-  data(){return{
-    settingChanged: false
-  }},
-  
-  watch: {
-    settings: {
-      deep: true,
-      handler(){
-        this.settingChanged = true
-      }
-    }
-  }
-}
+<script setup lang="ts">
+import { ref as vueData, watch } from "vue"
+
+const props = defineProps<{
+  settings: Object
+}>()
+
+const emits = defineEmits<{
+  (e: "saveSettings"): void
+  (e: "getSubjectColor", subjectIndex: number): void
+  (e: "deleteSubject", subjectIndex: number): void
+  (e: "addSubject"): void
+}>()
+
+const settingChanged = vueData<boolean>(false)
+
+watch(props.settings, ()=>{
+  settingChanged.value = true
+}, {deep: true})
 </script>
