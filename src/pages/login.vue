@@ -19,45 +19,40 @@
     </v-main>
   </v-app>
 </template>
-<script>
+<script setup lang="ts">
+import { useRouter } from "vue-router";
+
 import { getAuth, GoogleAuthProvider, TwitterAuthProvider, signInWithPopup } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 import Header from "../components/header.vue"
 
-import firebaseConfig from "../data/firebaseConfig.ts"
+import firebaseConfig from "../data/firebaseConfig"
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 
 const auth = getAuth(firebaseApp);
-const googleProvider = new GoogleAuthProvider();
-const twitterProvider = new TwitterAuthProvider();
+const provider = {
+  "google": new GoogleAuthProvider(),
+  "twitter": new TwitterAuthProvider()
+}
 
-export default {
-  components: {Header},
-  methods:{
-    login(loginProvider){
-      let useProvider
-      switch(loginProvider){
-        case "google":
-          useProvider = googleProvider
-          break;
-        case "twitter":
-          useProvider = twitterProvider
-          break;
-        default:
-          break;
-      }
-      signInWithPopup(auth, useProvider)
-        .then((result) => {
-          this.$router.push("/")
-        })
-        .catch((error) => {
-          console.error(error)
-        });
-    }
+const router = useRouter()
+
+function login(loginProvider: string){
+  const useProvider: GoogleAuthProvider | TwitterAuthProvider | undefined = provider[loginProvider]
+  if(useProvider != null){
+    signInWithPopup(auth, useProvider)
+      .then((result) => {
+        router.push("/")
+      })
+      .catch((error) => {
+        console.error(error)
+      });
+  }else{
+    console.error("selected provider is unexpected");
   }
 }
 </script>

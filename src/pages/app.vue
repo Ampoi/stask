@@ -127,8 +127,8 @@ import TermTimer from "../components/timer.vue"
 //firebase
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { getDatabase, ref, get, set, child } from "firebase/database";
+import { getAuth, signOut } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
 
 //microcms
 import { createClient } from "microcms-js-sdk"
