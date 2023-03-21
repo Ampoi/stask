@@ -125,10 +125,16 @@ import CheckButton from "./taskCard/checkButton.vue"
 
 import { computed, onMounted, ref as vueData, watch } from "vue"
 
+type Page = {
+  done: boolean
+  startPage: number
+  lastPage: number
+}
+
 type Card = {
   title: string
   time: number
-  pages: Array<Object>
+  pages: Array<Page>
   done: boolean
   subject: number
   term: string
@@ -169,7 +175,7 @@ function deletePage(index: number){
   props.card.pages.splice(index, 1)
 }
 
-function getSubjectColor(subject: number){
+function getSubjectColor<String>(subject: number){
   if(props.subjects[subject] != undefined){
     return props.subjects[subject].color
   }else{
