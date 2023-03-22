@@ -125,20 +125,7 @@ import CheckButton from "./taskCard/checkButton.vue"
 
 import { computed, onMounted, ref as vueData, watch } from "vue"
 
-type Page = {
-  done: boolean
-  startPage: number
-  lastPage: number
-}
-
-type Card = {
-  title: string
-  time: number
-  pages: Array<Page>
-  done: boolean
-  subject: number
-  term: string
-}
+import type { Card } from "../types/card"
 
 type Subject = {
   index: number

@@ -5,6 +5,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
 
 import firebaseConfig from "../../data/firebaseConfig"
+import type { Timer } from "../../types/timer"
 
 const firebaseApp = initializeApp(firebaseConfig);
 
@@ -12,11 +13,6 @@ const auth = getAuth(firebaseApp);
 
 const db = getDatabase()
 const dbRef = ref(db);
-
-interface Timer {
-  name: string
-  date: `${number}-${string}-${string}`
-}
 
 type TimersData = Array<Timer>
 

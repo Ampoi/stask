@@ -58,6 +58,8 @@
 <script setup lang="ts">
 import {ref as vueData, computed} from "vue"
 
+import type { Date } from "../types/timer"
+
 const props = defineProps(["modelValue"])
 const emit = defineEmits(["update:modelValue", "deleteTimer"])
 
@@ -76,7 +78,6 @@ function updateName(event: any){
   }
 }
 
-type Date = `${number}-${number}-${number}`
 function updateDate(event: any){
   const newDate: Date|undefined = event.target.value
   if(newDate != undefined){

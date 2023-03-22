@@ -41,7 +41,7 @@ const provider = {
 
 const router = useRouter()
 
-function login(loginProvider: string){
+function login(loginProvider: "google"|"twitter"){
   const useProvider: GoogleAuthProvider | TwitterAuthProvider | undefined = provider[loginProvider]
   if(useProvider != null){
     signInWithPopup(auth, useProvider)

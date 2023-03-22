@@ -5,6 +5,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
 
 import firebaseConfig from "../../data/firebaseConfig"
+import type { Settings as SettingsValue } from "../../types/settings";
 
 const firebaseApp = initializeApp(firebaseConfig);
 
@@ -21,16 +22,6 @@ const defaultSettings = {
     {index:3, title: "社会 (公民/地理/歴史)", color:"#FFC105"},
     {index:4, title: "英語 (外国語)", color: "#E040FB"}
   ]
-}
-
-interface Subject {
-  index: number
-  title: string
-  color: string
-}
-
-interface SettingsValue {
-  subjects: Array<Subject>
 }
 
 export default ()=>{

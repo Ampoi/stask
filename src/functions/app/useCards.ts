@@ -5,6 +5,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
 
 import firebaseConfig from "../../data/firebaseConfig"
+import type { Card } from "../../types/card"
 
 const firebaseApp = initializeApp(firebaseConfig);
 
@@ -20,15 +21,6 @@ const welcomeCard = {
   done: false,
   subject: 1,
   term: "2023-01-01"
-}
-
-type Card = {
-  title: string
-  time: number
-  pages: Array<Object>
-  done: boolean
-  subject: number
-  term: string
 }
 
 type CardsData = Array<Card>
