@@ -197,7 +197,10 @@ const {
   addTimer, deleteTimer
 } = useTimers(twoDigitNumber)
 //設定
-const {settings} = useSettings()
+const {
+  settings,
+  addSubject, deleteSubject,
+} = useSettings()
 
 
 function logout(){
@@ -223,32 +226,9 @@ function checkPermanent(){
   }
 }
 
-function addSubject(){
-  settings.value.subjects.push({index:0, title: "新規教科", color:"#E7E8E7"})
-  setSubjectIndex()
-}
-
-function deleteSubject(index: number){
-  settings.value.subjects.splice(index, 1)
-  setSubjectIndex()
-}
-
-function setSubjectIndex(){
-  let i = 0
-  settings.value.subjects.forEach(()=>{
-    settings.value.subjects[i].index = i
-    i++
-  })
-}
-
 function openSettings(){
   showSettings.value = true
   showNavbar.value = false
-}
-
-function getSubjectColor(index: number){
-  showColorPicker.value = true
-  selectedSubjectIndex.value = index
 }
 
 function saveSettings(){
@@ -256,8 +236,6 @@ function saveSettings(){
   showSettings.value = false
   showBanner.value = true
 }
-
-
 
 onMounted(()=>{
   window.addEventListener('beforeunload', (event) => {

@@ -51,5 +51,32 @@ export default ()=>{
       }
     });
   })
-  return { settings }
+
+  function addSubject(){
+    const defaultSubject = {
+      index:0,
+      title: "新規教科",
+      color:"#E7E8E7"
+    }
+    settings.value.subjects.push(defaultSubject)
+    setSubjectIndex()
+  }
+
+  function deleteSubject(index: number){
+    settings.value.subjects.splice(index, 1)
+    setSubjectIndex()
+  }
+
+  function setSubjectIndex(){
+    let i = 0
+    settings.value.subjects.forEach(()=>{
+      settings.value.subjects[i].index = i
+      i++
+    })
+  }
+
+  return {
+    settings,
+    addSubject, deleteSubject,
+  }
 }
