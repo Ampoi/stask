@@ -202,7 +202,6 @@ const {
   addSubject, deleteSubject,
 } = useSettings()
 
-
 function logout(){
   signOut(auth).then(() => {
     console.log("logout success!");
@@ -235,6 +234,11 @@ function saveSettings(){
   set(ref(db, `data/${uid.value}/settings`), settings.value)
   showSettings.value = false
   showBanner.value = true
+}
+
+function getSubjectColor(index: number){
+  showColorPicker.value = true
+  selectedSubjectIndex.value = index
 }
 
 onMounted(()=>{
