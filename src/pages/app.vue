@@ -88,12 +88,12 @@
         </div>
 
         <div class="flex flex-col gap-4">
-          <p class="text-black font-bold">未達成のタスク</p>
+          <p class="text-black font-bold items-center flex flex-row"><v-icon>mdi-fire</v-icon>今やるタスク</p>
           <TaskCard
             v-for="(card, cardIndex) in cards"
             :key="cardIndex"
             v-model:card="cards[cardIndex]"
-            :onlydone="false"
+            show-card-type="concentrate"
             :subjects="settings.subjects"
             v-touch="{
               left: () => card.done = true
@@ -108,7 +108,7 @@
             v-for="(card, cardIndex) in cards"
             :key="cardIndex"
             v-model:card="cards[cardIndex]"
-            :onlydone="false"
+            show-card-type="incomplete"
             :subjects="settings.subjects"
             v-touch="{
               left: () => card.done = true
@@ -128,7 +128,7 @@
             v-for="(card, cardIndex) in cards"
             :key="cardIndex"
             v-model:card="cards[cardIndex]"
-            :onlydone="true"
+            show-card-type="done"
             :subjects="settings.subjects"
             v-touch="{
               right: () => card.done = false,

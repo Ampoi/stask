@@ -10,7 +10,8 @@ type Card = {
   pages: Array<Page>
   done: boolean
   subject: number
-  term: string
+  term: string,
+  concentrate: boolean
 }
 
 export type { Card, Page }

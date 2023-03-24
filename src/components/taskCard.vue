@@ -2,7 +2,7 @@
   <v-card
     flat class="border-2 border-l-8 rounded-xl bg-white"
     :style="`border-color:${getSubjectColor(card.subject)}6F;`"
-    v-if="checkCardDone"
+    v-if="checkCardType"
   >
     <v-card-item>
       <div class="flex flex-row items-center">
@@ -133,9 +133,11 @@ type Subject = {
   color: string
 }
 
+type CardType = "done" | "incomplete" | "concentrate"
+
 const props = defineProps<{
   card: Card,
-  onlydone: boolean,
+  showCardType: CardType,
   subjects: Array<Subject>
 }>()
 
@@ -170,12 +172,16 @@ function getSubjectColor(subject: number): string{
   }
 }
 
-const checkCardDone = computed(()=>{
-  if(props.onlydone){
-    return props.card.done
+const checkCardType = computed(()=>{
+  let cardType: CardType
+  if( props.card.done == true && props.card.concentrate == true){
+    cardType = "concentrate"
+  }else if(props.card.done == true){
+    cardType = "incomplete"
   }else{
-    return !props.card.done
+    cardType = "done"
   }
+  return (cardType == props.showCardType)
 })
 
 onMounted(()=>{
