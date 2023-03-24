@@ -66,55 +66,78 @@
     <v-main
       class="bg-gray-100 overflow-auto pb-20"
     >
-      <div class="flex flex-col mx-auto px-4 gap-4 max-w-xl">
-        <p class="text-black font-bold">期限一覧</p>
-        <div class="h-40 flex flex-row gap-4">
-          <button
-            class="p-4 rounded-lg duration-300 hover:bg-white/70"
-            @click="addTimer"
-          >
-            <v-icon class="text-2xl">mdi-plus</v-icon>
-          </button>
-          <div class="h-40 flex flex-row gap-4 overflow-x-auto">
-            <TermTimer
-              v-for="(timer, index) in timers"
-              :key="index"
-              v-model="timers[index]"
-              @deleteTimer="deleteTimer(index)"
-            />
+      <div class="flex flex-col mx-auto px-4 gap-8 max-w-xl">
+        <div class="flex flex-col gap-4">
+          <p class="text-black font-bold">期限一覧</p>
+          <div class="h-40 flex flex-row gap-4">
+            <button
+              class="p-4 rounded-lg duration-300 hover:bg-white/70"
+              @click="addTimer"
+            >
+              <v-icon class="text-2xl">mdi-plus</v-icon>
+            </button>
+            <div class="h-40 flex flex-row gap-4 overflow-x-auto">
+              <TermTimer
+                v-for="(timer, index) in timers"
+                :key="index"
+                v-model="timers[index]"
+                @deleteTimer="deleteTimer(index)"
+              />
+            </div>
           </div>
         </div>
-        <p class="text-black font-bold">未達成のタスク</p>
-        <TaskCard
-          v-for="(card, cardIndex) in cards"
-          :key="cardIndex"
-          v-model:card="cards[cardIndex]"
-          :onlydone="false"
-          :subjects="settings.subjects"
-          v-touch="{
-            left: () => card.done = true
-          }"
-          @deleteTask="deleteCard(cardIndex)"
-        />
-        <div class="flex flex-row justify-between text-black font-bold">
-          <p>達成済みのタスク</p>
-          <button
-            @click="deleteDoneCard()"
-          >達成済みのタスクを削除</button>
+
+        <div class="flex flex-col gap-4">
+          <p class="text-black font-bold">未達成のタスク</p>
+          <TaskCard
+            v-for="(card, cardIndex) in cards"
+            :key="cardIndex"
+            v-model:card="cards[cardIndex]"
+            :onlydone="false"
+            :subjects="settings.subjects"
+            v-touch="{
+              left: () => card.done = true
+            }"
+            @deleteTask="deleteCard(cardIndex)"
+          />
         </div>
-        <TaskCard
-          v-for="(card, cardIndex) in cards"
-          :key="cardIndex"
-          v-model:card="cards[cardIndex]"
-          :onlydone="true"
-          :subjects="settings.subjects"
-          v-touch="{
-            right: () => card.done = false,
-            left: () => deleteCard(cardIndex)
-          }"
-          @deleteTask="deleteCard(cardIndex)"
-          class="opacity-50"
-        />
+
+        <div class="flex flex-col gap-4">
+          <p class="text-black font-bold">未達成のタスク</p>
+          <TaskCard
+            v-for="(card, cardIndex) in cards"
+            :key="cardIndex"
+            v-model:card="cards[cardIndex]"
+            :onlydone="false"
+            :subjects="settings.subjects"
+            v-touch="{
+              left: () => card.done = true
+            }"
+            @deleteTask="deleteCard(cardIndex)"
+          />
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-row justify-between text-black font-bold">
+            <p>達成済みのタスク</p>
+            <button
+              @click="deleteDoneCard()"
+            >達成済みのタスクを削除</button>
+          </div>
+          <TaskCard
+            v-for="(card, cardIndex) in cards"
+            :key="cardIndex"
+            v-model:card="cards[cardIndex]"
+            :onlydone="true"
+            :subjects="settings.subjects"
+            v-touch="{
+              right: () => card.done = false,
+              left: () => deleteCard(cardIndex)
+            }"
+            @deleteTask="deleteCard(cardIndex)"
+            class="opacity-50"
+          />
+        </div>
       </div>
     </v-main>
   </v-app>
