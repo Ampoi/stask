@@ -162,7 +162,7 @@ function deletePage(index: number){
   props.card.pages.splice(index, 1)
 }
 
-function getSubjectColor<String>(subject: number){
+function getSubjectColor(subject: number): string{
   if(props.subjects[subject] != undefined){
     return props.subjects[subject].color
   }else{
