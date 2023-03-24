@@ -91,6 +91,9 @@
           v-model:card="cards[cardIndex]"
           :onlydone="false"
           :subjects="settings.subjects"
+          v-touch="{
+            left: () => card.done = true
+          }"
           @deleteTask="deleteCard(cardIndex)"
         />
         <div class="flex flex-row justify-between text-black font-bold">
@@ -105,6 +108,10 @@
           v-model:card="cards[cardIndex]"
           :onlydone="true"
           :subjects="settings.subjects"
+          v-touch="{
+            right: () => card.done = false,
+            left: () => deleteCard(cardIndex)
+          }"
           @deleteTask="deleteCard(cardIndex)"
           class="opacity-50"
         />
