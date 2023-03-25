@@ -10,7 +10,12 @@
     >
     {{ pressTime }}
       <v-card-item>
-        <v-progress-circular :model-value="pressTime" size="50" :color="`#${getSubjectColor(card.subject)}`" style="transiton: none !important;">
+        <v-progress-circular
+          :model-value="pressTime*4"
+          size="50"
+          color="red"
+          v-if="pressTime > 0"
+        >
           <v-icon>mdi-fire</v-icon>
         </v-progress-circular>
         <div class="flex flex-row items-center">
@@ -181,11 +186,24 @@ function getSubjectColor(subject: number): string{
   }
 }
 
+function getCardType(card: Card): CardType{
+  if( card.done == true && card.concentrate == true){
+    return "concentrate"
+  }else if(card.done == true){
+    return "incomplete"
+  }else{
+    return "done"
+  }
+}
+
+const checkCardType = computed(()=>{
+  const cardType = getCardType(props.card)
+  return (cardType == props.showCardType)
+})
+
 function setConcentrate(){
   window.alert("set concentrate!")
-  if(props.card.done == false){
-    props.card.concentrate = true
-  }
+  props.card.concentrate = true
 }
 
 let pressTimer: number
@@ -193,32 +211,27 @@ let addPressTime: number
 const pressTime = vueData<number>(0)
 
 function startLongPress(){
-  addPressTime = setInterval(()=>{
-    pressTime.value += 8
-  }, 20)
   pressTimer = setTimeout(()=>{
-    setConcentrate()
-    finishLongPress()
-  }, 600)
+
+    addPressTime = setInterval(()=>{
+      pressTime.value += 1
+      if(pressTime.value >= 35){
+        const cardType = getCardType(props.card)
+        if(cardType == "incomplete"){
+          setConcentrate()
+        }
+        finishLongPress()
+      }
+    }, 20)
+
+    clearTimeout(pressTimer)
+  }, 300)
 }
 
 function finishLongPress(){
-  clearTimeout(pressTimer)
   clearInterval(addPressTime)
   pressTime.value = 0
 }
-
-const checkCardType = computed(()=>{
-  let cardType: CardType
-  if( props.card.done == true && props.card.concentrate == true){
-    cardType = "concentrate"
-  }else if(props.card.done == true){
-    cardType = "incomplete"
-  }else{
-    cardType = "done"
-  }
-  return (cardType == props.showCardType)
-})
 
 onMounted(()=>{
   if(props.card.pages == undefined){
