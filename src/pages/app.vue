@@ -177,23 +177,10 @@ const analytics = getAnalytics(firebaseApp);
 const auth = getAuth(firebaseApp);
 
 const db = getDatabase()
-const dbRef = ref(db);
 
 const client = createClient({
   serviceDomain: import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN,
   apiKey: import.meta.env.VITE_MICROCMS_APIKEY
-})
-
-const checkServerUpdating = new Promise(()=>{
-  client
-    .get({
-      endpoint: "stask_settings"
-    })
-    .then((res)=>{
-      if(res.nowUpdating){
-        console.log("updating!");
-      }
-    }) 
 })
 
 function twoDigitNumber(newNumber: number):string {
