@@ -8,8 +8,11 @@
       @touchstart="startLongPress"
       @touchend="finishLongPress"
     >
+    {{ pressTime }}
       <v-card-item>
-        {{ pressTime }}
+        <v-progress-circular :model-value="pressTime" size="50" :color="`#${getSubjectColor(card.subject)}`" style="transiton: none !important;">
+          <v-icon>mdi-fire</v-icon>
+        </v-progress-circular>
         <div class="flex flex-row items-center">
           <!--達成ボタン-->
           <CheckButton
@@ -180,7 +183,9 @@ function getSubjectColor(subject: number): string{
 
 function setConcentrate(){
   window.alert("set concentrate!")
-  props.card.concentrate = true
+  if(props.card.done == false){
+    props.card.concentrate = true
+  }
 }
 
 let pressTimer: number
@@ -189,8 +194,8 @@ const pressTime = vueData<number>(0)
 
 function startLongPress(){
   addPressTime = setInterval(()=>{
-    pressTime.value += 1
-  }, 1)
+    pressTime.value += 8
+  }, 20)
   pressTimer = setTimeout(()=>{
     setConcentrate()
     finishLongPress()
