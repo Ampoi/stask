@@ -1,23 +1,18 @@
 <template>
   <v-card
-    flat class="border-2 border-l-8 rounded-xl bg-white"
-    :style="`border-color:${getSubjectColor(card.subject)}6F;`"
+    flat class="border-2 border-l-8 rounded-xl bg-white relative"
+    :style="`
+      border-color:${getSubjectColor(card.subject)}6F;
+      transform: scale(${1 + ((pressTime/100)**2)/20});
+    `"
     v-if="checkCardType"
+    oncontextmenu="return false;"
   >
     <div
       @touchstart="startLongPress"
       @touchend="finishLongPress"
     >
-    {{ pressTime }}
-      <v-card-item>
-        <v-progress-circular
-          :model-value="pressTime*4"
-          size="50"
-          color="red"
-          v-if="pressTime > 0"
-        >
-          <v-icon>mdi-fire</v-icon>
-        </v-progress-circular>
+    <v-card-item>
         <div class="flex flex-row items-center">
           <!--達成ボタン-->
           <CheckButton
@@ -187,9 +182,9 @@ function getSubjectColor(subject: number): string{
 }
 
 function getCardType(card: Card): CardType{
-  if( card.done == true && card.concentrate == true){
+  if( card.done == false && card.concentrate == true){
     return "concentrate"
-  }else if(card.done == true){
+  }else if(card.done == false){
     return "incomplete"
   }else{
     return "done"
@@ -215,17 +210,17 @@ function startLongPress(){
 
     addPressTime = setInterval(()=>{
       pressTime.value += 1
-      if(pressTime.value >= 35){
+      if(pressTime.value >= 100){
         const cardType = getCardType(props.card)
         if(cardType == "incomplete"){
           setConcentrate()
         }
         finishLongPress()
       }
-    }, 20)
+    }, 2)
 
     clearTimeout(pressTimer)
-  }, 300)
+  }, 200)
 }
 
 function finishLongPress(){
