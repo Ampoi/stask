@@ -1,6 +1,7 @@
 <template>
   <v-card
     flat class="border-2 border-l-8 rounded-xl bg-white relative"
+    :class="{'shadow-lg shadow-orange-400/30': (getCardType == 'concentrate')}"
     :style="`
       border-color:${getSubjectColor(card.subject)}6F;
       transform: scale(${1 + ((pressTime/100)**2)/20});
@@ -122,7 +123,7 @@
                 class="h-12 grid place-content-center px-2 box-border border-orange-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold
                        hover:bg-orange-300/80 hover:text-white"
                :class="{'text-orange-400 bg-white': !card.concentrate, 'text-white bg-orange-400': card.concentrate}"
-                @click="turnConcentrate(getCardType())"
+                @click="turnConcentrate(getCardType)"
                 title="課題を今やることに設定する"><v-icon>mdi-fire</v-icon></button>
               <button
                 class="h-12 grid place-content-center px-2 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
@@ -188,7 +189,7 @@ function getSubjectColor(subject: number): string{
   }
 }
 
-function getCardType(): CardType{
+const getCardType = computed(()=>{
   if( props.card.done == false && props.card.concentrate == true){
     return "concentrate"
   }else if(props.card.done == false){
@@ -196,10 +197,10 @@ function getCardType(): CardType{
   }else{
     return "done"
   }
-}
+})
 
 const checkCardType = computed(()=>{
-  const cardType = getCardType()
+  const cardType = getCardType.value
   return (cardType == props.showCardType)
 })
 
@@ -219,12 +220,10 @@ function startLongPress(){
   pressTimer = setTimeout(()=>{
 
     addPressTime = setInterval(()=>{
-      pressTime.value += 1
-      console.log(pressTime.value);
-      
+      pressTime.value += 1      
       if(pressTime.value >= 100){
-        const cardType = getCardType()
-        turnConcentrate(cardType)
+        const cardType = getCardType
+        turnConcentrate(cardType.value)
         finishLongPress()
       }
     }, 2)
