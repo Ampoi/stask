@@ -220,6 +220,8 @@ function startLongPress(){
 
     addPressTime = setInterval(()=>{
       pressTime.value += 1
+      console.log(pressTime.value);
+      
       if(pressTime.value >= 100){
         const cardType = getCardType()
         turnConcentrate(cardType)
@@ -232,6 +234,7 @@ function startLongPress(){
 }
 
 function finishLongPress(){
+  clearTimeout(pressTimer)
   clearInterval(addPressTime)
   pressTime.value = 0
 }
