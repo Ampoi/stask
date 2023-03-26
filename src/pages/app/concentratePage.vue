@@ -13,17 +13,19 @@
       <div class="flex flex-col mx-auto px-4 gap-4 max-w-xl">
         <div v-for="card in cards">
           <v-card
-            flat class="border-2 border-l-8 rounded-xl bg-black relative border-orange-300"
+            flat class="border-2 border-l-8 rounded-xl bg-black relative border-orange-300/50"
             oncontextmenu="return false;"
             v-if="card.done == false && card.concentrate == true"
           >
             <v-card-item>
               <div class="flex flex-row items-center">
                 <!--達成ボタン-->
-                <CheckButton
-                  v-model:done="card.done"
-                  borderColor="FFFFFF"
-                />
+                <v-btn
+                  class="border-2 shadow-none bg-black/80 mt-1 border-orange-300/50"
+                  icon
+                  @click="card.done = true">
+                  <v-icon large class="text-white/40">mdi-check</v-icon>
+                </v-btn>
                 <!--右側-->
                 <div class="ml-2 grow">
                   <div class="flex flex-row items-center">
