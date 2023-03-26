@@ -184,16 +184,6 @@ const emit = defineEmits<{
   (e: "movePage", to:string): void
 }>()
 
-function twoDigitNumber(newNumber: number):string {
-  let addZero: "0"|""
-  if(newNumber.toString().length == 1){
-    addZero = "0"
-  }else{
-    addZero = ""
-  }
-  return `${addZero}${newNumber.toString()}`
-}
-
 //UIの表示非表示
 const showNavbar = vueData(false)
 const showSettings = vueData(false)
@@ -203,17 +193,20 @@ const selectedSubjectIndex = vueData(0)
 
 //ユーザーデータ関連
 const {uid, userName, userImage} = useUserData(useRouter())
+
 //課題のカード関連
 const {
   cards,
   addCard, deleteCard, deleteDoneCard,
   updated, showBanner
-} = useCards(twoDigitNumber)
+} = useCards()
+
 //期限関連
 const {
   timers, 
   addTimer, deleteTimer
-} = useTimers(twoDigitNumber)
+} = useTimers()
+
 //設定
 const {
   settings,

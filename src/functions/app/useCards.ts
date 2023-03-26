@@ -7,6 +7,8 @@ import { getDatabase, ref, get, set, child } from "firebase/database";
 import firebaseConfig from "../../data/firebaseConfig"
 import type { Card } from "../../types/card"
 
+import twoDigitNumber from "../twoDigitNumber"
+
 const firebaseApp = initializeApp(firebaseConfig);
 
 const auth = getAuth(firebaseApp);
@@ -14,13 +16,14 @@ const auth = getAuth(firebaseApp);
 const db = getDatabase()
 const dbRef = ref(db);
 
-const welcomeCard = {
+const welcomeCard: Card = {
   title: "Staskへようこそ",
   time: 123,
   pages: [],
   done: false,
   subject: 1,
-  term: "2023-01-01"
+  term: "2023-01-01",
+  concentrate: false
 }
 
 type CardsData = Array<Card>
@@ -28,8 +31,6 @@ type CardsData = Array<Card>
 interface Cards {
   data: CardsData
 }
-
-type TwoDigitNumber = (newNumber: number) => string
 
 class Cards {
   constructor(newCards: CardsData){
@@ -44,18 +45,19 @@ class Cards {
     return this.data
   }
 
-  addCard(twoDigitNumber: TwoDigitNumber){
+  addCard(){
     const today = new Date()
     const thisYear = today.getFullYear()
     const thisMonth = twoDigitNumber(today.getMonth()+1)
     const thisDate = twoDigitNumber(today.getDate())
-    const newCard = {
+    const newCard: Card = {
       title: "",
       time: 60,
       pages: [],
       done: false,
       subject: 1,
-      term: `${thisYear}-${thisMonth}-${thisDate}`
+      term: `${thisYear}-${thisMonth}-${thisDate}`,
+      concentrate: false
     }
     this.data.push(newCard)
   }
@@ -88,7 +90,7 @@ class Cards {
   }
 }
 
-export default (twoDigitNumber: TwoDigitNumber)=>{
+export default ()=>{
   const cards = vueData<CardsData>([])
 
   let uid: string
@@ -141,7 +143,7 @@ export default (twoDigitNumber: TwoDigitNumber)=>{
 
   const addCard = ()=>{
     const newCards = new Cards(cards.value)
-    newCards.addCard(twoDigitNumber)
+    newCards.addCard()
     cards.value = newCards.value
   }
 

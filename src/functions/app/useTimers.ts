@@ -7,6 +7,8 @@ import { getDatabase, ref, get, set, child } from "firebase/database";
 import firebaseConfig from "../../data/firebaseConfig"
 import type { Timer } from "../../types/timer"
 
+import twoDigitNumber from "../twoDigitNumber"
+
 const firebaseApp = initializeApp(firebaseConfig);
 
 const auth = getAuth(firebaseApp);
@@ -19,8 +21,6 @@ type TimersData = Array<Timer>
 interface Timers {
   _value: TimersData
 }
-
-type TwoDigitNumber = (newNumber: number) => string
 
 class Timers {
   constructor(newTimers: TimersData){
@@ -48,7 +48,7 @@ class Timers {
     })
   }
 
-  addTimer(twoDigitNumber: TwoDigitNumber){
+  addTimer(){
     const today = new Date()
     const thisYear = today.getFullYear()
     const thisMonth = twoDigitNumber(today.getMonth()+1)
@@ -64,7 +64,7 @@ class Timers {
   }
 }
 
-export default (twoDigitNumber: TwoDigitNumber)=>{
+export default ()=>{
   const timers = vueData<TimersData>([])
   
   let uid: string
@@ -95,7 +95,7 @@ export default (twoDigitNumber: TwoDigitNumber)=>{
 
   function addTimer(){
     const newTimers = new Timers(timers.value)
-    newTimers.addTimer(twoDigitNumber)
+    newTimers.addTimer()
     timers.value = newTimers.value
   }
 
