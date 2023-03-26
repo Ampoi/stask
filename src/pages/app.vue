@@ -17,7 +17,7 @@ import concentratePage from "./app/concentratePage.vue"
 import { createClient } from "microcms-js-sdk"
 
 type Pages = "mainPage" | "concentratePage"
-const nowPage = vueData<Pages>("mainPage")
+const nowPage = vueData<Pages>("concentratePage")
 const pages = {
   "mainPage": mainPage,
   "concentratePage": concentratePage
