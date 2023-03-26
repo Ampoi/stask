@@ -119,9 +119,16 @@
                 :color="getSubjectColor(card.subject) + '6F'"
               />
               <button
-                class="h-12 p-4 pt-2.5 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
+                class="h-12 grid place-content-center px-2 box-border border-orange-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold
+                       hover:bg-orange-300/80 hover:text-white"
+               :class="{'text-orange-400 bg-white': !card.concentrate, 'text-white bg-orange-400': card.concentrate}"
+                @click="turnConcentrate(getCardType())"
+                title="課題を今やることに設定する"><v-icon>mdi-fire</v-icon></button>
+              <button
+                class="h-12 grid place-content-center px-2 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
                        hover:bg-red-400/50 hover:text-white"
-                @click="$emit('deleteTask')">課題を削除</button>
+                @click="$emit('deleteTask')"
+                title="課題を今やることに設定する"><v-icon>mdi-trash-can</v-icon></button>
             </div>
           </div>
         </v-expand-transition>
@@ -181,10 +188,10 @@ function getSubjectColor(subject: number): string{
   }
 }
 
-function getCardType(card: Card): CardType{
-  if( card.done == false && card.concentrate == true){
+function getCardType(): CardType{
+  if( props.card.done == false && props.card.concentrate == true){
     return "concentrate"
-  }else if(card.done == false){
+  }else if(props.card.done == false){
     return "incomplete"
   }else{
     return "done"
@@ -192,13 +199,16 @@ function getCardType(card: Card): CardType{
 }
 
 const checkCardType = computed(()=>{
-  const cardType = getCardType(props.card)
+  const cardType = getCardType()
   return (cardType == props.showCardType)
 })
 
-function setConcentrate(){
-  window.alert("set concentrate!")
-  props.card.concentrate = true
+function turnConcentrate(type: CardType){
+  if(type == "incomplete"){
+    props.card.concentrate = true
+  }else if(type == "concentrate"){
+    props.card.concentrate = false
+  }
 }
 
 let pressTimer: number
@@ -211,10 +221,8 @@ function startLongPress(){
     addPressTime = setInterval(()=>{
       pressTime.value += 1
       if(pressTime.value >= 100){
-        const cardType = getCardType(props.card)
-        if(cardType == "incomplete"){
-          setConcentrate()
-        }
+        const cardType = getCardType()
+        turnConcentrate(cardType)
         finishLongPress()
       }
     }, 2)
