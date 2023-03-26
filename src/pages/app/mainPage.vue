@@ -149,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref as vueData, onMounted, onBeforeMount } from "vue"
+import { ref as vueData, onMounted } from "vue"
 import { useRouter } from "vue-router"
 
 //コンポーネント
@@ -164,9 +164,6 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, signOut } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
-
-//microcms
-import { createClient } from "microcms-js-sdk"
 
 //コンポーザブル関数
 import useUserData from "../../functions/app/useUserData"
@@ -183,10 +180,9 @@ const auth = getAuth(firebaseApp);
 
 const db = getDatabase()
 
-const client = createClient({
-  serviceDomain: import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN,
-  apiKey: import.meta.env.VITE_MICROCMS_APIKEY
-})
+const emit = defineEmits<{
+  (e: "movePage", to:string): void
+}>()
 
 function twoDigitNumber(newNumber: number):string {
   let addZero: "0"|""
@@ -264,7 +260,7 @@ function getSubjectColor(index: number){
 }
 
 function startConcentrateMode(){
-  console.log("startConcentrateMode");
+  emit("movePage", "concentratePage")
 }
 
 onMounted(()=>{
@@ -275,16 +271,5 @@ onMounted(()=>{
       event.returnValue = ""
     }
   });
-})
-
-onBeforeMount(()=>{
-  client
-    .get({
-      endpoint: "stask_settings"
-    })
-    .then((res)=>{if(res.nowUpdating){
-      console.log("updating!");
-      useRouter().push("/updating")
-    }})
 })
 </script>
