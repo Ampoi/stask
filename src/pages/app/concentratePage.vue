@@ -1,60 +1,40 @@
 <template>
   <v-app>
     <v-app-bar color="transparent" flat>
-      <template v-slot:append>
-        <button
-          class="text-white/50"
-          @click="emit('movePage', 'mainPage')"
-        >集中モードを終了する</button>
-      </template>
+      <button
+        class="text-white/50 border-white/50 border-[1.2px] border-solid px-4 py-2 rounded-full mx-auto"
+        @click="emit('movePage', 'mainPage')"
+      >集中モードを終了する</button>
     </v-app-bar>
 
     <v-main class="bg-gray-900 text-white">
       <div class="flex flex-col mx-auto px-4 gap-4 max-w-xl">
-        <div v-for="card in cards">
-          <v-card
-            flat class="border-2 border-l-8 rounded-xl bg-black relative border-orange-300/50"
-            oncontextmenu="return false;"
-            v-if="card.done == false && card.concentrate == true"
-          >
-            <v-card-item>
-              <div class="flex flex-row items-center">
-                <!--達成ボタン-->
-                <v-btn
-                  class="border-2 shadow-none bg-black/80 mt-1 border-orange-300/50"
-                  icon
-                  @click="card.done = true">
-                  <v-icon large class="text-white/40">mdi-check</v-icon>
-                </v-btn>
-                <!--右側-->
-                <div class="ml-2 grow">
-                  <div class="flex flex-row items-center">
-                    <div class="basis-full">
-                      <v-card-title>
-                        {{ card.title }}
-                      </v-card-title>
-                      <v-card-subtitle class="text-[14px]">
-                        所要時間{{ card.time }}分 期限:{{ card.term }}
-                      </v-card-subtitle>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </v-card-item>
-          </v-card>
-        </div>
+        <ConcentrateTaskCard
+          v-for="(card, cardIndex) in cards"
+          v-model:card="cards[cardIndex]"
+        />
       </div>
     </v-main>
   </v-app>
 </template>
 <script setup lang="ts">
-import CheckButton from '../../components/taskCard/checkButton.vue';
+import { computed } from "vue"
+
+import ConcentrateTaskCard from "../../components/concentrateTaskCard.vue";
 
 import useCards from '../../functions/app/useCards';
 
 const {
   cards
 } = useCards()
+
+const getTotalTime = computed(()=>{
+  let newTotalTime: number = 0
+  cards.value.forEach((card)=>{
+    newTotalTime += card.time
+  })
+  return newTotalTime
+})
 
 const emit = defineEmits<{
   (e: "movePage", to:string): void
