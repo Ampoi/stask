@@ -1,6 +1,6 @@
 import {ref, watch} from "vue";
-import {CardRepository} from "../../infra/CardRepository";
-import {Card} from "../../models/Card";
+import {CardRepository} from "../infra/CardRepository";
+import {Card} from "../models/Card";
 
 
 export const useCards = () => {

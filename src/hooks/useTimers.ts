@@ -1,7 +1,7 @@
 import {onBeforeMount, ref} from "vue";
 
-import {Timer} from "../../models/Timer"
-import {TimerRepository} from "../../infra/TimerRepository";
+import {Timer} from "../models/Timer"
+import {TimerRepository} from "../infra/TimerRepository";
 
 
 export const useTimer = () => {

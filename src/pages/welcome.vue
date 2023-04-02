@@ -74,7 +74,7 @@
 </template>
 <script setup lang="ts">
 import Header from "../components/header.vue"
-import {useUpdateData} from "../hooks/domain/useUpdateData";
+import {useUpdateData} from "../hooks/useUpdateData";
 
 const {updates} = useUpdateData()
 </script>

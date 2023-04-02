@@ -131,12 +131,12 @@ import {signOut} from "firebase/auth";
 import {createClient} from "microcms-js-sdk"
 
 //コンポーザブル関数
-import useUserData from "../hooks/domain/useUserData"
-import {useCards} from "../hooks/domain/useCards"
-import {useTimer} from "../hooks/domain/useTimers"
-import {useSetting} from "../hooks/domain/useSettings"
+import useUserData from "../hooks/useUserData"
+import {useCards} from "../hooks/useCards"
+import {useTimer} from "../hooks/useTimers"
+import {useSetting} from "../hooks/useSettings"
 
-import {useAuth} from "../hooks/domain/useAuth";
+import {useAuth} from "../hooks/useAuth";
 import {ApplicationSetting} from "../models/ApplicationSetting";
 
 

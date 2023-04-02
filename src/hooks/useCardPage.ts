@@ -1,5 +1,5 @@
 import {Ref} from "vue";
-import {Card, Page} from "../../models/Card";
+import {Card, Page} from "../models/Card";
 import {useCards} from "./useCards";
 
 export const useCardPage = (card: Ref<Card>) => {

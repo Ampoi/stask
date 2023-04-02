@@ -1,4 +1,4 @@
-import {AuthRepository} from "../../infra/AuthRepository";
+import {AuthRepository} from "../infra/AuthRepository";
 import {useRouter} from "vue-router";
 
 export const useAuth = () => {

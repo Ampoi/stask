@@ -128,7 +128,7 @@ import {computed, ref as vueData, toRefs, watch} from "vue"
 
 import {Card, Page} from "../models/Card"
 import {Subject} from "../models/ApplicationSetting";
-import {useCardPage} from "../hooks/domain/useCardPage";
+import {useCardPage} from "../hooks/useCardPage";
 
 type Subject = {
   index: number

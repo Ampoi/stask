@@ -23,7 +23,7 @@
 </template>
 <script setup lang="ts">
 import Header from "../components/header.vue"
-import {useAuth} from "../hooks/domain/useAuth";
+import {useAuth} from "../hooks/useAuth";
 
 const {signIn} = useAuth()
 </script>

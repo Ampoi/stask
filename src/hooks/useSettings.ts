@@ -1,6 +1,6 @@
 import {onBeforeMount, ref} from "vue";
-import {ApplicationSetting, Subject} from "../../models/ApplicationSetting";
-import {SettingsRepository} from "../../infra/SettingsRepository";
+import {ApplicationSetting, Subject} from "../models/ApplicationSetting";
+import {SettingsRepository} from "../infra/SettingsRepository";
 
 export const useSetting = () => {
     const settings = ref<ApplicationSetting>({

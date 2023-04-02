@@ -1,5 +1,5 @@
 import {onBeforeMount, ref as vueData} from "vue";
-import {AuthRepository} from "../../infra/AuthRepository";
+import {AuthRepository} from "../infra/AuthRepository";
 
 
 type Router = { push: Function }
