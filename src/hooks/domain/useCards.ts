@@ -32,6 +32,22 @@ export const useCards = () => {
         isProgress.value = false
     }
 
+    const replaceCards = async (card: Card) => {
+        const index = cards.value.findIndex((c) => c.id === card.id)
+        if (index === -1) {
+            return
+        }
+        cards.value = cards.value.map((c) => {
+            if (c === card) {
+                return cards.value[index]
+            } else if (c === cards.value[index]) {
+                return card
+            } else {
+                return c
+            }
+        })
+    }
+
     const addCard = async () => {
         const newCards = Card.create()
         cards.value.push(newCards)
@@ -40,12 +56,13 @@ export const useCards = () => {
         isProgress.value = false
     }
 
-    const deleteCard = async (cardIndex: number) => {
+    const removeCard = async (cardIndex: number) => {
         cards.value.splice(cardIndex, 1)
         isProgress.value = true
         await CardRepository.set(cards.value)
         isProgress.value = false
     }
+
 
     const deleteDoneCard = async () => {
         cards.value = cards.value.filter((card) => card.done === false)
@@ -58,8 +75,9 @@ export const useCards = () => {
         cards,
         addCard,
         setCards,
-        deleteCard,
+        removeCard,
         deleteDoneCard,
+        replaceCards,
         updated,
         isProgress,
     }

@@ -3,15 +3,18 @@ export type Subject = Readonly<{
     title: string
     color: string
 }>
-
 export const Subject = {
     create(partial?: Partial<Subject>): Subject {
         return {
             index: partial?.index ?? 0,
             title: partial?.title ?? '新規教科',
-            color: partial?.color ?? '#E7E8E7'
+            color: partial?.color ?? Subject.DEFAULT_COLOR
         }
-    }
+    },
+    getColor(subject: Subject | undefined): string {
+        return subject?.color ?? Subject.DEFAULT_COLOR
+    },
+    DEFAULT_COLOR: "#E7E8E7"
 }
 
 export type ApplicationSetting = Readonly<{

@@ -61,7 +61,7 @@
                   class="text-[12px] p-1 border-2 rounded-full border-solid"
                   :style="`border-color: ${getSubjectColor(card.subject)}6F; background-color: ${getSubjectColor(card.subject)}${page.done ? '6F' : '00'};`"
                   :class="{'text-white': page.done, 'text-black/20': !page.done}"
-                  @click="page.done = !page.done"
+                  @click="donePage(index)"
               >
                 <v-icon>mdi-check</v-icon>
               </button>
@@ -124,9 +124,11 @@
 <script setup lang="ts">
 import CheckButton from "./taskCard/checkButton.vue"
 
-import {computed, ref as vueData, watch} from "vue"
+import {computed, ref as vueData, toRefs, watch} from "vue"
 
-import type {Card} from "../models/Card"
+import {Card, Page} from "../models/Card"
+import {Subject} from "../models/ApplicationSetting";
+import {useCardPage} from "../hooks/domain/useCardPage";
 
 type Subject = {
   index: number
@@ -150,25 +152,23 @@ const showSubMenu = vueData(false)
 watch(props.card, () => {
   emit("update:card", props.card)
 }, {deep: true, immediate: true})
+const {card} = toRefs(props)
+const {addPage: addCardPage, removePage, replacePage} = useCardPage(card)
 
-function addPage() {
-  props.card.pages.push({
-    startPage: 1,
-    lastPage: 2,
-    done: false
-  })
+async function addPage() {
+  await addCardPage(Page.create())
 }
 
 function deletePage(index: number) {
-  props.card.pages.splice(index, 1)
+  removePage(index)
 }
 
 function getSubjectColor(subject: number): string {
-  if (props.subjects[subject] != undefined) {
-    return props.subjects[subject].color
-  } else {
-    return "#E7E8E7"
-  }
+  return Subject.getColor(props.subjects[subject])
+}
+
+function donePage(index: number) {
+  replacePage(Page.toggleDone(props.card.pages[index]), index)
 }
 
 const checkCardDone = computed(() => {

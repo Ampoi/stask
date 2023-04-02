@@ -158,7 +158,6 @@ const {userName, userImage} = useUserData(useRouter())
 const {
   cards,
   addCard,
-  deleteCard,
   deleteDoneCard,
   updated,
   isProgress,

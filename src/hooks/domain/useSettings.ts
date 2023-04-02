@@ -30,6 +30,10 @@ export const useSetting = () => {
         settings.value = ApplicationSetting.removeSubject(settings.value, index)
     }
 
+    function replaceSubject(subject: Subject) {
+        settings.value = ApplicationSetting.replaceSubject(settings.value, subject)
+    }
+
 
     return {
         settings,
