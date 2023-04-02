@@ -3,13 +3,15 @@
     <!--アカウント-->
     <div class="flex flex-col items-center border-b-2 border-solid pb-4 border-black/10 relative">
       <div
-        class="w-28 h-28 rounded-full mx-auto bg-cover bg-center"
-        :style="`background: url('${userImage}')`"
+          class="w-28 h-28 rounded-full mx-auto bg-cover bg-center"
+          :style="`background: url('${userImage}')`"
       />
       <p class="text-2xl font-bold mt-2">{{ userName }}</p>
       <div class="flex flex-col items-center text-sm text-white/60 gap-1">
         <span class="flex flex-row items-center">
-          <v-icon class="text-sm mt-0.5"> mdi-book-check</v-icon>達成した課題数 | {{ getTaskDone.done }}/{{ getTaskDone.all }}
+          <v-icon class="text-sm mt-0.5"> mdi-book-check</v-icon>達成した課題数 | {{
+            getTaskDone.done
+          }}/{{ getTaskDone.all }}
         </span>
         <span class="flex flex-row items-center">
           <v-icon class="text-sm mt-0.5"> mdi-clock-outline</v-icon>全体の所要時間 | {{ getTaskTime }}分
@@ -17,8 +19,8 @@
       </div>
       <!--ログアウトボタン-->
       <button
-        class="text-md text-white/40 hover:text-white transition absolute -top-4 right-0"
-        @click="$emit('logout')">
+          class="text-md text-white/40 hover:text-white transition absolute -top-4 right-0"
+          @click="$emit('logout')">
         <v-icon>mdi-account-arrow-right</v-icon>
       </button>
     </div>
@@ -30,12 +32,12 @@
         <p class="text-sm">{{ updated ? "保存されました" : "保存されていません" }}</p>
       </div>
       <!--保存ボタン-->
-      <NavBarButton @buttonClicked="$emit('save')">
+      <NavBarButton @buttonClicked="emit('save')">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-content-save</v-icon>
         <p class="text-sm">保存する</p>
       </NavBarButton>
       <!--設定ボタン-->
-      <NavBarButton @buttonClicked="$emit('opensettings')">
+      <NavBarButton @buttonClicked="emit('opensettings')">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-cog</v-icon>
         <p class="text-sm">設定</p>
       </NavBarButton>
@@ -43,29 +45,29 @@
   </div>
 </template>
 <script setup>
-import { computed } from 'vue';
+import {computed} from 'vue';
 
 import NavBarButton from "../components/navBar/button.vue"
 
 const props = defineProps(["userName", "userImage", "updated", "tasks"])
 const emit = defineEmits(["logout", "save", "opensettings"])
 
-const getTaskTime = computed(()=>{
+const getTaskTime = computed(() => {
   let time = 0
   props.tasks.forEach(task => {
-    if(!task.done){
+    if (!task.done) {
       time += task.time
     }
   });
   return time
 })
 
-const getTaskDone = computed(()=>{
+const getTaskDone = computed(() => {
   let allTaskAmount = 0
   let doneTaskAmount = 0
   props.tasks.forEach(task => {
     allTaskAmount += 1
-    if(task.done == true){
+    if (task.done == true) {
       doneTaskAmount += 1
     }
   })

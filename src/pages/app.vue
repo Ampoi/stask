@@ -3,110 +3,111 @@
     <v-app-bar color="transparent" flat>
       <template v-slot:prepend class="relative">
         <v-app-bar-nav-icon
-          @click.stop="showNavbar = !showNavbar"
-          :class="{'text-white': showNavbar, 'text-slate-900': !showNavbar}"
+            @click.stop="showNavbar = !showNavbar"
+            :class="{'text-white': showNavbar, 'text-slate-900': !showNavbar}"
         />
         <div
-          v-if="!updated"
-          class="w-3 h-3 border-2 border-solid absolute rounded-full top-[18px] left-10"
-          :class="{'bg-white border-slate-900': showNavbar, 'bg-slate-900 border-gray-100': !showNavbar}"
+            v-if="!updated"
+            class="w-3 h-3 border-2 border-solid absolute rounded-full top-[18px] left-10"
+            :class="{'bg-white border-slate-900': showNavbar, 'bg-slate-900 border-gray-100': !showNavbar}"
         />
       </template><!--メニューボタン-->
       <v-btn
-        icon="mdi-plus"
-        @click="addCard"
+          icon="mdi-plus"
+          @click="addCard"
       />
     </v-app-bar>
 
     <!--保存通知-->
     <SavedBanner
-      v-if="showBanner"
-      @saved="showBanner = false"
+        v-if="showBanner"
+        @saved="showBanner = false"
     />
 
     <!--ナビゲーションバー-->
     <v-navigation-drawer
-      v-model="showNavbar"
-      temporary
-      class="-mt-16 pt-16 h-auto bg-slate-800 text-white"
-      :permanent="checkPermanent()"
+        v-model="showNavbar"
+        temporary
+        class="-mt-16 pt-16 h-auto bg-slate-800 text-white"
+        :permanent="checkPermanent()"
     >
       <NavBar
-        :userImage="userImage"
-        :userName="userName"
-        :updated="updated"
-        :tasks="cards"
-        @logout="logout"
-        @save="saveWithBanner"
-        @opensettings="openSettings"
+          :userImage="userImage"
+          :userName="userName"
+          :updated="updated"
+          :tasks="cards"
+          @logout="signOut"
+          @save="saveWithBanner"
+          @opensettings="openSettings"
       />
     </v-navigation-drawer>
 
     <!--設定-->
     <v-dialog v-model="showSettings">
       <SettingDialog
-        :settings="settings"
-        @saveSettings="saveSettings"
-        @getSubjectColor="getSubjectColor"
-        @deleteSubject="deleteSubject"
-        @addSubject="addSubject"
-        @closeSettings="showSettings = false"
+          :settings="settings"
+          @saveSettings="saveSettings"
+          @getSubjectColor="getSubjectColor"
+          @deleteSubject="deleteSubject"
+          @addSubject="addSubject"
+          @closeSettings="showSettings = false"
       />
     </v-dialog>
 
     <!--設定のカラーピッカー-->
     <v-dialog v-model="showColorPicker">
       <v-color-picker
-        v-model="settings.subjects[selectedSubjectIndex].color"
-        hide-inputs
-        show-swatches
+          v-model="settings.subjects[selectedSubjectIndex].color"
+          hide-inputs
+          show-swatches
       ></v-color-picker>
     </v-dialog>
 
     <v-main
-      class="bg-gray-100 overflow-auto pb-20"
+        class="bg-gray-100 overflow-auto pb-20"
     >
       <div class="flex flex-col mx-auto px-4 gap-4 max-w-xl">
         <p class="text-black font-bold">期限一覧</p>
         <div class="h-40 flex flex-row gap-4">
           <button
-            class="p-4 rounded-lg duration-300 hover:bg-white/70"
-            @click="addTimer"
+              class="p-4 rounded-lg duration-300 hover:bg-white/70"
+              @click="addTimer"
           >
             <v-icon class="text-2xl">mdi-plus</v-icon>
           </button>
           <div class="h-40 flex flex-row gap-4 overflow-x-auto">
             <TermTimer
-              v-for="(timer, index) in timers"
-              :key="index"
-              v-model="timers[index]"
-              @deleteTimer="deleteTimer(index)"
+                v-for="(timer, index) in timers"
+                :key="index"
+                v-model="timers[index]"
+                @deleteTimer="deleteTimer(index)"
             />
           </div>
         </div>
         <p class="text-black font-bold">未達成のタスク</p>
         <TaskCard
-          v-for="(card, cardIndex) in cards"
-          :key="cardIndex"
-          v-model:card="cards[cardIndex]"
-          :onlydone="false"
-          :subjects="settings.subjects"
-          @deleteTask="deleteCard(cardIndex)"
+            v-for="(card, cardIndex) in cards"
+            :key="cardIndex"
+            v-model:card="cards[cardIndex]"
+            :onlydone="false"
+            :subjects="settings.subjects"
+            @deleteTask="deleteCard(cardIndex)"
         />
         <div class="flex flex-row justify-between text-black font-bold">
           <p>達成済みのタスク</p>
           <button
-            @click="deleteDoneCard()"
-          >達成済みのタスクを削除</button>
+              @click="deleteDoneCard()"
+          >達成済みのタスクを削除
+          </button>
         </div>
         <TaskCard
-          v-for="(card, cardIndex) in cards"
-          :key="cardIndex"
-          v-model:card="cards[cardIndex]"
-          :onlydone="true"
-          :subjects="settings.subjects"
-          @deleteTask="deleteCard(cardIndex)"
-          class="opacity-50"
+            v-for="(card, cardIndex) in cards"
+            :key="cardIndex"
+            v-model:card="card"
+            :onlydone="true"
+            :subjects="settings.subjects"
+            @deleteTask="deleteCard(cardIndex)"
+            class="opacity-50"
         />
       </div>
     </v-main>
@@ -114,8 +115,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref as vueData, onMounted, onBeforeMount } from "vue"
-import { useRouter } from "vue-router"
+import {computed, ref as vueData} from "vue"
+import {useRouter} from "vue-router"
 
 //コンポーネント
 import NavBar from "../components/navBar.vue"
@@ -124,57 +125,25 @@ import SavedBanner from "../components/savedBanner.vue"
 import SettingDialog from "../components/settings.vue"
 import TermTimer from "../components/timer.vue"
 
-//firebase
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, signOut } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import {signOut} from "firebase/auth";
 
 //microcms
-import { createClient } from "microcms-js-sdk"
+import {createClient} from "microcms-js-sdk"
 
 //コンポーザブル関数
-import useUserData from "../functions/app/useUserData"
-import useCards from "../functions/app/useCards"
-import useTimers from "../functions/app/useTimers"
-import useSettings from "../functions/app/useSettings"
+import useUserData from "../hooks/domain/useUserData"
+import {useCards} from "../hooks/domain/useCards"
+import {useTimer} from "../hooks/domain/useTimers"
+import {useSetting} from "../hooks/domain/useSettings"
 
-import firebaseConfig from "../data/firebaseConfig"
+import {useAuth} from "../hooks/domain/useAuth";
+import {ApplicationSetting} from "../models/ApplicationSetting";
 
-const firebaseApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebaseApp);
-
-const auth = getAuth(firebaseApp);
-
-const db = getDatabase()
-const dbRef = ref(db);
 
 const client = createClient({
   serviceDomain: import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN,
   apiKey: import.meta.env.VITE_MICROCMS_APIKEY
 })
-
-const checkServerUpdating = new Promise(()=>{
-  client
-    .get({
-      endpoint: "stask_settings"
-    })
-    .then((res)=>{
-      if(res.nowUpdating){
-        console.log("updating!");
-      }
-    }) 
-})
-
-function twoDigitNumber(newNumber: number):string {
-  let addZero: "0"|""
-  if(newNumber.toString().length == 1){
-    addZero = "0"
-  }else{
-    addZero = ""
-  }
-  return `${addZero}${newNumber.toString()}`
-}
 
 //UIの表示非表示
 const showNavbar = vueData(false)
@@ -184,81 +153,57 @@ const showColorPicker = vueData(false)
 const selectedSubjectIndex = vueData(0)
 
 //ユーザーデータ関連
-const {uid, userName, userImage} = useUserData(useRouter())
+const {userName, userImage} = useUserData(useRouter())
 //課題のカード関連
 const {
   cards,
-  addCard, deleteCard, deleteDoneCard,
-  updated, showBanner
-} = useCards(twoDigitNumber)
+  addCard,
+  deleteCard,
+  deleteDoneCard,
+  updated,
+  isProgress,
+  setCards
+} = useCards()
 //期限関連
 const {
-  timers, 
-  addTimer, deleteTimer
-} = useTimers(twoDigitNumber)
+  timers,
+  addTimer,
+  deleteTimer
+} = useTimer()
 //設定
 const {
   settings,
   addSubject, deleteSubject,
-} = useSettings()
+  setSettings
+} = useSetting()
+const {signOut} = useAuth()
 
-function logout(){
-  signOut(auth).then(() => {
-    console.log("logout success!");
-  }).catch((error) => {
-    console.log(error);
-  });
+const showBanner = computed(() => isProgress.value)
+
+async function saveWithBanner() {
+  await setCards(cards.value)
 }
 
-function saveWithBanner(){
-  set(ref(db, `data/${uid.value}/cards`), cards.value).then(()=>{
-    updated.value = true
-  })
-  showBanner.value = true
-}
-
-function checkPermanent(){
-  if(window.innerWidth < 832){
+function checkPermanent() {
+  if (window.innerWidth < 832) {
     return false
-  }else{
+  } else {
     return true
   }
 }
 
-function openSettings(){
+function openSettings() {
   showSettings.value = true
   showNavbar.value = false
 }
 
-function saveSettings(){
-  set(ref(db, `data/${uid.value}/settings`), settings.value)
+async function saveSettings(setting: ApplicationSetting) {
+  await setSettings(setting)
   showSettings.value = false
-  showBanner.value = true
 }
 
-function getSubjectColor(index: number){
+function getSubjectColor(index: number) {
   showColorPicker.value = true
   selectedSubjectIndex.value = index
 }
-
-onMounted(()=>{
-  window.addEventListener('beforeunload', (event) => {
-    if(updated.value == false){
-      saveWithBanner()
-      event.preventDefault()
-      event.returnValue = ""
-    }
-  });
-})
-
-onBeforeMount(()=>{
-  client
-    .get({
-      endpoint: "stask_settings"
-    })
-    .then((res)=>{if(res.nowUpdating){
-      console.log("updating!");
-      useRouter().push("/updating")
-    }})
-})
 </script>

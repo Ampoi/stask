@@ -21,6 +21,7 @@
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
+    "@types/webfontloader": "^1.6.35",
     "@vitejs/plugin-vue": "^3.0.3",
     "@vue/cli-plugin-router": "~5.0.0",
     "autoprefixer": "^10.4.8",
