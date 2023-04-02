@@ -1,19 +1,19 @@
 import {DateString} from "./Timer";
 
-type Page = {
+type Page = Readonly<{
     done: boolean
     startPage: number
     lastPage: number
-}
+}>
 
-export type Card = {
+export type Card = Readonly<{
     title: string
     time: number
     pages: Page[]
     done: boolean
     subject: number
     term: DateString
-}
+}>
 export const Card = {
     create(): Card {
         return {
@@ -33,6 +33,6 @@ export const Card = {
         subject: 1,
         term: "2023-01-01"
     } as Card
-}
+} as const
 
 export type {Page}

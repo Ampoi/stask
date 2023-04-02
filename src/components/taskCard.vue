@@ -124,7 +124,7 @@
 <script setup lang="ts">
 import CheckButton from "./taskCard/checkButton.vue"
 
-import {computed, onMounted, ref as vueData, watch} from "vue"
+import {computed, ref as vueData, watch} from "vue"
 
 import type {Card} from "../models/Card"
 
@@ -179,12 +179,4 @@ const checkCardDone = computed(() => {
   }
 })
 
-onMounted(() => {
-  if (props.card.pages == undefined) {
-    props.card.pages = []
-  }
-  if (typeof (props.card.subject) != "number") {
-    props.card.subject = 1
-  }
-})
 </script>

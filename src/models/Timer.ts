@@ -8,10 +8,10 @@ export const DateString = {
     }
 }
 
-export type Timer = {
+export type Timer = Readonly<{
     name: string
     date: DateString
-}
+}>
 
 export const Timer = {
     create: (name: string, date?: Date): Timer => {
