@@ -5,7 +5,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
 
 import firebaseConfig from "../data/firebaseConfig"
-import type { Timer } from "../model/timer"
+import type { Timer } from "../model/timers"
 
 import twoDigitNumber from "../functions/twoDigitNumber"
 

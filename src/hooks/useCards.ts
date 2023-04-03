@@ -1,30 +1,18 @@
 import { ref as vueData, onBeforeMount, watch } from "vue";
 
-import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, get, set, child } from "firebase/database";
+import { initializeApp } from "firebase/app"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { getDatabase, ref, get, set, child } from "firebase/database"
 
 import firebaseConfig from "../data/firebaseConfig"
-import type { Card } from "../model/card"
+import { Card } from "../model/cards"
 
-import twoDigitNumber from "../functions/twoDigitNumber"
+const firebaseApp = initializeApp(firebaseConfig)
 
-const firebaseApp = initializeApp(firebaseConfig);
-
-const auth = getAuth(firebaseApp);
+const auth = getAuth(firebaseApp)
 
 const db = getDatabase()
-const dbRef = ref(db);
-
-const welcomeCard: Card = {
-  title: "Staskへようこそ",
-  time: 123,
-  pages: [],
-  done: false,
-  subject: 1,
-  term: "2023-01-01",
-  concentrate: false
-}
+const dbRef = ref(db)
 
 type CardsData = Array<Card>
 
@@ -37,7 +25,7 @@ class Cards {
     if(newCards != undefined){
       this.data = newCards
     }else{
-      this.data = [welcomeCard]
+      this.data = [Card.welcomeCard]
     }
   }
   
@@ -46,20 +34,7 @@ class Cards {
   }
 
   addCard(){
-    const today = new Date()
-    const thisYear = today.getFullYear()
-    const thisMonth = twoDigitNumber(today.getMonth()+1)
-    const thisDate = twoDigitNumber(today.getDate())
-    const newCard: Card = {
-      title: "",
-      time: 60,
-      pages: [],
-      done: false,
-      subject: 1,
-      term: `${thisYear}-${thisMonth}-${thisDate}`,
-      concentrate: false
-    }
-    this.data.push(newCard)
+    this.data.push(Card.create())
   }
 
   deleteCard(cardIndex: number){
@@ -107,7 +82,7 @@ export default ()=>{
             const newCards = new Cards(newData)
             cards.value = newCards.value
           } else {
-            cards.value = [welcomeCard]
+            cards.value = [Card.welcomeCard]
           }
         }).catch((error) => {
           console.error(error);
