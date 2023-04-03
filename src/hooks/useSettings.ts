@@ -5,7 +5,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
 
 import firebaseConfig from "../data/firebaseConfig"
-import type { Settings as SettingsValue } from "../model/settings";
+import { Settings } from "../model/settings";
 
 const firebaseApp = initializeApp(firebaseConfig);
 
@@ -14,18 +14,8 @@ const auth = getAuth(firebaseApp);
 const db = getDatabase()
 const dbRef = ref(db);
 
-const defaultSettings = {
-  subjects: [
-    {index:0, title: "国語 (古文/現代文)", color:"#F44335"},
-    {index:1, title: "数学 (算数)", color:"#2196F3"},
-    {index:2, title: "理科 (物理/地学/生物/化学)", color:"#4BAF51"},
-    {index:3, title: "社会 (公民/地理/歴史)", color:"#FFC105"},
-    {index:4, title: "英語 (外国語)", color: "#E040FB"}
-  ]
-}
-
 export default ()=>{
-  const settings = vueData<SettingsValue>({
+  const settings = vueData<Settings>({
     subjects: []
   })
 
@@ -36,14 +26,14 @@ export default ()=>{
 
         get(child(dbRef, `data/${uid}/settings`)).then((snapshot) => {
           if (snapshot.exists()) {
-            const newData: SettingsValue = snapshot.val()
+            const newData: Settings = snapshot.val()
             settings.value = newData
           }else{
-            set(ref(db, `data/${uid}/settings`), defaultSettings)
+            set(ref(db, `data/${uid}/settings`), Settings.defaultSettings)
               .catch((err)=>{
                 console.error(err);
               })
-            settings.value = Object.create(defaultSettings)
+            settings.value = Object.create(Settings.defaultSettings)
           }
         }).catch((error) => {
           console.error(error);
@@ -53,12 +43,7 @@ export default ()=>{
   })
 
   function addSubject(){
-    const defaultSubject = {
-      index:0,
-      title: "新規教科",
-      color:"#E7E8E7"
-    }
-    settings.value.subjects.push(defaultSubject)
+    settings.value.subjects.push(Settings.defaultSubject)
     setSubjectIndex()
   }
 
