@@ -61,7 +61,7 @@ import { ref as vueData, watch } from "vue"
 
 import SettingList from "./settings/settingList.vue"
 
-import type { Settings } from "../types/settings";
+import type { Settings } from "../model/settings";
 
 const props = defineProps<{
   settings: Settings

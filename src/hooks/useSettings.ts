@@ -4,8 +4,8 @@ import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
 
-import firebaseConfig from "../../data/firebaseConfig"
-import type { Settings as SettingsValue } from "../../types/settings";
+import firebaseConfig from "../data/firebaseConfig"
+import type { Settings as SettingsValue } from "../model/settings";
 
 const firebaseApp = initializeApp(firebaseConfig);
 

@@ -46,9 +46,9 @@ import { computed } from "vue"
 
 import ConcentrateTaskCard from "../../components/concentrateTaskCard.vue";
 
-import useCards from '../../functions/app/useCards';
+import useCards from '../../hooks/useCards';
 
-import { Card } from "../../types/card";
+import { Card } from "../../model/card";
 
 const {
   cards

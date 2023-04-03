@@ -4,10 +4,10 @@ import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get, set, child } from "firebase/database";
 
-import firebaseConfig from "../../data/firebaseConfig"
-import type { Timer } from "../../types/timer"
+import firebaseConfig from "../data/firebaseConfig"
+import type { Timer } from "../model/timer"
 
-import twoDigitNumber from "../twoDigitNumber"
+import twoDigitNumber from "../functions/twoDigitNumber"
 
 const firebaseApp = initializeApp(firebaseConfig);
 

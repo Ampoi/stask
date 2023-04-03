@@ -166,10 +166,10 @@ import { getAuth, signOut } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 
 //コンポーザブル関数
-import useUserData from "../../functions/app/useUserData"
-import useCards from "../../functions/app/useCards"
-import useTimers from "../../functions/app/useTimers"
-import useSettings from "../../functions/app/useSettings"
+import useUserData from "../../hooks/useAuth"
+import useCards from "../../hooks/useCards"
+import useTimers from "../../hooks/useTimers"
+import useSettings from "../../hooks/useSettings"
 
 import firebaseConfig from "../../data/firebaseConfig"
 

@@ -17,6 +17,6 @@
       "vite-plugin-pwa/client"
     ]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/router/index.js", "src/functions/app/useCards.js", "src/functions/app/useUserData.ts", "src/functions/app/useSettings.js"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/router/index.js", "src/hooks/useCards.js", "src/hooks/useAuth.tssrc/functions/app/useSettings.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
