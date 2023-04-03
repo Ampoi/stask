@@ -13,7 +13,7 @@
           color="rgb(253 186 116 / 0.5)"
           size="200"
           width="20"
-          :model-value="getTotalTime * 100"
+          :model-value="getDoneConcentrateCard.length / getConcentrateCard.length * 100"
           class="mx-auto"
         >
           <div class="flex flex-col items-center">
@@ -21,10 +21,22 @@
             <p>{{ getDoneConcentrateCard.length }} / {{ getConcentrateCard.length }}</p>
           </div>
         </v-progress-circular>
+        
         <ConcentrateTaskCard
           v-for="(card, cardIndex) in cards"
           v-model:card="cards[cardIndex]"
         />
+
+        <div
+          v-if="getDoneConcentrateCard.length == getConcentrateCard.length"
+          class="flex flex-col items-center gap-2 text-white/50"
+        >
+          <span class="font-bold text-lg">集中モードに設定された課題は全て達成しました！</span>
+          <button
+            class="text-white/50 border-white/50 border-[1.2px] border-solid px-4 py-2 rounded-full mx-auto"
+            @click="emit('movePage', 'mainPage')"
+          >集中モードを終了する</button>
+        </div>
       </div>
     </v-main>
   </v-app>
