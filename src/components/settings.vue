@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 py-6 bg-white rounded-md relative max-w-xl">
+  <div class="px-4 py-6 bg-white rounded-md relative max-w-xl mx-auto">
     <!--保存ボタン-->
     <button
       class="p-4 rounded-all bg-orange-200 border-2 border-orange-300 border-solid rounded-full absolute right-4 top-6"
