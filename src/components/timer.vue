@@ -21,7 +21,7 @@
   </button>
   
   <v-dialog v-model="showGetDateModal">
-    <div class="px-4 py-6 bg-white rounded-md max-w-xl">
+    <div class="px-4 py-6 bg-white rounded-md max-w-xl mx-auto">
       <h1 class="text-3xl font-bold mb-2">タイマーの設定</h1>
       <h2 class="text-xl">タイマーの名前の設定</h2>
       <p>タイマーの名前を設定します。</p>
