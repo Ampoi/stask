@@ -14,59 +14,21 @@ const auth = getAuth(firebaseApp)
 const db = getDatabase()
 const dbRef = ref(db)
 
-type CardsData = Array<Card>
-
-interface Cards {
-  data: CardsData
-}
-
-class Cards {
-  constructor(newCards: CardsData){
-    if(newCards != undefined){
-      this.data = newCards
-    }else{
-      this.data = [Card.welcomeCard]
-    }
-  }
-  
-  get value(){
-    return this.data
-  }
-
-  addCard(){
-    this.data.push(Card.create())
-  }
-
-  deleteCard(cardIndex: number){
-    this.data.splice(cardIndex, 1)
-  }
-
-  deleteDoneCard(){
-    for (let i = 0; i < this.data.length;){
-      if(this.data[i].done == true){
-        this.data.splice(i, 1)
-      }else{
-        i++
-      }
-    }
-  }
-
-  saveCards(uid: string){
-    return new Promise<void>((resolve)=>{
-      const savePath = `data/${uid}/cards`
-      set(ref(db, savePath), this.data)
-        .then(()=>{
-          resolve()
-        })
-        .catch((err)=>{
-          console.error(err);
-        })
-    })
-  }
+function saveCards(cards: Card[], uid: string){
+  return new Promise<void>((resolve)=>{
+    const savePath = `data/${uid}/cards`
+    set(ref(db, savePath), cards)
+      .then(()=>{
+        resolve()
+      })
+      .catch((err)=>{
+        console.error(err);
+      })
+  })
 }
 
 export default ()=>{
-  const cards = vueData<CardsData>([])
+  const cards = vueData<Card[]>([])
 
   let uid: string
 
@@ -79,8 +41,11 @@ export default ()=>{
           if (snapshot.exists()) {
             const newData = snapshot.val()
             
-            const newCards = new Cards(newData)
-            cards.value = newCards.value
+            if(newData != undefined){
+              cards.value = newData
+            }else{
+              cards.value = [Card.welcomeCard]
+            }
           } else {
             cards.value = [Card.welcomeCard]
           }
@@ -107,8 +72,7 @@ export default ()=>{
       updated.value = false
       showBanner.value = false
       timer = setTimeout(()=>{
-        const newCards = new Cards(cards.value)
-        newCards.saveCards(uid)
+        saveCards(cards.value, uid)
           .then(()=>{
             updated.value = true
           })
@@ -117,21 +81,23 @@ export default ()=>{
   }, {deep: true})
 
   const addCard = ()=>{
-    const newCards = new Cards(cards.value)
-    newCards.addCard()
-    cards.value = newCards.value
+    cards.value.push(Card.create())
   }
 
   const deleteCard = (cardIndex:number)=>{
-    const newCards = new Cards(cards.value)
-    newCards.deleteCard(cardIndex)
-    cards.value = newCards.value
+    cards.value.splice(cardIndex, 1)
   }
 
   const deleteDoneCard = ()=>{
-    const newCards = new Cards(cards.value)
-    newCards.deleteDoneCard()
-    cards.value = newCards.value
+    let newCards = cards.value
+    for (let i = 0; i < newCards.length;){
+      if(newCards[i].done == true){
+        newCards.splice(i, 1)
+      }else{
+        i++
+      }
+    }
+    cards.value = newCards
   }
 
   return {
