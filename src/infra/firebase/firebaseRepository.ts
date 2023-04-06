@@ -44,10 +44,6 @@ export const createRealTimeDatabaseRepository = <T>(path: string)=>{
             throw new Error(err)
           })
       })
-    },
-
-    add(){
-      
     }
   }
 }

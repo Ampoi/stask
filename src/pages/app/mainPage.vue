@@ -1,15 +1,10 @@
 <template>
   <v-app>
     <v-app-bar color="transparent" flat>
-      <template v-slot:prepend class="relative">
+      <template v-slot:prepend>
         <v-app-bar-nav-icon
           @click.stop="showNavbar = !showNavbar"
           :class="{'text-white': showNavbar, 'text-slate-900': !showNavbar}"
-        />
-        <div
-          v-if="!updated"
-          class="w-3 h-3 border-2 border-solid absolute rounded-full top-[18px] left-10"
-          :class="{'bg-white border-slate-900': showNavbar, 'bg-slate-900 border-gray-100': !showNavbar}"
         />
       </template><!--メニューボタン-->
       <v-btn
@@ -17,12 +12,6 @@
         @click="addCard"
       />
     </v-app-bar>
-
-    <!--保存通知-->
-    <SavedBanner
-      v-if="showBanner"
-      @saved="showBanner = false"
-    />
 
     <!--ナビゲーションバー-->
     <v-navigation-drawer
@@ -34,7 +23,6 @@
       <NavBar
         :userImage="userImage"
         :userName="userName"
-        :updated="updated"
         :tasks="cards"
         @logout="logout"
         @save="saveWithBanner"
@@ -78,7 +66,7 @@
             </button>
             <div class="h-40 flex flex-row gap-4 overflow-x-auto">
               <TermTimer
-                v-for="(timer, index) in timers"
+                v-for="(_timer, index) in timers"
                 :key="index"
                 v-model="timers[index]"
                 @deleteTimer="deleteTimer(index)"
@@ -155,7 +143,6 @@ import { useRouter } from "vue-router"
 //コンポーネント
 import NavBar from "../../components/navBar.vue"
 import TaskCard from "../../components/taskCard.vue"
-import SavedBanner from "../../components/savedBanner.vue"
 import SettingDialog from "../../components/settings.vue"
 import TermTimer from "../../components/timer.vue"
 
@@ -197,8 +184,7 @@ const {uid, userName, userImage} = useUserData(useRouter())
 //課題のカード関連
 const {
   cards,
-  addCard, deleteCard, deleteDoneCard,
-  updated, showBanner
+  addCard, deleteCard, deleteDoneCard
 } = useCards()
 
 //期限関連
@@ -221,13 +207,6 @@ function logout(){
   });
 }
 
-function saveWithBanner(){
-  set(ref(db, `data/${uid.value}/cards`), cards.value).then(()=>{
-    updated.value = true
-  })
-  showBanner.value = true
-}
-
 function checkPermanent(){
   if(window.innerWidth < 832){
     return false
@@ -244,7 +223,6 @@ function openSettings(){
 function saveSettings(){
   set(ref(db, `data/${uid.value}/settings`), settings.value)
   showSettings.value = false
-  showBanner.value = true
 }
 
 function getSubjectColor(index: number){
@@ -255,14 +233,4 @@ function getSubjectColor(index: number){
 function startConcentrateMode(){
   emit("movePage", "concentratePage")
 }
-
-onMounted(()=>{
-  window.addEventListener('beforeunload', (event) => {
-    if(updated.value == false){
-      saveWithBanner()
-      event.preventDefault()
-      event.returnValue = ""
-    }
-  });
-})
 </script>
