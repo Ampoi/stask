@@ -33,12 +33,10 @@
     <!--設定-->
     <v-dialog v-model="showSettings">
       <SettingDialog
-        :settings="settings"
-        @saveSettings="saveSettings"
+        v-model:settings="settings"
         @getSubjectColor="getSubjectColor"
         @deleteSubject="deleteSubject"
         @addSubject="addSubject"
-        @closeSettings="showSettings = false"
       />
     </v-dialog>
 

@@ -1,18 +1,15 @@
-import { ref as vueData, onBeforeMount } from "vue";
+import { ref as vueData, onBeforeMount, watch } from "vue";
 
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, get, set, child } from "firebase/database";
 
 import firebaseConfig from "../infra/firebase/config"
 import { Settings } from "../model/settings";
+import { settingRepository } from "../infra/SettingRepository"
 
 const firebaseApp = initializeApp(firebaseConfig);
 
 const auth = getAuth(firebaseApp);
-
-const db = getDatabase()
-const dbRef = ref(db);
 
 export default ()=>{
   const settings = vueData<Settings>({
@@ -20,27 +17,20 @@ export default ()=>{
   })
 
   onBeforeMount(()=>{
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const uid = user.uid
-
-        get(child(dbRef, `data/${uid}/settings`)).then((snapshot) => {
-          if (snapshot.exists()) {
-            const newData: Settings = snapshot.val()
-            settings.value = newData
-          }else{
-            set(ref(db, `data/${uid}/settings`), Settings.defaultSettings)
-              .catch((err)=>{
-                console.error(err);
-              })
-            settings.value = Object.create(Settings.defaultSettings)
-          }
-        }).catch((error) => {
-          console.error(error);
-        });
-      }
-    });
+    settingRepository.get()
+      .then((newData)=>{
+        if(!newData){
+          settingRepository.set(Settings.defaultSettings)
+          settings.value = Object.create(Settings.defaultSettings)
+        }else{
+          settings.value = newData
+        }
+      })
   })
+
+  watch(settings, ()=>{
+    settingRepository.set(settings.value)
+  }, {deep: true})
 
   function addSubject(){
     settings.value.subjects.push(Settings.defaultSubject)

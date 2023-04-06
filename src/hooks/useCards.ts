@@ -10,7 +10,7 @@ export default ()=>{
   onBeforeMount(()=>{
     cardRepository.get()
       .then((newData)=>{
-        if(newData == Object.create([])){
+        if(!newData){
           cards.value = [Card.welcomeCard]
         }else{
           cards.value = newData

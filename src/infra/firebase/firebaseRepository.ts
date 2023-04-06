@@ -12,7 +12,7 @@ async function getDataPath(path: string) {
 
 export const createRealTimeDatabaseRepository = <T>(path: string)=>{
   return {
-    async get(): Promise<T | []>{      
+    async get(): Promise<T | undefined>{      
       if(!await AuthRepository.isLogin()){
         throw new Error("loggined is required")
       }
@@ -26,7 +26,7 @@ export const createRealTimeDatabaseRepository = <T>(path: string)=>{
         const newData = snapshot.val()
         return newData
       }else{
-        return []
+        return undefined
       }
     },
     
