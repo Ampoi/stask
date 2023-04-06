@@ -3,7 +3,7 @@ import { ref as vueData, onBeforeMount } from "vue";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-import firebaseConfig from "../data/firebaseConfig"
+import firebaseConfig from "../infra/firebase/config"
 
 const firebaseApp = initializeApp(firebaseConfig);
 

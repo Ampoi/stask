@@ -171,7 +171,7 @@ import useCards from "../../hooks/useCards"
 import useTimers from "../../hooks/useTimers"
 import useSettings from "../../hooks/useSettings"
 
-import firebaseConfig from "../../data/firebaseConfig"
+import firebaseConfig from "../../infra/firebase/config"
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);

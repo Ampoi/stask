@@ -4,8 +4,10 @@ import { initializeApp } from "firebase/app"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { getDatabase, ref, get, set, child } from "firebase/database"
 
-import firebaseConfig from "../data/firebaseConfig"
+import firebaseConfig from "../infra/firebase/config"
 import { Card } from "../model/cards"
+
+import { cardRepository } from "../infra/CardRepository";
 
 const firebaseApp = initializeApp(firebaseConfig)
 
@@ -33,27 +35,14 @@ export default ()=>{
   let uid: string
 
   onBeforeMount(()=>{
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        uid = user.uid
-
-        get(child(dbRef, `data/${uid}/cards`)).then((snapshot) => {
-          if (snapshot.exists()) {
-            const newData = snapshot.val()
-            
-            if(newData != undefined){
-              cards.value = newData
-            }else{
-              cards.value = [Card.welcomeCard]
-            }
-          } else {
-            cards.value = [Card.welcomeCard]
-          }
-        }).catch((error) => {
-          console.error(error);
-        });
-      }
-    });
+    cardRepository.get()
+      .then((newData)=>{
+        if(newData == Object.create([])){
+          cards.value = [Card.welcomeCard]
+        }else{
+          cards.value = newData
+        }
+      })
   })
   
   //データが変更されているかどうか
@@ -62,7 +51,7 @@ export default ()=>{
 
   const showBanner = vueData(false)
 
-  let timer: number
+  let timer: any
 
   watch(cards, ()=>{
     if(firstUpdate.value == true){
