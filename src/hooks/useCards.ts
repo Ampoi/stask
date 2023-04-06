@@ -1,33 +1,12 @@
 import { ref as vueData, onBeforeMount, watch } from "vue";
 
-import { initializeApp } from "firebase/app"
-import { getAuth, onAuthStateChanged } from "firebase/auth"
-import { getDatabase, ref, get, set, child } from "firebase/database"
+import { getDatabase, ref, set } from "firebase/database"
 
-import firebaseConfig from "../infra/firebase/config"
 import { Card } from "../model/cards"
 
 import { cardRepository } from "../infra/CardRepository";
 
-const firebaseApp = initializeApp(firebaseConfig)
-
-const auth = getAuth(firebaseApp)
-
 const db = getDatabase()
-const dbRef = ref(db)
-
-function saveCards(cards: Card[], uid: string){
-  return new Promise<void>((resolve)=>{
-    const savePath = `data/${uid}/cards`
-    set(ref(db, savePath), cards)
-      .then(()=>{
-        resolve()
-      })
-      .catch((err)=>{
-        console.error(err);
-      })
-  })
-}
 
 export default ()=>{
   const cards = vueData<Card[]>([])
@@ -61,7 +40,7 @@ export default ()=>{
       updated.value = false
       showBanner.value = false
       timer = setTimeout(()=>{
-        saveCards(cards.value, uid)
+        cardRepository.set(cards.value)
           .then(()=>{
             updated.value = true
           })
