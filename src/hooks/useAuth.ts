@@ -1,31 +1,20 @@
-import { ref as vueData, onBeforeMount } from "vue";
+import { ref as vueData } from "vue";
 
-import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { AuthRepository } from "../infra/AuthRepository";
 
-import firebaseConfig from "../infra/firebase/config"
-
-const firebaseApp = initializeApp(firebaseConfig);
-
-const auth = getAuth(firebaseApp);
-
-type Router = {push: Function}
-export default (router: Router)=>{
+export default async ()=>{
   const uid = vueData<string>()
   const userName = vueData<string|null>()
   const userImage = vueData<string|null>()
 
-  onBeforeMount(()=>{
-    onAuthStateChanged(auth, (user) => {
-      if (user != null) {
-        uid.value = user.uid;
-        userName.value = user.displayName
-        userImage.value = user.photoURL
-      } else {
-        router.push("/welcome")
-      }
-    });
-  })
-
+  const user = await AuthRepository.getUser()
+  if(user != null){
+    uid.value = user.uid;
+    userName.value = user.displayName
+    userImage.value = user.photoURL
+  }else{
+    throw new Error("User is not loggined")
+  }
+  
   return {uid, userName, userImage}
 }

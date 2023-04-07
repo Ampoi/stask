@@ -135,8 +135,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref as vueData, onMounted } from "vue"
-import { useRouter } from "vue-router"
+import { ref as vueData } from "vue"
 
 //コンポーネント
 import NavBar from "../../components/navBar.vue"
@@ -177,7 +176,7 @@ const showColorPicker = vueData(false)
 const selectedSubjectIndex = vueData(0)
 
 //ユーザーデータ関連
-const {uid, userName, userImage} = useUserData(useRouter())
+const {uid, userName, userImage} = await useUserData()
 
 //課題のカード関連
 const {
