@@ -25,7 +25,6 @@
         :userName="userName"
         :tasks="cards"
         @logout="logout"
-        @save="saveWithBanner"
         @opensettings="openSettings"
       />
     </v-navigation-drawer>

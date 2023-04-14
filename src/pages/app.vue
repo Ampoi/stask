@@ -1,8 +1,15 @@
 <template>
-  <component
-    :is="pages[nowPage]"
-    @movePage="nowPage = $event"
-  />
+  <Suspense>
+    <template #default>
+      <component
+        :is="pages[nowPage]"
+        @movePage="nowPage = $event"
+      />
+    </template>
+    <template #fallback>
+      loading
+    </template>
+  </Suspense>
 </template>
 <script setup lang="ts">
 //vue

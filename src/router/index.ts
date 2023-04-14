@@ -36,17 +36,14 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, _from, next)=>{
+router.beforeEach(async (to, _from, next)=>{
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  if (requiresAuth) {
-    if(!AuthRepository.isLogin()){
-      next({
-        path: '/welcome',
-        query: { redirect: to.fullPath }
-      })
-    }else{
-      next()
-    }
+  
+  if (requiresAuth && !(await AuthRepository.isLogin())) {
+    next({
+      path: '/welcome',
+      query: { redirect: to.fullPath }
+    })
   }else{
     next()
   }
