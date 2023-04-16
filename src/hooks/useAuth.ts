@@ -27,5 +27,5 @@ export default async ()=>{
     });
   }
   
-  return {uid, userName, userImage, logout}
+  return {userName, userImage, logout}
 }

@@ -146,8 +146,6 @@ import TermTimer from "../../components/timer.vue"
 //firebase
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, signOut } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
 
 //コンポーザブル関数
 import useAuth from "../../hooks/useAuth"
@@ -159,10 +157,6 @@ import firebaseConfig from "../../infra/firebase/config"
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
-
-const auth = getAuth(firebaseApp);
-
-const db = getDatabase()
 
 const emit = defineEmits<{
   (e: "movePage", to:string): void
@@ -178,7 +172,7 @@ const showColorPicker = vueData(false)
 const selectedSubjectIndex = vueData(0)
 
 //ユーザーデータ関連
-const {uid, userName, userImage, logout} = await useAuth()
+const {userName, userImage, logout} = await useAuth()
 
 //課題のカード関連
 const {
@@ -209,11 +203,6 @@ function checkPermanent(){
 function openSettings(){
   showSettings.value = true
   showNavbar.value = false
-}
-
-function saveSettings(){
-  set(ref(db, `data/${uid.value}/settings`), settings.value)
-  showSettings.value = false
 }
 
 function getSubjectColor(index: number){
