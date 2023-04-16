@@ -20,24 +20,16 @@ type TimersData = Array<Timer>
 
 export default ()=>{
   const timers = vueData<TimersData>([])
-  
-  let uid: string
 
   onBeforeMount(()=>{
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        uid = user.uid
-
-        timerRepository.get().then((newData) => {
-          if (newData){
-            timers.value = newData
-          }else{
-            timers.value = []
-          }
-        }).catch((error) => {
-          console.error(error);
-        });
+    timerRepository.get().then((newData) => {
+      if (newData){
+        timers.value = newData
+      }else{
+        timers.value = []
       }
+    }).catch((error) => {
+      console.error(error);
     });
   })
 

@@ -3,7 +3,7 @@
     <v-app-bar class="bg-gray-900" flat>
       <button
         class="text-white/50 border-white/50 border-[1.2px] border-solid px-4 py-2 rounded-full mx-auto"
-        @click="emit('movePage', 'mainPage')"
+        @click="endConcentrateMode"
       >集中モードを終了する</button>
     </v-app-bar>
 
@@ -23,18 +23,18 @@
         </v-progress-circular>
         
         <ConcentrateTaskCard
-          v-for="(card, cardIndex) in cards"
+          v-for="(_card, cardIndex) in cards"
           v-model:card="cards[cardIndex]"
         />
 
         <div
           v-if="getDoneConcentrateCard.length == getConcentrateCard.length"
-          class="flex flex-col items-center gap-2 text-white/50"
+          class="flex flex-col items-center gap-2 text-white/50 pt-20"
         >
           <span class="font-bold text-lg">集中モードに設定された課題は全て達成しました！</span>
           <button
             class="text-white/50 border-white/50 border-[1.2px] border-solid px-4 py-2 rounded-full mx-auto"
-            @click="emit('movePage', 'mainPage')"
+            @click="endConcentrateMode"
           >集中モードを終了する</button>
         </div>
       </div>
@@ -48,7 +48,7 @@ import ConcentrateTaskCard from "../../components/concentrateTaskCard.vue";
 
 import useCards from '../../hooks/useCards';
 
-import { Card } from "../../model/cardss";
+import { Card } from "../../model/cards";
 
 const {
   cards
@@ -78,11 +78,14 @@ const getDoneConcentrateCard = computed(():Array<Card> => {
   return newDoneConcentrateCard
 })
 
-const getTotalTime = computed(():number => {
-  let newTotalTime: number = 0
-  getConcentrateCard.value.forEach((card)=>{
-    newTotalTime += card.time
+function endConcentrateMode(){
+  let i = 0
+  cards.value.forEach((card)=>{
+    if(card.done && card.concentrate){
+      cards.value[i].concentrate = false
+    }
+    i++
   })
-  return newTotalTime
-})
+  emit('movePage', 'mainPage')
+}
 </script>
