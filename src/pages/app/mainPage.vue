@@ -24,7 +24,7 @@
         :userImage="userImage"
         :userName="userName"
         :tasks="cards"
-        @logout="logout"
+        @logout="logout(router)"
         @opensettings="openSettings"
       />
     </v-navigation-drawer>
@@ -135,6 +135,7 @@
 
 <script setup lang="ts">
 import { ref as vueData } from "vue"
+import { useRouter } from "vue-router"
 
 //コンポーネント
 import NavBar from "../../components/navBar.vue"
@@ -149,7 +150,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 
 //コンポーザブル関数
-import useUserData from "../../hooks/useAuth"
+import useAuth from "../../hooks/useAuth"
 import useCards from "../../hooks/useCards"
 import useTimers from "../../hooks/useTimers"
 import useSettings from "../../hooks/useSettings"
@@ -167,6 +168,8 @@ const emit = defineEmits<{
   (e: "movePage", to:string): void
 }>()
 
+const router = useRouter()
+
 //UIの表示非表示
 const showNavbar = vueData(false)
 const showSettings = vueData(false)
@@ -175,7 +178,7 @@ const showColorPicker = vueData(false)
 const selectedSubjectIndex = vueData(0)
 
 //ユーザーデータ関連
-const {uid, userName, userImage} = await useUserData()
+const {uid, userName, userImage, logout} = await useAuth()
 
 //課題のカード関連
 const {
@@ -194,14 +197,6 @@ const {
   settings,
   addSubject, deleteSubject,
 } = useSettings()
-
-function logout(){
-  signOut(auth).then(() => {
-    console.log("logout success!");
-  }).catch((error) => {
-    console.log(error);
-  });
-}
 
 function checkPermanent(){
   if(window.innerWidth < 832){

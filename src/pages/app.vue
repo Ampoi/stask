@@ -7,7 +7,7 @@
       />
     </template>
     <template #fallback>
-      loading
+      loading...
     </template>
   </Suspense>
 </template>
