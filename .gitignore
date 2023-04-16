@@ -29,3 +29,4 @@ dist-ssr
 main.code-workspace
 
 .firebase/*
+.vercel

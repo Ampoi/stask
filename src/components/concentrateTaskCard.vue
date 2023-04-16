@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { watch } from "vue"
 
-import { Card } from '../model/cardss';
+import { Card } from '../model/cards';
 
 const props = defineProps<{
   card: Card

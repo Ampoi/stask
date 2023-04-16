@@ -58,8 +58,6 @@
 <script setup lang="ts">
 import {ref as vueData, computed} from "vue"
 
-import type { Date } from "../model/timerss"
-
 const props = defineProps(["modelValue"])
 const emit = defineEmits(["update:modelValue", "deleteTimer"])
 

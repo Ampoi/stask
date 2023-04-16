@@ -142,7 +142,7 @@ import CheckButton from "./taskCard/checkButton.vue"
 
 import { computed, onMounted, ref as vueData, watch } from "vue"
 
-import type { Card } from "../types/card"
+import type { Card } from "../model/cards"
 
 type Subject = {
   index: number
