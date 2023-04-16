@@ -1,123 +1,140 @@
 <template>
   <v-card
-    flat class="border-2 border-l-8 rounded-xl bg-white"
-    :style="`border-color:${getSubjectColor(card.subject)}6F;`"
-    v-if="checkCardDone"
+    flat class="border-2 border-l-8 rounded-xl bg-white relative"
+    :class="{'shadow-lg shadow-orange-400/30': (getCardType == 'concentrate')}"
+    :style="`
+      border-color:${getSubjectColor(card.subject)}6F;
+      transform: scale(${1 + ((pressTime/100)**2)/20});
+    `"
+    v-if="checkCardType"
+    oncontextmenu="return false;"
   >
+    <div
+      @touchstart="startLongPress"
+      @touchend="finishLongPress"
+    >
     <v-card-item>
-      <div class="flex flex-row items-center">
-        <!--達成ボタン-->
-        <CheckButton
-          v-model:done="card.done"
-          :borderColor="getSubjectColor(card.subject)"
-        />
-        <!--右側-->
-        <div class="ml-2 grow">
-          <div class="flex flex-row items-center">
-            <div class="basis-full">
-              <v-card-title>
-                <input type="text" class="w-full" placeholder="タイトルを入力..." v-model="card.title">
-              </v-card-title>
-              <v-card-subtitle class="sm:text-[14px] text-[16px] flex sm:flex-row flex-col sm:items-center sm:gap-4">
-                <div class="flex flex-row">
-                  <span>所要時間</span>
+        <div class="flex flex-row items-center">
+          <!--達成ボタン-->
+          <CheckButton
+            v-model:done="card.done"
+            :borderColor="getSubjectColor(card.subject)"
+          />
+          <!--右側-->
+          <div class="ml-2 grow">
+            <div class="flex flex-row items-center">
+              <div class="basis-full">
+                <v-card-title>
+                  <input type="text" class="w-full" placeholder="タイトルを入力..." v-model="card.title">
+                </v-card-title>
+                <v-card-subtitle class="sm:text-[14px] text-[16px] flex sm:flex-row flex-col sm:items-center sm:gap-4">
+                  <div class="flex flex-row">
+                    <span>所要時間</span>
+                    <input
+                      type="number"
+                      min="1" max="999"
+                      v-model="card.time"
+                      class="text-right"
+                    >
+                    <span>分</span>
+                  </div>
+                  <div>
+                    <span>期限:</span>
+                    <input type="date" v-model="card.term">
+                  </div>
+                </v-card-subtitle>
+              </div>
+              <v-spacer></v-spacer>
+              <v-btn
+                icon
+                class="m-0 text-xl bg-transparent"
+                @click.stop="showSubMenu = !showSubMenu"
+                flat
+              >
+                <v-icon v-if="showSubMenu">mdi-menu-up</v-icon> <!--詳細を表示しているとき-->
+                <v-icon v-if="!showSubMenu">mdi-menu-down</v-icon> <!--詳細を隠しているとき-->
+              </v-btn>
+            </div>
+          </div>
+        </div>
+        <v-expand-transition>
+          <div v-if="showSubMenu" class="flex flex-col gap-4">
+            <div class="mt-4 flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
+              <!--ページ-->
+              <div
+                class="mx-auto flex flex-row gap-2 items-center"
+                v-for="(page, pageIndex) in card.pages"
+                :key="pageIndex"
+              >
+                <button
+                  class="text-[12px] p-1 border-2 rounded-full border-solid"
+                  :style="`border-color: ${getSubjectColor(card.subject)}6F; background-color: ${getSubjectColor(card.subject)}${page.done ? '6F' : '00'};`"
+                  :class="{'text-white': page.done, 'text-black/20': !page.done}"
+                  @click="page.done = !page.done"
+                >
+                  <v-icon>mdi-check</v-icon>
+                </button>
+                <p>
+                  p.
                   <input
                     type="number"
-                    min="1" max="999"
-                    v-model="card.time"
-                    class="text-right"
+                    class="w-12"
+                    v-model="page.startPage"
+                    min="1"
+                    :max="page.lastPage-1"
                   >
-                  <span>分</span>
-                </div>
-                <div>
-                  <span>期限:</span>
-                  <input type="date" v-model="card.term">
-                </div>
-              </v-card-subtitle>
-            </div>
-            <v-spacer></v-spacer>
-            <v-btn
-              icon
-              class="m-0 text-xl bg-transparent"
-              @click.stop="showSubMenu = !showSubMenu"
-              flat
-            >
-              <v-icon v-if="showSubMenu">mdi-menu-up</v-icon> <!--詳細を表示しているとき-->
-              <v-icon v-if="!showSubMenu">mdi-menu-down</v-icon> <!--詳細を隠しているとき-->
-            </v-btn>
-          </div>
-        </div>
-      </div>
-      <v-expand-transition>
-        <div v-if="showSubMenu" class="flex flex-col gap-4">
-          <div class="mt-4 flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
-            <!--ページ-->
-            <div
-              class="mx-auto flex flex-row gap-2 items-center"
-              v-for="(page, pageIndex) in card.pages"
-              :key="pageIndex"
-            >
-              <button
-                class="text-[12px] p-1 border-2 rounded-full border-solid"
-                :style="`border-color: ${getSubjectColor(card.subject)}6F; background-color: ${getSubjectColor(card.subject)}${page.done ? '6F' : '00'};`"
-                :class="{'text-white': page.done, 'text-black/20': !page.done}"
-                @click="page.done = !page.done"
-              >
-                <v-icon>mdi-check</v-icon>
-              </button>
-              <p>
-                p.
-                <input
-                  type="number"
-                  class="w-12"
-                  v-model="page.startPage"
-                  min="1"
-                  :max="page.lastPage-1"
+                  ~
+                  p.
+                  <input
+                    type="number"
+                    class="w-12"
+                    v-model="page.lastPage"
+                    :min="page.startPage+1"
+                    max="999"
+                  >
+                </p>
+                <button
+                  class="text-sm text-red-300/80 border-solid"
+                  @click="deletePage(pageIndex)"
                 >
-                ~
-                p.
-                <input
-                  type="number"
-                  class="w-12"
-                  v-model="page.lastPage"
-                  :min="page.startPage+1"
-                  max="999"
-                >
-              </p>
+                  <v-icon>mdi-trash-can</v-icon>
+                </button>
+              </div>
+              <!--ページの追加ボタン-->
               <button
-                class="text-sm text-red-300/80 border-solid"
-                @click="deletePage(pageIndex)"
+                class="text-gray-600 bg-white rounded-md p-2"
+                @click="addPage"
               >
-                <v-icon>mdi-trash-can</v-icon>
+                <v-icon>mdi-plus</v-icon>
               </button>
             </div>
-            <!--ページの追加ボタン-->
-            <button
-              class="text-gray-600 bg-white rounded-md p-2"
-              @click="addPage"
-            >
-              <v-icon>mdi-plus</v-icon>
-            </button>
+            <div class="flex flex-row items-start gap-4">
+              <v-select
+                v-model="card.subject"
+                :items="subjects"
+                label="Subject"
+                variant="outlined"
+                item-title="title"
+                item-value="index"
+                density="comfortable"
+                :color="getSubjectColor(card.subject) + '6F'"
+              />
+              <button
+                class="h-12 grid place-content-center px-2 box-border border-orange-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold
+                       hover:bg-orange-300/80 hover:text-white"
+               :class="{'text-orange-400 bg-white': !card.concentrate, 'text-white bg-orange-400': card.concentrate}"
+                @click="turnConcentrate(getCardType)"
+                title="課題を今やることに設定する"><v-icon>mdi-fire</v-icon></button>
+              <button
+                class="h-12 grid place-content-center px-2 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
+                       hover:bg-red-400/50 hover:text-white"
+                @click="$emit('deleteTask')"
+                title="課題を今やることに設定する"><v-icon>mdi-trash-can</v-icon></button>
+            </div>
           </div>
-          <div class="flex flex-row items-start gap-4">
-            <v-select
-              v-model="card.subject"
-              :items="subjects"
-              label="Subject"
-              variant="outlined"
-              item-title="title"
-              item-value="index"
-              density="comfortable"
-              :color="getSubjectColor(card.subject) + '6F'"
-            />
-            <button
-              class="h-12 p-4 pt-2.5 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
-                     hover:bg-red-400/50 hover:text-white"
-              @click="$emit('deleteTask')">課題を削除</button>
-          </div>
-        </div>
-      </v-expand-transition>
-    </v-card-item>
+        </v-expand-transition>
+      </v-card-item>
+    </div>
   </v-card>
 </template>
 <script setup lang="ts">
@@ -133,9 +150,11 @@ type Subject = {
   color: string
 }
 
+type CardType = "done" | "incomplete" | "concentrate"
+
 const props = defineProps<{
   card: Card,
-  onlydone: boolean,
+  showCardType: CardType,
   subjects: Array<Subject>
 }>()
 
@@ -170,13 +189,54 @@ function getSubjectColor(subject: number): string{
   }
 }
 
-const checkCardDone = computed(()=>{
-  if(props.onlydone){
-    return props.card.done
+const getCardType = computed(()=>{
+  if( props.card.done == false && props.card.concentrate == true){
+    return "concentrate"
+  }else if(props.card.done == false){
+    return "incomplete"
   }else{
-    return !props.card.done
+    return "done"
   }
 })
+
+const checkCardType = computed(()=>{
+  const cardType = getCardType.value
+  return (cardType == props.showCardType)
+})
+
+function turnConcentrate(type: CardType){
+  if(type == "incomplete"){
+    props.card.concentrate = true
+  }else if(type == "concentrate"){
+    props.card.concentrate = false
+  }
+}
+
+let pressTimer: number
+let addPressTime: number
+const pressTime = vueData<number>(0)
+
+function startLongPress(){
+  pressTimer = setTimeout(()=>{
+
+    addPressTime = setInterval(()=>{
+      pressTime.value += 1      
+      if(pressTime.value >= 100){
+        const cardType = getCardType
+        turnConcentrate(cardType.value)
+        finishLongPress()
+      }
+    }, 2)
+
+    clearTimeout(pressTimer)
+  }, 200)
+}
+
+function finishLongPress(){
+  clearTimeout(pressTimer)
+  clearInterval(addPressTime)
+  pressTime.value = 0
+}
 
 onMounted(()=>{
   if(props.card.pages == undefined){

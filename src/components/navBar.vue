@@ -24,16 +24,6 @@
     </div>
     <!--メニュー-->
     <div class="mt-4 flex flex-col">
-      <!--保存されてるかの表示-->
-      <div class="flex flex-row gap-2 items-baseline hover:bg-slate-500/10 p-2 rounded-lg transition">
-        <div class="w-2 h-2 rounded-full" :class="{'bg-emerald-400': updated, 'bg-orange-400': !updated}"/>
-        <p class="text-sm">{{ updated ? "保存されました" : "保存されていません" }}</p>
-      </div>
-      <!--保存ボタン-->
-      <NavBarButton @buttonClicked="$emit('save')">
-        <v-icon class="text-sm -ml-0.5 opacity-60">mdi-content-save</v-icon>
-        <p class="text-sm">保存する</p>
-      </NavBarButton>
       <!--設定ボタン-->
       <NavBarButton @buttonClicked="$emit('opensettings')">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-cog</v-icon>
@@ -47,8 +37,8 @@ import { computed } from 'vue';
 
 import NavBarButton from "../components/navBar/button.vue"
 
-const props = defineProps(["userName", "userImage", "updated", "tasks"])
-const emit = defineEmits(["logout", "save", "opensettings"])
+const props = defineProps(["userName", "userImage", "tasks"])
+const emit = defineEmits(["logout", "opensettings"])
 
 const getTaskTime = computed(()=>{
   let time = 0

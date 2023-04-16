@@ -5,11 +5,14 @@ import home from "../pages/welcome.vue"
 import login from "../pages/login.vue"
 import updating from "../pages/nowUpdating.vue"
 
+import { AuthRepository } from "../infra/AuthRepository";
+
 const routes = [
   {
     path: "/",
     name: "App",
     component: app,
+    meta: { requiresAuth: true }
   },
   {
     path: "/welcome",
@@ -32,5 +35,18 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+router.beforeEach(async (to, _from, next)=>{
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  
+  if (requiresAuth && !(await AuthRepository.isLogin())) {
+    next({
+      path: '/welcome',
+      query: { redirect: to.fullPath }
+    })
+  }else{
+    next()
+  }
+})
 
 export default router;

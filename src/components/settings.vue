@@ -1,22 +1,5 @@
 <template>
   <div class="px-4 py-6 bg-white rounded-md relative max-w-xl mx-auto">
-    <!--保存ボタン-->
-    <button
-      class="p-4 rounded-all bg-orange-200 border-2 border-orange-300 border-solid rounded-full absolute right-4 top-6"
-      @click="$emit('saveSettings')"
-    >
-      <v-icon>mdi-content-save</v-icon>
-    </button>
-
-    <!--保存してない時の通知-->
-    <div
-      class="bg-red-400 text-white font-bold p-4 rounded-md absolute -top-16 -left-0 w-full flex flex-row items-center gap-4"
-      v-if="settingChanged"
-    >
-      <v-icon>mdi-alert</v-icon>
-      <p>保存していない変更があります！</p>
-    </div>
-
     <h1 class="text-3xl font-bold mb-2">設定</h1>
     <SettingList>
       <template v-slot:title>教科の設定</template>
@@ -57,26 +40,19 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref as vueData, watch } from "vue"
 
 import SettingList from "./settings/settingList.vue"
 
-import type { Settings } from "../types/settings";
+import type { Settings } from "../model/settings";
 
 const props = defineProps<{
   settings: Settings
 }>()
 
 const emits = defineEmits<{
-  (e: "saveSettings"): void
+  (e: "update:settings"): void
   (e: "getSubjectColor", subjectIndex: number): void
   (e: "deleteSubject", subjectIndex: number): void
   (e: "addSubject"): void
 }>()
-
-const settingChanged = vueData<boolean>(false)
-
-watch(props.settings, ()=>{
-  settingChanged.value = true
-}, {deep: true})
 </script>

@@ -70,7 +70,7 @@ import { ref as vueData, onMounted } from "vue"
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
-import firebaseConfig from "../data/firebaseConfig"
+import firebaseConfig from "../infra/firebase/config"
 
 import Header from "../components/header.vue"
 

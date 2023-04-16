@@ -28,7 +28,7 @@ import { getAnalytics } from "firebase/analytics";
 
 import Header from "../components/header.vue"
 
-import firebaseConfig from "../data/firebaseConfig"
+import firebaseConfig from "../infra/firebase/config"
 
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);

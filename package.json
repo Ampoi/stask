@@ -6,7 +6,8 @@
     "serve": "vite preview",
     "build": "vue-tsc --allowJS && vite build",
     "dev": "vite --host",
-    "preview": "vite preview --host"
+    "preview": "vite preview --host",
+    "publish": "export CURRENT_BRANCH=\"$(git branch --contains | cut -b 3-)\" && git push origin $CURRENT_BRANCH"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
