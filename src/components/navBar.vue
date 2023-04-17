@@ -32,8 +32,9 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
+import { Card } from '../model/cards';
 
 import NavBarButton from "../components/navBar/button.vue"
 
@@ -42,7 +43,7 @@ const emit = defineEmits(["logout", "opensettings"])
 
 const getTaskTime = computed(()=>{
   let time = 0
-  props.tasks.forEach(task => {
+  props.tasks.forEach((task: Card) => {
     if(!task.done){
       time += task.time
     }
@@ -53,7 +54,7 @@ const getTaskTime = computed(()=>{
 const getTaskDone = computed(()=>{
   let allTaskAmount = 0
   let doneTaskAmount = 0
-  props.tasks.forEach(task => {
+  props.tasks.forEach((task: Card) => {
     allTaskAmount += 1
     if(task.done == true){
       doneTaskAmount += 1

@@ -14,7 +14,8 @@
     "noEmit": true,
     "types":[
       "vite/client",
-      "vite-plugin-pwa/client"
+      "vite-plugin-pwa/client",
+      "vuetify"
     ]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/router/index.js", "src/hooks/useCards.js", "src/hooks/useAuth.tssrc/functions/app/useSettings.js"],

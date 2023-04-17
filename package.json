@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "serve": "vite preview",
-    "build": "vue-tsc --allowJS && vite build",
+    "build": "vue-tsc && vite build",
     "dev": "vite --host",
     "preview": "vite preview --host",
     "publish": "export CURRENT_BRANCH=\"$(git branch --contains | cut -b 3-)\" && git push origin $CURRENT_BRANCH"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
+    "@types/webfontloader": "^1.6.35",
     "firebase": "^9.9.3",
     "microcms-js-sdk": "^2.3.2",
     "roboto-fontface": "*",

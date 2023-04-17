@@ -5,6 +5,8 @@
       <slot/>
   </button>
 </template>
-<script setup>
-const emit = defineEmits(["buttonClicked"])
+<script setup lang="ts">
+const emit = defineEmits<{
+  (e: "buttonClicked"): void
+}>()
 </script>
