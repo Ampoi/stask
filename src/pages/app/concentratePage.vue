@@ -66,13 +66,35 @@ const emit = defineEmits<{
   (e: "movePage", to:string): void
 }>()
 
+const runTimer = ref(false)
+const timeLeft = ref(900)
+
+setInterval(()=>{
+  if(runTimer.value && timeLeft.value > 0){
+    timeLeft.value -= 1
+  }
+}, 1000)
+
+const getTimeFromSeconds = computed(() => {
+  const hours = Math.floor(timeLeft.value / 3600)
+  const minutes = twoDigitNumber(Math.floor((timeLeft.value % 3600) / 60))
+  const seconds = twoDigitNumber(timeLeft.value % 60)
+
+  return `${hours}:${minutes}:${seconds}`
+})
+
 const getConcentrateCard = computed(():Array<Card> => {
   let newConcentrateCard: Array<Card> = []
+  let newTimeLeft = 0
   cards.value.forEach((card)=>{
     if(card.concentrate == true){
       newConcentrateCard.push(card)
+      
+      newTimeLeft += card.time * 60
     }
   })
+
+  timeLeft.value = newTimeLeft
   return newConcentrateCard
 })
 
@@ -96,21 +118,4 @@ function endConcentrateMode(){
   })
   emit('movePage', 'mainPage')
 }
-
-const runTimer = ref(false)
-const timeLeft = ref(900)
-
-setInterval(()=>{
-  if(runTimer.value && timeLeft.value > 0){
-    timeLeft.value -= 1
-  }
-}, 1000)
-
-const getTimeFromSeconds = computed(() => {
-  const hours = Math.floor(timeLeft.value / 3600)
-  const minutes = twoDigitNumber(Math.floor((timeLeft.value % 3600) / 60))
-  const seconds = twoDigitNumber(timeLeft.value % 60)
-
-  return `${hours}:${minutes}:${seconds}`
-})
 </script>
