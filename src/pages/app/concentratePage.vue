@@ -9,18 +9,27 @@
 
     <v-main class="bg-gray-900 text-white">
       <div class="flex flex-col mx-auto px-4 gap-4 max-w-xl">
-        <v-progress-circular
-          color="rgb(253 186 116 / 0.5)"
-          size="200"
-          width="20"
-          :model-value="getDoneConcentrateCard.length / getConcentrateCard.length * 100"
-          class="mx-auto"
-        >
-          <div class="flex flex-col items-center">
-            <v-icon class="text-8xl">mdi-check</v-icon>
-            <p>{{ getDoneConcentrateCard.length }} / {{ getConcentrateCard.length }}</p>
-          </div>
-        </v-progress-circular>
+        <div class="flex flex-col items-center gap-4">
+          <v-progress-circular
+            color="rgb(253 186 116 / 0.5)"
+            size="200"
+            width="14"
+            :model-value="getDoneConcentrateCard.length / getConcentrateCard.length * 100"
+            class="mx-auto"
+          >
+            <div class="flex flex-col items-center">
+              <p class="text-5xl">{{ getTimeFromSeconds }}</p>
+              <p class="text-lg">{{ getDoneConcentrateCard.length }} / {{ getConcentrateCard.length }}</p>
+            </div>
+          </v-progress-circular>
+          <button
+            class="py-4 px-16 rounded-full border-2 border-solid transition-all duration-300"
+            :class="{
+              'bg-orange-300/50 text-white border-transparent': !runTimer,
+              'text-orange-300/50 border-orange-300/50': runTimer}"
+            @click="runTimer = !runTimer"
+          >{{ runTimer ? "ストップ" : "スタート" }}</button>
+        </div>
         
         <ConcentrateTaskCard
           v-for="(_card, cardIndex) in cards"
@@ -42,7 +51,8 @@
   </v-app>
 </template>
 <script setup lang="ts">
-import { computed } from "vue"
+import { ref, computed } from "vue"
+import twoDigitNumber from "../../functions/twoDigitNumber";
 
 import ConcentrateTaskCard from "../../components/concentrateTaskCard.vue";
 
@@ -50,9 +60,7 @@ import useCards from '../../hooks/useCards';
 
 import { Card } from "../../model/cards";
 
-const {
-  cards
-} = useCards()
+const { cards } = useCards()
 
 const emit = defineEmits<{
   (e: "movePage", to:string): void
@@ -88,4 +96,21 @@ function endConcentrateMode(){
   })
   emit('movePage', 'mainPage')
 }
+
+const runTimer = ref(false)
+const timeLeft = ref(900)
+
+setInterval(()=>{
+  if(runTimer.value && timeLeft.value > 0){
+    timeLeft.value -= 1
+  }
+}, 1000)
+
+const getTimeFromSeconds = computed(() => {
+  const hours = Math.floor(timeLeft.value / 3600)
+  const minutes = twoDigitNumber(Math.floor((timeLeft.value % 3600) / 60))
+  const seconds = twoDigitNumber(timeLeft.value % 60)
+
+  return `${hours}:${minutes}:${seconds}`
+})
 </script>
