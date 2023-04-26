@@ -5,6 +5,9 @@ type Subject = {
 }
 
 export type Settings = {
+  timer: {
+    lapDays: number
+  },
   subjects: Array<Subject>
 }
 
@@ -16,6 +19,9 @@ export const Settings = {
   },
   
   defaultSettings: {
+    timer: {
+      lapDays: 14
+    },
     subjects: [
       {index:0, title: "国語 (古文/現代文)", color:"#F44335"},
       {index:1, title: "数学 (算数)", color:"#2196F3"},

@@ -1,18 +1,13 @@
 import { ref as vueData, onBeforeMount, watch } from "vue";
 
-import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-
-import firebaseConfig from "../infra/firebase/config"
 import { Settings } from "../model/settings";
 import { settingRepository } from "../infra/SettingRepository"
 
-const firebaseApp = initializeApp(firebaseConfig);
-
-const auth = getAuth(firebaseApp);
-
 export default ()=>{
   const settings = vueData<Settings>({
+    timer: {
+      lapDays: 14
+    },
     subjects: []
   })
 

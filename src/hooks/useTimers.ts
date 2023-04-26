@@ -1,20 +1,8 @@
 import { ref as vueData, onBeforeMount, watch } from "vue";
 
-import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, get, set, child } from "firebase/database";
-
 import { timerRepository } from "../infra/TimerRepository";
 
-import firebaseConfig from "../infra/firebase/config"
 import { Timer } from "../model/timers"
-
-const firebaseApp = initializeApp(firebaseConfig);
-
-const auth = getAuth(firebaseApp);
-
-const db = getDatabase()
-const dbRef = ref(db);
 
 type TimersData = Array<Timer>
 

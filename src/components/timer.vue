@@ -58,10 +58,13 @@
 <script setup lang="ts">
 import {ref as vueData, computed} from "vue"
 
+import useSettings from "../hooks/useSettings"
+
 const props = defineProps(["modelValue"])
 const emit = defineEmits(["update:modelValue", "deleteTimer"])
 
 const showGetDateModal = vueData(false)
+const { settings } = useSettings()
 
 let nameInputTimer:number;
 function updateName(event: any){
@@ -97,7 +100,6 @@ const getDaysLeft = computed(()=>{
 })
 
 const getDaysPercent = computed(()=>{
-  const allDaysLeft = 14
-  return getDaysLeft.value / allDaysLeft * 100
+  return getDaysLeft.value / settings.value.timer.lapDays * 100
 })
 </script>
