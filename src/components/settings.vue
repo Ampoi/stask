@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 py-6 bg-white rounded-md relative max-w-xl mx-auto">
+  <div class="px-4 py-6 bg-white rounded-md relative overflow-y-auto">
     <h1 class="text-3xl font-bold mb-2">設定</h1>
     <div class="flex flex-col gap-4">
       <SettingList>
@@ -23,7 +23,7 @@
                 :style="`background-color: ${subject.color}6F;`"
                 @click="$emit('getSubjectColor', subIndex)"
               />
-              <input type="text" v-model="subject.title">
+              <input type="text" v-model="subject.title" class="w-52">
               <button
                 class="rounded-full h-6 w-6 duration-300 hover:bg-white/70 text-[14px] text-red-400/60 grid place-content-center"
                 @click="$emit('deleteSubject', subIndex)"

@@ -43,6 +43,7 @@
     <v-dialog v-model="showColorPicker">
       <v-color-picker
         v-model="settings.subjects[selectedSubjectIndex].color"
+        class="mx-auto"
         hide-inputs
         show-swatches
       ></v-color-picker>
@@ -132,7 +133,12 @@
     </v-main>
   </v-app>
 </template>
-
+<style>
+.v-overlay__content {
+  margin: 0 auto 0 auto;
+  max-width: 36rem !important;
+}
+</style>
 <script setup lang="ts">
 import { ref as vueData } from "vue"
 import { useRouter } from "vue-router"

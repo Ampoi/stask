@@ -1,10 +1,10 @@
 <template>
   <v-card
-    flat class="border-2 border-l-8 rounded-xl bg-white relative"
+    flat class="border-2 border-l-8 rounded-xl bg-white relative select-none"
     :class="{'shadow-lg shadow-orange-400/30': (getCardType == 'concentrate')}"
     :style="`
       border-color:${getSubjectColor(card.subject)}6F;
-      transform: scale(${1 + ((pressTime/100)**2)/20});
+      transform: scale(${1 + ((pressTime/100)**4)/2});
     `"
     v-if="checkCardType"
     oncontextmenu="return false;"
@@ -220,13 +220,13 @@ function startLongPress(){
   pressTimer = setTimeout(()=>{
 
     addPressTime = setInterval(()=>{
-      pressTime.value += 1      
-      if(pressTime.value >= 100){
+      pressTime.value += 2  
+      if(pressTime.value >= 50){
         const cardType = getCardType
         turnConcentrate(cardType.value)
         finishLongPress()
       }
-    }, 2)
+    }, 1)
 
     clearTimeout(pressTimer)
   }, 200)
