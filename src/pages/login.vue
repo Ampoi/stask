@@ -1,7 +1,7 @@
 <template>
   <v-app class="bg-gray-100">
     <Header/>
-    <v-main class="text-center pt-32">
+    <v-main class="text-center pt-32 pb-20">
       <div>
         <h1 class="text-5xl font-black">Login / CreateAccount</h1>
         <p class="text-sm pt-2">Staskをご利用していただきありがとうございます！</p>
@@ -17,6 +17,9 @@
         >Twitterでログイン</button>
       </div>
     </v-main>
+    <v-footer>
+      <Footer/>
+    </v-footer>
   </v-app>
 </template>
 <script setup lang="ts">
@@ -27,6 +30,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 import Header from "../components/header.vue"
+import Footer from "../components/footer.vue";
 
 import firebaseConfig from "../infra/firebase/config"
 

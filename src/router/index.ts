@@ -4,6 +4,7 @@ import app from "../pages/app.vue"
 import home from "../pages/welcome.vue"
 import login from "../pages/login.vue"
 import updating from "../pages/nowUpdating.vue"
+import contact from "../pages/contact.vue"
 
 import { AuthRepository } from "../infra/AuthRepository";
 
@@ -18,6 +19,11 @@ const routes = [
     path: "/welcome",
     name: "Welcome",
     component: home
+  },
+  {
+    path: "/contact",
+    name: "Contact",
+    component: contact
   },
   {
     path: "/login",

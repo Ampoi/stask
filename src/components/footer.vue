@@ -12,7 +12,7 @@
         <div class="p-8 flex flex-col gap-6">
           <a href="">プライバシーポリシー</a>
           <a href="">利用規約</a>
-          <a href="">お問い合わせ</a>
+          <a href="/contact">お問い合わせ</a>
         </div>
       </div>
       <p class="text-center text-gray-400 text-sm">
