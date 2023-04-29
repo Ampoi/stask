@@ -47,8 +47,7 @@
             min="1" max="999"
             class="mx-auto py-2 px-4 rounded-md block w-32 text-center text-lg"
             placeholder="タイマー一周の日数"
-            :value="String(settings.timer.lapDays)"
-            @input="settings.timer.lapDays = Number($event.target.value)"
+            v-model="timerLapDays"
           >
         </template>
       </SettingList>
@@ -60,6 +59,7 @@
 import SettingList from "./settings/settingList.vue"
 
 import type { Settings } from "../model/settings";
+import { computed } from "vue";
 
 const props = defineProps<{
   settings: Settings
@@ -71,4 +71,13 @@ const emits = defineEmits<{
   (e: "deleteSubject", subjectIndex: number): void
   (e: "addSubject"): void
 }>()
+
+const timerLapDays = computed({
+  get(): string {
+    return String(props.settings.timer.lapDays)
+  },
+  set(newLapDays: string){
+    ;props.settings.timer.lapDays = Number(newLapDays)
+  }
+})
 </script>
