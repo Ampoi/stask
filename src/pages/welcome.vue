@@ -14,20 +14,20 @@
               >Get Started</a>
             </div>
           </div>
-          <img src="../assets/Mockup.png" class="w-[880px] mx-auto -mt-20 z-0 relative" oncontextmenu="return false;">
+          <img src="../assets/Mockup.webp" class="w-[880px] mx-auto -mt-20 z-0 relative" oncontextmenu="return false;">
         </div>
         <div class="py-8">
           <h1 class="font-bold text-5xl tablet:text-7xl laptop:text-7xl text-center">Staskの機能</h1>
           <div class="max-w-3xl mx-auto px-4 mt-4 grid laptop:grid-cols-2 desktop:grid-cols-2 gap-4 grid-rows-1">
             <div class="bg-white laptop:h-[440px] desktop:h-[440px] tablet:h-[200px] rounded-sm laptop:relative desktop:relative flex tablet:flex-row flex-col">
-              <img src="../assets/card_demo.png" class="laptop:w-full desktop:w-full laptop:absolute desktop:absolute bottom-0">
+              <img src="../assets/card_demo.webp" class="laptop:w-full desktop:w-full laptop:absolute desktop:absolute bottom-0">
               <div>
                 <h2 class="text-3xl font-bold text-left px-8 pt-8">学生の課題に最適な<br>カードの表示</h2>
                 <p class="px-8 pb-8 laptop:pb-0 desktop:pb-0">Staskは一つ一つの課題をカードとして管理して、それらは学生が最も使いやすいようにデザインされています。</p>
               </div>
             </div>
             <div class="bg-white laptop:h-[440px] desktop:h-[440px] tablet:h-[200px] rounded-sm laptop:relative desktop:relative flex tablet:flex-row flex-col">
-              <img src="../assets/timer_demo.png" class="laptop:w-full desktop:w-full laptop:absolute desktop:absolute bottom-0">
+              <img src="../assets/timer_demo.webp" class="laptop:w-full desktop:w-full laptop:absolute desktop:absolute bottom-0">
               <div>
                 <h2 class="text-3xl font-bold text-left px-8 pt-8">期限を見逃さない<br>タイマーの表示</h2>
                 <p class="px-8 pb-8 laptop:pb-0 desktop:pb-0">Staskはカードとは別に期限のみを管理することもできるタイマー機能を備えています。</p>

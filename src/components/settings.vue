@@ -55,7 +55,6 @@
   </div>
 </template>
 <script setup lang="ts">
-
 import SettingList from "./settings/settingList.vue"
 
 import type { Settings } from "../model/settings";
