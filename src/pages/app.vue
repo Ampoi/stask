@@ -35,6 +35,7 @@ const client = createClient({
   apiKey: import.meta.env.VITE_MICROCMS_APIKEY
 })
 
+const router = useRouter()
 onBeforeMount(()=>{
   client
     .get({
@@ -42,7 +43,7 @@ onBeforeMount(()=>{
     })
     .then((res)=>{if(res.nowUpdating){
       console.log("updating!");
-      useRouter().push("/updating")
+      router.push("/updating")
     }})
 })
 </script>
