@@ -6,7 +6,7 @@
           <Logo/>
           <div class="flex flex-row gap-4 font-bold">
             <a href="https://twitter.com/search?q=%23Stask%E9%96%8B%E7%99%BA%E6%97%A5%E8%A8%98&src=typed_query&f=live">Twitter</a>
-            <a href="https://github.com/Ampoi">Github</a>
+            <a href="https://github.com/Ampoi/stask">GitHub</a>
           </div>
         </div>
         <div class="p-8 flex flex-col gap-6">

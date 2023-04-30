@@ -65,6 +65,8 @@ import firebaseConfig from "../infra/firebase/config"
 import Header from "../components/header.vue"
 import Footer from "../components/footer.vue";
 
+import { githubIssues } from "../infra/github/issueRepository";
+
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 
@@ -77,8 +79,6 @@ type Update = {
 const updates = vueData<Array<Update>>([])
 
 onMounted(async ()=>{
-  const updateData = await fetch("https://api.github.com/repos/ampoi/stask/issues?labels=new-release")
-    .then((res)=>res.json())
-  updates.value = updateData.slice().reverse()
+  updates.value = await githubIssues.slice().reverse()
 })
 </script>
