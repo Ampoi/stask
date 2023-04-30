@@ -5,13 +5,13 @@
         <div class="border-r-2 p-8 flex flex-col gap-2">
           <Logo/>
           <div class="flex flex-row gap-4 font-bold">
-            <a href="">Twitter</a>
-            <a href="">Github</a>
+            <a href="https://twitter.com/search?q=%23Stask%E9%96%8B%E7%99%BA%E6%97%A5%E8%A8%98&src=typed_query&f=live">Twitter</a>
+            <a href="https://github.com/Ampoi">Github</a>
           </div>
         </div>
         <div class="p-8 flex flex-col gap-6">
-          <a href="">プライバシーポリシー</a>
-          <a href="">利用規約</a>
+          <a href="/privacy_policy">プライバシーポリシー</a>
+          <a href="/terms">利用規約</a>
           <a href="/contact">お問い合わせ</a>
         </div>
       </div>

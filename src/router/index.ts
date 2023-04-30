@@ -5,6 +5,8 @@ import home from "../pages/welcome.vue"
 import login from "../pages/login.vue"
 import updating from "../pages/nowUpdating.vue"
 import contact from "../pages/contact.vue"
+import privacypolicy from "../pages/privacypolicy.vue"
+import terms from "../pages/terms.vue";
 
 import { AuthRepository } from "../infra/AuthRepository";
 
@@ -24,6 +26,16 @@ const routes = [
     path: "/contact",
     name: "Contact",
     component: contact
+  },
+  {
+    path: "/privacy_policy",
+    name: "Privacy Policy",
+    component: privacypolicy
+  },
+  {
+    path: "/terms",
+    name: "Terms of Service",
+    component: terms
   },
   {
     path: "/login",
