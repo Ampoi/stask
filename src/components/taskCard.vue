@@ -13,7 +13,7 @@
       @touchstart="startLongPress"
       @touchend="finishLongPress"
     >
-    <v-card-item>
+      <v-card-item>
         <div class="flex flex-row items-center">
           <!--達成ボタン-->
           <CheckButton
@@ -57,6 +57,11 @@
             </div>
           </div>
         </div>
+        <v-progress-linear
+          :model-value="pagePercent"
+          class="mt-2 rounded-full"
+          :color="`${getSubjectColor(card.subject)}6F`"
+        />
         <v-expand-transition>
           <div v-if="showSubMenu" class="flex flex-col gap-4">
             <div class="mt-4 flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
@@ -121,13 +126,13 @@
               />
               <button
                 class="h-12 grid place-content-center px-2 box-border border-orange-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold
-                       hover:bg-orange-300/80 hover:text-white"
-               :class="{'text-orange-400 bg-white': !card.concentrate, 'text-white bg-orange-400': card.concentrate}"
+                        hover:bg-orange-300/80 hover:text-white"
+                :class="{'text-orange-400 bg-white': !card.concentrate, 'text-white bg-orange-400': card.concentrate}"
                 @click="turnConcentrate(getCardType)"
                 title="課題を今やることに設定する"><v-icon>mdi-fire</v-icon></button>
               <button
                 class="h-12 grid place-content-center px-2 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
-                       hover:bg-red-400/50 hover:text-white"
+                        hover:bg-red-400/50 hover:text-white"
                 @click="$emit('deleteTask')"
                 title="課題を今やることに設定する"><v-icon>mdi-trash-can</v-icon></button>
             </div>
@@ -202,6 +207,22 @@ const getCardType = computed(()=>{
 const checkCardType = computed(()=>{
   const cardType = getCardType.value
   return (cardType == props.showCardType)
+})
+
+const pagePercent = computed((): number => {
+  const pages = props.card.pages
+  let allPagesAmount = 0
+  let donePagesAmount = 0
+  pages?.forEach((page)=>{
+    const pageAmount = page.lastPage - page.startPage + 1
+    
+    allPagesAmount += pageAmount
+    if(page.done){donePagesAmount += pageAmount}
+  })
+  const percent = allPagesAmount != 0 ? Math.ceil(donePagesAmount / allPagesAmount * 100) : 0
+  console.log(`${donePagesAmount}, ${allPagesAmount}, ${percent}`);
+  
+  return percent
 })
 
 function turnConcentrate(type: CardType){
