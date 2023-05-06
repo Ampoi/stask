@@ -109,36 +109,39 @@
         </div>
 
         <div class="flex flex-col gap-4">
-          <div class="flex flex-row justify-between text-black font-bold">
+          <div class="flex flex-row gap-4 text-black font-bold">
             <p>達成済みのタスク</p>
+            <v-spacer></v-spacer>
             <button
               @click="deleteDoneCard()"
-            >達成済みのタスクを削除</button>
+            ><v-icon>mdi-trash-can</v-icon></button>
+            <button @click.stop="showDoneCards = !showDoneCards">
+              <v-icon v-if="showDoneCards">mdi-menu-up</v-icon>
+              <v-icon v-if="!showDoneCards">mdi-menu-down</v-icon>
+            </button>
           </div>
-          <TaskCard
-            v-for="(card, cardIndex) in cards"
-            :key="cardIndex"
-            v-model:card="cards[cardIndex]"
-            show-card-type="done"
-            :subjects="settings.subjects"
-            v-touch="{
-              right: () => card.done = false,
-              left: () => deleteCard(cardIndex)
-            }"
-            @deleteTask="deleteCard(cardIndex)"
-            class="opacity-50"
-          />
+          <v-expand-transition>
+            <div v-if="showDoneCards" class="flex flex-col gap-4">
+              <TaskCard
+                v-for="(card, cardIndex) in cards"
+                :key="cardIndex"
+                v-model:card="cards[cardIndex]"
+                show-card-type="done"
+                :subjects="settings.subjects"
+                v-touch="{
+                  right: () => card.done = false,
+                  left: () => deleteCard(cardIndex)
+                }"
+                @deleteTask="deleteCard(cardIndex)"
+                class="opacity-50"
+              />
+            </div>
+          </v-expand-transition>
         </div>
       </div>
     </v-main>
   </v-app>
 </template>
-<style>
-.v-overlay__content {
-  margin: 0 auto 0 auto;
-  max-width: 36rem !important;
-}
-</style>
 <script setup lang="ts">
 import { ref as vueData } from "vue"
 import { useRouter } from "vue-router"
@@ -198,6 +201,8 @@ const {
   addSubject, deleteSubject,
 } = useSettings()
 
+const showDoneCards =  vueData<boolean>(false)
+
 function checkPermanent(){
   if(window.innerWidth < 832){
     return false
@@ -220,3 +225,9 @@ function startConcentrateMode(){
   emit("movePage", "concentratePage")
 }
 </script>
+<style>
+.v-overlay__content {
+  margin: 0 auto 0 auto;
+  max-width: 36rem !important;
+}
+</style>
