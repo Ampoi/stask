@@ -1,5 +1,5 @@
 <template>
-  <div class="py-8 px-4">
+  <div class="py-8 px-4 h-full flex flex-col">
     <!--アカウント-->
     <div class="flex flex-col items-center border-b-2 border-solid pb-4 border-black/10 relative">
       <div
@@ -7,7 +7,7 @@
         :style="`background: url('${userImage}')`"
       />
       <p class="text-2xl font-bold mt-2">{{ userName }}</p>
-      <div class="flex flex-col items-center text-sm text-white/60 gap-1">
+      <div class="flex flex-col items-center text-sm text-slate-900/60 gap-1">
         <span class="flex flex-row items-center">
           <v-icon class="text-sm mt-0.5"> mdi-book-check</v-icon>達成した課題数 | {{ getTaskDone.done }}/{{ getTaskDone.all }}
         </span>
@@ -17,17 +17,38 @@
       </div>
       <!--ログアウトボタン-->
       <button
-        class="text-md text-white/40 hover:text-white transition absolute -top-4 right-0"
+        class="text-md text-slate-900/60 hover:text-slate-900 transition absolute -top-4 right-0"
         @click="$emit('logout')">
         <v-icon>mdi-account-arrow-right</v-icon>
       </button>
     </div>
     <!--メニュー-->
-    <div class="mt-4 flex flex-col">
-      <!--設定ボタン-->
+    <div class="mt-4 flex flex-col grow">
       <NavBarButton @buttonClicked="$emit('opensettings')">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-cog</v-icon>
         <p class="text-sm">設定</p>
+      </NavBarButton>
+      <p class="text-xs text-slate-900/60 mt-4">グループ</p>
+      <NavBarButton @buttonClicked="$emit('opensettings')">
+        <v-icon class="text-sm -ml-0.5 opacity-60">mdi-account-group</v-icon>
+        <p class="text-sm">学校〜</p>
+        <v-spacer/>
+        <v-icon class="text-sm -ml-0.5 opacity-60">mdi-chevron-right</v-icon>
+      </NavBarButton>
+      <v-spacer/>
+
+      <!--TODO:使い方ページを作る-->
+      <NavBarButton @buttonClicked="$emit('opensettings')">
+        <v-icon class="text-sm -ml-0.5 opacity-60">mdi-help</v-icon>
+        <p class="text-sm text-slate-900/60">使い方</p>
+      </NavBarButton>
+      <NavBarButton @buttonClicked="$emit('opensettings')">
+        <v-icon class="text-sm -ml-0.5 opacity-60">mdi-file-document-outline</v-icon>
+        <p class="text-sm text-slate-900/60">プライバシーポリシー</p>
+      </NavBarButton>
+      <NavBarButton @buttonClicked="$emit('opensettings')">
+        <v-icon class="text-sm -ml-0.5 opacity-60">mdi-file-document-outline</v-icon>
+        <p class="text-sm text-slate-900/60">利用規約</p>
       </NavBarButton>
     </div>
   </div>

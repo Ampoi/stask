@@ -4,7 +4,7 @@
       <template v-slot:prepend>
         <v-app-bar-nav-icon
           @click.stop="showNavbar = !showNavbar"
-          :class="{'text-white': showNavbar, 'text-slate-900': !showNavbar}"
+          class="text-slate-900"
         />
       </template><!--メニューボタン-->
       <v-btn
@@ -17,7 +17,7 @@
     <v-navigation-drawer
       v-model="showNavbar"
       temporary
-      class="-mt-16 pt-16 h-auto bg-slate-800 text-white"
+      class="-mt-16 pt-16 h-auto bg-white text-slate-900"
       :permanent="checkPermanent()"
     >
       <NavBar
