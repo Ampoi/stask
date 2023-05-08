@@ -27,7 +27,6 @@ import { useRouter } from "vue-router";
 
 import { getAuth, GoogleAuthProvider, TwitterAuthProvider, signInWithPopup } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 
 import Header from "../components/header.vue"
 import Footer from "../components/footer.vue";

@@ -57,18 +57,10 @@
 <script setup lang="ts">
 import { ref as vueData, onMounted } from "vue"
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
-import firebaseConfig from "../infra/firebase/config"
-
 import Header from "../components/header.vue"
 import Footer from "../components/footer.vue";
 
 import { githubIssues } from "../infra/github/issueRepository";
-
-const firebaseApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebaseApp);
 
 type Update = {
   html_url: string,

@@ -29,15 +29,8 @@
   </v-app>
 </template>
 <script setup lang="ts">
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import firebaseConfig from "../infra/firebase/config"
-
 import Header from "../components/header.vue"
 import Footer from "../components/footer.vue";
-
-const firebaseApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebaseApp);
 
 const discordInviteURL = import.meta.env.VITE_DISCORD_INVITE_URL
 const googleFormURL = import.meta.env.VITE_GOOGLE_FORM_URL
