@@ -38,18 +38,18 @@
       <v-spacer/>
 
       <!--TODO:使い方ページを作る-->
-      <NavBarButton @buttonClicked="$emit('opensettings')">
+      <NavBarLink link="/how_to_use">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-help</v-icon>
         <p class="text-sm text-slate-900/60">使い方</p>
-      </NavBarButton>
-      <NavBarButton @buttonClicked="$emit('opensettings')">
+      </NavBarLink>
+      <NavBarLink link="/privacy_policy">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-file-document-outline</v-icon>
         <p class="text-sm text-slate-900/60">プライバシーポリシー</p>
-      </NavBarButton>
-      <NavBarButton @buttonClicked="$emit('opensettings')">
+      </NavBarLink>
+      <NavBarLink link="/terms">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-file-document-outline</v-icon>
         <p class="text-sm text-slate-900/60">利用規約</p>
-      </NavBarButton>
+      </NavBarLink>
     </div>
   </div>
 </template>
@@ -58,6 +58,7 @@ import { computed } from 'vue';
 import { Card } from '../model/cards';
 
 import NavBarButton from "../components/navBar/button.vue"
+import NavBarLink from "../components/navBar/link.vue"
 
 const props = defineProps(["userName", "userImage", "tasks"])
 const emit = defineEmits(["logout", "opensettings"])
