@@ -50,7 +50,10 @@
     </v-dialog>
 
     <v-main class="bg-gray-100 overflow-auto pb-20 relative">
-      <personalPage ref="cardsPage"/>
+      <component
+        :is="pages[nowPage]"
+        ref="cardsPage"
+      />
     </v-main>
   </v-app>
 </template>
@@ -62,10 +65,12 @@ import NavBar from "../../components/navBar.vue"
 import SettingDialog from "../../components/settings.vue"
 
 import personalPage from "./mainPage/personal.vue"
+import groupPage from "./mainPage/group.vue"
 
 import useCards from "../../hooks/useCards"
 import useAuth from "../../hooks/useAuth"
 import useSettings from "../../hooks/useSettings"
+import { onMounted } from "vue"
 
 const router = useRouter()
 
@@ -81,6 +86,22 @@ const { settings, addSubject, deleteSubject } = useSettings()
 
 const cardsPage = ref()
 function addCard(){ cardsPage.value.addCard() }
+
+const pages = {
+  "personalPage": personalPage,
+  "groupPage": groupPage
+} as  const
+type PageName = keyof typeof pages
+const nowPage = ref<PageName>("personalPage")
+
+onMounted(()=>{
+  const groupID = (new URL(document.location.toString())).searchParams.get("group")
+  if(!groupID){
+    nowPage.value = "personalPage"
+  }else{
+    nowPage.value = "groupPage"
+  }
+})
 
 function checkPermanent(){
   if(window.innerWidth < 832){

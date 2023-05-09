@@ -23,12 +23,12 @@ import concentratePage from "./app/concentratePage.vue"
 //microcms
 import { createClient } from "microcms-js-sdk"
 
-type Pages = "mainPage" | "concentratePage"
-const nowPage = vueData<Pages>("mainPage")
 const pages = {
   "mainPage": mainPage,
   "concentratePage": concentratePage
 }
+type PageName = keyof typeof pages
+const nowPage = vueData<PageName>("mainPage")
 
 const client = createClient({
   serviceDomain: import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN,

@@ -24,17 +24,23 @@
     </div>
     <!--メニュー-->
     <div class="mt-4 flex flex-col grow">
+      <NavBarLink link="/">
+        <v-icon class="text-sm -ml-0.5 opacity-60">mdi-account</v-icon>
+        <p class="text-sm">個人の課題リスト</p>
+        <v-spacer/>
+        <v-icon class="text-sm -ml-0.5 opacity-60">mdi-chevron-right</v-icon>
+      </NavBarLink>
       <NavBarButton @buttonClicked="$emit('opensettings')">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-cog</v-icon>
         <p class="text-sm">設定</p>
       </NavBarButton>
       <p class="text-xs text-slate-900/60 mt-4">グループ</p>
-      <NavBarButton @buttonClicked="$emit('opensettings')">
+      <NavBarLink link="/?group=school">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-account-group</v-icon>
         <p class="text-sm">学校〜</p>
         <v-spacer/>
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-chevron-right</v-icon>
-      </NavBarButton>
+      </NavBarLink>
       <v-spacer/>
 
       <!--TODO:使い方ページを作る-->

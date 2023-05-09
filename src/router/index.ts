@@ -9,6 +9,7 @@ import privacypolicy from "../pages/privacypolicy.vue"
 import terms from "../pages/terms.vue";
 
 import { AuthRepository } from "../infra/AuthRepository";
+import notFound from "../pages/notFound.vue";
 
 const routes = [
   {
@@ -46,6 +47,10 @@ const routes = [
     path: "/updating",
     name: "Updating",
     component: updating
+  },
+  {
+    path: "/:catchAll(.*)",
+    component: notFound
   }
 ];
 
