@@ -1,11 +1,11 @@
-import { ref as vueData, onBeforeMount, watch } from "vue";
+import { ref, onBeforeMount, watch } from "vue";
 
 import { Card } from "../model/cards"
 
 import { cardRepository } from "../infra/CardRepository";
 
 export default ()=>{
-  const cards = vueData<Card[]>([])
+  const cards = ref<Card[]>([])
 
   onBeforeMount(()=>{
     cardRepository.get()
@@ -42,8 +42,5 @@ export default ()=>{
     cards.value = newCards
   }
 
-  return {
-    cards,
-    addCard, deleteCard, deleteDoneCard
-  }
+  return { cards, addCard, deleteCard, deleteDoneCard }
 }

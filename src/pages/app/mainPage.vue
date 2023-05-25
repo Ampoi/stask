@@ -67,8 +67,8 @@ import SettingDialog from "../../components/settings.vue"
 import personalPage from "./mainPage/personal.vue"
 import groupPage from "./mainPage/group.vue"
 
-import useCards from "../../hooks/useCards"
 import useAuth from "../../hooks/useAuth"
+import useCards from "../../hooks/useCards"
 import useSettings from "../../hooks/useSettings"
 import { onMounted } from "vue"
 

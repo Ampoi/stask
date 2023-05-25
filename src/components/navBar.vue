@@ -35,7 +35,11 @@
         <p class="text-sm">設定</p>
       </NavBarButton>
       <p class="text-xs text-slate-900/60 mt-4">グループ</p>
-      <NavBarLink link="/?group=school">
+      <NavBarLink
+        v-for="(group, index) in groups"
+        :key="index"
+        :link="`/?group=${group}`"
+      >
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-account-group</v-icon>
         <p class="text-sm">学校〜</p>
         <v-spacer/>
@@ -66,8 +70,12 @@ import { Card } from '../model/cards';
 import NavBarButton from "../components/navBar/button.vue"
 import NavBarLink from "../components/navBar/link.vue"
 
+import useGroups from "../hooks/useGroups"
+
 const props = defineProps(["userName", "userImage", "tasks"])
 const emit = defineEmits(["logout", "opensettings"])
+
+const { groups } = useGroups()
 
 const getTaskTime = computed(()=>{
   let time = 0
