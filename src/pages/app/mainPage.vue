@@ -29,25 +29,7 @@
       />
     </v-navigation-drawer>
 
-    <!--設定-->
-    <v-dialog v-model="showSettings">
-      <SettingDialog
-        v-model:settings="personalSettings"
-        @getSubjectColor="getSubjectColor"
-        @deleteSubject="deleteSubject"
-        @addSubject="addSubject"
-      />
-    </v-dialog>
-
-    <!--設定のカラーピッカー-->
-    <v-dialog v-model="showColorPicker">
-      <v-color-picker
-        v-model="personalSettings.subjects[selectedSubjectIndex].color"
-        class="mx-auto"
-        hide-inputs
-        show-swatches
-      ></v-color-picker>
-    </v-dialog>
+    <PersonalSettings v-model:showSettings="showSettings"/>
 
     <v-main class="bg-gray-100 overflow-auto pb-20 relative">
       <component
@@ -62,27 +44,22 @@ import { ref } from "vue"
 import { useRouter } from "vue-router"
 
 import NavBar from "../../components/navBar.vue"
-import SettingDialog from "../../components/settings.vue"
+import PersonalSettings from "../../components/personalSettings.vue"
 
 import personalPage from "./mainPage/personal.vue"
 import groupPage from "./mainPage/group.vue"
 
 import useAuth from "../../hooks/useAuth"
 import { usePersonalCards } from "../../hooks/useCards"
-import { usePersonalSettings } from "../../hooks/useSettings"
 import { onMounted } from "vue"
 
 const router = useRouter()
 
 const showNavbar = ref(false)
 const showSettings = ref(false)
-const showColorPicker = ref(false)
-
-const selectedSubjectIndex = ref(0)
 
 const { userName, userImage, logout } = await useAuth()
 const { cards } = usePersonalCards()
-const { personalSettings, addSubject, deleteSubject } = usePersonalSettings()
 
 const cardsPage = ref()
 function addCard(){ cardsPage.value.addCard() }
@@ -114,11 +91,6 @@ function checkPermanent(){
 function openSettings(){
   showSettings.value = true
   showNavbar.value = false
-}
-
-function getSubjectColor(index: number){
-  showColorPicker.value = true
-  selectedSubjectIndex.value = index
 }
 </script>
 <style>
