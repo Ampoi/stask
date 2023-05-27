@@ -57,11 +57,11 @@
 <script setup lang="ts">
 import SettingList from "./settings/settingList.vue"
 
-import type { Settings } from "../model/settings";
+import type { PersonalSettings } from "../model/personalSettings";
 import { computed } from "vue";
 
 const props = defineProps<{
-  settings: Settings
+  settings: PersonalSettings
 }>()
 
 const emits = defineEmits<{

@@ -5,12 +5,24 @@ import { AuthRepository } from "../AuthRepository"
 const db = getDatabase()
 const dbRef = ref(db)
 
+const personalDataPattern = /^users\/(\S+)/
+const groupDataPattern = /^groups\/(\S+)/
 async function getDataPath(path: string) {
-  const userData = await AuthRepository.getUser()
-  return `data/${userData?.uid}/${path}`
+  if(personalDataPattern.test(path)){
+    path.match(personalDataPattern)
+    const dataPath = RegExp.$1
+    const userData = await AuthRepository.getUser()
+    return `data/${userData?.uid}/${dataPath}`
+
+  }else if(groupDataPattern.test(path)){
+    return path
+  }else{
+    throw new Error("パスが正しい形式になっていないです。")
+  }
 }
 
-export const createRealTimeDatabaseRepository = <T>(path: string)=>{
+type pathPettern = `${"users" | "groups"}/${string}`
+export const createRealTimeDatabaseRepository = <T>(path: pathPettern)=>{
   return {
     async get(): Promise<T | undefined>{      
       if(!await AuthRepository.isLogin()){

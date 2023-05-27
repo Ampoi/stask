@@ -32,7 +32,7 @@
         :key="cardIndex"
         v-model:card="cards[cardIndex]"
         show-card-type="concentrate"
-        :subjects="settings.subjects"
+        :subjects="personalSettings.subjects"
         v-touch="{
           left: () => card.done = true
         }"
@@ -47,7 +47,7 @@
         :key="cardIndex"
         v-model:card="cards[cardIndex]"
         show-card-type="incomplete"
-        :subjects="settings.subjects"
+        :subjects="personalSettings.subjects"
         v-touch="{
           left: () => card.done = true
         }"
@@ -74,7 +74,7 @@
             :key="cardIndex"
             v-model:card="cards[cardIndex]"
             show-card-type="done"
-            :subjects="settings.subjects"
+            :subjects="personalSettings.subjects"
             v-touch="{
               right: () => card.done = false,
               left: () => deleteCard(cardIndex)
@@ -103,7 +103,7 @@ const emit = defineEmits<{
 
 const { cards, addCard, deleteCard, deleteDoneCard } = usePersonalCards()
 const { timers, addTimer, deleteTimer } = useTimers()
-const { settings } = usePersonalSettings()
+const { personalSettings } = usePersonalSettings()
 
 const showDoneCards =  ref<boolean>(false)
 

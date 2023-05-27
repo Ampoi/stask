@@ -32,7 +32,7 @@
     <!--設定-->
     <v-dialog v-model="showSettings">
       <SettingDialog
-        v-model:settings="settings"
+        v-model:settings="personalSettings"
         @getSubjectColor="getSubjectColor"
         @deleteSubject="deleteSubject"
         @addSubject="addSubject"
@@ -42,7 +42,7 @@
     <!--設定のカラーピッカー-->
     <v-dialog v-model="showColorPicker">
       <v-color-picker
-        v-model="settings.subjects[selectedSubjectIndex].color"
+        v-model="personalSettings.subjects[selectedSubjectIndex].color"
         class="mx-auto"
         hide-inputs
         show-swatches
@@ -82,7 +82,7 @@ const selectedSubjectIndex = ref(0)
 
 const { userName, userImage, logout } = await useAuth()
 const { cards } = usePersonalCards()
-const { settings, addSubject, deleteSubject } = usePersonalSettings()
+const { personalSettings, addSubject, deleteSubject } = usePersonalSettings()
 
 const cardsPage = ref()
 function addCard(){ cardsPage.value.addCard() }

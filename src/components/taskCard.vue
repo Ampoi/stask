@@ -220,7 +220,6 @@ const pagePercent = computed((): number => {
     if(page.done){donePagesAmount += pageAmount}
   })
   const percent = allPagesAmount != 0 ? Math.ceil(donePagesAmount / allPagesAmount * 100) : 0
-  console.log(`${donePagesAmount}, ${allPagesAmount}, ${percent}`);
   
   return percent
 })

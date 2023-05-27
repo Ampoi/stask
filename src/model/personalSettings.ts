@@ -1,17 +1,13 @@
-type Subject = {
-  index: number
-  title: string
-  color: string
-}
+import { Subject } from "./subjects"
 
-export type Settings = {
+export type PersonalSettings = {
   timer: {
     lapDays: number
   },
   subjects: Array<Subject>
 }
 
-export const Settings = {
+export const PersonalSettings = {
   defaultSubject: {
     index:0,
     title: "新規教科",
