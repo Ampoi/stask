@@ -12,15 +12,12 @@
   </Suspense>
 </template>
 <script setup lang="ts">
-//vue
 import { onBeforeMount, ref as vueData } from "vue";
 import { useRouter } from "vue-router"
 
-//pages
 import mainPage from "./app/mainPage.vue"
 import concentratePage from "./app/concentratePage.vue"
 
-//microcms
 import { createClient } from "microcms-js-sdk"
 
 const pages = {

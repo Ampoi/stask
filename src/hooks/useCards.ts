@@ -1,14 +1,13 @@
 import { ref, onBeforeMount, watch } from "vue";
 
 import { Card } from "../model/cards"
+import { personalCardRepository } from "../infra/CardRepository";
 
-import { cardRepository } from "../infra/CardRepository";
-
-export default ()=>{
+export const usePersonalCards = ()=>{
   const cards = ref<Card[]>([])
 
   onBeforeMount(()=>{
-    cardRepository.get()
+    personalCardRepository.get()
       .then((newData)=>{
         if(!newData){
           cards.value = [Card.welcomeCard]
@@ -19,7 +18,7 @@ export default ()=>{
   })
 
   watch(cards, ()=>{
-    cardRepository.set(cards.value)
+    personalCardRepository.set(cards.value)
   }, {deep: true})
 
   const addCard = ()=>{

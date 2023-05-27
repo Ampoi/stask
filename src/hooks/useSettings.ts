@@ -1,9 +1,9 @@
 import { ref as vueData, onBeforeMount, watch } from "vue";
 
 import { Settings } from "../model/settings";
-import { settingRepository } from "../infra/SettingRepository"
+import { personalSettingRepository } from "../infra/SettingRepository"
 
-export default ()=>{
+export const usePersonalSettings = ()=>{
   const settings = vueData<Settings>({
     timer: {
       lapDays: 14
@@ -12,10 +12,10 @@ export default ()=>{
   })
 
   onBeforeMount(()=>{
-    settingRepository.get()
+    personalSettingRepository.get()
       .then((newData)=>{
         if(!newData){
-          settingRepository.set(Settings.defaultSettings)
+          personalSettingRepository.set(Settings.defaultSettings)
           settings.value = Object.create(Settings.defaultSettings)
         }else{
           settings.value = newData
@@ -24,7 +24,7 @@ export default ()=>{
   })
 
   watch(settings, ()=>{
-    settingRepository.set(settings.value)
+    personalSettingRepository.set(settings.value)
   }, {deep: true})
 
   function addSubject(){

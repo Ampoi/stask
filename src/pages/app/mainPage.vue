@@ -68,8 +68,8 @@ import personalPage from "./mainPage/personal.vue"
 import groupPage from "./mainPage/group.vue"
 
 import useAuth from "../../hooks/useAuth"
-import useCards from "../../hooks/useCards"
-import useSettings from "../../hooks/useSettings"
+import { usePersonalCards } from "../../hooks/useCards"
+import { usePersonalSettings } from "../../hooks/useSettings"
 import { onMounted } from "vue"
 
 const router = useRouter()
@@ -81,8 +81,8 @@ const showColorPicker = ref(false)
 const selectedSubjectIndex = ref(0)
 
 const { userName, userImage, logout } = await useAuth()
-const { cards } = useCards()
-const { settings, addSubject, deleteSubject } = useSettings()
+const { cards } = usePersonalCards()
+const { settings, addSubject, deleteSubject } = usePersonalSettings()
 
 const cardsPage = ref()
 function addCard(){ cardsPage.value.addCard() }

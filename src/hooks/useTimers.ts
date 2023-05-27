@@ -1,8 +1,7 @@
 import { ref as vueData, onBeforeMount, watch } from "vue";
 
-import { timerRepository } from "../infra/TimerRepository";
-
 import { Timer } from "../model/timers"
+import { personalTimerRepository } from "../infra/TimerRepository";
 
 type TimersData = Array<Timer>
 
@@ -10,7 +9,7 @@ export default ()=>{
   const timers = vueData<TimersData>([])
 
   onBeforeMount(()=>{
-    timerRepository.get().then((newData) => {
+    personalTimerRepository.get().then((newData) => {
       if (newData){
         timers.value = newData
       }else{
@@ -22,7 +21,7 @@ export default ()=>{
   })
 
   watch(timers, ()=>{
-    timerRepository.set(timers.value)
+    personalTimerRepository.set(timers.value)
   }, {deep: true})
 
   function addTimer(){

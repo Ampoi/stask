@@ -58,13 +58,13 @@
 <script setup lang="ts">
 import {ref as vueData, computed} from "vue"
 
-import useSettings from "../hooks/useSettings"
+import { usePersonalSettings } from "../hooks/useSettings"
 
 const props = defineProps(["modelValue"])
 const emit = defineEmits(["update:modelValue", "deleteTimer"])
 
 const showGetDateModal = vueData(false)
-const { settings } = useSettings()
+const { settings } = usePersonalSettings()
 
 let nameInputTimer:number;
 function updateName(event: any){

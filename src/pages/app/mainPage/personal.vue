@@ -93,17 +93,17 @@ import { ref } from "vue"
 import TaskCard from "../../../components/taskCard.vue"
 import TermTimer from "../../../components/timer.vue"
 
-import useCards from "../../../hooks/useCards"
+import { usePersonalCards } from "../../../hooks/useCards"
 import useTimers from "../../../hooks/useTimers"
-import useSettings from "../../../hooks/useSettings"
+import { usePersonalSettings } from "../../../hooks/useSettings"
 
 const emit = defineEmits<{
   (e: "movePage", to:string): void
 }>()
 
-const { cards, addCard, deleteCard, deleteDoneCard } = useCards()
+const { cards, addCard, deleteCard, deleteDoneCard } = usePersonalCards()
 const { timers, addTimer, deleteTimer } = useTimers()
-const { settings } = useSettings()
+const { settings } = usePersonalSettings()
 
 const showDoneCards =  ref<boolean>(false)
 

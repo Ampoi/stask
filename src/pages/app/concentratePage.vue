@@ -56,11 +56,11 @@ import twoDigitNumber from "../../functions/twoDigitNumber";
 
 import ConcentrateTaskCard from "../../components/concentrateTaskCard.vue";
 
-import useCards from '../../hooks/useCards';
+import { usePersonalCards } from '../../hooks/useCards';
 
 import { Card } from "../../model/cards";
 
-const { cards } = useCards()
+const { cards } = usePersonalCards()
 
 const emit = defineEmits<{
   (e: "movePage", to:string): void
