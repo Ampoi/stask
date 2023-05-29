@@ -1,5 +1,5 @@
 <template>
-  <div class="py-8 px-4 h-full flex flex-col">
+  <div class="py-8 px-4 h-full flex flex-col pt-20">
     <!--アカウント-->
     <div class="flex flex-col items-center border-b-2 border-solid pb-4 border-black/10 relative">
       <div

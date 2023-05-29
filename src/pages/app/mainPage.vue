@@ -1,23 +1,20 @@
 <template>
-  <v-app>
-    <v-app-bar color="transparent" flat>
-      <template v-slot:prepend>
-        <v-app-bar-nav-icon
-          @click.stop="showNavbar = !showNavbar"
-          class="text-slate-900"
-        />
-      </template><!--メニューボタン-->
-      <v-btn
-        icon="mdi-plus"
-        @click="addCard"
-      />
-    </v-app-bar>
+  <v-app class="bg-gray-100">
+    <div class="flex flex-row items-center h-16 bg-transparent fixed w-screen z-20">
+      <button @click.stop="showNavbar = !showNavbar" class="p-2.5 m-3.5 text-slate-900 rounded-full hover:bg-white/70 transition duration-300">
+        <v-icon>mdi-menu</v-icon>
+      </button>
+      <v-spacer/>
+      <button @click="addCard" class="p-2.5 m-3.5 text-slate-900 rounded-full hover:bg-white/70 transition duration-300">
+        <v-icon>mdi-plus</v-icon>
+      </button>
+    </div>
 
     <!--ナビゲーションバー-->
     <v-navigation-drawer
       v-model="showNavbar"
       temporary
-      class="-mt-16 pt-16 h-auto bg-white text-slate-900"
+      class="-mt-16 pt-16 h-auto bg-white text-slate-900 z-10"
       :permanent="checkPermanent()"
     >
       <NavBar
@@ -31,7 +28,7 @@
 
     <PersonalSettings v-model:showSettings="showSettings"/>
 
-    <v-main class="bg-gray-100 overflow-auto pb-20 relative">
+    <v-main class="overflow-auto py-20">
       <component
         :is="pages[nowPage]"
         ref="cardsPage"
@@ -97,5 +94,9 @@ function openSettings(){
 .v-overlay__content {
   margin: 0 auto 0 auto;
   max-width: 36rem !important;
+}
+
+.v-navigation-drawer__scrim {
+  z-index: 5 !important;
 }
 </style>
