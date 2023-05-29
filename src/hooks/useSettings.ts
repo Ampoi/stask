@@ -43,14 +43,15 @@ export const usePersonalSettings = ()=>{
   return { personalSettings, addSubject, deleteSubject }
 }
 
-export const useGroupSettings = ()=>{
+export const useGroupSettings = (group_id: string)=>{
   const settings = vueData<GroupSettings>(Object.create(GroupSettings.defaultSettings))
+  const firebaseRepository = groupSettingRepository(group_id)
 
   onBeforeMount(()=>{
-    groupSettingRepository.get()
+    firebaseRepository.get()
       .then((newData)=>{
         if(!newData){
-          groupSettingRepository.set(GroupSettings.defaultSettings)
+          firebaseRepository.set(GroupSettings.defaultSettings)
         }else{
           settings.value = newData
         }
@@ -58,7 +59,7 @@ export const useGroupSettings = ()=>{
   })
 
   watch(settings, ()=>{
-    groupSettingRepository.set(settings.value)
+    firebaseRepository.set(settings.value)
   }, {deep: true})
 
   return { settings }
