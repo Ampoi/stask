@@ -4,6 +4,7 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import { useGroupSettings } from '../../../hooks/useSettings';
+import { useRouter } from 'vue-router';
 
 const url = new URL(window.location.href)
 const params = url.searchParams
@@ -15,7 +16,13 @@ const group_id = ((new_group_id) => {
   }
 })(params.get("group"))
 
-const { settings } = useGroupSettings(group_id)
+const router = useRouter()
+function backToPersonalPageWithAlert(){
+  router.push("/") //TODO:ダイレクト先でアラートを表示するプログラムを書く(URLから取得する感じ)
+}
+
+const { settings } = useGroupSettings(group_id, backToPersonalPageWithAlert)
+
 
 onBeforeMount(()=>{
   console.log(settings);

@@ -7,7 +7,7 @@ export default ()=>{
   const groups = ref<Group[]>([])
 
   onBeforeMount(async ()=>{
-    groupRepository.get()
+    groupRepository.get
       .then((newData)=>{
         if(!newData){
           groups.value = []

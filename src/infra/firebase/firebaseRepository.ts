@@ -23,39 +23,42 @@ async function getDataPath(path: string) {
 
 type pathPettern = `${"users" | "groups"}/${string}`
 export const createRealTimeDatabaseRepository = <T>(path: pathPettern)=>{
-  return {
-    async get(): Promise<T | undefined>{      
-      if(!await AuthRepository.isLogin()){
-        throw new Error("loggined is required")
-      }
+  const getFromDB: Promise<T | undefined> = new Promise(async (resolve, reject) => {
+    if(!await AuthRepository.isLogin()){
+      throw new Error("loggined is required")
+    }
 
-      const snapshot = await get(child(dbRef, await getDataPath(path)))
+    const snapshot = await get(child(dbRef, await getDataPath(path)))
+      .catch((err)=>{
+        reject(err)
+        throw new Error(err)
+      })
+
+    if(snapshot.exists()){
+      const newData = snapshot.val()
+      resolve(newData)
+    }else{
+      resolve(undefined)
+    }
+  })
+
+  const setToDB = async (saveData: T)=>{
+    if(!await AuthRepository.isLogin()){
+      throw new Error("loggined is required")
+    }
+
+    return new Promise<void>(async (resolve)=>{
+      set(ref(db, await getDataPath(path)), saveData)
+        .then(()=>{
+          resolve()
+        })
         .catch((err)=>{
           throw new Error(err)
         })
-
-      if(snapshot.exists()){
-        const newData = snapshot.val()
-        return newData
-      }else{
-        return undefined
-      }
-    },
-    
-    async set(saveData: T){
-      if(!await AuthRepository.isLogin()){
-        throw new Error("loggined is required")
-      }
-
-      return new Promise<void>(async (resolve)=>{
-        set(ref(db, await getDataPath(path)), saveData)
-          .then(()=>{
-            resolve()
-          })
-          .catch((err)=>{
-            throw new Error(err)
-          })
-      })
-    }
+    })
+  }
+  return {
+    get: getFromDB,
+    set: setToDB
   }
 }

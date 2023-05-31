@@ -9,15 +9,14 @@ export default ()=>{
   const timers = vueData<TimersData>([])
 
   onBeforeMount(()=>{
-    personalTimerRepository.get().then((newData) => {
-      if (newData){
-        timers.value = newData
-      }else{
-        timers.value = []
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
+    personalTimerRepository.get
+      .then((newData) => {
+        if (newData){
+          timers.value = newData
+        }else{
+          timers.value = []
+        }
+      })
   })
 
   watch(timers, ()=>{

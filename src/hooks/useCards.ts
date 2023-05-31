@@ -7,7 +7,7 @@ export const usePersonalCards = ()=>{
   const cards = ref<Card[]>([])
 
   onBeforeMount(()=>{
-    personalCardRepository.get()
+    personalCardRepository.get
       .then((newData)=>{
         if(!newData){
           cards.value = [Card.welcomeCard]
