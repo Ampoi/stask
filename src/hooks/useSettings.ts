@@ -44,7 +44,7 @@ export const usePersonalSettings = ()=>{
 }
 
 export const useGroupSettings = (group_id: string, is_permision_denied_func: Function)=>{
-  const settings = vueData<GroupSettings>(Object.create(GroupSettings.defaultSettings))
+  const groupSettings = vueData<GroupSettings>(Object.create(GroupSettings.defaultSettings))
   const firebaseRepository = groupSettingRepository(group_id)
 
   onBeforeMount(()=>{
@@ -53,7 +53,7 @@ export const useGroupSettings = (group_id: string, is_permision_denied_func: Fun
         if(!newData){
           firebaseRepository.set(GroupSettings.defaultSettings)
         }else{
-          settings.value = newData
+          groupSettings.value = newData
         }
       })
       .catch((err: Error) => {
@@ -64,9 +64,9 @@ export const useGroupSettings = (group_id: string, is_permision_denied_func: Fun
       })
   })
 
-  watch(settings, ()=>{
-    firebaseRepository.set(settings.value)
+  watch(groupSettings, ()=>{
+    firebaseRepository.set(groupSettings.value)
   }, {deep: true})
 
-  return { settings }
+  return { groupSettings }
 }

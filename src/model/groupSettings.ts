@@ -2,7 +2,6 @@ import { Subject } from "./subjects";
 
 export type GroupSettings = {
   name: string
-  users: string[],
   timer: {
     lapDays: number
   },
@@ -24,7 +23,6 @@ export const GroupSettings:{
     timer: {
       lapDays: 14
     },
-    users: [],
     subjects: [
       {index:0, title: "国語", color:"#F44335"},
       {index:1, title: "数学", color:"#2196F3"},
