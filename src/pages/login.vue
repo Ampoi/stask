@@ -34,7 +34,6 @@ import Footer from "../components/footer.vue";
 import firebaseConfig from "../infra/firebase/config"
 
 const firebaseApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebaseApp);
 
 const auth = getAuth(firebaseApp);
 const provider = {

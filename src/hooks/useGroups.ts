@@ -1,17 +1,15 @@
 import { ref, onBeforeMount } from "vue";
 
-import { Group } from "../model/groups";
+import { Groups } from "../model/groups";
 import { groupRepository } from "../infra/GroupRepository";
 
 export default ()=>{
-  const groups = ref<Group[]>([])
+  const groups = ref<Groups>({})
 
   onBeforeMount(async ()=>{
     groupRepository.get
       .then((newData)=>{
-        if(!newData){
-          groups.value = []
-        }else{
+        if(newData){
           groups.value = newData
         }
       })

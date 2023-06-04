@@ -133,7 +133,7 @@
               <button
                 class="h-12 grid place-content-center px-2 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
                         hover:bg-red-400/50 hover:text-white"
-                @click="$emit('deleteTask')"
+                @click="emit('deleteTask')"
                 title="課題を今やることに設定する"><v-icon>mdi-trash-can</v-icon></button>
             </div>
           </div>

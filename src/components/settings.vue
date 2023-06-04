@@ -21,18 +21,18 @@
               <button
                 class="rounded-full h-6 w-6"
                 :style="`background-color: ${subject.color}6F;`"
-                @click="$emit('getSubjectColor', subIndex)"
+                @click="emit('getSubjectColor', subIndex)"
               />
               <input type="text" v-model="subject.title" class="w-52">
               <button
                 class="rounded-full h-6 w-6 duration-300 hover:bg-white/70 text-[14px] text-red-400/60 grid place-content-center"
-                @click="$emit('deleteSubject', subIndex)"
+                @click="emit('deleteSubject', subIndex)"
               ><v-icon>mdi-trash-can</v-icon></button>
             </div>
           </div>
           <button
             class="text-gray-600 bg-white rounded-md p-2 w-full"
-            @click="$emit('addSubject')"
+            @click="emit('addSubject')"
           >
             <v-icon>mdi-plus</v-icon>
           </button>
@@ -64,7 +64,7 @@ const props = defineProps<{
   settings: PersonalSettings
 }>()
 
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: "update:settings"): void
   (e: "getSubjectColor", subjectIndex: number): void
   (e: "deleteSubject", subjectIndex: number): void

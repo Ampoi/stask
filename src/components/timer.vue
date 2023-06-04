@@ -64,7 +64,7 @@ const props = defineProps(["modelValue"])
 const emit = defineEmits(["update:modelValue", "deleteTimer"])
 
 const showGetDateModal = vueData(false)
-const { settings } = usePersonalSettings()
+const { personalSettings } = usePersonalSettings()
 
 let nameInputTimer:number;
 function updateName(event: any){
@@ -100,6 +100,6 @@ const getDaysLeft = computed(()=>{
 })
 
 const getDaysPercent = computed(()=>{
-  return getDaysLeft.value / settings.value.timer.lapDays * 100
+  return getDaysLeft.value / personalSettings.value.timer.lapDays * 100
 })
 </script>

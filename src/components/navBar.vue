@@ -18,7 +18,7 @@
       <!--ログアウトボタン-->
       <button
         class="text-md text-slate-900/60 hover:text-slate-900 transition absolute -top-4 right-0"
-        @click="$emit('logout')">
+        @click="emit('logout')">
         <v-icon>mdi-account-arrow-right</v-icon>
       </button>
     </div>
@@ -30,15 +30,15 @@
         <v-spacer/>
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-chevron-right</v-icon>
       </NavBarLink>
-      <NavBarButton @buttonClicked="$emit('opensettings')">
+      <NavBarButton @buttonClicked="emit('opensettings')">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-cog</v-icon>
-        <p class="text-sm">設定</p>
+        <p class="text-sm">個人の設定</p>
       </NavBarButton>
       <p class="text-xs text-slate-900/60 mt-4">グループ</p>
       <NavBarLink
-        v-for="(group, index) in groups"
+        v-for="(_group, index) in groups"
         :key="index"
-        :link="`/?group=${group}`"
+        :link="`/?group=${index}`"
       >
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-account-group</v-icon>
         <p class="text-sm">学校〜</p>
@@ -76,6 +76,9 @@ const props = defineProps(["userName", "userImage", "tasks"])
 const emit = defineEmits(["logout", "opensettings"])
 
 const { groups } = useGroups()
+function getGroupName(){
+  
+}
 
 const getTaskTime = computed(()=>{
   let time = 0
