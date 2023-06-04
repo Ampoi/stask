@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col mx-auto px-4 gap-8 max-w-xl">
-    {{ groupSettings.subjects }}
     <!--<div class="flex flex-col gap-4">
       <p class="text-black font-bold">期限一覧</p>
       <div class="h-40 flex flex-row gap-4">
@@ -37,7 +36,6 @@
         v-touch="{
           left: () => card.done = true
         }"
-        @deleteTask="deleteCard(cardIndex)"
       />
     </div>
 
@@ -52,17 +50,13 @@
         v-touch="{
           left: () => card.done = true
         }"
-        @deleteTask="deleteCard(cardIndex)"
       />
     </div>
 
     <div class="flex flex-col gap-4">
       <div class="flex flex-row gap-4 text-black font-bold">
         <p>達成済みのタスク</p>
-        <v-spacer></v-spacer>
-        <button
-          @click="deleteDoneCard()"
-        ><v-icon>mdi-trash-can</v-icon></button>
+        <v-spacer/>
         <button @click.stop="showDoneCards = !showDoneCards">
           <v-icon v-if="showDoneCards">mdi-menu-up</v-icon>
           <v-icon v-if="!showDoneCards">mdi-menu-down</v-icon>
@@ -77,10 +71,8 @@
             show-card-type="done"
             :subjects="groupSettings.subjects"
             v-touch="{
-              right: () => card.done = false,
-              left: () => deleteCard(cardIndex)
+              right: () => card.done = false
             }"
-            @deleteTask="deleteCard(cardIndex)"
             class="opacity-50"
           />
         </div>
@@ -89,13 +81,22 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onBeforeMount } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { useGroupSettings } from '../../../hooks/useSettings';
 import { useRouter } from 'vue-router';
 
+import { useGroupSharedCards } from "../../../hooks/useCards"
+import { GroupPersonalCard } from "../../../model/groupCards"
+import { Card, Page } from  "../../../model/cards"
+
+import TaskCard from '../../../components/taskCard.vue';
+
+const showDoneCards = ref<boolean>(false)
+
+//URLからグループのID取得
 const url = new URL(window.location.href)
 const params = url.searchParams
-const group_id = ((new_group_id) => {
+const groupId = ((new_group_id) => {
   if(new_group_id){
     return new_group_id
   }else{
@@ -108,14 +109,53 @@ function backToPersonalPageWithAlert(){
   router.push("/") //TODO:ダイレクト先でアラートを表示するプログラムを書く(URLから取得する感じ)
 }
 
-const { groupSettings } = useGroupSettings(group_id, backToPersonalPageWithAlert)
+const { groupSharedCards, addGroupSharedCard, deleteGroupSharedCard } = useGroupSharedCards(groupId)
+const { groupSettings } = useGroupSettings(groupId, backToPersonalPageWithAlert)
+
+console.log(groupSharedCards.value);
 
 
-onBeforeMount(()=>{
-  console.log(groupSettings.value);
+const cards = computed({
+  get(): Card[]{
+    const groupSharedCardKeys = Object.keys(groupSharedCards.value)
+    
+    let newCards: Card[] = []
+    groupSharedCardKeys.forEach((cardKey)=>{
+      let newCard: Card
+
+      const groupSharedCard = groupSharedCards.value[Number(cardKey)]
+      const cardWithDoneAndConcentrate = {...groupSharedCard, ...{done: false, concentrate: false}}
+      
+      let cardWithPagesDone = { ...cardWithDoneAndConcentrate }
+      
+      const cardWithDoneAndConcentratePages = ((pages: {startPage: number, lastPage: number}[])=>{
+        if(pages){
+          return pages
+        }else{
+          return []
+        }
+      })(cardWithDoneAndConcentrate.pages)
+
+      const cardsWithPagesDonePageKeys = Object.keys(cardWithDoneAndConcentratePages)
+      const newCardPages:Page[] = []
+      
+      cardsWithPagesDonePageKeys.forEach((cardsWithPagesDonePageKey) => {
+        const pageInfo = cardWithDoneAndConcentrate.pages[Number(cardsWithPagesDonePageKey)]
+        const newCardPage = {...pageInfo, ...{done: false}}
+        newCardPages.push(newCardPage)
+      })
+      
+      newCard = {...cardWithDoneAndConcentrate, ...{pages: newCardPages}}
+      newCards.push(newCard)
+    })
+    return newCards
+  },
+  set(){
+    console.log("yeah");
+  }
 })
 
-function addCard(){/* カードを追加する制御の実行 */}
+function addCard(){}
 
 defineExpose({ addCard })
 </script>

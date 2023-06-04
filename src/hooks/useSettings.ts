@@ -43,9 +43,9 @@ export const usePersonalSettings = ()=>{
   return { personalSettings, addSubject, deleteSubject }
 }
 
-export const useGroupSettings = (group_id: string, is_permision_denied_func: Function)=>{
+export const useGroupSettings = (groupId: string, is_permision_denied_func: Function)=>{
   const groupSettings = vueData<GroupSettings>(Object.create(GroupSettings.defaultSettings))
-  const firebaseRepository = groupSettingRepository(group_id)
+  const firebaseRepository = groupSettingRepository(groupId)
 
   onBeforeMount(()=>{
     firebaseRepository.get

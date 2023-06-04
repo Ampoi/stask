@@ -9,10 +9,10 @@ export type Page = {
 export type Card = {
   title: string
   time: number
-  pages: Array<Page>
+  pages: Page[]
   done: boolean
   subject: number
-  term: string,
+  term: string
   concentrate: boolean
 }
 
