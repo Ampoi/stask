@@ -19,7 +19,6 @@
         </div>
       </div>
     </div>-->
-
     <div class="flex flex-col gap-4">
       <div class="flex flex-row justify-between text-black font-bold">
         <p class="text-black font-bold items-center flex flex-row"><v-icon>mdi-fire</v-icon>今やるタスク</p>
@@ -81,13 +80,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue';
+import { ref } from 'vue';
 import { useGroupSettings } from '../../../hooks/useSettings';
 import { useRouter } from 'vue-router';
 
-import { useGroupSharedCards } from "../../../hooks/useCards"
-import { GroupPersonalCard } from "../../../model/groupCards"
-import { Card, Page } from  "../../../model/cards"
+import { useGroupCards } from "../../../hooks/useCards"
 
 import TaskCard from '../../../components/taskCard.vue';
 
@@ -109,51 +106,9 @@ function backToPersonalPageWithAlert(){
   router.push("/") //TODO:ダイレクト先でアラートを表示するプログラムを書く(URLから取得する感じ)
 }
 
-const { groupSharedCards, addGroupSharedCard, deleteGroupSharedCard } = useGroupSharedCards(groupId)
 const { groupSettings } = useGroupSettings(groupId, backToPersonalPageWithAlert)
 
-console.log(groupSharedCards.value);
-
-
-const cards = computed({
-  get(): Card[]{
-    const groupSharedCardKeys = Object.keys(groupSharedCards.value)
-    
-    let newCards: Card[] = []
-    groupSharedCardKeys.forEach((cardKey)=>{
-      let newCard: Card
-
-      const groupSharedCard = groupSharedCards.value[Number(cardKey)]
-      const cardWithDoneAndConcentrate = {...groupSharedCard, ...{done: false, concentrate: false}}
-      
-      let cardWithPagesDone = { ...cardWithDoneAndConcentrate }
-      
-      const cardWithDoneAndConcentratePages = ((pages: {startPage: number, lastPage: number}[])=>{
-        if(pages){
-          return pages
-        }else{
-          return []
-        }
-      })(cardWithDoneAndConcentrate.pages)
-
-      const cardsWithPagesDonePageKeys = Object.keys(cardWithDoneAndConcentratePages)
-      const newCardPages:Page[] = []
-      
-      cardsWithPagesDonePageKeys.forEach((cardsWithPagesDonePageKey) => {
-        const pageInfo = cardWithDoneAndConcentrate.pages[Number(cardsWithPagesDonePageKey)]
-        const newCardPage = {...pageInfo, ...{done: false}}
-        newCardPages.push(newCardPage)
-      })
-      
-      newCard = {...cardWithDoneAndConcentrate, ...{pages: newCardPages}}
-      newCards.push(newCard)
-    })
-    return newCards
-  },
-  set(){
-    console.log("yeah");
-  }
-})
+const { cards } = useGroupCards(groupId)
 
 function addCard(){}
 
