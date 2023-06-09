@@ -19,6 +19,7 @@
         </div>
       </div>
     </div>-->
+    {{ groupSharedCards }}
     <div class="flex flex-col gap-4">
       <div class="flex flex-row justify-between text-black font-bold">
         <p class="text-black font-bold items-center flex flex-row"><v-icon>mdi-fire</v-icon>今やるタスク</p>
@@ -26,29 +27,25 @@
           @click="startConcentrateMode()"
         >集中モードを開始する</button>-->
       </div>
-      <TaskCard
-        v-for="(card, cardIndex) in cards"
+      <GroupTaskCard
+        v-for="(_card, cardIndex) in groupSharedCards"
         :key="cardIndex"
-        v-model:card="cards[cardIndex]"
-        show-card-type="concentrate"
         :subjects="groupSettings.subjects"
-        v-touch="{
-          left: () => card.done = true
-        }"
+        :sharedCard="groupSharedCards[cardIndex]"
+        :personalCard="personalCardTest"
+        showCardType="concentrate"
       />
     </div>
 
     <div class="flex flex-col gap-4">
       <p class="text-black font-bold">未達成のタスク</p>
-      <TaskCard
-        v-for="(card, cardIndex) in cards"
+      <GroupTaskCard
+        v-for="(_card, cardIndex) in groupSharedCards"
         :key="cardIndex"
-        v-model:card="cards[cardIndex]"
-        show-card-type="incomplete"
         :subjects="groupSettings.subjects"
-        v-touch="{
-          left: () => card.done = true
-        }"
+        :sharedCard="groupSharedCards[cardIndex]"
+        :personalCard="personalCardTest"
+        showCardType="incomplete"
       />
     </div>
 
@@ -63,16 +60,13 @@
       </div>
       <v-expand-transition>
         <div v-if="showDoneCards" class="flex flex-col gap-4">
-          <TaskCard
-            v-for="(card, cardIndex) in cards"
+          <GroupTaskCard
+            v-for="(_card, cardIndex) in groupSharedCards"
             :key="cardIndex"
-            v-model:card="cards[cardIndex]"
-            show-card-type="done"
             :subjects="groupSettings.subjects"
-            v-touch="{
-              right: () => card.done = false
-            }"
-            class="opacity-50"
+            :sharedCard="groupSharedCards[cardIndex]"
+            :personalCard="personalCardTest"
+            showCardType="done"
           />
         </div>
       </v-expand-transition>
@@ -84,11 +78,19 @@ import { ref } from 'vue';
 import { useGroupSettings } from '../../../hooks/useSettings';
 import { useRouter } from 'vue-router';
 
-import { useGroupCards } from "../../../hooks/useCards"
+import { useGroupSharedCards } from "../../../hooks/useCards"
 
-import TaskCard from '../../../components/taskCard.vue';
+import GroupTaskCard from '../../../components/groupTaskCard.vue';
 
 const showDoneCards = ref<boolean>(false)
+
+const personalCardTest = {
+  done: false,
+  concentrate: false,
+  pages: [
+    {done: false}
+  ]
+}
 
 //URLからグループのID取得
 const url = new URL(window.location.href)
@@ -107,8 +109,7 @@ function backToPersonalPageWithAlert(){
 }
 
 const { groupSettings } = useGroupSettings(groupId, backToPersonalPageWithAlert)
-
-const { cards } = useGroupCards(groupId)
+const { groupSharedCards } = useGroupSharedCards(groupId)
 
 function addCard(){}
 

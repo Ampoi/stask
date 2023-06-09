@@ -18,4 +18,5 @@ export type GroupPersonalPage = {
 export type GroupPersonalCard = {
   done: boolean
   concentrate: boolean
+  pages: GroupPersonalPage[]
 }

@@ -1,4 +1,4 @@
-import { Subject } from "./subjects";
+import { Subject } from "./personalSettings"
 
 export type GroupSettings = {
   name: string

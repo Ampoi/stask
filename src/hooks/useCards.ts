@@ -47,7 +47,7 @@ export const usePersonalCards = ()=>{
   return { cards, addCard, deleteCard, deleteDoneCard }
 }
 
-const useGroupSharedCards = (groupId: string)=>{
+export const useGroupSharedCards = (groupId: string)=>{
   const groupSharedCards = ref<GroupSharedCard[]>([])
   const firebaseRepository = groupSharedCardRepository(groupId)
 
