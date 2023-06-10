@@ -206,20 +206,24 @@ const checkCardType = computed(()=>{
   return (cardType == props.showCardType)
 })
 
-const pagePercent = computed((): number => {/*
-  const pages = props.card.pages
+const pagePercent = computed((): number => {
+  const sharedPages = props.sharedCard.pages
+  const personalPages = props.personalCard.pages
   let allPagesAmount = 0
   let donePagesAmount = 0
-  pages?.forEach((page)=>{
+
+  let counter = 0
+  sharedPages?.forEach((page)=>{
     const pageAmount = page.lastPage - page.startPage + 1
     
     allPagesAmount += pageAmount
-    if(page.done){donePagesAmount += pageAmount}
+    if(personalPages[counter].done){donePagesAmount += pageAmount}
+    
+    counter++;
   })
   const percent = allPagesAmount != 0 ? Math.ceil(donePagesAmount / allPagesAmount * 100) : 0
   
-  return percent*/
-  return 100
+  return percent
 })/*
 
 */function turnConcentrate(type: CardType){/*

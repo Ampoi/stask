@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>-->
-    {{ groupSharedCards }}
+    {{ permissions }}
     <div class="flex flex-col gap-4">
       <div class="flex flex-row justify-between text-black font-bold">
         <p class="text-black font-bold items-center flex flex-row"><v-icon>mdi-fire</v-icon>今やるタスク</p>
@@ -79,6 +79,7 @@ import { useGroupSettings } from '../../../hooks/useSettings';
 import { useRouter } from 'vue-router';
 
 import { useGroupSharedCards } from "../../../hooks/useCards"
+import useAuth from '../../../hooks/useAuth';
 
 import GroupTaskCard from '../../../components/groupTaskCard.vue';
 
@@ -108,8 +109,17 @@ function backToPersonalPageWithAlert(){
   router.push("/") //TODO:ダイレクト先でアラートを表示するプログラムを書く(URLから取得する感じ)
 }
 
+const { uid } = await useAuth()
+if(!uid.value){throw new Error("uidが空です！！")}
+
 const { groupSettings } = useGroupSettings(groupId, backToPersonalPageWithAlert)
 const { groupSharedCards } = useGroupSharedCards(groupId)
+
+const waitedGroupSettings = await groupSettings
+
+type Role = keyof typeof waitedGroupSettings.permissions
+const userRole = waitedGroupSettings.users[uid.value]
+const permissions = waitedGroupSettings.permissions[userRole]
 
 function addCard(){}
 

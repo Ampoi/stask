@@ -1,4 +1,4 @@
-import { ref as vueData, onBeforeMount, watch } from "vue";
+import { ref as vueData, onBeforeMount, watch, Ref } from "vue";
 
 import { PersonalSettings } from "../model/personalSettings";
 import { GroupSettings } from "../model/groupSettings";
@@ -44,29 +44,28 @@ export const usePersonalSettings = ()=>{
 }
 
 export const useGroupSettings = (groupId: string, is_permision_denied_func: Function)=>{
-  const groupSettings = vueData<GroupSettings>(Object.create(GroupSettings.defaultSettings))
   const firebaseRepository = groupSettingRepository(groupId)
-
-  onBeforeMount(()=>{
-    firebaseRepository.get
-      .then((newData) => {
-        if(!newData){
-          firebaseRepository.set(GroupSettings.defaultSettings)
-        }else{
-          groupSettings.value = newData
-        }
-      })
+  const groupSettings: Promise<GroupSettings> = (async ()=>{
+    
+    const newGroupSettingsDBdata = await firebaseRepository.get
       .catch((err: Error) => {
         const message = err.message
         if(message == "Permission denied"){
           is_permision_denied_func()
         }
+        throw err
       })
-  })
-
-  watch(groupSettings, ()=>{
-    firebaseRepository.set(groupSettings.value)
-  }, {deep: true})
+    
+    const newGroupSettings = (()=>{
+      if(!newGroupSettingsDBdata){
+        firebaseRepository.set(GroupSettings.defaultSettings)
+        return { ...GroupSettings.defaultSettings }
+      }else{
+        return newGroupSettingsDBdata
+      }
+    })()
+    return newGroupSettings
+  })()
 
   return { groupSettings }
 }

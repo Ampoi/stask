@@ -1,11 +1,31 @@
 import { Subject } from "./personalSettings"
 
+type Permissions = {
+  admin: {
+    editCard: boolean,
+    editPermission: boolean
+  },
+  member: {
+    card: {
+      delete: boolean,
+      edit: boolean
+    },
+    editPermission: boolean
+  }
+}
+
+type Role = keyof Permissions
+
 export type GroupSettings = {
   name: string
   timer: {
     lapDays: number
   },
-  subjects: Array<Subject>
+  subjects: Array<Subject>,
+  permissions: Permissions,
+  users: {
+    [key: string]: Role
+  }
 }
 
 export const GroupSettings:{
@@ -29,6 +49,20 @@ export const GroupSettings:{
       {index:2, title: "理科", color:"#4BAF51"},
       {index:3, title: "社会", color:"#FFC105"},
       {index:4, title: "英語", color: "#E040FB"}
-    ]
+    ],
+    permissions: {
+      "admin": {
+        "editCard": true,
+        "editPermission": true
+      },
+      "member": {
+        "card": {
+          "delete": false,
+          "edit": true
+        },
+        "editPermission": false
+      }
+    },
+    users: {}
   }
 }

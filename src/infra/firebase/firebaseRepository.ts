@@ -52,8 +52,10 @@ export const createRealTimeDatabaseRepository = <T>(path: pathPettern)=>{
         .then(()=>{
           resolve()
         })
-        .catch((err)=>{
-          throw new Error(err)
+        .catch((err)=>{          
+          throw `
+            path(set): ${path}
+            err: ${err.toString()}`
         })
     })
   }
