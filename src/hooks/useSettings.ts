@@ -1,22 +1,30 @@
-import { ref as vueData, onBeforeMount, watch, Ref } from "vue";
+import { ref, watch } from "vue";
 
 import { PersonalSettings } from "../model/personalSettings";
 import { GroupSettings } from "../model/groupSettings";
 import { personalSettingRepository, groupSettingRepository } from "../infra/SettingRepository"
 
-export const usePersonalSettings = ()=>{
-  const personalSettings = vueData<PersonalSettings>(Object.create(PersonalSettings.defaultSettings))
-
-  onBeforeMount(()=>{
-    personalSettingRepository.get
-      .then((newData)=>{
-        if(!newData){
-          personalSettingRepository.set(PersonalSettings.defaultSettings)
-        }else{
-          personalSettings.value = newData
-        }
+export const usePersonalSettings = async ()=>{
+  const personalSettingsData: Promise<PersonalSettings> = (async ()=>{
+    
+    const newPersonalSettingsDBdata = await personalSettingRepository.get
+      .catch((err: Error) => {
+        throw err
       })
-  })
+    
+    const newGroupSettings = (()=>{
+      if(!newPersonalSettingsDBdata){
+        personalSettingRepository.set(PersonalSettings.defaultSettings)
+        return { ...PersonalSettings.defaultSettings }
+      }else{
+        return newPersonalSettingsDBdata
+      }
+    })()
+
+    return newGroupSettings
+  })()
+
+  const personalSettings = ref(await personalSettingsData)
 
   watch(personalSettings, ()=>{
     personalSettingRepository.set(personalSettings.value)

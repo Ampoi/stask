@@ -103,7 +103,7 @@ const emit = defineEmits<{
 
 const { cards, addCard, deleteCard, deleteDoneCard } = usePersonalCards()
 const { timers, addTimer, deleteTimer } = useTimers()
-const { personalSettings } = usePersonalSettings()
+const { personalSettings } = await usePersonalSettings()
 
 const showDoneCards =  ref<boolean>(false)
 
