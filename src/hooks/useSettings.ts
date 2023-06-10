@@ -43,9 +43,9 @@ export const usePersonalSettings = ()=>{
   return { personalSettings, addSubject, deleteSubject }
 }
 
-export const useGroupSettings = (groupId: string, is_permision_denied_func: Function)=>{
+export const useGroupSettings = async (groupId: string, is_permision_denied_func: Function)=>{
   const firebaseRepository = groupSettingRepository(groupId)
-  const groupSettings: Promise<GroupSettings> = (async ()=>{
+  const groupSettings: GroupSettings = await (async ()=>{
     
     const newGroupSettingsDBdata = await firebaseRepository.get
       .catch((err: Error) => {

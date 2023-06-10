@@ -112,14 +112,12 @@ function backToPersonalPageWithAlert(){
 const { uid } = await useAuth()
 if(!uid.value){throw new Error("uidが空です！！")}
 
-const { groupSettings } = useGroupSettings(groupId, backToPersonalPageWithAlert)
+const { groupSettings } = await useGroupSettings(groupId, backToPersonalPageWithAlert)
 const { groupSharedCards } = useGroupSharedCards(groupId)
 
-const waitedGroupSettings = await groupSettings
-
-type Role = keyof typeof waitedGroupSettings.permissions
-const userRole = waitedGroupSettings.users[uid.value]
-const permissions = waitedGroupSettings.permissions[userRole]
+type Role = keyof typeof groupSettings.permissions
+const userRole = groupSettings.users[uid.value]
+const permissions = groupSettings.permissions[userRole]
 
 function addCard(){}
 
