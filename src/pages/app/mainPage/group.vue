@@ -30,6 +30,7 @@
       <GroupTaskCard
         v-for="(_card, cardIndex) in groupSharedCards"
         :key="cardIndex"
+        :permissions="permissions"
         :subjects="groupSettings.subjects"
         :sharedCard="groupSharedCards[cardIndex]"
         :personalCard="personalCardTest"
@@ -42,6 +43,7 @@
       <GroupTaskCard
         v-for="(_card, cardIndex) in groupSharedCards"
         :key="cardIndex"
+        :permissions="permissions"
         :subjects="groupSettings.subjects"
         :sharedCard="groupSharedCards[cardIndex]"
         :personalCard="personalCardTest"
@@ -63,6 +65,7 @@
           <GroupTaskCard
             v-for="(_card, cardIndex) in groupSharedCards"
             :key="cardIndex"
+            :permissions="permissions"
             :subjects="groupSettings.subjects"
             :sharedCard="groupSharedCards[cardIndex]"
             :personalCard="personalCardTest"
@@ -115,7 +118,6 @@ if(!uid.value){throw new Error("uidが空です！！")}
 const { groupSettings } = await useGroupSettings(groupId, backToPersonalPageWithAlert)
 const { groupSharedCards } = useGroupSharedCards(groupId)
 
-type Role = keyof typeof groupSettings.permissions
 const userRole = groupSettings.users[uid.value]
 const permissions = groupSettings.permissions[userRole]
 

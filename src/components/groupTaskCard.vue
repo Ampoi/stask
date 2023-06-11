@@ -25,7 +25,12 @@
             <div class="flex flex-row items-center">
               <div class="basis-full">
                 <v-card-title>
-                  <input type="text" class="w-full" placeholder="タイトルを入力..." v-model="sharedCard.title">
+                  <input
+                    type="text"
+                    class="w-full"
+                    placeholder="タイトルを入力..."
+                    v-model="sharedCard.title"
+                    :disabled="!permissions.card.edit">
                 </v-card-title>
                 <v-card-subtitle class="sm:text-[14px] text-[16px] flex sm:flex-row flex-col sm:items-center sm:gap-4">
                   <div class="flex flex-row">
@@ -35,12 +40,13 @@
                       min="1" max="999"
                       v-model="sharedCard.time"
                       class="text-right"
+                      :disabled="!permissions.card.edit"
                     >
                     <span>分</span>
                   </div>
                   <div>
                     <span>期限:</span>
-                    <input type="date" v-model="sharedCard.term">
+                    <input type="date" v-model="sharedCard.term" :disabled="!permissions.card.edit">
                   </div>
                 </v-card-subtitle>
               </div>
@@ -76,6 +82,7 @@
                   :style="`border-color: ${subjectColor}${personalCard.pages[pageIndex].done ? '6F' : '00'};`"
                   :class="{'text-white': personalCard.pages[pageIndex].done, 'text-black/20': !personalCard.pages[pageIndex].done}"
                   @click="personalCard.pages[pageIndex].done = !personalCard.pages[pageIndex].done"
+                  :disabled="!permissions.card.edit"
                 >
                   <v-icon>mdi-check</v-icon>
                 </button>
@@ -87,6 +94,7 @@
                     v-model="page.startPage"
                     min="1"
                     :max="page.lastPage-1"
+                    :disabled="!permissions.card.edit"
                   >
                   ~
                   p.
@@ -96,11 +104,13 @@
                     v-model="page.lastPage"
                     :min="page.startPage+1"
                     max="999"
+                    :disabled="!permissions.card.edit"
                   >
                 </p>
                 <button
                   class="text-sm text-red-300/80 border-solid"
                   @click="deletePage(pageIndex)"
+                  :disabled="!permissions.card.edit"
                 >
                   <v-icon>mdi-trash-can</v-icon>
                 </button>
@@ -123,6 +133,7 @@
                 item-value="index"
                 density="comfortable"
                 :color="subjectColor + '6F'"
+                :disabled="!permissions.card.edit"
               />
               <button
                 class="h-12 grid place-content-center px-2 box-border border-orange-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold
@@ -134,7 +145,8 @@
                 class="h-12 grid place-content-center px-2 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
                         hover:bg-red-400/50 hover:text-white"
                 @click="emit('deleteTask')"
-                title="課題を今やることに設定する"><v-icon>mdi-trash-can</v-icon></button>
+                title="課題を今やることに設定する"
+                :disabled="!permissions.card.delete"><v-icon>mdi-trash-can</v-icon></button>
             </div>
           </div>
         </v-expand-transition>
@@ -149,10 +161,12 @@ import { computed, onMounted, ref as vueData, watch } from "vue"
 
 import { GroupPersonalCard, GroupSharedCard } from "../model/groupCards"
 import { Subject } from "../model/personalSettings"
+import { Permissions } from "../model/groupSettings"
 
 type CardType = "done" | "incomplete" | "concentrate"
 
 const props = defineProps<{
+  permissions: Permissions["admin" | "member"], //TODO: この部分の権限の階級を型にして統一したい
   sharedCard: GroupSharedCard,
   personalCard: GroupPersonalCard,
   showCardType: CardType,

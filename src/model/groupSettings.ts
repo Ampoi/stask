@@ -1,15 +1,11 @@
 import { Subject } from "./personalSettings"
 
-type Permissions = {
-  admin: {
-    editCard: boolean,
-    editPermission: boolean
-  },
-  member: {
+export type Permissions = {
+  [key in "admin" | "member"]: {
     card: {
-      delete: boolean,
+      delete: boolean
       edit: boolean
-    },
+    }
     editPermission: boolean
   }
 }
@@ -52,7 +48,10 @@ export const GroupSettings:{
     ],
     permissions: {
       "admin": {
-        "editCard": true,
+        "card": {
+          "delete": true,
+          "edit": true
+        },
         "editPermission": true
       },
       "member": {
