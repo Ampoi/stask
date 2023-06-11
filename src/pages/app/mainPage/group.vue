@@ -118,8 +118,10 @@ if(!uid.value){throw new Error("uidが空です！！")}
 const { groupSettings } = await useGroupSettings(groupId, backToPersonalPageWithAlert)
 const { groupSharedCards } = useGroupSharedCards(groupId)
 
-const userRole = groupSettings.users[uid.value]
+const userRole = groupSettings.users[uid.value].permission
 const permissions = groupSettings.permissions[userRole]
+console.log(groupSettings);
+
 
 function addCard(){}
 
