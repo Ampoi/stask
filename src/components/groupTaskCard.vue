@@ -234,8 +234,8 @@ const isConcentrate = {
   },
   turnConcentrate(){
     if(uid.value == undefined){ throw new Error("uidが空です！") }
-    
-    if(isConcentrate){ //集中状態 -> 普通
+
+    if(isConcentrate.get()){ //集中状態 -> 普通
       const index = props.card.concentrate.indexOf(uid.value)
       props.card.concentrate.splice(index, 1)
     }else{ //普通 -> 集中状態
@@ -252,12 +252,10 @@ const isDone = {
   turnDone(){
     if(uid.value == undefined){ throw new Error("uidが空です！") }
 
-    if(isDone){ //達成 -> 普通
+    if(isDone.get()){ //達成 -> 普通
       const index = props.card.done.indexOf(uid.value)
       props.card.done.splice(index, 1)
     }else{ //普通 -> 達成
-      console.log("aifjow");
-      
       props.card.done.push(uid.value)
     }
   }
@@ -276,7 +274,7 @@ const isPageDone = (pageIndex: number)=>{
     turnDone(){
       if(uid.value == undefined){ throw new Error("uidが空です！") }
       
-      if(isConcentrate){ //達成 -> 普通
+      if(isPageDone(pageIndex).get()){ //達成 -> 普通
         const index = props.card.done.indexOf(uid.value)
         props.card.pages[pageIndex].done.splice(index, 1)
       }else{ //普通 -> 達成
