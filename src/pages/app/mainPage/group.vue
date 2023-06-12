@@ -119,6 +119,8 @@ const { groupSharedCards } = await useGroupSharedCards(groupId)
 
 const userRole = groupSettings.users[uid.value].permission
 const permissions = groupSettings.permissions[userRole]
+console.log(groupSettings);
+
 
 function addCard(){}
 
