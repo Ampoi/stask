@@ -58,7 +58,7 @@ export const useGroupSharedCards = async (groupId: string)=>{
     
     const newSharedCard = (()=>{
       if(!newSharedCardDBdata){
-        return [{ ...Card.welcomeCard }]
+        return [{ ...GroupSharedCard.welcomeCard }]
       }else{
         return newSharedCardDBdata
       }
@@ -74,7 +74,7 @@ export const useGroupSharedCards = async (groupId: string)=>{
   }, {deep: true})
 
   const addGroupSharedCard = ()=>{
-    groupSharedCards.value.push(Card.create())
+    groupSharedCards.value.push(GroupSharedCard.create())
   }
 
   const deleteGroupSharedCard = (cardIndex:number)=>{

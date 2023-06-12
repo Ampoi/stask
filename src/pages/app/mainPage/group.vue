@@ -31,8 +31,7 @@
         :key="cardIndex"
         :permissions="permissions"
         :subjects="groupSettings.subjects"
-        v-model:sharedCard="groupSharedCards[cardIndex]"
-        :personalCard="personalCardTest"
+        v-model:card="groupSharedCards[cardIndex]"
         showCardType="concentrate"
       />
     </div>
@@ -44,8 +43,7 @@
         :key="cardIndex"
         :permissions="permissions"
         :subjects="groupSettings.subjects"
-        v-model:sharedCard="groupSharedCards[cardIndex]"
-        :personalCard="personalCardTest"
+        v-model:card="groupSharedCards[cardIndex]"
         showCardType="incomplete"
       />
     </div>
@@ -66,8 +64,7 @@
             :key="cardIndex"
             :permissions="permissions"
             :subjects="groupSettings.subjects"
-            v-model:sharedCard="groupSharedCards[cardIndex]"
-            :personalCard="personalCardTest"
+            v-model:card="groupSharedCards[cardIndex]"
             showCardType="done"
           />
         </div>
@@ -86,14 +83,6 @@ import useAuth from '../../../hooks/useAuth';
 import GroupTaskCard from '../../../components/groupTaskCard.vue';
 
 const showDoneCards = ref<boolean>(false)
-
-const personalCardTest = {
-  done: false,
-  concentrate: false,
-  pages: [
-    {done: false}
-  ]
-}
 
 //URLからグループのID取得
 const url = new URL(window.location.href)

@@ -9,7 +9,7 @@
     v-if="checkCardType"
     oncontextmenu="return false;"
   >
-    {{ sharedCard.subject }}
+  {{ isDone.get() }}
     <div
       @touchstart="startLongPress"
       @touchend="finishLongPress"
@@ -18,7 +18,8 @@
         <div class="flex flex-row items-center">
           <!--達成ボタン-->
           <CheckButton
-            v-model:done="personalCard.done"
+            :done="isDone.get()"
+            @update:done="isDone.turnDone()"
             :borderColor="subjectColor"
           />
           <!--右側-->
@@ -30,7 +31,7 @@
                     type="text"
                     class="w-full"
                     placeholder="タイトルを入力..."
-                    v-model="sharedCard.title"
+                    v-model="card.title"
                     :disabled="!permissions.card.edit">
                 </v-card-title>
                 <v-card-subtitle class="sm:text-[14px] text-[16px] flex sm:flex-row flex-col sm:items-center sm:gap-4">
@@ -39,7 +40,7 @@
                     <input
                       type="number"
                       min="1" max="999"
-                      v-model="sharedCard.time"
+                      v-model="card.time"
                       class="text-right"
                       :disabled="!permissions.card.edit"
                     >
@@ -47,7 +48,7 @@
                   </div>
                   <div>
                     <span>期限:</span>
-                    <input type="date" v-model="sharedCard.term" :disabled="!permissions.card.edit">
+                    <input type="date" v-model="card.term" :disabled="!permissions.card.edit">
                   </div>
                 </v-card-subtitle>
               </div>
@@ -75,14 +76,14 @@
               <!--ページ-->
               <div
                 class="mx-auto flex flex-row gap-2 items-center"
-                v-for="(page, pageIndex) in sharedCard.pages"
+                v-for="(page, pageIndex) in card.pages"
                 :key="pageIndex"
               >
                 <button
                   class="text-[12px] p-1 border-2 rounded-full border-solid"
                   :style="`border-color: ${subjectColor}${isPageDone(pageIndex) ? '6F' : '00'};`"
                   :class="{'text-white': isPageDone(pageIndex), 'text-black/20': !isPageDone(pageIndex)}"
-                  @click="props.personalCard.pages[pageIndex].done = !isPageDone(pageIndex)"
+                  @click="isPageDone(pageIndex).turnDone()"
                 >
                   <v-icon>mdi-check</v-icon>
                 </button>
@@ -125,7 +126,7 @@
             </div>
             <div class="flex flex-row items-start gap-4">
               <v-select
-                v-model="sharedCard.subject"
+                v-model="card.subject"
                 @update:modelValue="getSubjectColor"
                 :items="subjects"
                 label="Subject"
@@ -139,8 +140,8 @@
               <button
                 class="h-12 grid place-content-center px-2 box-border border-orange-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold
                         hover:bg-orange-300/80 hover:text-white"
-                :class="{'text-orange-400 bg-white': !personalCard.concentrate, 'text-white bg-orange-400': personalCard.concentrate}"
-                @click="turnConcentrate(getCardType)"
+                :class="{'text-orange-400 bg-white': !isConcentrate.get(), 'text-white bg-orange-400': isConcentrate.get()}"
+                @click="isConcentrate.turnConcentrate()"
                 title="課題を今やることに設定する"><v-icon>mdi-fire</v-icon></button>
               <button
                 class="h-12 grid place-content-center px-2 box-border border-red-400 border-2 border-solid rounded-lg transition-all delay-200 font-bold text-red-400
@@ -160,47 +161,63 @@ import CheckButton from "./taskCard/checkButton.vue"
 
 import { computed, onMounted, ref, watch } from "vue"
 
-import { GroupPersonalCard, GroupSharedCard } from "../model/groupCards"
+import { GroupSharedCard } from "../model/groupCards"
 import { Subject } from "../model/personalSettings"
 import { Permissions } from "../model/groupSettings"
+
+import useAuth from "../hooks/useAuth"
 
 type CardType = "done" | "incomplete" | "concentrate"
 
 const props = defineProps<{
   permissions: Permissions["admin" | "member"], //TODO: この部分の権限の階級を型にして統一したい
-  sharedCard: GroupSharedCard,
-  personalCard: GroupPersonalCard,
+  card: GroupSharedCard,
   showCardType: CardType,
   subjects: Subject[]
 }>()
 
+if(!props.card.pages){
+  props.card.pages = []
+}
+if(typeof(props.card.subject) != "number"){
+  props.card.subject = 1
+}
+if(!props.card.done){
+  props.card.done = []
+}
+if(!props.card.concentrate){
+  props.card.concentrate = []
+}
+
 const emit = defineEmits<{
-  (e:"update:sharedCard", card: GroupSharedCard): void,
+  (e:"update:card", card: GroupSharedCard): void,
   (e: "deleteTask"): void
 }>()
 
+const { uid } = await useAuth()
+
 const showSubMenu = ref(false)
 
-watch(props.sharedCard, ()=>{
-  emit("update:sharedCard", props.sharedCard)
+watch(props.card, ()=>{
+  emit("update:card", props.card)
 }, {deep: true, immediate: true})
 
 function addPage(){
-  props.sharedCard.pages.push({
+  props.card.pages.push({
     startPage: 1,
-    lastPage: 2
+    lastPage: 2,
+    done: []
   })
 }/*
 
 */function deletePage(index: number){
-  props.sharedCard.pages.splice(index, 1)
+  props.card.pages.splice(index, 1)
 }
 
 const subjectColor = ref("")
 
 function getSubjectColor(){
-  console.log("aaa");
-  const subject: number = props.sharedCard.subject
+  const subject: number = props.card.subject
   if(props.subjects[subject] != undefined){
     subjectColor.value = props.subjects[subject].color
   }else{
@@ -210,18 +227,69 @@ function getSubjectColor(){
 
 getSubjectColor()
 
-function isPageDone(pageIndex: number): boolean{  
-  if(!props.personalCard.pages[pageIndex]){
-    return false
-  }else{
-    return props.personalCard.pages[pageIndex].done
+const isConcentrate = {
+  get(){
+    if(uid.value == undefined){ throw new Error("uidが空です！") }
+    return props.card.concentrate.includes(uid.value)
+  },
+  turnConcentrate(){
+    if(uid.value == undefined){ throw new Error("uidが空です！") }
+    
+    if(isConcentrate){ //集中状態 -> 普通
+      const index = props.card.concentrate.indexOf(uid.value)
+      props.card.concentrate.splice(index, 1)
+    }else{ //普通 -> 集中状態
+      props.card.concentrate.push(uid.value)
+    }
+  }
+}
+
+const isDone = {
+  get(){
+    if(uid.value == undefined){ throw new Error("uidが空です！") }
+    return props.card.done.includes(uid.value)
+  },
+  turnDone(){
+    if(uid.value == undefined){ throw new Error("uidが空です！") }
+
+    if(isDone){ //達成 -> 普通
+      const index = props.card.done.indexOf(uid.value)
+      props.card.done.splice(index, 1)
+    }else{ //普通 -> 達成
+      console.log("aifjow");
+      
+      props.card.done.push(uid.value)
+    }
+  }
+}
+
+const isPageDone = (pageIndex: number)=>{
+  return {
+    get(){
+      if(uid.value == undefined){ throw new Error("uidが空です！") }
+      if(!props.card.pages[pageIndex].done){
+        props.card.pages[pageIndex].done = []
+      }
+      
+      return props.card.pages[pageIndex].done.includes(uid.value)
+    },
+    turnDone(){
+      if(uid.value == undefined){ throw new Error("uidが空です！") }
+      
+      if(isConcentrate){ //達成 -> 普通
+        const index = props.card.done.indexOf(uid.value)
+        props.card.pages[pageIndex].done.splice(index, 1)
+      }else{ //普通 -> 達成
+        props.card.pages[pageIndex].done.push(uid.value)
+      }
+    }
   }
 }
 
 const getCardType = computed(()=>{
-  if( props.personalCard.done == false && props.personalCard.concentrate == true){
+  if( isDone.get() == false && isConcentrate.get() == true){
     return "concentrate"
-  }else if(props.personalCard.done == false){
+  }else if( isDone.get() == false ){
     return "incomplete"
   }else{
     return "done"
@@ -234,8 +302,7 @@ const checkCardType = computed(()=>{
 })
 
 const pagePercent = computed((): number => {
-  const sharedPages = props.sharedCard.pages
-  const personalPages = props.personalCard.pages
+  const sharedPages = props.card.pages
   let allPagesAmount = 0
   let donePagesAmount = 0
 
@@ -244,7 +311,7 @@ const pagePercent = computed((): number => {
     const pageAmount = page.lastPage - page.startPage + 1
     
     allPagesAmount += pageAmount
-    if(personalPages[counter]?.done){donePagesAmount += pageAmount}
+    if(isPageDone(counter).get()){donePagesAmount += pageAmount}
     
     counter++;
   })
@@ -279,20 +346,11 @@ function startLongPress(){/*
 
     clearTimeout(pressTimer)
   }, 200)*/
-}/*
-
-*/function finishLongPress(){/*
-  clearTimeout(pressTimer)
-  clearInterval(addPressTime)
-  pressTime.value = 0*/
 }
 
-onMounted(()=>{
-  if(!props.sharedCard.pages){
-    props.sharedCard.pages = []
-  }
-  if(typeof(props.sharedCard.subject) != "number"){
-    props.sharedCard.subject = 1
-  }
-})
+function finishLongPress(){
+  clearTimeout(pressTimer)
+  clearInterval(addPressTime)
+  pressTime.value = 0
+}
 </script>

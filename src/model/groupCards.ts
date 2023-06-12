@@ -1,6 +1,9 @@
+import twoDigitNumber from "../functions/twoDigitNumber"
+
 export type GroupSharedPage = {
   startPage: number
   lastPage: number
+  done: string[]
 }
 
 export type GroupSharedCard = {
@@ -9,14 +12,35 @@ export type GroupSharedCard = {
   pages: GroupSharedPage[]
   subject: number
   term: string
+  done: string[]
+  concentrate: string[]
 }
 
-export type GroupPersonalPage = {
-  done: boolean
-}
+export const GroupSharedCard = {
+  create(): GroupSharedCard{
+    const today = new Date()
+    const thisYear = today.getFullYear()
+    const thisMonth = twoDigitNumber(today.getMonth()+1)
+    const thisDate = twoDigitNumber(today.getDate())
 
-export type GroupPersonalCard = {
-  done: boolean
-  concentrate: boolean
-  pages: GroupPersonalPage[]
+    return {
+      title: "",
+      time: 0,
+      pages: [],
+      subject: 0,
+      term: `${thisYear}-${thisMonth}-${thisDate}`,
+      done: [],
+      concentrate: []
+    }
+  },
+
+  welcomeCard: {
+    title: "Staskへようこそ",
+    time: 123,
+    pages: [],
+    subject: 1,
+    term: "2023-01-01",
+    done: [],
+    concentrate: []
+  }
 }
