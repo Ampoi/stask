@@ -80,8 +80,8 @@
               >
                 <button
                   class="text-[12px] p-1 border-2 rounded-full border-solid"
-                  :style="`border-color: ${subjectColor}${isPageDone(pageIndex) ? '6F' : '00'};`"
-                  :class="{'text-white': isPageDone(pageIndex), 'text-black/20': !isPageDone(pageIndex)}"
+                  :style="`border-color: ${subjectColor}${isPageDone(pageIndex).get() ? '6F' : '00'}; background-color: ${subjectColor}${isPageDone(pageIndex).get() ? '3F' : '00'};`"
+                  :class="{'text-white': isPageDone(pageIndex).get(), 'text-black/20': !isPageDone(pageIndex).get()}"
                   @click="isPageDone(pageIndex).turnDone()"
                 >
                   <v-icon>mdi-check</v-icon>

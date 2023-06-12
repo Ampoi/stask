@@ -73,7 +73,7 @@
               >
                 <button
                   class="text-[12px] p-1 border-2 rounded-full border-solid"
-                  :style="`border-color: ${subjectColor}${page.done ? '6F' : '00'};`"
+                  :style="`border-color: ${subjectColor}${page.done ? '6F' : '00'}; background-color: ${subjectColor}${page.done ? '3F' : '00'};`"
                   :class="{'text-white': page.done, 'text-black/20': !page.done}"
                   @click="page.done = !page.done"
                 >
