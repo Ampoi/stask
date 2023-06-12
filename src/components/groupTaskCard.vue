@@ -79,10 +79,9 @@
               >
                 <button
                   class="text-[12px] p-1 border-2 rounded-full border-solid"
-                  :style="`border-color: ${subjectColor}${personalCard.pages[pageIndex].done ? '6F' : '00'};`"
-                  :class="{'text-white': personalCard.pages[pageIndex].done, 'text-black/20': !personalCard.pages[pageIndex].done}"
-                  @click="personalCard.pages[pageIndex].done = !personalCard.pages[pageIndex].done"
-                  :disabled="!permissions.card.edit"
+                  :style="`border-color: ${subjectColor}${isPageDone(pageIndex) ? '6F' : '00'};`"
+                  :class="{'text-white': isPageDone(pageIndex), 'text-black/20': !isPageDone(pageIndex)}"
+                  @click="props.personalCard.pages[pageIndex].done = !isPageDone(pageIndex)"
                 >
                   <v-icon>mdi-check</v-icon>
                 </button>
@@ -118,7 +117,7 @@
               <!--ページの追加ボタン-->
               <button
                 class="text-gray-600 bg-white rounded-md p-2"
-                @click="addPage"
+                @click="addPage()"
               >
                 <v-icon>mdi-plus</v-icon>
               </button>
@@ -173,29 +172,28 @@ const props = defineProps<{
   subjects: Subject[]
 }>()
 
-/*const emit = defineEmits<{
-  (e:"update:card", card: Card): void,
+const emit = defineEmits<{
+  (e:"update:sharedCard", card: GroupSharedCard): void,
   (e: "deleteTask"): void
-}>()*/
+}>()
 
 const showSubMenu = vueData(false)
-/*
-watch(props.card, ()=>{
-  emit("update:card", props.card)
+
+watch(props.sharedCard, ()=>{
+  emit("update:sharedCard", props.sharedCard)
 }, {deep: true, immediate: true})
 
-*/function addPage(){/*
-  props.card.pages.push({
+function addPage(){
+  props.sharedCard.pages.push({
     startPage: 1,
-    lastPage: 2,
-    done: false
+    lastPage: 2
   })
-*/}/*
+}/*
 
-*/function deletePage(index: number){/*
-  props.card.pages.splice(index, 1)
-*/}/*
-*/
+*/function deletePage(index: number){
+  props.sharedCard.pages.splice(index, 1)
+}
+
 function getSubjectColor(subject: number): string{
   if(props.subjects[subject] != undefined){
     return props.subjects[subject].color
@@ -203,6 +201,15 @@ function getSubjectColor(subject: number): string{
     return "#E7E8E7"
   }
 }
+
+function isPageDone(pageIndex: number): boolean{
+  if(!props.personalCard.pages[pageIndex]){
+    return false
+  }else{
+    return props.personalCard.pages[pageIndex].done
+  }
+}
+
 const subjectColor = getSubjectColor(props.sharedCard.subject)
 
 const getCardType = computed(()=>{
@@ -231,7 +238,7 @@ const pagePercent = computed((): number => {
     const pageAmount = page.lastPage - page.startPage + 1
     
     allPagesAmount += pageAmount
-    if(personalPages[counter].done){donePagesAmount += pageAmount}
+    if(personalPages[counter]?.done){donePagesAmount += pageAmount}
     
     counter++;
   })
@@ -246,8 +253,8 @@ const pagePercent = computed((): number => {
   }else if(type == "concentrate"){
     props.card.concentrate = false
   }
-*/}/*
-*/
+*/}
+
 let pressTimer: number
 let addPressTime: number
 const pressTime = vueData<number>(0)
@@ -272,14 +279,14 @@ function startLongPress(){/*
   clearTimeout(pressTimer)
   clearInterval(addPressTime)
   pressTime.value = 0*/
-}/*
+}
 
 onMounted(()=>{
-  if(props.card.pages == undefined){
-    props.card.pages = []
+  if(!props.sharedCard.pages){
+    props.sharedCard.pages = []
   }
-  if(typeof(props.card.subject) != "number"){
-    props.card.subject = 1
+  if(typeof(props.sharedCard.subject) != "number"){
+    props.sharedCard.subject = 1
   }
-})*/
+})
 </script>

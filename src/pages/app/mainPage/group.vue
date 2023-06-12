@@ -31,7 +31,7 @@
         :key="cardIndex"
         :permissions="permissions"
         :subjects="groupSettings.subjects"
-        :sharedCard="groupSharedCards[cardIndex]"
+        v-model:sharedCard="groupSharedCards[cardIndex]"
         :personalCard="personalCardTest"
         showCardType="concentrate"
       />
@@ -44,7 +44,7 @@
         :key="cardIndex"
         :permissions="permissions"
         :subjects="groupSettings.subjects"
-        :sharedCard="groupSharedCards[cardIndex]"
+        v-model:sharedCard="groupSharedCards[cardIndex]"
         :personalCard="personalCardTest"
         showCardType="incomplete"
       />
@@ -66,7 +66,7 @@
             :key="cardIndex"
             :permissions="permissions"
             :subjects="groupSettings.subjects"
-            :sharedCard="groupSharedCards[cardIndex]"
+            v-model:sharedCard="groupSharedCards[cardIndex]"
             :personalCard="personalCardTest"
             showCardType="done"
           />
