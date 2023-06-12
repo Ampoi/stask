@@ -19,7 +19,6 @@
         </div>
       </div>
     </div>-->
-    {{ permissions }}
     <div class="flex flex-col gap-4">
       <div class="flex flex-row justify-between text-black font-bold">
         <p class="text-black font-bold items-center flex flex-row"><v-icon>mdi-fire</v-icon>今やるタスク</p>
@@ -116,9 +115,9 @@ const { uid } = await useAuth()
 if(!uid.value){throw new Error("uidが空です！！")}
 
 const { groupSettings } = await useGroupSettings(groupId, backToPersonalPageWithAlert)
-const { groupSharedCards } = useGroupSharedCards(groupId)
+const { groupSharedCards } = await useGroupSharedCards(groupId)
 
-const userRole = groupSettings.users[uid.value]
+const userRole = groupSettings.users[uid.value].permission
 const permissions = groupSettings.permissions[userRole]
 
 function addCard(){}

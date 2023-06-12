@@ -20,7 +20,9 @@ export type GroupSettings = {
   subjects: Array<Subject>,
   permissions: Permissions,
   users: {
-    [key: string]: Role
+    [key: string]: {
+      permission: Role
+    }
   }
 }
 

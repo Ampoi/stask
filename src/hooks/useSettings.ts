@@ -12,7 +12,7 @@ export const usePersonalSettings = async ()=>{
         throw err
       })
     
-    const newGroupSettings = (()=>{
+    const newPersonalSettings = (()=>{
       if(!newPersonalSettingsDBdata){
         personalSettingRepository.set(PersonalSettings.defaultSettings)
         return { ...PersonalSettings.defaultSettings }
@@ -21,7 +21,7 @@ export const usePersonalSettings = async ()=>{
       }
     })()
 
-    return newGroupSettings
+    return newPersonalSettings
   })()
 
   const personalSettings = ref(await personalSettingsData)

@@ -1,6 +1,6 @@
 import { ref, onBeforeMount, watch, computed } from "vue";
 
-import { Card, Page } from "../model/cards"
+import { Card } from "../model/cards"
 import { personalCardRepository } from "../infra/CardRepository";
 
 import { GroupSharedCard } from "../model/groupCards";
@@ -47,20 +47,27 @@ export const usePersonalCards = ()=>{
   return { cards, addCard, deleteCard, deleteDoneCard }
 }
 
-export const useGroupSharedCards = (groupId: string)=>{
-  const groupSharedCards = ref<GroupSharedCard[]>([])
+export const useGroupSharedCards = async (groupId: string)=>{
   const firebaseRepository = groupSharedCardRepository(groupId)
 
-  onBeforeMount(()=>{
-    firebaseRepository.get
-      .then((newData)=>{
-        if(!newData){
-          groupSharedCards.value = [Card.welcomeCard]
-        }else{
-          groupSharedCards.value = newData
-        }
+  const groupSharedCardsData: Promise<GroupSharedCard[]> = (async ()=>{
+    const newSharedCardDBdata = await firebaseRepository.get
+      .catch((err: Error) => {
+        throw err
       })
-  })
+    
+    const newSharedCard = (()=>{
+      if(!newSharedCardDBdata){
+        return [{ ...Card.welcomeCard }]
+      }else{
+        return newSharedCardDBdata
+      }
+    })()
+
+    return newSharedCard
+  })()
+
+  const groupSharedCards = ref<GroupSharedCard[]>(await groupSharedCardsData)
 
   watch(groupSharedCards, ()=>{
     firebaseRepository.set(groupSharedCards.value)
@@ -75,50 +82,4 @@ export const useGroupSharedCards = (groupId: string)=>{
   }
 
   return { groupSharedCards, addGroupSharedCard, deleteGroupSharedCard }
-}
-
-export const useGroupCards = (groupId: string)=>{
-  const { groupSharedCards, addGroupSharedCard, deleteGroupSharedCard } = useGroupSharedCards(groupId)
-  
-  const cards = computed({
-    get(): Card[]{
-      const groupSharedCardKeys = Object.keys(groupSharedCards.value)
-      
-      let newCards: Card[] = []
-      groupSharedCardKeys.forEach((cardKey)=>{
-        let newCard: Card
-  
-        //共有カードと個人ごとのデータの合成
-        const groupSharedCard = groupSharedCards.value[Number(cardKey)]
-        const cardWithDoneAndConcentrate = {...groupSharedCard, ...{done: false, concentrate: false}}
-
-        //ページごとの達成の合成
-        const cardWithDoneAndConcentratePages = ((pages: {startPage: number, lastPage: number}[])=>{
-          if(pages){
-            return pages
-          }else{
-            return []
-          }
-        })(cardWithDoneAndConcentrate.pages)
-  
-        const cardsWithPagesDonePageKeys = Object.keys(cardWithDoneAndConcentratePages)
-        const newCardPages:Page[] = []
-        
-        cardsWithPagesDonePageKeys.forEach((cardsWithPagesDonePageKey) => {
-          const pageInfo = cardWithDoneAndConcentrate.pages[Number(cardsWithPagesDonePageKey)]
-          const newCardPage = {...pageInfo, ...{done: false}}
-          newCardPages.push(newCardPage)
-        })
-        
-        newCard = {...cardWithDoneAndConcentrate, ...{pages: newCardPages}}
-        newCards.push(newCard)
-      })
-      return newCards
-    },
-    set(){
-      console.log("yeah");
-    }
-  })
-
-  return { cards }
 }
