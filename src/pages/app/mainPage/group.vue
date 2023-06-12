@@ -32,6 +32,7 @@
         :permissions="permissions"
         :subjects="groupSettings.subjects"
         v-model:card="groupSharedCards[cardIndex]"
+        @deleteTask="deleteGroupSharedCard(cardIndex)"
         showCardType="concentrate"
       />
     </div>
@@ -44,6 +45,7 @@
         :permissions="permissions"
         :subjects="groupSettings.subjects"
         v-model:card="groupSharedCards[cardIndex]"
+        @deleteTask="deleteGroupSharedCard(cardIndex)"
         showCardType="incomplete"
       />
     </div>
@@ -65,6 +67,7 @@
             :permissions="permissions"
             :subjects="groupSettings.subjects"
             v-model:card="groupSharedCards[cardIndex]"
+            @deleteTask="deleteGroupSharedCard(cardIndex)"
             showCardType="done"
           />
         </div>
@@ -104,14 +107,12 @@ const { uid } = await useAuth()
 if(!uid.value){throw new Error("uidが空です！！")}
 
 const { groupSettings } = await useGroupSettings(groupId, backToPersonalPageWithAlert)
-const { groupSharedCards } = await useGroupSharedCards(groupId)
+const { groupSharedCards, deleteGroupSharedCard, addGroupSharedCard } = await useGroupSharedCards(groupId)
 
 const userRole = groupSettings.users[uid.value].role
 const permissions = groupSettings.permissions[userRole]
-console.log(groupSettings);
 
-
-function addCard(){}
+function addCard(){addGroupSharedCard()}
 
 defineExpose({ addCard })
 </script>

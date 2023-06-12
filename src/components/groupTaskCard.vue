@@ -9,7 +9,6 @@
     v-if="checkCardType"
     oncontextmenu="return false;"
   >
-  {{ isDone.get() }}
     <div
       @touchstart="startLongPress"
       @touchend="finishLongPress"
@@ -330,20 +329,20 @@ let pressTimer: number
 let addPressTime: number
 const pressTime = ref<number>(0)
 
-function startLongPress(){/*
+function startLongPress(){
   pressTimer = setTimeout(()=>{
 
     addPressTime = setInterval(()=>{
       pressTime.value += 2  
       if(pressTime.value >= 50){
         const cardType = getCardType
-        turnConcentrate(cardType.value)
+        isConcentrate.turnConcentrate()
         finishLongPress()
       }
     }, 1)
 
     clearTimeout(pressTimer)
-  }, 200)*/
+  }, 200)
 }
 
 function finishLongPress(){
