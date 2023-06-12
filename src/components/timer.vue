@@ -64,7 +64,7 @@ const props = defineProps(["modelValue"])
 const emit = defineEmits(["update:modelValue", "deleteTimer"])
 
 const showGetDateModal = vueData(false)
-const { personalSettings } = usePersonalSettings()
+const { personalSettings } = await usePersonalSettings()
 
 let nameInputTimer:number;
 function updateName(event: any){

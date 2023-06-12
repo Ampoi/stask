@@ -9,6 +9,7 @@
     v-if="checkCardType"
     oncontextmenu="return false;"
   >
+    {{ sharedCard.subject }}
     <div
       @touchstart="startLongPress"
       @touchend="finishLongPress"
@@ -125,6 +126,7 @@
             <div class="flex flex-row items-start gap-4">
               <v-select
                 v-model="sharedCard.subject"
+                @update:modelValue="getSubjectColor"
                 :items="subjects"
                 label="Subject"
                 variant="outlined"
@@ -156,7 +158,7 @@
 <script setup lang="ts">
 import CheckButton from "./taskCard/checkButton.vue"
 
-import { computed, onMounted, ref as vueData, watch } from "vue"
+import { computed, onMounted, ref, watch } from "vue"
 
 import { GroupPersonalCard, GroupSharedCard } from "../model/groupCards"
 import { Subject } from "../model/personalSettings"
@@ -177,7 +179,7 @@ const emit = defineEmits<{
   (e: "deleteTask"): void
 }>()
 
-const showSubMenu = vueData(false)
+const showSubMenu = ref(false)
 
 watch(props.sharedCard, ()=>{
   emit("update:sharedCard", props.sharedCard)
@@ -194,23 +196,27 @@ function addPage(){
   props.sharedCard.pages.splice(index, 1)
 }
 
-function getSubjectColor(subject: number): string{
+const subjectColor = ref("")
+
+function getSubjectColor(){
+  console.log("aaa");
+  const subject: number = props.sharedCard.subject
   if(props.subjects[subject] != undefined){
-    return props.subjects[subject].color
+    subjectColor.value = props.subjects[subject].color
   }else{
-    return "#E7E8E7"
+    subjectColor.value = "#E7E8E7"
   }
 }
 
-function isPageDone(pageIndex: number): boolean{
+getSubjectColor()
+
+function isPageDone(pageIndex: number): boolean{  
   if(!props.personalCard.pages[pageIndex]){
     return false
   }else{
     return props.personalCard.pages[pageIndex].done
   }
 }
-
-const subjectColor = getSubjectColor(props.sharedCard.subject)
 
 const getCardType = computed(()=>{
   if( props.personalCard.done == false && props.personalCard.concentrate == true){
@@ -257,7 +263,7 @@ const pagePercent = computed((): number => {
 
 let pressTimer: number
 let addPressTime: number
-const pressTime = vueData<number>(0)
+const pressTime = ref<number>(0)
 
 function startLongPress(){/*
   pressTimer = setTimeout(()=>{

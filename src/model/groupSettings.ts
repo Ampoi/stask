@@ -21,7 +21,7 @@ export type GroupSettings = {
   permissions: Permissions,
   users: {
     [key: string]: {
-      permission: Role
+      role: Role
     }
   }
 }
