@@ -6,7 +6,7 @@
       </button>
       <v-spacer/>
 
-      <v-menu>
+      <v-menu location="bottom" transition="scroll-y-transition">
         <template v-slot:activator="{ props }">
           <button
             v-bind="props"
@@ -15,11 +15,16 @@
             <v-icon>mdi-account-group</v-icon>
           </button>
         </template>
-        <v-list>
-          <v-list-item>
-            <v-list-item-title>Apapa</v-list-item-title>
-          </v-list-item>
-        </v-list>
+        <div class="bg-white p-4 rounded-md w-40">
+          <div
+            v-for="(groupMember, index) in groupMembers"
+            :key="index"
+            class="flex flex-row gap-2 items-center"
+          >
+            <v-icon>{{groupMember.name == "admin" ? "mdi-crown" : "mdi-account"}}</v-icon>
+            <p>{{ groupMember.name }}</p>
+          </div>
+        </div>
       </v-menu>
 
       <button
@@ -61,7 +66,7 @@
   </v-app>
 </template>
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, Ref } from "vue"
 import { useRouter } from "vue-router"
 
 import NavBar from "../../components/navBar.vue"
@@ -73,6 +78,9 @@ import groupPage from "./mainPage/group.vue"
 import useAuth from "../../hooks/useAuth"
 import { usePersonalCards } from "../../hooks/useCards"
 import { onMounted } from "vue"
+
+import { useGroupSettings } from "../../hooks/useSettings"
+import { GroupSettings, Members } from "../../model/groupSettings"
 
 const router = useRouter()
 
@@ -93,15 +101,19 @@ type PageName = keyof typeof pages
 const nowPage = ref<PageName>("personalPage")
 
 const isGroupPage = ref(false)
+const groupMembers: Ref<Members> = ref({})
 
-onMounted(()=>{
+onMounted(async ()=>{
   const groupID = (new URL(document.location.toString())).searchParams.get("group")
   if(!groupID){
     isGroupPage.value = false
     nowPage.value = "personalPage"
+    
   }else{
     isGroupPage.value = true
     nowPage.value = "groupPage"
+    const { groupSettings } = await useGroupSettings(groupID, ()=>{router.push("/")})
+    groupMembers.value = groupSettings.users
   }
 })
 

@@ -10,6 +10,13 @@ export type Permissions = {
   }
 }
 
+export type Members = {
+  [key: string]: {
+    name: string,
+    role: Role
+  }
+}
+
 type Role = keyof Permissions
 
 export type GroupSettings = {
@@ -19,11 +26,7 @@ export type GroupSettings = {
   },
   subjects: Array<Subject>,
   permissions: Permissions,
-  users: {
-    [key: string]: {
-      role: Role
-    }
-  }
+  users: Members
 }
 
 export const GroupSettings:{
