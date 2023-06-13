@@ -21,7 +21,7 @@
             :key="index"
             class="flex flex-row gap-2 items-center"
           >
-            <v-icon>{{groupMember.name == "admin" ? "mdi-crown" : "mdi-account"}}</v-icon>
+            <v-icon>{{groupMember.role == "admin" ? "mdi-crown" : "mdi-account"}}</v-icon>
             <p>{{ groupMember.name }}</p>
           </div>
         </div>
@@ -80,7 +80,7 @@ import { usePersonalCards } from "../../hooks/useCards"
 import { onMounted } from "vue"
 
 import { useGroupSettings } from "../../hooks/useSettings"
-import { GroupSettings, Members } from "../../model/groupSettings"
+import { Members } from "../../model/groupSettings"
 
 const router = useRouter()
 

@@ -69,6 +69,7 @@
             v-model:card="groupSharedCards[cardIndex]"
             @deleteTask="deleteGroupSharedCard(cardIndex)"
             showCardType="done"
+            class="opacity-50"
           />
         </div>
       </v-expand-transition>
