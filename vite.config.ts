@@ -22,6 +22,7 @@ export default defineConfig({
     })
 	],
   build: {
-    emptyOutDir: true
+    emptyOutDir: true,
+    target: "esnext"
   }
 })
