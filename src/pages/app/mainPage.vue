@@ -1,11 +1,35 @@
 <template>
   <v-app class="bg-gray-100">
-    <div class="flex flex-row items-center h-16 bg-transparent fixed w-screen z-20">
-      <button @click.stop="showNavbar = !showNavbar" class="p-2.5 m-3.5 text-slate-900 rounded-full hover:bg-white/70 transition duration-300">
+    <div class="flex flex-row items-center gap-2 h-16 bg-transparent fixed w-screen p-3.5 z-20">
+      <button @click.stop="showNavbar = !showNavbar" class="p-2.5 text-slate-900 rounded-full hover:bg-white/70 transition duration-300">
         <v-icon>mdi-menu</v-icon>
       </button>
       <v-spacer/>
-      <button @click="addCard" class="p-2.5 m-3.5 text-slate-900 rounded-full hover:bg-white/70 transition duration-300">
+
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <button
+            v-bind="props"
+            class="p-2.5 text-slate-900 rounded-full hover:bg-white/70 transition duration-300"
+            v-if="isGroupPage">
+            <v-icon>mdi-account-group</v-icon>
+          </button>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title>Apapa</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <button
+        @click="addCard"
+        class="p-2.5 text-slate-900 rounded-full hover:bg-white/70 transition duration-300"
+        v-if="isGroupPage">
+        <v-icon>mdi-dots-horizontal</v-icon>
+      </button>
+
+      <button @click="addCard" class="p-2.5 text-slate-900 rounded-full hover:bg-white/70 transition duration-300">
         <v-icon>mdi-plus</v-icon>
       </button>
     </div>
@@ -68,11 +92,15 @@ const pages = {
 type PageName = keyof typeof pages
 const nowPage = ref<PageName>("personalPage")
 
+const isGroupPage = ref(false)
+
 onMounted(()=>{
   const groupID = (new URL(document.location.toString())).searchParams.get("group")
   if(!groupID){
+    isGroupPage.value = false
     nowPage.value = "personalPage"
   }else{
+    isGroupPage.value = true
     nowPage.value = "groupPage"
   }
 })

@@ -79,7 +79,7 @@ const emit = defineEmits<{ (e: "update:showSettings", newShowSettings: boolean):
 const showColorPicker = ref(false)
 const selectedSubjectIndex = ref(0)
 
-const { personalSettings, addSubject, deleteSubject } = usePersonalSettings()
+const { personalSettings, addSubject, deleteSubject } = await usePersonalSettings()
 
 const showSettingsComputed = computed({
   get(): boolean {

@@ -315,15 +315,7 @@ const pagePercent = computed((): number => {
   const percent = allPagesAmount != 0 ? Math.ceil(donePagesAmount / allPagesAmount * 100) : 0
   
   return percent
-})/*
-
-*/function turnConcentrate(type: CardType){/*
-  if(type == "incomplete"){
-    props.card.concentrate = true
-  }else if(type == "concentrate"){
-    props.card.concentrate = false
-  }
-*/}
+})
 
 let pressTimer: number
 let addPressTime: number
