@@ -28,7 +28,7 @@
       </v-menu>
 
       <button
-        @click="addCard"
+        @click="showGroupSettings = true"
         class="p-2.5 text-slate-900 rounded-full hover:bg-white/70 transition duration-300"
         v-if="isGroupPage">
         <v-icon>mdi-dots-horizontal</v-icon>
@@ -55,7 +55,8 @@
       />
     </v-navigation-drawer>
 
-    <PersonalSettings v-model:showSettings="showSettings"/>
+    <PersonalSettings v-model:showSettings="showPersonalSettings"/>
+    <GroupSettings v-model:showSettings="showGroupSettings"/>
 
     <v-main class="overflow-auto py-20">
       <component
@@ -71,6 +72,7 @@ import { useRouter } from "vue-router"
 
 import NavBar from "../../components/navBar.vue"
 import PersonalSettings from "../../components/personalSettings.vue"
+import GroupSettings from "../../components/groupSettings.vue"
 
 import personalPage from "./mainPage/personal.vue"
 import groupPage from "./mainPage/group.vue"
@@ -85,7 +87,8 @@ import { Members } from "../../model/groupSettings"
 const router = useRouter()
 
 const showNavbar = ref(false)
-const showSettings = ref(false)
+const showPersonalSettings = ref(false)
+const showGroupSettings = ref(false)
 
 const { userName, userImage, logout } = await useAuth()
 const { cards } = usePersonalCards()
@@ -126,7 +129,7 @@ function checkPermanent(){
 }
 
 function openSettings(){
-  showSettings.value = true
+  showPersonalSettings.value = true
   showNavbar.value = false
 }
 </script>
