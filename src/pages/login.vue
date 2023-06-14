@@ -48,7 +48,9 @@ function login(loginProvider: "google"|"twitter"){
   if(useProvider != null){
     signInWithPopup(auth, useProvider)
       .then((result) => {
-        router.push("/")
+        router.push("/").then(()=>{
+          window.location.reload()
+        })
       })
       .catch((error) => {
         console.error(error)
