@@ -75,6 +75,8 @@
       </v-expand-transition>
     </div>
   </div>
+
+  <GroupSettings v-model:showSettings="showGroupSettings" :groupID="groupID"/>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
@@ -85,13 +87,14 @@ import { useGroupSharedCards } from "../../../hooks/useCards"
 import useAuth from '../../../hooks/useAuth';
 
 import GroupTaskCard from '../../../components/groupTaskCard.vue';
+import GroupSettings from "../../../components/groupSettings.vue"
 
 const showDoneCards = ref<boolean>(false)
 
 //URLからグループのID取得
 const url = new URL(window.location.href)
 const params = url.searchParams
-const groupId = ((new_group_id) => {
+const groupID = ((new_group_id) => {
   if(new_group_id){
     return new_group_id
   }else{
@@ -104,13 +107,19 @@ const router = useRouter()
 const { uid } = await useAuth()
 if(!uid.value){throw new Error("uidが空です！！")}
 
-const { groupSettings } = await useGroupSettings(groupId, router)
-const { groupSharedCards, deleteGroupSharedCard, addGroupSharedCard } = await useGroupSharedCards(groupId)
+const { groupSettings } = await useGroupSettings(groupID, router)
+const { groupSharedCards, deleteGroupSharedCard, addGroupSharedCard } = await useGroupSharedCards(groupID)
 
 const userRole = groupSettings.users[uid.value].role
 const permissions = groupSettings.permissions[userRole]
 
+const showGroupSettings = ref(false)
+
+function openSettings(){
+  showGroupSettings.value = true
+}
+
 function addCard(){addGroupSharedCard()}
 
-defineExpose({ addCard })
+defineExpose({ addCard, openSettings })
 </script>

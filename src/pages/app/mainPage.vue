@@ -28,7 +28,7 @@
       </v-menu>
 
       <button
-        @click="showGroupSettings = true"
+        @click="openChildSettings()"
         class="p-2.5 text-slate-900 rounded-full hover:bg-white/70 transition duration-300"
         v-if="isGroupPage">
         <v-icon>mdi-dots-horizontal</v-icon>
@@ -50,13 +50,11 @@
         :userImage="userImage"
         :userName="userName"
         :tasks="cards"
+        :isGroupPage="isGroupPage"
         @logout="logout(router)"
-        @opensettings="openSettings"
+        @opensettings="openChildSettings"
       />
     </v-navigation-drawer>
-
-    <PersonalSettings v-model:showSettings="showPersonalSettings"/>
-    <GroupSettings v-model:showSettings="showGroupSettings" :groupID="groupID"/>
 
     <v-main class="overflow-auto py-20">
       <component
@@ -71,8 +69,6 @@ import { ref } from "vue"
 import { useRouter } from "vue-router"
 
 import NavBar from "../../components/navBar.vue"
-import PersonalSettings from "../../components/personalSettings.vue"
-import GroupSettings from "../../components/groupSettings.vue"
 
 import personalPage from "./mainPage/personal.vue"
 import groupPage from "./mainPage/group.vue"
@@ -87,8 +83,6 @@ import { Members } from "../../model/groupSettings"
 const router = useRouter()
 
 const showNavbar = ref(false)
-const showPersonalSettings = ref(false)
-const showGroupSettings = ref(false)
 
 const { userName, userImage, logout } = await useAuth()
 const { cards } = usePersonalCards()
@@ -134,8 +128,8 @@ function checkPermanent(){
   }
 }
 
-function openSettings(){
-  showPersonalSettings.value = true
+function openChildSettings(){
+  cardsPage.value.openSettings()
   showNavbar.value = false
 }
 </script>

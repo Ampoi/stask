@@ -86,10 +86,13 @@
       </v-expand-transition>
     </div>
   </div>
+
+  <PersonalSettings v-model:showSettings="showPersonalSettings"/>
 </template>
 <script setup lang="ts">
 import { ref } from "vue"
 
+import PersonalSettings from "../../../components/personalSettings.vue"
 import TaskCard from "../../../components/taskCard.vue"
 import TermTimer from "../../../components/timer.vue"
 
@@ -105,11 +108,16 @@ const { cards, addCard, deleteCard, deleteDoneCard } = usePersonalCards()
 const { timers, addTimer, deleteTimer } = useTimers()
 const { personalSettings } = await usePersonalSettings()
 
+const showPersonalSettings = ref(false)
 const showDoneCards =  ref<boolean>(false)
+
+function openSettings(){
+  showPersonalSettings.value = true
+}
 
 function startConcentrateMode(){
   emit("movePage", "concentratePage")
 }
 
-defineExpose({ addCard })
+defineExpose({ addCard, openSettings })
 </script>

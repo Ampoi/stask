@@ -32,7 +32,7 @@
       </NavBarLink>
       <NavBarButton @buttonClicked="emit('opensettings')">
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-cog</v-icon>
-        <p class="text-sm">個人の設定</p>
+        <p class="text-sm">{{ isGroupPage ? "グループ" : "個人" }}の設定</p>
       </NavBarButton>
       <p class="text-xs text-slate-900/60 mt-4">グループ</p>
       <NavBarLink
@@ -72,13 +72,10 @@ import NavBarLink from "../components/navBar/link.vue"
 
 import useGroups from "../hooks/useGroups"
 
-const props = defineProps(["userName", "userImage", "tasks"])
+const props = defineProps(["userName", "userImage", "tasks", "isGroupPage"])
 const emit = defineEmits(["logout", "opensettings"])
 
 const { groups } = useGroups()
-function getGroupName(){
-  
-}
 
 const getTaskTime = computed(()=>{
   let time = 0
