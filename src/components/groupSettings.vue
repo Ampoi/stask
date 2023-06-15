@@ -17,7 +17,7 @@
             <div class="pb-4 flex flex-col gap-4 items-center max-h-40 overflow-y-auto">
               <div
                 class="flex flex-row items-center gap-2"
-                v-for="(subject, subjectIndex) in personalSettings.subjects"
+                v-for="(subject, subjectIndex) in groupSettings.subjects"
                 :key="subjectIndex"
               >
                 <button
@@ -40,19 +40,6 @@
             </button>
           </template>
         </SettingList>
-        <SettingList>
-          <template v-slot:title>タイマーの設定</template>
-          <template v-slot:description>タイマー一周の日数を変更できます</template>
-          <template v-slot:main>
-            <input
-              type="number"
-              min="1" max="999"
-              class="mx-auto py-2 px-4 rounded-md block w-32 text-center text-lg"
-              placeholder="タイマー一周の日数"
-              v-model="timerLapDays"
-            >
-          </template>
-        </SettingList>
       </div>
     </div>
   </v-dialog>
@@ -60,7 +47,7 @@
   <!--設定のカラーピッカー-->
   <v-dialog v-model="showColorPicker">
     <v-color-picker
-      v-model="personalSettings.subjects[selectedSubjectIndex].color"
+      v-model="groupSettings.subjects[selectedSubjectIndex].color"
       id="subjectColorPicker"
       hide-inputs
       show-swatches
@@ -69,7 +56,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed } from "vue"
-import { useGroupSettings, usePersonalSettings } from "../hooks/useSettings"
+import { useGroupSettings } from "../hooks/useSettings"
 
 import SettingList from "./settings/settingList.vue"
 import { useRouter } from "vue-router";
@@ -83,11 +70,9 @@ const emit = defineEmits<{ (e: "update:showSettings", newShowSettings: boolean):
 const showColorPicker = ref(false)
 const selectedSubjectIndex = ref(0)
 
-const { personalSettings, addSubject, deleteSubject } = await usePersonalSettings()
-
 const router = useRouter()
 
-const { groupSettings } = await useGroupSettings(props.groupID, router)
+const { groupSettings, addSubject, deleteSubject } = await useGroupSettings(props.groupID, router)
 
 const showSettingsComputed = computed({
   get(): boolean {
@@ -95,15 +80,6 @@ const showSettingsComputed = computed({
   },
   set(newShowSettings: boolean){
     emit("update:showSettings", newShowSettings)
-  }
-})
-
-const timerLapDays = computed({
-  get(): string {
-    return String(personalSettings.value.timer.lapDays)
-  },
-  set(newLapDays: string){
-    ;personalSettings.value.timer.lapDays = Number(newLapDays)
   }
 })
 

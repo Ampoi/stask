@@ -32,7 +32,7 @@ export const usePersonalSettings = async ()=>{
   }, {deep: true})
 
   function addSubject(){
-    personalSettings.value.subjects.push(Object.create(PersonalSettings.defaultSubject))
+    personalSettings.value.subjects.push({ ...PersonalSettings.defaultSubject })
     setSubjectIndex()
   }
 
@@ -58,7 +58,7 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
   }
 
   const firebaseRepository = groupSettingRepository(groupId)
-  const groupSettings: GroupSettings = await (async ()=>{
+  const groupSettingsData: GroupSettings = await (async ()=>{
     
     const newGroupSettingsDBdata = await firebaseRepository.get
       .catch((err: Error) => {
@@ -80,5 +80,29 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
     return newGroupSettings
   })()
 
-  return { groupSettings }
+  const groupSettings = ref(groupSettingsData)
+
+  watch(groupSettings, ()=>{
+    firebaseRepository.set(groupSettings.value)
+  }, {deep: true})
+
+  function addSubject(){
+    groupSettings.value.subjects.push({ ...GroupSettings.defaultSubject })
+    setSubjectIndex()
+  }
+
+  function deleteSubject(index: number){
+    groupSettings.value.subjects.splice(index, 1)
+    setSubjectIndex()
+  }
+
+  function setSubjectIndex(){
+    let i = 0
+    groupSettings.value.subjects.forEach(()=>{
+      groupSettings.value.subjects[i].index = i
+      i++
+    })
+  }
+
+  return { groupSettings, addSubject, deleteSubject }
 }
