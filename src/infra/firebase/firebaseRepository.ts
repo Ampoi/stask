@@ -29,7 +29,7 @@ export const createRealTimeDatabaseRepository = <T>(path: pathPettern)=>{
     }
 
     const snapshot = await get(child(dbRef, await getDataPath(path)))
-      .catch((err)=>{
+      .catch(async(err)=>{
         reject(err)
         throw new Error(err)
       })

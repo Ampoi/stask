@@ -100,14 +100,11 @@ const groupId = ((new_group_id) => {
 })(params.get("group"))
 
 const router = useRouter()
-function backToPersonalPageWithAlert(){
-  router.push("/") //TODO:ダイレクト先でアラートを表示するプログラムを書く(URLから取得する感じ)
-}
 
 const { uid } = await useAuth()
 if(!uid.value){throw new Error("uidが空です！！")}
 
-const { groupSettings } = await useGroupSettings(groupId, backToPersonalPageWithAlert)
+const { groupSettings } = await useGroupSettings(groupId, router)
 const { groupSharedCards, deleteGroupSharedCard, addGroupSharedCard } = await useGroupSharedCards(groupId)
 
 const userRole = groupSettings.users[uid.value].role

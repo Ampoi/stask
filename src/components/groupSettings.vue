@@ -2,7 +2,7 @@
   <!--設定-->
   <v-dialog v-model="showSettingsComputed">
     <div class="px-4 py-6 bg-white rounded-md overflow-y-auto">
-      <h1 class="text-3xl font-bold mb-2">設定</h1>
+      <h1 class="text-3xl font-bold mb-2">グループの設定</h1>
       <div class="flex flex-col gap-4">
         <SettingList>
           <template v-slot:title>教科の設定</template>
@@ -69,17 +69,25 @@
 </template>
 <script setup lang="ts">
 import { ref, computed } from "vue"
-import { usePersonalSettings } from "../hooks/useSettings"
+import { useGroupSettings, usePersonalSettings } from "../hooks/useSettings"
 
 import SettingList from "./settings/settingList.vue"
+import { useRouter } from "vue-router";
 
-const props = defineProps<{ showSettings: boolean }>()
+const props = defineProps<{
+  showSettings: boolean,
+  groupID: string
+}>()
 const emit = defineEmits<{ (e: "update:showSettings", newShowSettings: boolean): void }>()
 
 const showColorPicker = ref(false)
 const selectedSubjectIndex = ref(0)
 
 const { personalSettings, addSubject, deleteSubject } = await usePersonalSettings()
+
+const router = useRouter()
+
+const { groupSettings } = await useGroupSettings(props.groupID, router)
 
 const showSettingsComputed = computed({
   get(): boolean {

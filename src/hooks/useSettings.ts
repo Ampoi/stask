@@ -3,6 +3,7 @@ import { ref, watch } from "vue";
 import { PersonalSettings } from "../model/personalSettings";
 import { GroupSettings } from "../model/groupSettings";
 import { personalSettingRepository, groupSettingRepository } from "../infra/SettingRepository"
+import { Router } from "vue-router";
 
 export const usePersonalSettings = async ()=>{
   const personalSettingsData: Promise<PersonalSettings> = (async ()=>{
@@ -51,7 +52,11 @@ export const usePersonalSettings = async ()=>{
   return { personalSettings, addSubject, deleteSubject }
 }
 
-export const useGroupSettings = async (groupId: string, is_permision_denied_func: Function)=>{
+export const useGroupSettings = async (groupId: string, router: Router)=>{
+  function backToPersonalPageWithAlert(){
+    router.push("/") //TODO:ダイレクト先でアラートを表示するプログラムを書く(URLから取得する感じ)
+  }
+
   const firebaseRepository = groupSettingRepository(groupId)
   const groupSettings: GroupSettings = await (async ()=>{
     
@@ -59,7 +64,7 @@ export const useGroupSettings = async (groupId: string, is_permision_denied_func
       .catch((err: Error) => {
         const message = err.message
         if(message == "Permission denied"){
-          is_permision_denied_func()
+          backToPersonalPageWithAlert()
         }
         throw err
       })

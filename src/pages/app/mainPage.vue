@@ -56,7 +56,7 @@
     </v-navigation-drawer>
 
     <PersonalSettings v-model:showSettings="showPersonalSettings"/>
-    <GroupSettings v-model:showSettings="showGroupSettings"/>
+    <GroupSettings v-model:showSettings="showGroupSettings" :groupID="groupID"/>
 
     <v-main class="overflow-auto py-20">
       <component
@@ -67,7 +67,7 @@
   </v-app>
 </template>
 <script setup lang="ts">
-import { ref, Ref } from "vue"
+import { ref } from "vue"
 import { useRouter } from "vue-router"
 
 import NavBar from "../../components/navBar.vue"
@@ -104,18 +104,24 @@ type PageName = keyof typeof pages
 const nowPage = ref<PageName>("personalPage")
 
 const isGroupPage = ref(false)
-const groupMembers: Ref<Members> = ref({})
+const groupMembers = ref<Members>({})
+const groupID = ref<string>()
 
 onMounted(async ()=>{
-  const groupID = (new URL(document.location.toString())).searchParams.get("group")
-  if(!groupID){
+  const newGroupID = (new URL(document.location.toString())).searchParams.get("group")
+
+  if(!newGroupID){
     isGroupPage.value = false
     nowPage.value = "personalPage"
+    console.log("personal!");
     
   }else{
     isGroupPage.value = true
     nowPage.value = "groupPage"
-    const { groupSettings } = await useGroupSettings(groupID, ()=>{router.push("/")})
+    console.log("group!");
+
+    groupID.value = newGroupID
+    const { groupSettings } = await useGroupSettings(newGroupID, router)
     groupMembers.value = groupSettings.users
   }
 })
