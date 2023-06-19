@@ -5,7 +5,7 @@ import { createRealTimeDatabaseRepository, RealTimeDatabaseRepository } from "./
 export const personalSettingRepository = createRealTimeDatabaseRepository<PersonalSettings>("users/settings")
 export const groupSettingRepository = (group_id: string)=>{
   const firebaseRepositorys: {
-    [key in keyof GroupSettings]: RealTimeDatabaseRepository
+    [key in keyof GroupSettings]: RealTimeDatabaseRepository<any>  //TODO:Partial<GroupSettings>←これが何故かできないけど最終的にこれと同じ意味のやつをやりたい
   } = {
     name: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings/name`),
     timer: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings/timer`),
