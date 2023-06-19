@@ -22,7 +22,12 @@ async function getDataPath(path: string) {
 }
 
 type pathPettern = `${"users" | "groups"}/${string}`
-export const createRealTimeDatabaseRepository = <T>(path: pathPettern)=>{
+export type RealTimeDatabaseRepository = {
+  get: Promise<T | undefined>;
+  set: (saveData: T) => Promise<void>;
+}
+
+export const createRealTimeDatabaseRepository = <T>(path: pathPettern): RealTimeDatabaseRepository => {
   const getFromDB: Promise<T | undefined> = new Promise(async (resolve, reject) => {
     if(!await AuthRepository.isLogin()){
       throw new Error("loggined is required")

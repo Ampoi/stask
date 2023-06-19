@@ -17,7 +17,7 @@
             <div class="pb-4 flex flex-col gap-4 items-center max-h-40 overflow-y-auto">
               <div
                 class="flex flex-row items-center gap-2"
-                v-for="(subject, subjectIndex) in groupSettings.subjects"
+                v-for="(subject, subjectIndex) in groupSettings.subjects.value"
                 :key="subjectIndex"
               >
                 <button
@@ -47,7 +47,7 @@
   <!--設定のカラーピッカー-->
   <v-dialog v-model="showColorPicker">
     <v-color-picker
-      v-model="groupSettings.subjects[selectedSubjectIndex].color"
+      v-model="groupSettings.subjects.value[selectedSubjectIndex].color"
       id="subjectColorPicker"
       hide-inputs
       show-swatches

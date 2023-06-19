@@ -31,7 +31,7 @@ export type GroupSettings = {
 
 export const GroupSettings:{
   defaultSubject: Subject,
-  defaultSettings: GroupSettings
+  defaultSettings: GroupSettings,
 } = {
   defaultSubject: {
     index:0,
