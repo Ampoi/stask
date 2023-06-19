@@ -116,7 +116,7 @@ onMounted(async ()=>{
 
     groupID.value = newGroupID
     const { groupSettings } = await useGroupSettings(newGroupID, router)
-    groupMembers.value = groupSettings.value.users
+    groupMembers.value = groupSettings.users.value
   }
 })
 

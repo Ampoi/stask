@@ -110,8 +110,6 @@ if(!uid.value){throw new Error("uidが空です！！")}
 const { groupSettings } = await useGroupSettings(groupID, router)
 const { groupSharedCards, deleteGroupSharedCard, addGroupSharedCard } = await useGroupSharedCards(groupID)
 
-console.log(groupSettings.users.value);
-
 const userRole = groupSettings.users.value[uid.value].role
 const permissions = groupSettings.permissions.value[userRole]
 

@@ -8,10 +8,10 @@ export const groupSettingRepository = (group_id: string)=>{
     [key in keyof GroupSettings]: RealTimeDatabaseRepository
   } = {
     name: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings/name`),
-    timer: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings/name`),
-    subjects: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings/name`),
-    permissions: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings/name`),
-    users: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings/name`)
+    timer: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings/timer`),
+    subjects: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings/subjects`),
+    permissions: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings/permissions`),
+    users: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings/users`)
   }
 
   return firebaseRepositorys

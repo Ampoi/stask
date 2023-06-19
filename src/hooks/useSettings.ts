@@ -60,8 +60,8 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
   const firebaseRepository = groupSettingRepository(groupId)    
   const groupSettingsData: GroupSettings = await (async ()=>{
     let newGroupSettings: GroupSettings = { ...GroupSettings.defaultSettings };
-  
-    (Object.keys(firebaseRepository) as (keyof typeof firebaseRepository)[]).forEach(async (repoName) => {
+
+    await Promise.all((Object.keys(firebaseRepository) as (keyof typeof firebaseRepository)[]).map(async (repoName) => {
       const repo = firebaseRepository[repoName]
 
       const newGroupSettingItemDBdata = await repo.get
@@ -83,14 +83,12 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
       })()
 
       newGroupSettings[repoName] = newGroupSettingItem
-    })
+    }))
 
     return newGroupSettings
   })()
 
-  const groupSettings: {
-    [key in keyof GroupSettings]: Ref<GroupSettings[key]>
-  } = {
+  const groupSettings: { [key in keyof GroupSettings]: Ref<GroupSettings[key]> } = {
     name: ref(groupSettingsData.name),
     timer: ref(groupSettingsData.timer),
     subjects: ref(groupSettingsData.subjects),
