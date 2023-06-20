@@ -11,8 +11,7 @@ export type Permissions = {
         edit: boolean
       }
       permissions: {
-        admin: { edit: false }
-        member: { edit: boolean }
+        edit: true
       }
     }
   }
@@ -70,8 +69,7 @@ export const GroupSettings:{
             edit: true
           },
           permissions: {
-            admin: { edit: false },
-            member: { edit: true }
+            edit: true
           }
         }
       },
@@ -85,8 +83,7 @@ export const GroupSettings:{
             edit: true
           },
           permissions: {
-            admin: { edit: false },
-            member: { edit: false }
+            edit: true
           }
         }
       }

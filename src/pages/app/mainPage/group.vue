@@ -113,7 +113,7 @@ const { groupSharedCards, deleteGroupSharedCard, addGroupSharedCard } = await us
 const userRole = groupSettings.users.value[uid.value].role
 const permissions = groupSettings.permissions.value[userRole]
 
-const showGroupSettings = ref(false)
+const showGroupSettings = ref(true)
 
 function openSettings(){
   showGroupSettings.value = true

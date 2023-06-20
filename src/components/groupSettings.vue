@@ -45,23 +45,17 @@
           <template v-slot:description>グループの権限を変更します。管理者の権限は変更できません。</template>
           <template v-slot:main>
             <div class="pb-4 flex flex-col gap-4 items-center max-h-40 overflow-y-auto">
-              <div
-                class="flex flex-row items-center gap-2"
-                v-for="(subject, subjectIndex) in groupSettings.subjects.value"
-                :key="subjectIndex"
-              >
-                <button
-                  class="rounded-full h-6 w-6"
-                  :style="`background-color: ${subject.color}6F;`"
-                  @click="getSubjectColor(subjectIndex)"
-                  :disabled="!subjectsEditable"
-                />
-                <input type="text" v-model="subject.title" class="w-52" :disabled="!subjectsEditable">
-                <button
-                  class="rounded-full h-6 w-6 duration-300 hover:bg-white/70 text-[14px] text-red-400/60 grid place-content-center"
-                  @click="deleteSubject(subjectIndex)"
-                  :disabled="!subjectsEditable"
-                ><v-icon>mdi-trash-can</v-icon></button>
+              <div>
+                <h2 class="text-lg font-bold">メンバー</h2>
+                <div class="flex flex-col">
+                  <h3 class="text-md font-bold text-black/60">カードの権限</h3>
+                  <v-switch label="編集を可能にする" inset v-model="groupSettings.permissions.value.member.card.edit"></v-switch>
+                </div>
+                <div class="flex flex-col">
+                  <h3 class="text-md font-bold text-black/60">設定の権限</h3>
+                  <v-switch label="メンバーの権限の編集を可能にする" inset v-model="groupSettings.permissions.value.member.settings.permissions.edit"></v-switch>
+                  <v-switch label="教科の編集を可能にする" inset v-model="groupSettings.permissions.value.member.settings.subjects.edit"></v-switch>
+                </div>
               </div>
             </div>
             <button

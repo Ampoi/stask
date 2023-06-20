@@ -81,8 +81,7 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
           return newGroupSettingItemDBdata
         }
       })()
-
-      newGroupSettings[repoName] = newGroupSettingItem
+      if(repoName != "member_permissions"){ newGroupSettings[repoName] = newGroupSettingItem }
     }))
 
     return newGroupSettings
@@ -96,11 +95,13 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
     users: ref(groupSettingsData.users)
   }
 
-  watch(groupSettings.name, ()=>{firebaseRepository.name.set(groupSettings.name.value)}, {deep: true})
-  watch(groupSettings.timer, ()=>{firebaseRepository.timer.set(groupSettings.timer.value)}, {deep: true})
-  watch(groupSettings.subjects, ()=>{firebaseRepository.subjects.set(groupSettings.subjects.value)}, {deep: true})
-  watch(groupSettings.permissions, ()=>{firebaseRepository.permissions.set(groupSettings.permissions.value)}, {deep: true})
-  watch(groupSettings.users, ()=>{firebaseRepository.users.set(groupSettings.users.value)}, {deep: true})
+  watch(groupSettings.name, (newData)=>{firebaseRepository.name.set(newData)}, {deep: true})
+  watch(groupSettings.timer, (newData)=>{firebaseRepository.timer.set(newData)}, {deep: true})
+  watch(groupSettings.subjects, (newData)=>{firebaseRepository.subjects.set(newData)}, {deep: true})
+  watch(groupSettings.permissions.value, (newData)=>{
+    firebaseRepository.member_permissions.set(newData.member)
+  }, {deep: true})
+  watch(groupSettings.users, (newData)=>{firebaseRepository.users.set(newData)}, {deep: true})
 
   function addSubject(){
     groupSettings.subjects.value.push({ ...GroupSettings.defaultSubject })
