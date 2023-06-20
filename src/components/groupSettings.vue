@@ -40,7 +40,16 @@
             </button>
           </template>
         </SettingList>
+
         <SettingList :disabled="!subjectsEditable" :show="{ warning: false }">
+          <template v-slot:title>ユーザーの管理</template>
+          <template v-slot:description>グループないのユーザーの権限などを編集します。</template>
+          <template v-slot:main>
+            
+          </template>
+        </SettingList>
+
+        <SettingList :disabled="!permissionsEditable" :show="{ warning: false }">
           <template v-slot:title>権限の設定</template>
           <template v-slot:description>グループの権限を変更します。管理者の権限は変更できません。</template>
           <template v-slot:main>
@@ -49,21 +58,27 @@
                 <h2 class="text-lg font-bold">メンバー</h2>
                 <div class="flex flex-col">
                   <h3 class="text-md font-bold text-black/60">カードの権限</h3>
-                  <v-switch label="編集を可能にする" inset v-model="groupSettings.permissions.value.member.card.edit"></v-switch>
+                  <v-switch
+                    label="編集を可能にする"
+                    inset
+                    :disabled="!permissionsEditable"
+                    v-model="groupSettings.permissions.value.member.card.edit"/>
                 </div>
                 <div class="flex flex-col">
                   <h3 class="text-md font-bold text-black/60">設定の権限</h3>
-                  <v-switch label="メンバーの権限の編集を可能にする" inset v-model="groupSettings.permissions.value.member.settings.permissions.edit"></v-switch>
-                  <v-switch label="教科の編集を可能にする" inset v-model="groupSettings.permissions.value.member.settings.subjects.edit"></v-switch>
+                  <v-switch
+                    label="メンバーの権限の編集を可能にする"
+                    inset
+                    :disabled="!permissionsEditable"
+                    v-model="groupSettings.permissions.value.member.settings.permissions.edit"/>
+                  <v-switch
+                    label="教科の編集を可能にする" 
+                    inset
+                    :disabled="!permissionsEditable"
+                    v-model="groupSettings.permissions.value.member.settings.subjects.edit"/>
                 </div>
               </div>
             </div>
-            <button
-              class="text-gray-600 bg-white rounded-md p-2 w-full"
-              @click="addSubject"
-            >
-              <v-icon>mdi-plus</v-icon>
-            </button>
           </template>
         </SettingList>
       </div>
@@ -105,7 +120,9 @@ if( !uid.value ){ throw new Error("ログインしていません！") }
 const { groupSettings, addSubject, deleteSubject } = await useGroupSettings(props.groupID, router)
 
 const role = groupSettings.users.value[uid.value].role
-const subjectsEditable = groupSettings.permissions.value[role].settings.subjects.edit
+const settingPermissions = groupSettings.permissions.value[role].settings
+const subjectsEditable = settingPermissions.subjects.edit
+const permissionsEditable = settingPermissions.permissions.edit
 
 const showSettingsComputed = computed({
   get(): boolean {
