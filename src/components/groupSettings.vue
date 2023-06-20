@@ -4,13 +4,45 @@
     <div class="px-4 py-6 bg-white rounded-md overflow-y-auto">
       <h1 class="text-3xl font-bold mb-2">グループの設定</h1>
       <div class="flex flex-col gap-4">
-        <SettingList :disabled="!subjectsEditable">
+        <SettingList :disabled="!subjectsEditable" :show="{ warning: true }">
           <template v-slot:title>教科の設定</template>
           <template v-slot:description>課題をまとめる教科の色や名前の設定を変更します。</template>
           <template v-slot:warning>
             <v-icon>mdi-alert-outline</v-icon>
             <p class="text-sm">設定項目の数を減らしたり順番を変えたりすると課題の表示に影響が出る場合があります。</p>
           </template>
+          <template v-slot:main>
+            <div class="pb-4 flex flex-col gap-4 items-center max-h-40 overflow-y-auto">
+              <div
+                class="flex flex-row items-center gap-2"
+                v-for="(subject, subjectIndex) in groupSettings.subjects.value"
+                :key="subjectIndex"
+              >
+                <button
+                  class="rounded-full h-6 w-6"
+                  :style="`background-color: ${subject.color}6F;`"
+                  @click="getSubjectColor(subjectIndex)"
+                  :disabled="!subjectsEditable"
+                />
+                <input type="text" v-model="subject.title" class="w-52" :disabled="!subjectsEditable">
+                <button
+                  class="rounded-full h-6 w-6 duration-300 hover:bg-white/70 text-[14px] text-red-400/60 grid place-content-center"
+                  @click="deleteSubject(subjectIndex)"
+                  :disabled="!subjectsEditable"
+                ><v-icon>mdi-trash-can</v-icon></button>
+              </div>
+            </div>
+            <button
+              class="text-gray-600 bg-white rounded-md p-2 w-full"
+              @click="addSubject"
+            >
+              <v-icon>mdi-plus</v-icon>
+            </button>
+          </template>
+        </SettingList>
+        <SettingList :disabled="!subjectsEditable" :show="{ warning: false }">
+          <template v-slot:title>権限の設定</template>
+          <template v-slot:description>グループの権限を変更します。管理者の権限は変更できません。</template>
           <template v-slot:main>
             <div class="pb-4 flex flex-col gap-4 items-center max-h-40 overflow-y-auto">
               <div
