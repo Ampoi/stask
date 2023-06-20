@@ -5,6 +5,27 @@
         ".read": "$uid == auth.uid",
         ".write": "$uid == auth.uid"
       }
+    },
+    "groups": {
+      "$group_id": {
+        ".read": "root.child('groups').child($group_id).child('settings').child('users').child(auth.uid).exists()",
+        "cards": {
+          ".write": "root.child('groups').child($group_id).child('settings').child('permissions').child(root.child('groups').child($group_id).child('settings').child('users').child(auth.uid).child('role').val()).child('card').child('edit').val() == true"
+        },
+        "settings": {
+          "subjects": {
+            ".write": "root.child('groups').child($group_id).child('settings').child('permissions').child(root.child('groups').child($group_id).child('settings').child('users').child(auth.uid).child('role').val()).child('settings').child('subjects').child('edit').val() == true"
+          },
+          "permissions": {
+            "admin": {
+              ".write": "false"
+            },
+            "member": {
+              ".write": "root.child('groups').child($group_id).child('settings').child('permissions').child(root.child('groups').child($group_id).child('settings').child('users').child(auth.uid).child('role').val()).child('settings').child('permissions').child('edit').val() == true"
+            }
+          }
+        }
+      }
     }
   }
 }

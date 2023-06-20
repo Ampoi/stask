@@ -9,5 +9,18 @@
       "**/.*",
       "**/node_modules/**"
     ]
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "database": {
+      "port": 9000
+    },
+    "ui": {
+      "enabled": true,
+      "port": 9001
+    },
+    "singleProjectMode": true
   }
 }

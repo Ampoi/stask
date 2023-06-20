@@ -6,7 +6,15 @@ export type Permissions = {
       delete: boolean
       edit: boolean
     }
-    editPermission: boolean
+    settings: {
+      subjects: {
+        edit: boolean
+      }
+      permissions: {
+        admin: { edit: false }
+        member: { edit: boolean }
+      }
+    }
   }
 }
 
@@ -52,19 +60,35 @@ export const GroupSettings:{
       {index:4, title: "英語", color: "#E040FB"}
     ],
     permissions: {
-      "admin": {
-        "card": {
-          "delete": true,
-          "edit": true
+      admin: {
+        card: {
+          delete: true,
+          edit: true
         },
-        "editPermission": true
+        settings: {
+          subjects: {
+            edit: true
+          },
+          permissions: {
+            admin: { edit: false },
+            member: { edit: true }
+          }
+        }
       },
-      "member": {
-        "card": {
-          "delete": false,
-          "edit": true
+      member: {
+        card: {
+          delete: false,
+          edit: true
         },
-        "editPermission": false
+        settings: {
+          subjects: {
+            edit: true
+          },
+          permissions: {
+            admin: { edit: false },
+            member: { edit: false }
+          }
+        }
       }
     },
     users: {}
