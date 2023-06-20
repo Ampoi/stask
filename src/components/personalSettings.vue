@@ -4,7 +4,7 @@
     <div class="px-4 py-6 bg-white rounded-md overflow-y-auto">
       <h1 class="text-3xl font-bold mb-2">設定</h1>
       <div class="flex flex-col gap-4">
-        <SettingList>
+        <SettingList :show="{ warning: false }">
           <template v-slot:title>教科の設定</template>
           <template v-slot:description>課題をまとめる教科の色や名前の設定を変更します。</template>
           <template v-slot:warning>
@@ -40,7 +40,7 @@
             </button>
           </template>
         </SettingList>
-        <SettingList>
+        <SettingList :show="{ warning: false }">
           <template v-slot:title>タイマーの設定</template>
           <template v-slot:description>タイマー一周の日数を変更できます</template>
           <template v-slot:main>
