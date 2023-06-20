@@ -45,7 +45,26 @@
           <template v-slot:title>ユーザーの管理</template>
           <template v-slot:description>グループないのユーザーの権限などを編集します。</template>
           <template v-slot:main>
-            
+            <div class="flex flex-col gap-2 items-center">
+              <div
+                class="flex flex-row items-center gap-2"
+                v-for="(member, index) in groupSettings.users.value"
+                :key="index">
+                <p class="mr-8 text-lg">{{ member.name }}</p>
+                <v-select
+                  :items="roles"
+                  item-title="name"
+                  item-value="id"
+                  v-model="groupSettings.users.value[index].role"
+                  placeholder="権限"
+                  variant="outlined"
+                  density="compact"
+                ></v-select>
+                <button class="rounded-full h-6 w-6 duration-300 hover:bg-white/70 text-[14px] text-red-400/60 grid place-content-center">
+                  <v-icon>mdi-trash-can</v-icon>
+                </button>
+              </div>
+            </div>
           </template>
         </SettingList>
 
@@ -124,6 +143,11 @@ const settingPermissions = groupSettings.permissions.value[role].settings
 const subjectsEditable = settingPermissions.subjects.edit
 const permissionsEditable = settingPermissions.permissions.edit
 
+const roles = [
+  { id: "admin", name: "管理者" },
+  { id: "member", name: "メンバー" }
+]
+
 const showSettingsComputed = computed({
   get(): boolean {
     return props.showSettings
@@ -141,5 +165,8 @@ function getSubjectColor(index: number){
 <style>
 .v-overlay__content:has(#subjectColorPicker){
   width: inherit !important;
+}
+.v-input__details{
+  display: none;
 }
 </style>
