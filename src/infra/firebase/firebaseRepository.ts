@@ -21,16 +21,20 @@ async function getDataPath(path: string) {
   }
 }
 
-class Updates{
-  updates: { [key: string]: any }[];
+type DatabaseData = {
+  [key: string]: any | DatabaseData
+}
 
-  constructor(oldData: Object, newData: Object){
+class Updates{
+  updates: { [key: string]: any };
+
+  constructor(oldData: DatabaseData, newData: DatabaseData){
     const diff = this.getDiffInObject(oldData, newData)
     this.updates = this.getUpdateObjectArray(diff)
   }
 
-  getDiffInObject(oldData: Object, newData: Object){
-    let diffs = {}
+  getDiffInObject(oldData: DatabaseData, newData: DatabaseData){
+    let diffs: DatabaseData = {}
   
     Object.keys(newData).forEach((key)=>{
         const oldValue = oldData[key]
