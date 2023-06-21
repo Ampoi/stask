@@ -30,7 +30,7 @@
         v-for="(_card, cardIndex) in groupSharedCards"
         :key="cardIndex"
         :permissions="permissions"
-        :subjects="groupSettings.subjects.value"
+        :subjects="groupSettings.subjects"
         v-model:card="groupSharedCards[cardIndex]"
         @deleteTask="deleteGroupSharedCard(cardIndex)"
         showCardType="concentrate"
@@ -43,7 +43,7 @@
         v-for="(_card, cardIndex) in groupSharedCards"
         :key="cardIndex"
         :permissions="permissions"
-        :subjects="groupSettings.subjects.value"
+        :subjects="groupSettings.subjects"
         v-model:card="groupSharedCards[cardIndex]"
         @deleteTask="deleteGroupSharedCard(cardIndex)"
         showCardType="incomplete"
@@ -65,7 +65,7 @@
             v-for="(_card, cardIndex) in groupSharedCards"
             :key="cardIndex"
             :permissions="permissions"
-            :subjects="groupSettings.subjects.value"
+            :subjects="groupSettings.subjects"
             v-model:card="groupSharedCards[cardIndex]"
             @deleteTask="deleteGroupSharedCard(cardIndex)"
             showCardType="done"
@@ -110,8 +110,8 @@ if(!uid.value){throw new Error("uidが空です！！")}
 const { groupSettings } = await useGroupSettings(groupID, router)
 const { groupSharedCards, deleteGroupSharedCard, addGroupSharedCard } = await useGroupSharedCards(groupID)
 
-const userRole = groupSettings.users.value[uid.value].role
-const permissions = groupSettings.permissions.value[userRole]
+const userRole = groupSettings.value.users[uid.value].role
+const permissions = groupSettings.value.permissions[userRole]
 
 const showGroupSettings = ref(true)
 

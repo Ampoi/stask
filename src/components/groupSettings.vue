@@ -15,7 +15,7 @@
             <div class="pb-4 flex flex-col gap-4 items-center max-h-40 overflow-y-auto">
               <div
                 class="flex flex-row items-center gap-2"
-                v-for="(subject, subjectIndex) in groupSettings.subjects.value"
+                v-for="(subject, subjectIndex) in groupSettings.subjects"
                 :key="subjectIndex"
               >
                 <button
@@ -48,14 +48,14 @@
             <div class="flex flex-col gap-2 items-center">
               <div
                 class="flex flex-row items-center gap-2"
-                v-for="(member, index) in groupSettings.users.value"
+                v-for="(member, index) in groupSettings.users"
                 :key="index">
                 <p class="mr-8 text-lg">{{ member.name }}</p>
                 <v-select
                   :items="roles"
                   item-title="name"
                   item-value="id"
-                  v-model="groupSettings.users.value[index].role"
+                  v-model="groupSettings.users[index].role"
                   placeholder="権限"
                   variant="outlined"
                   density="compact"
@@ -81,7 +81,7 @@
                     label="編集を可能にする"
                     inset
                     :disabled="!permissionsEditable"
-                    v-model="groupSettings.permissions.value.member.card.edit"/>
+                    v-model="groupSettings.permissions.member.card.edit"/>
                 </div>
                 <div class="flex flex-col">
                   <h3 class="text-md font-bold text-black/60">設定の権限</h3>
@@ -89,12 +89,12 @@
                     label="メンバーの権限の編集を可能にする"
                     inset
                     :disabled="!permissionsEditable"
-                    v-model="groupSettings.permissions.value.member.settings.permissions.edit"/>
+                    v-model="groupSettings.permissions.member.settings.permissions.edit"/>
                   <v-switch
                     label="教科の編集を可能にする" 
                     inset
                     :disabled="!permissionsEditable"
-                    v-model="groupSettings.permissions.value.member.settings.subjects.edit"/>
+                    v-model="groupSettings.permissions.member.settings.subjects.edit"/>
                 </div>
               </div>
             </div>
@@ -107,7 +107,7 @@
   <!--設定のカラーピッカー-->
   <v-dialog v-model="showColorPicker">
     <v-color-picker
-      v-model="groupSettings.subjects.value[selectedSubjectIndex].color"
+      v-model="groupSettings.subjects[selectedSubjectIndex].color"
       id="subjectColorPicker"
       hide-inputs
       show-swatches
@@ -138,8 +138,8 @@ if( !uid.value ){ throw new Error("ログインしていません！") }
 
 const { groupSettings, addSubject, deleteSubject } = await useGroupSettings(props.groupID, router)
 
-const role = groupSettings.users.value[uid.value].role
-const settingPermissions = groupSettings.permissions.value[role].settings
+const role = groupSettings.value.users[uid.value].role
+const settingPermissions = groupSettings.value.permissions[role].settings
 const subjectsEditable = settingPermissions.subjects.edit
 const permissionsEditable = settingPermissions.permissions.edit
 

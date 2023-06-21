@@ -60,7 +60,7 @@ class Updates{
             const newUpdates = this.getUpdateObjectArray(value)
 
             new Map(Object.entries(newUpdates)).forEach((updateValue, path)=>{
-                updates[`${key}${path}`] = updateValue
+                updates[`${key}/${path}`] = updateValue
             })
         }else{
             updates[`/${key}`] = value
@@ -140,7 +140,8 @@ export const createRealTimeDatabaseRepository = <T>(path: pathPettern): RealTime
         .then(()=>{
           resolve()
         })
-        .catch((err)=>{          
+        .catch((err)=>{        
+          console.log(homeUpdates);
           throw `
             path(update): ${path}
             err: ${err.toString()}`

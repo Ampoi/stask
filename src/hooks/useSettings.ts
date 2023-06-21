@@ -59,66 +59,45 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
 
   const firebaseRepository = groupSettingRepository(groupId)    
   const groupSettingsData: GroupSettings = await (async ()=>{
-    let newGroupSettings: GroupSettings = { ...GroupSettings.defaultSettings };
-
-    await Promise.all((Object.keys(firebaseRepository) as (keyof typeof firebaseRepository)[]).map(async (repoName) => {
-      const repo = firebaseRepository[repoName]
-
-      const newGroupSettingItemDBdata = await repo.get
-        .catch((err: Error) => {
-          const message = err.message
-          if(message == "Permission denied"){
-            backToPersonalPageWithAlert()
-          }
-          throw err
-        })
-
-      const newGroupSettingItem = (()=>{
-        if(!newGroupSettingItemDBdata){
-          repo.set(GroupSettings.defaultSettings)
-          return { ...GroupSettings.defaultSettings }
-        }else{
-          return newGroupSettingItemDBdata
+    const newGroupSettingItemDBdata = await firebaseRepository.get
+      .catch((err: Error) => {
+        const message = err.message
+        if(message == "Permission denied"){
+          backToPersonalPageWithAlert()
         }
-      })()
-      if(repoName != "member_permissions"){ newGroupSettings[repoName] = newGroupSettingItem }
-    }))
+        throw err
+      })
+
+    const newGroupSettings = (()=>{
+      if(!newGroupSettingItemDBdata){
+        firebaseRepository.set(GroupSettings.defaultSettings)
+        return { ...GroupSettings.defaultSettings }
+      }else{
+        return newGroupSettingItemDBdata
+      }
+    })()
 
     return newGroupSettings
   })()
 
-  const groupSettings: { [key in keyof GroupSettings]: Ref<GroupSettings[key]> } = {
-    name: ref(groupSettingsData.name),
-    timer: ref(groupSettingsData.timer),
-    subjects: ref(groupSettingsData.subjects),
-    permissions: ref(groupSettingsData.permissions),
-    users: ref(groupSettingsData.users)
-  }
+  const groupSettings = ref<GroupSettings>(groupSettingsData)
 
-  watch(groupSettings.name, (newData)=>{firebaseRepository.name.set(newData)}, {deep: true})
-  watch(groupSettings.timer, (newData)=>{firebaseRepository.timer.set(newData)}, {deep: true})
-  watch(groupSettings.subjects, (newData)=>{firebaseRepository.subjects.set(newData)}, {deep: true})
-  watch(groupSettings.permissions.value, (newData)=>{
-    firebaseRepository.member_permissions.set(newData.member)
-  }, {deep: true})
-  watch(groupSettings.users, (newData)=>{
-    firebaseRepository.users.update(newData)
-  }, {deep: true})
+  watch(groupSettings, (newData)=>{firebaseRepository.update(newData)}, {deep: true})
 
   function addSubject(){
-    groupSettings.subjects.value.push({ ...GroupSettings.defaultSubject })
+    groupSettings.value.subjects.push({ ...GroupSettings.defaultSubject })
     setSubjectIndex()
   }
 
   function deleteSubject(index: number){
-    groupSettings.subjects.value.splice(index, 1)
+    groupSettings.value.subjects.splice(index, 1)
     setSubjectIndex()
   }
 
   function setSubjectIndex(){
     let i = 0
-    groupSettings.subjects.value.forEach(()=>{
-      groupSettings.subjects.value[i].index = i
+    groupSettings.value.subjects.forEach(()=>{
+      groupSettings.value.subjects[i].index = i
       i++
     })
   }
