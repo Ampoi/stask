@@ -101,7 +101,9 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
   watch(groupSettings.permissions.value, (newData)=>{
     firebaseRepository.member_permissions.set(newData.member)
   }, {deep: true})
-  watch(groupSettings.users, (newData)=>{firebaseRepository.users.set(newData)}, {deep: true})
+  watch(groupSettings.users, (newData)=>{
+    firebaseRepository.users.update(newData)
+  }, {deep: true})
 
   function addSubject(){
     groupSettings.subjects.value.push({ ...GroupSettings.defaultSubject })

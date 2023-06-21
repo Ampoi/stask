@@ -1,4 +1,4 @@
-import { getDatabase, ref, get, set, child } from "firebase/database"
+import { getDatabase, ref, get, set, child, update } from "firebase/database"
 
 import { AuthRepository } from "../AuthRepository"
 
@@ -21,10 +21,57 @@ async function getDataPath(path: string) {
   }
 }
 
+class Updates{
+  updates: { [key: string]: any }[];
+
+  constructor(oldData: Object, newData: Object){
+    const diff = this.getDiffInObject(oldData, newData)
+    this.updates = this.getUpdateObjectArray(diff)
+  }
+
+  getDiffInObject(oldData: Object, newData: Object){
+    let diffs = {}
+  
+    Object.keys(newData).forEach((key)=>{
+        const oldValue = oldData[key]
+        const newValue = newData[key]
+  
+        if(JSON.stringify(oldValue) != JSON.stringify(newValue)){            
+            if(typeof newValue == "object"){
+                diffs[key] = this.getDiffInObject(oldValue, newValue)
+            }else{
+                diffs[key] = newValue
+            }
+        }
+    })
+  
+    return diffs
+  }
+
+  getUpdateObjectArray(updateObject: Object){
+    //for Firebase Realtime Database
+    let updates: { [key: string]: any } = {}
+    new Map(Object.entries(updateObject)).forEach((value, key)=>{
+        if(typeof value == "object"){
+            const newUpdates = this.getUpdateObjectArray(value)
+
+            new Map(Object.entries(newUpdates)).forEach((updateValue, path)=>{
+                updates[`${key}${path}`] = updateValue
+            })
+        }else{
+            updates[`/${key}`] = value
+        }
+    })
+
+    return updates
+  }
+}
+
 type pathPettern = `${"users" | "groups"}/${string}`
 export type RealTimeDatabaseRepository<T> = {
   get: Promise<T | undefined>;
   set: (saveData: T) => Promise<void>;
+  update: (updateData: T) => Promise<void>
 }
 
 export const createRealTimeDatabaseRepository = <T>(path: pathPettern): RealTimeDatabaseRepository<T> => {
@@ -64,8 +111,42 @@ export const createRealTimeDatabaseRepository = <T>(path: pathPettern): RealTime
         })
     })
   }
+
+  const updateDB = async (updateData: T)=>{
+    if(!await AuthRepository.isLogin()){ throw new Error("loggined is required") }
+
+    return new Promise<void>(async (resolve)=>{
+      const newDB = createRealTimeDatabaseRepository<T>(path)
+      const newDBData = await newDB.get
+
+      if(typeof updateData != "object" || !updateData){ throw new Error("アップデートするデータはObjectでなければいけません") }
+      if(typeof newDBData != "object" || !newDBData){ throw new Error("アップデート先のデータはObjectではなくてはありません") }
+      
+      const updateClass: Updates = new Updates(newDBData, updateData)
+      const updates = updateClass.updates
+
+      const homePath = await getDataPath(path)
+      let homeUpdates: { [key: string]: any } = {}
+      new Map(Object.entries(updates)).forEach((value, key)=>{
+        homeUpdates[`/${homePath}/${key}`] = value
+      })
+      
+
+      update(ref(db), homeUpdates)
+        .then(()=>{
+          resolve()
+        })
+        .catch((err)=>{          
+          throw `
+            path(update): ${path}
+            err: ${err.toString()}`
+        })
+    })
+  }
+
   return {
     get: getFromDB,
-    set: setToDB
+    set: setToDB,
+    update: updateDB
   }
 }
