@@ -60,7 +60,9 @@
                   variant="outlined"
                   density="compact"
                 ></v-select>
-                <button class="rounded-full h-6 w-6 duration-300 hover:bg-white/70 text-[14px] text-red-400/60 grid place-content-center">
+                <button
+                  class="rounded-full h-6 w-6 duration-300 hover:bg-white/70 text-[14px] text-red-400/60 grid place-content-center"
+                  @click="deleteUser(index.toString())">
                   <v-icon>mdi-trash-can</v-icon>
                 </button>
               </div>
@@ -136,7 +138,7 @@ const router = useRouter()
 const { uid } = await useAuth()
 if( !uid.value ){ throw new Error("ログインしていません！") }
 
-const { groupSettings, addSubject, deleteSubject } = await useGroupSettings(props.groupID, router)
+const { groupSettings, addSubject, deleteSubject, deleteUser } = await useGroupSettings(props.groupID, router)
 
 const role = groupSettings.value.users[uid.value].role
 const settingPermissions = groupSettings.value.permissions[role].settings

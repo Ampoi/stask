@@ -1,4 +1,4 @@
-import { ref, watch, Ref } from "vue";
+import { ref, watch } from "vue";
 
 import { PersonalSettings } from "../model/personalSettings";
 import { GroupSettings } from "../model/groupSettings";
@@ -102,5 +102,9 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
     })
   }
 
-  return { groupSettings, addSubject, deleteSubject }
+  function deleteUser(uid: string){
+    delete groupSettings.value.users[uid]
+  }
+
+  return { groupSettings, addSubject, deleteSubject, deleteUser }
 }
