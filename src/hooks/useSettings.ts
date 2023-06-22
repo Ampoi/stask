@@ -82,7 +82,9 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
 
   const groupSettings = ref<GroupSettings>(groupSettingsData)
 
-  watch(groupSettings, (newData)=>{firebaseRepository.update(newData)}, {deep: true})
+  watch(groupSettings, (newData)=>{    
+    firebaseRepository.update(newData)
+  }, {deep: true})
 
   function addSubject(){
     groupSettings.value.subjects.push({ ...GroupSettings.defaultSubject })
@@ -103,7 +105,10 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
   }
 
   function deleteUser(uid: string){
-    delete groupSettings.value.users[uid]
+    const newMembersList = { ...groupSettings.value.users }
+    delete newMembersList[uid]
+    
+    groupSettings.value.users = newMembersList
   }
 
   return { groupSettings, addSubject, deleteSubject, deleteUser }

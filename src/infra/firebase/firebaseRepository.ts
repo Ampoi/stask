@@ -35,18 +35,21 @@ class Updates{
 
   getDiffInObject(oldData: DatabaseData, newData: DatabaseData){
     let diffs: DatabaseData = {}
+    const allData = { ...newData, ...oldData }
   
-    Object.keys(newData).forEach((key)=>{
-        const oldValue = oldData[key]
-        const newValue = newData[key]
-  
-        if(JSON.stringify(oldValue) != JSON.stringify(newValue)){            
-            if(typeof newValue == "object"){
-                diffs[key] = this.getDiffInObject(oldValue, newValue)
-            }else{
-                diffs[key] = newValue
-            }
+    Object.keys(allData).forEach((key)=>{
+      const oldValue = oldData[key]
+      const newValue = newData[key]
+
+      if(JSON.stringify(oldValue) != JSON.stringify(newValue)){            
+        if(!newValue){
+          diffs[key] = null
+        }else if(typeof newValue == "object"){          
+          diffs[key] = this.getDiffInObject(oldValue, newValue)
+        }else{
+          diffs[key] = newValue
         }
+      }
     })
   
     return diffs
@@ -55,12 +58,13 @@ class Updates{
   getUpdateObjectArray(updateObject: Object){
     //for Firebase Realtime Database
     let updates: { [key: string]: any } = {}
+  
     new Map(Object.entries(updateObject)).forEach((value, key)=>{
-        if(typeof value == "object"){
+        if(typeof value == "object" && value){
             const newUpdates = this.getUpdateObjectArray(value)
 
             new Map(Object.entries(newUpdates)).forEach((updateValue, path)=>{
-                updates[`${key}/${path}`] = updateValue
+              updates[`/${key}${path}`] = updateValue
             })
         }else{
             updates[`/${key}`] = value
@@ -132,8 +136,10 @@ export const createRealTimeDatabaseRepository = <T>(path: pathPettern): RealTime
       const homePath = await getDataPath(path)
       let homeUpdates: { [key: string]: any } = {}
       new Map(Object.entries(updates)).forEach((value, key)=>{
-        homeUpdates[`/${homePath}/${key}`] = value
+        homeUpdates[`/${homePath}${key}`] = value
       })
+      
+      console.log(homeUpdates);
       
 
       update(ref(db), homeUpdates)
