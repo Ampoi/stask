@@ -36,12 +36,12 @@
       </NavBarButton>
       <p class="text-xs text-slate-900/60 mt-4">グループ</p>
       <NavBarLink
-        v-for="(_group, index) in groups"
+        v-for="(groupID, index) in groups"
         :key="index"
-        :link="`/?group=${index}`"
+        :link="`/?group=${groupID}`"
       >
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-account-group</v-icon>
-        <p class="text-sm">学校〜</p>
+        <p class="text-sm">{{ groupNames[groupID] }}</p>
         <v-spacer/>
         <v-icon class="text-sm -ml-0.5 opacity-60">mdi-chevron-right</v-icon>
       </NavBarLink>
@@ -71,11 +71,27 @@ import NavBarButton from "../components/navBar/button.vue"
 import NavBarLink from "../components/navBar/link.vue"
 
 import useGroups from "../hooks/useGroups"
+import { useGroupSettings } from '../hooks/useSettings';
+import router from '../router';
 
 const props = defineProps(["userName", "userImage", "tasks", "isGroupPage"])
 const emit = defineEmits(["logout", "opensettings"])
 
-const { groups } = useGroups()
+const { groups } = await useGroups()
+
+const groupNames = await (async ()=>{
+  let names: {
+    [key: string]: string
+  } = {}
+
+  await Promise.all(groups.value.map(async (groupID)=>{
+    const { groupSettings } = await useGroupSettings(groupID, router)
+    const groupName = groupSettings.value.name
+    names[groupID] = groupName
+  }))
+
+  return names
+})()
 
 const getTaskTime = computed(()=>{
   let time = 0
