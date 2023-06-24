@@ -91,7 +91,9 @@ export const createRealTimeDatabaseRepository = <T>(path: pathPettern): RealTime
     const snapshot = await get(child(dbRef, await getDataPath(path)))
       .catch(async(err)=>{
         reject(err)
-        throw new Error(err)
+        throw new Error(`
+          path(get): ${path}
+          err: ${err.toString()}`)
       })
 
     if(snapshot.exists()){

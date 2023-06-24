@@ -17,10 +17,20 @@ export type Permissions = {
   }
 }
 
+type Member =  {
+  name: string,
+  role: Role
+}
 export type Members = {
-  [key: string]: {
-    name: string,
-    role: Role
+  [key: string]: Member
+}
+
+export const Member = {
+  create(userName: string): Member{
+    return {
+      name: userName,
+      role: "member"
+    }
   }
 }
 

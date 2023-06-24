@@ -57,9 +57,9 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
     router.push("/") //TODO:ダイレクト先でアラートを表示するプログラムを書く(URLから取得する感じ)
   }
 
-  const firebaseRepository = groupSettingRepository(groupId)    
+  const settingsRepository = groupSettingRepository(groupId).settings
   const groupSettingsData: GroupSettings = await (async ()=>{
-    const newGroupSettingItemDBdata = await firebaseRepository.get
+    const newGroupSettingItemDBdata = await settingsRepository.get
       .catch((err: Error) => {
         const message = err.message
         if(message == "Permission denied"){
@@ -70,7 +70,7 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
 
     const newGroupSettings = (()=>{
       if(!newGroupSettingItemDBdata){
-        firebaseRepository.set(GroupSettings.defaultSettings)
+        settingsRepository.set(GroupSettings.defaultSettings)
         return { ...GroupSettings.defaultSettings }
       }else{
         return newGroupSettingItemDBdata
@@ -83,7 +83,7 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
   const groupSettings = ref<GroupSettings>(groupSettingsData)
 
   watch(groupSettings, (newData)=>{    
-    firebaseRepository.update(newData)
+    settingsRepository.update(newData)
   }, {deep: true})
 
   function addSubject(){

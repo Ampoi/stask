@@ -91,6 +91,8 @@ import GroupSettings from "../../../components/groupSettings.vue"
 
 const showDoneCards = ref<boolean>(false)
 
+const router = useRouter()
+
 //URLからグループのID取得
 const url = new URL(window.location.href)
 const params = url.searchParams
@@ -102,8 +104,6 @@ const groupID = ((new_group_id) => {
   }
 })(params.get("group"))
 
-const router = useRouter()
-
 const { uid } = await useAuth()
 if(!uid.value){throw new Error("uidが空です！！")}
 
@@ -113,7 +113,7 @@ const { groupSharedCards, deleteGroupSharedCard, addGroupSharedCard } = await us
 const userRole = groupSettings.value.users[uid.value].role
 const permissions = groupSettings.value.permissions[userRole]
 
-const showGroupSettings = ref(true)
+const showGroupSettings = ref(false)
 
 function openSettings(){
   showGroupSettings.value = true

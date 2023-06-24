@@ -1,6 +1,8 @@
 // skl-blog/src/router/index.js
 import { createRouter, createWebHistory } from "vue-router";
+
 import app from "../pages/app.vue"
+import invite from "../pages/invites.vue"
 import home from "../pages/welcome.vue"
 import login from "../pages/login.vue"
 import updating from "../pages/nowUpdating.vue"
@@ -16,6 +18,12 @@ const routes = [
     path: "/",
     name: "App",
     component: app,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/invite",
+    name: "Invite",
+    component: invite,
     meta: { requiresAuth: true }
   },
   {
