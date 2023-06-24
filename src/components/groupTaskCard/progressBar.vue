@@ -1,9 +1,16 @@
 <template>
-    <v-progress-linear
-        :model-value="pagePercent"
-        class="mt-2 rounded-full"
-        :color="`${subjectColor}6F`"
-    />
+    <div class="relative py-3.5 h-8">
+        <v-progress-linear
+            :model-value="pagePercent"
+            class="rounded-full top-3.5 absolute w-[calc(100%-32px)]"
+            :color="`${subjectColor}6F`"
+        />
+        <div
+            class="w-8 h-8 rounded-full absolute top-0 border-2 border-solid transition-all duration-100"
+            :style="`border-color: ${subjectColor}6F; left: calc((100% - 32px) * ${pagePercent} / 100);`">
+            <div class="w-full h-full bg-cover bg-center rounded-full" :style="`background: url(${ userImage });`"/>
+        </div>
+    </div>
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
@@ -17,7 +24,7 @@ const props = defineProps<{
     subjectColor: string
 }>()
 
-const { uid } = await useAuth()
+const { uid, userImage } = await useAuth()
 
 const isPageDone = (pageIndex: number) => {
     return {
