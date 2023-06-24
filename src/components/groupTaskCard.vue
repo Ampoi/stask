@@ -64,10 +64,9 @@
             </div>
           </div>
         </div>
-        <v-progress-linear
-          :model-value="pagePercent"
-          class="mt-2 rounded-full"
-          :color="`${subjectColor}6F`"
+        <ProgressBar
+          :pages="card.pages"
+          :subjectColor="subjectColor"
         />
         <v-expand-transition>
           <div v-if="showSubMenu" class="flex flex-col gap-4">
@@ -126,7 +125,7 @@
             <div class="flex flex-row items-start gap-4">
               <v-select
                 v-model="card.subject"
-                @update:modelValue="getSubjectColor"
+                @update:modelValue="subjectColor"
                 :items="subjects"
                 label="Subject"
                 variant="outlined"
@@ -157,8 +156,9 @@
 </template>
 <script setup lang="ts">
 import CheckButton from "./taskCard/checkButton.vue"
+import ProgressBar from "./groupTaskCard/progressBar.vue"
 
-import { computed, onMounted, ref, watch } from "vue"
+import { computed, ref, watch } from "vue"
 
 import { GroupSharedCard } from "../model/groupCards"
 import { Subject } from "../model/personalSettings"
@@ -207,24 +207,20 @@ function addPage(){
     lastPage: 2,
     done: []
   })
-}/*
+}
 
-*/function deletePage(index: number){
+function deletePage(index: number){
   props.card.pages.splice(index, 1)
 }
 
-const subjectColor = ref("")
-
-function getSubjectColor(){
+const subjectColor = ref((() => {
   const subject: number = props.card.subject
   if(props.subjects[subject] != undefined){
-    subjectColor.value = props.subjects[subject].color
+    return props.subjects[subject].color
   }else{
-    subjectColor.value = "#E7E8E7"
+    return "#E7E8E7"
   }
-}
-
-getSubjectColor()
+})())
 
 const isConcentrate = {
   get(){
@@ -296,25 +292,6 @@ const getCardType = computed(()=>{
 const checkCardType = computed(()=>{
   const cardType = getCardType.value
   return (cardType == props.showCardType)
-})
-
-const pagePercent = computed((): number => {
-  const sharedPages = props.card.pages
-  let allPagesAmount = 0
-  let donePagesAmount = 0
-
-  let counter = 0
-  sharedPages?.forEach((page)=>{
-    const pageAmount = page.lastPage - page.startPage + 1
-    
-    allPagesAmount += pageAmount
-    if(isPageDone(counter).get()){donePagesAmount += pageAmount}
-    
-    counter++;
-  })
-  const percent = allPagesAmount != 0 ? Math.ceil(donePagesAmount / allPagesAmount * 100) : 0
-  
-  return percent
 })
 
 let pressTimer: number
