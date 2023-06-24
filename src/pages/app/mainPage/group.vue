@@ -79,7 +79,7 @@
   <GroupSettings v-model:showSettings="showGroupSettings" :groupID="groupID"/>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useGroupSettings } from '../../../hooks/useSettings';
 import { useRouter } from 'vue-router';
 
@@ -116,6 +116,9 @@ const userRole = groupSettings.value.users[uid.value].role
 const permissions = groupSettings.value.permissions[userRole]
 
 const showGroupSettings = ref(false)
+watch(showGroupSettings, (newData)=>{
+  if(newData == false){ window.location.reload() }
+})
 
 const groups = await groupRepository.get()
 if( !groups ){
