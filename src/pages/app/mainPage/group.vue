@@ -86,6 +86,8 @@ import { useRouter } from 'vue-router';
 import { useGroupSharedCards } from "../../../hooks/useCards"
 import useAuth from '../../../hooks/useAuth';
 
+import { groupRepository } from '../../../infra/GroupRepository';
+
 import GroupTaskCard from '../../../components/groupTaskCard.vue';
 import GroupSettings from "../../../components/groupSettings.vue"
 
@@ -114,6 +116,13 @@ const userRole = groupSettings.value.users[uid.value].role
 const permissions = groupSettings.value.permissions[userRole]
 
 const showGroupSettings = ref(false)
+
+const groups = await groupRepository.get()
+if( !groups ){
+    groupRepository.set([groupID])
+}else if(!groups.includes(groupID)){
+    groupRepository.update({ ...groups, ...{ [groups.length]: groupID } })
+}
 
 function openSettings(){
   showGroupSettings.value = true

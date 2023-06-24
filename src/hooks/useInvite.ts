@@ -1,12 +1,10 @@
-import { Router } from "vue-router"
-
 import { inviteRepository } from "../infra/inviteRepository"
 import { groupSettingRepository } from "../infra/SettingRepository"
 
 import { Member } from "../model/groupSettings"
 import useAuth from "./useAuth"
 
-export const useInvite = async (groupID: string, router: Router) => {
+export const useInvite = async (groupID: string) => {
     const usersRepository = groupSettingRepository(groupID).onlyUsers
     const { uid, userName } = await useAuth()
 
