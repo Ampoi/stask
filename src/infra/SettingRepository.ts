@@ -6,7 +6,6 @@ export const personalSettingRepository = createRealTimeDatabaseRepository<Person
 export const groupSettingRepository = (group_id: string)=>{
   return {
     settings: createRealTimeDatabaseRepository<GroupSettings>(`groups/${group_id}/settings`),
-    onlyUsers: createRealTimeDatabaseRepository<Members>(`groups/${group_id}/settings/users`),
-    onlyInvites: createRealTimeDatabaseRepository<string[]>(`groups/${group_id}/settings/invites`)
+    onlyUsers: createRealTimeDatabaseRepository<Members>(`groups/${group_id}/settings/users`)
   }
 }
