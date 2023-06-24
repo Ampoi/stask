@@ -10,7 +10,7 @@ export const usePersonalCards = ()=>{
   const cards = ref<Card[]>([])
 
   onBeforeMount(()=>{
-    personalCardRepository.get
+    personalCardRepository.get()
       .then((newData)=>{
         if(!newData){
           cards.value = [Card.welcomeCard]
@@ -51,7 +51,7 @@ export const useGroupSharedCards = async (groupId: string)=>{
   const firebaseRepository = groupSharedCardRepository(groupId)
 
   const groupSharedCardsData: Promise<GroupSharedCard[]> = (async ()=>{
-    const newSharedCardDBdata = await firebaseRepository.get
+    const newSharedCardDBdata = await firebaseRepository.get()
       .catch((err: Error) => {
         throw err
       })

@@ -77,32 +77,34 @@ class Updates{
 
 type pathPettern = `${"users" | "groups"}/${string}`
 export type RealTimeDatabaseRepository<T> = {
-  get: Promise<T | undefined>;
+  get: () => Promise<T | undefined>;
   set: (saveData: T) => Promise<void>;
   update: (updateData: T) => Promise<void>
 }
 
 export const createRealTimeDatabaseRepository = <T>(path: pathPettern): RealTimeDatabaseRepository<T> => {
-  const getFromDB: Promise<T | undefined> = new Promise(async (resolve, reject) => {
-    if(!await AuthRepository.isLogin()){
-      throw new Error("loggined is required")
-    }
-
-    const snapshot = await get(child(dbRef, await getDataPath(path)))
-      .catch(async(err)=>{
-        reject(err)
-        throw new Error(`
-          path(get): ${path}
-          err: ${err.toString()}`)
-      })
-
-    if(snapshot.exists()){
-      const newData = snapshot.val()
-      resolve(newData)
-    }else{
-      resolve(undefined)
-    }
-  })
+  const getFromDB: ()=>Promise<T | undefined> = ()=>{
+    return new Promise(async (resolve, reject) => {
+      if(!await AuthRepository.isLogin()){
+        throw new Error("loggined is required")
+      }
+  
+      const snapshot = await get(child(dbRef, await getDataPath(path)))
+        .catch(async(err)=>{
+          reject(err)
+          throw new Error(`
+            path(get): ${path}
+            err: ${err.toString()}`)
+        })
+  
+      if(snapshot.exists()){
+        const newData: T = snapshot.val()
+        resolve(newData)
+      }else{
+        resolve(undefined)
+      }
+    })
+  }
 
   const setToDB = async (saveData: T)=>{
     if(!await AuthRepository.isLogin()){

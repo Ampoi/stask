@@ -10,12 +10,12 @@ export const useInvite = async (groupID: string)=>{
 
     async function invitedMemberAdd(inviteID: string){
         const isInvited = await (async (inviteID: string)=>{
-            const invites = await invitesRepository.get
+            const invites = await invitesRepository.get()
             return invites?.includes(inviteID)
         })(inviteID)
 
         if(isInvited){
-            const users = await usersRepository.get
+            const users = await usersRepository.get()
 
             if( !users ){ throw new Error("ユーザーのリストが空です！") }
             if( !uid.value ){ throw new Error("UIDが空です！") }

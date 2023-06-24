@@ -8,7 +8,7 @@ import { Router } from "vue-router";
 export const usePersonalSettings = async ()=>{
   const personalSettingsData: Promise<PersonalSettings> = (async ()=>{
     
-    const newPersonalSettingsDBdata = await personalSettingRepository.get
+    const newPersonalSettingsDBdata = await personalSettingRepository.get()
       .catch((err: Error) => {
         throw err
       })
@@ -59,7 +59,7 @@ export const useGroupSettings = async (groupId: string, router: Router)=>{
 
   const settingsRepository = groupSettingRepository(groupId).settings
   const groupSettingsData: GroupSettings = await (async ()=>{
-    const newGroupSettingItemDBdata = await settingsRepository.get
+    const newGroupSettingItemDBdata = await settingsRepository.get()
       .catch((err: Error) => {
         const message = err.message
         if(message == "Permission denied"){
