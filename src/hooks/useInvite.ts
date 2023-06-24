@@ -1,10 +1,12 @@
+import { Router } from "vue-router"
+
 import { inviteRepository } from "../infra/inviteRepository"
 import { groupSettingRepository } from "../infra/SettingRepository"
 
 import { Member } from "../model/groupSettings"
 import useAuth from "./useAuth"
 
-export const useInvite = async (groupID: string) => {
+export const useInvite = async (groupID: string, router: Router) => {
     const usersRepository = groupSettingRepository(groupID).onlyUsers
     const { uid, userName } = await useAuth()
 
@@ -20,11 +22,14 @@ export const useInvite = async (groupID: string) => {
 
             if(users[uid.value]){ 
                 console.log("すでにグループに追加されています")
+                window.location.href = `/?group=${groupID}`
             }else{
                 if( !userName.value ){ throw new Error("ユーザー名が空です！！") }
                 const newUserData = Member.create(userName.value)
-            
-                users[uid.value] = newUserData
+                
+                await usersRepository.update({...users, ...{ [uid.value]: newUserData }});
+
+                window.location.href = `/?group=${groupID}` //追加されたことを示すダイアログ表示させたい
             }
         }else{
             console.log("そんな招待ないよ");

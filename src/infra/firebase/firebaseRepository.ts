@@ -38,7 +38,10 @@ class Updates{
     const allData = { ...newData, ...oldData }
   
     Object.keys(allData).forEach((key)=>{
-      const oldValue = oldData[key]
+      const oldValue = (() => {
+        if( oldData ){ return oldData[key] }
+        else{ return null }
+      })()
       const newValue = newData[key]
 
       if(JSON.stringify(oldValue) != JSON.stringify(newValue)){            
@@ -129,7 +132,11 @@ export const createRealTimeDatabaseRepository = <T>(path: pathPettern): RealTime
 
     return new Promise<void>(async (resolve)=>{
       const newDB = createRealTimeDatabaseRepository<T>(path)
-      const newDBData = await newDB.get
+      const newDBData = await newDB.get()
+
+      console.log(newDBData);
+      console.log(typeof newDBData);
+      
 
       if(typeof updateData != "object" || !updateData){ throw new Error("アップデートするデータはObjectでなければいけません") }
       if(typeof newDBData != "object" || !newDBData){ throw new Error("アップデート先のデータはObjectではなくてはありません") }
