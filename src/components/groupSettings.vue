@@ -136,11 +136,10 @@ const selectedSubjectIndex = ref(0)
 const router = useRouter()
 
 const { uid } = await useAuth()
-if( !uid.value ){ throw new Error("ログインしていません！") }
 
 const { groupSettings, addSubject, deleteSubject, deleteUser } = await useGroupSettings(props.groupID, router)
 
-const role = groupSettings.value.users[uid.value].role
+const role = groupSettings.value.users[uid].role
 const settingPermissions = groupSettings.value.permissions[role].settings
 const subjectsEditable = settingPermissions.subjects.edit
 const permissionsEditable = settingPermissions.permissions.edit

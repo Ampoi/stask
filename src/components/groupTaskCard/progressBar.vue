@@ -1,7 +1,7 @@
 <template>
     <div class="relative py-3.5 h-8">
         <v-progress-linear
-            :model-value="uid ? usersPagePercent[uid] : 0"
+            :model-value="usersPagePercent[uid]"
             class="rounded-full top-3.5 absolute w-[calc(100%-32px)]"
             :color="`${subjectColor}6F`"
         />
@@ -11,7 +11,7 @@
             class="w-8 h-8 rounded-full absolute top-0 border-2 border-solid transition-all duration-100"
             :style="`
                 border-color: ${subjectColor}6F;
-                left: calc((100% - 32px) * ${uid ? usersPagePercent[uid] : 0} / 100);`">
+                left: calc((100% - 32px) * ${usersPagePercent[uid]} / 100);`">
             <div class="w-full h-full bg-cover bg-center rounded-full" :style="`background: url(${ value.icon });`"/>
         </div>
     </div>
@@ -28,7 +28,7 @@ const props = defineProps<{
     subjectColor: string
 }>()
 
-const { uid, userImage } = await useAuth()
+const { uid } = await useAuth()
 
 const isPageDone = (pageIndex: number, uid: string) => {
     return {
@@ -75,8 +75,5 @@ const usersPagePercent: { [key:string]: number } = (() => {
     })
     return newUsersPagePercent
 })()
-
-console.log(uid.value ? usersPagePercent[uid.value] : 0);
-
 
 </script>

@@ -231,34 +231,28 @@ const subjectColor = ref((() => {
 
 const isConcentrate = {
   get(){
-    if(uid.value == undefined){ throw new Error("uidが空です！") }
-    return props.card.concentrate.includes(uid.value)
+    return props.card.concentrate.includes(uid)
   },
   turnConcentrate(){
-    if(uid.value == undefined){ throw new Error("uidが空です！") }
-
     if(isConcentrate.get()){ //集中状態 -> 普通
-      const index = props.card.concentrate.indexOf(uid.value)
+      const index = props.card.concentrate.indexOf(uid)
       props.card.concentrate.splice(index, 1)
     }else{ //普通 -> 集中状態
-      props.card.concentrate.push(uid.value)
+      props.card.concentrate.push(uid)
     }
   }
 }
 
 const isDone = {
   get(){
-    if(uid.value == undefined){ throw new Error("uidが空です！") }
-    return props.card.done.includes(uid.value)
+    return props.card.done.includes(uid)
   },
   turnDone(){
-    if(uid.value == undefined){ throw new Error("uidが空です！") }
-
     if(isDone.get()){ //達成 -> 普通
-      const index = props.card.done.indexOf(uid.value)
+      const index = props.card.done.indexOf(uid)
       props.card.done.splice(index, 1)
     }else{ //普通 -> 達成
-      props.card.done.push(uid.value)
+      props.card.done.push(uid)
     }
   }
 }
@@ -266,21 +260,18 @@ const isDone = {
 const isPageDone = (pageIndex: number)=>{
   return {
     get(){
-      if(uid.value == undefined){ throw new Error("uidが空です！") }
       if(!props.card.pages[pageIndex].done){
         props.card.pages[pageIndex].done = []
       }
       
-      return props.card.pages[pageIndex].done.includes(uid.value)
+      return props.card.pages[pageIndex].done.includes(uid)
     },
     turnDone(){
-      if(uid.value == undefined){ throw new Error("uidが空です！") }
-      
       if(isPageDone(pageIndex).get()){ //達成 -> 普通
-        const index = props.card.done.indexOf(uid.value)
+        const index = props.card.done.indexOf(uid)
         props.card.pages[pageIndex].done.splice(index, 1)
       }else{ //普通 -> 達成
-        props.card.pages[pageIndex].done.push(uid.value)
+        props.card.pages[pageIndex].done.push(uid)
       }
     }
   }

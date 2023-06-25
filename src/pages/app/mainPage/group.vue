@@ -110,12 +110,11 @@ const groupID = ((new_group_id) => {
 })(params.get("group"))
 
 const { uid } = await useAuth()
-if(!uid.value){throw new Error("uidが空です！！")}
 
 const { groupSettings } = await useGroupSettings(groupID, router)
 const { groupSharedCards, deleteGroupSharedCard, addGroupSharedCard } = await useGroupSharedCards(groupID)
 
-const userRole = groupSettings.value.users[uid.value].role
+const userRole = groupSettings.value.users[uid].role
 const permissions = groupSettings.value.permissions[userRole]
 
 const showGroupSettings = ref(false)

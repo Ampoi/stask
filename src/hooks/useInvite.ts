@@ -16,18 +16,17 @@ export const useInvite = async (groupID: string) => {
             const users = await usersRepository.get()
 
             if( !users ){ throw new Error("ユーザーのリストが空です！") }
-            if( !uid.value ){ throw new Error("UIDが空です！") }
 
-            if(users[uid.value]){ 
+            if(users[uid]){ 
                 console.log("すでにグループに追加されています")
                 window.location.href = `/?group=${groupID}`
             }else{
-                if( !userName.value ){ throw new Error("ユーザー名が空です！！") }
-                if( !userImage.value ){ throw new Error("ユーザー名が空です！！") }
+                if( !userName ){ throw new Error("ユーザー名が空です") }
+                if( !userImage ){ throw new Error("ユーザーの画像が空です") }
 
-                const newUserData = Member.create(userName.value, userImage.value)
+                const newUserData = Member.create(userName, userImage)
                 
-                await usersRepository.update({...users, ...{ [uid.value]: newUserData }});
+                await usersRepository.update({...users, ...{ [uid]: newUserData }});
 
                 window.location.href = `/?group=${groupID}` //追加されたことを示すダイアログ表示させたい
             }
