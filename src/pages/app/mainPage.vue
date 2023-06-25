@@ -88,7 +88,7 @@ const { userName, userImage, logout } = await useAuth()
 const { cards } = usePersonalCards()
 
 const cardsPage = ref()
-function addCard(){ cardsPage.value.addCard() }
+function addCard(){ cardsPage.value.$.exposed.addCard() }
 
 const pages = {
   "personalPage": personalPage,
@@ -129,7 +129,7 @@ function checkPermanent(){
 }
 
 function openChildSettings(){
-  cardsPage.value.openSettings()
+  cardsPage.value.$.exposed.openSettings()
   showNavbar.value = false
 }
 </script>

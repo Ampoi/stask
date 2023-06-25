@@ -133,7 +133,7 @@ function openSettings(){
   showGroupSettings.value = true
 }
 
-function addCard(){addGroupSharedCard()}
+function addCard(){ addGroupSharedCard() }
 
 defineExpose({ addCard, openSettings })
 </script>
