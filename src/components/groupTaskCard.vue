@@ -67,6 +67,7 @@
         <ProgressBar
           :pages="card.pages"
           :subjectColor="subjectColor"
+          :members="members"
         />
         <v-expand-transition>
           <div v-if="showSubMenu" class="flex flex-col gap-4">
@@ -165,6 +166,8 @@ import { Subject } from "../model/personalSettings"
 import { Permissions } from "../model/groupSettings"
 
 import useAuth from "../hooks/useAuth"
+import { useGroupSettings } from "../hooks/useSettings"
+import router from "../router"
 
 type CardType = "done" | "incomplete" | "concentrate"
 
@@ -172,8 +175,12 @@ const props = defineProps<{
   permissions: Permissions["admin" | "member"], //TODO: この部分の権限の階級を型にして統一したい
   card: GroupSharedCard,
   showCardType: CardType,
-  subjects: Subject[]
+  subjects: Subject[],
+  groupID: string
 }>()
+
+const { groupSettings } = await useGroupSettings(props.groupID, router)
+const members = groupSettings.value.users
 
 if(!props.card.pages){
   props.card.pages = []

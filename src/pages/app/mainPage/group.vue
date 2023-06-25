@@ -34,6 +34,7 @@
         v-model:card="groupSharedCards[cardIndex]"
         @deleteTask="deleteGroupSharedCard(cardIndex)"
         showCardType="concentrate"
+        :groupID="groupID"
       />
     </div>
 
@@ -47,6 +48,7 @@
         v-model:card="groupSharedCards[cardIndex]"
         @deleteTask="deleteGroupSharedCard(cardIndex)"
         showCardType="incomplete"
+        :groupID="groupID"
       />
     </div>
 
@@ -69,6 +71,7 @@
             v-model:card="groupSharedCards[cardIndex]"
             @deleteTask="deleteGroupSharedCard(cardIndex)"
             showCardType="done"
+            :groupID="groupID"
             class="opacity-50"
           />
         </div>

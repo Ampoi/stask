@@ -19,16 +19,18 @@ export type Permissions = {
 
 type Member =  {
   name: string,
-  role: Role
+  role: Role,
+  icon: string
 }
 export type Members = {
   [key: string]: Member
 }
 
 export const Member = {
-  create(userName: string): Member{
+  create(userName: string, userIcon: string): Member{
     return {
       name: userName,
+      icon: userIcon,
       role: "member"
     }
   }

@@ -6,7 +6,7 @@ import useAuth from "./useAuth"
 
 export const useInvite = async (groupID: string) => {
     const usersRepository = groupSettingRepository(groupID).onlyUsers
-    const { uid, userName } = await useAuth()
+    const { uid, userName, userImage } = await useAuth()
 
     async function invitedMemberAdd(inviteID: string){
         const firebaseRepository = await inviteRepository(groupID, inviteID)
@@ -23,7 +23,9 @@ export const useInvite = async (groupID: string) => {
                 window.location.href = `/?group=${groupID}`
             }else{
                 if( !userName.value ){ throw new Error("ユーザー名が空です！！") }
-                const newUserData = Member.create(userName.value)
+                if( !userImage.value ){ throw new Error("ユーザー名が空です！！") }
+
+                const newUserData = Member.create(userName.value, userImage.value)
                 
                 await usersRepository.update({...users, ...{ [uid.value]: newUserData }});
 
