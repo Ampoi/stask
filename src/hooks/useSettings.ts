@@ -52,20 +52,21 @@ export const usePersonalSettings = async ()=>{
   return { personalSettings, addSubject, deleteSubject }
 }
 
-export const useGroupSettings = async (groupId: string, router: Router)=>{
+export const useGroupSettings = async (groupId: string, router: Router, permissionDeniedFuncProp?: Function)=>{
   function backToPersonalPageWithAlert(){
     router.push("/") //TODO:ダイレクト先でアラートを表示するプログラムを書く(URLから取得する感じ)
+    window.location.reload()
   }
+  
+  const permissionDeniedFunc = permissionDeniedFuncProp ? permissionDeniedFuncProp : backToPersonalPageWithAlert
 
   const settingsRepository = groupSettingRepository(groupId).settings
   const groupSettingsData: GroupSettings = await (async ()=>{
     const newGroupSettingItemDBdata = await settingsRepository.get()
       .catch((err: Error) => {
         const message = err.message
-        if(message == "Permission denied"){
-          backToPersonalPageWithAlert()
-        }
-        throw err
+        if(message == "Permission denied"){ permissionDeniedFunc() }
+        else{ throw err }
       })
 
     const newGroupSettings = (()=>{

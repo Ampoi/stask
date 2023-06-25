@@ -77,7 +77,7 @@ import router from '../router';
 const props = defineProps(["userName", "userImage", "tasks", "isGroupPage"])
 const emit = defineEmits(["logout", "opensettings"])
 
-const { groups } = await useGroups()
+const { groups, deleteGroupFromList } = await useGroups()
 
 const groupNames = await (async ()=>{
   let names: {
@@ -85,7 +85,9 @@ const groupNames = await (async ()=>{
   } = {}
 
   await Promise.all(groups.value.map(async (groupID)=>{
-    const { groupSettings } = await useGroupSettings(groupID, router)
+    const { groupSettings } = await useGroupSettings(groupID, router, ()=>{
+      deleteGroupFromList(groupID)
+    })
     const groupName = groupSettings.value.name
     names[groupID] = groupName
   }))
