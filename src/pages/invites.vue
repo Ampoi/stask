@@ -12,7 +12,7 @@ const params = url.searchParams
 const groupID = params.get("group")
 const inviteID = params.get("id")
 
-if(inviteID && groupID){  
+if(inviteID && groupID){
   const { invitedMemberAdd } = await useInvite(groupID)
   await invitedMemberAdd(inviteID)
 }else{

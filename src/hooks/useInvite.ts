@@ -9,6 +9,9 @@ export const useInvite = async (groupID: string) => {
     const { uid, userName, userImage } = await useAuth()
 
     async function invitedMemberAdd(inviteID: string){
+        if( !groupID ){ throw new Error("groupIDのパラメータが足りません") }
+        if( !inviteID ){ throw new Error("inviteIDのパラメータが足りません") }
+
         const firebaseRepository = await inviteRepository(groupID, inviteID)
         const isInvited = await firebaseRepository.get
 
@@ -28,7 +31,7 @@ export const useInvite = async (groupID: string) => {
                 
                 await usersRepository.update({...users, ...{ [uid]: newUserData }});
 
-                window.location.href = `/?group=${groupID}` //追加されたことを示すダイアログ表示させたい
+                window.location.href= `/?group=${groupID}`//router.push({ path: "", params: { group: groupID } }) //追加されたことを示すダイアログ表示させたい
             }
         }else{
             console.log("そんな招待ないよ");
