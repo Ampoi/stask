@@ -11,7 +11,7 @@
             class="w-8 h-8 rounded-full absolute top-0 border-2 border-solid transition-all duration-100"
             :style="`
                 border-color: ${subjectColor}6F;
-                left: calc((100% - 32px) * ${usersPagePercent[uid]} / 100);`">
+                left: calc((100% - 32px) * ${usersPagePercent[uid]} / 100 - (${getSamePercentUserAmount(uid as string)}px * 10));`">
             <div class="w-full h-full bg-cover bg-center rounded-full" :style="`background: url(${ value.icon });`"/>
         </div>
     </div>
@@ -30,7 +30,7 @@ const props = defineProps<{
 
 const { uid } = await useAuth()
 
-const isPageDone = (pageIndex: number, uid: string) => {
+function isPageDone (pageIndex: number, uid: string){
     return {
         get() {
             if (!props.pages[pageIndex].done) { props.pages[pageIndex].done = [] }
@@ -48,7 +48,7 @@ const isPageDone = (pageIndex: number, uid: string) => {
     }
 }
 
-const pagePercent = (uid: string): number => {
+function pagePercent(uid: string): number {
     const sharedPages = props.pages
     let allPagesAmount = 0
     let donePagesAmount = 0
@@ -75,5 +75,20 @@ const usersPagePercent: { [key:string]: number } = (() => {
     })
     return newUsersPagePercent
 })()
+
+function getSamePercentUserAmount(myUID: string) {
+    const myPagePercent = pagePercent(myUID)
+    let samePagePercentUsers: string[] = [];
+    (Object.keys(props.members)).forEach((uid: string) => {
+        if( pagePercent(uid) == myPagePercent){
+            samePagePercentUsers.push(uid)
+        }
+    })
+
+    console.log(samePagePercentUsers);
+    
+
+    return samePagePercentUsers.reverse().indexOf(myUID)
+}
 
 </script>
