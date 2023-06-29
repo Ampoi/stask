@@ -85,9 +85,6 @@ function getSamePercentUserAmount(myUID: string) {
         }
     })
 
-    console.log(samePagePercentUsers);
-    
-
     return samePagePercentUsers.reverse().indexOf(myUID)
 }
 

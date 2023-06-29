@@ -7,7 +7,7 @@
       />
     </template>
     <template #fallback>
-      loading...
+      <Loading/>
     </template>
   </Suspense>
 </template>
@@ -17,6 +17,7 @@ import { useRouter } from "vue-router"
 
 import mainPage from "./app/mainPage.vue"
 import concentratePage from "./app/concentratePage.vue"
+import Loading from "../components/loading.vue";
 
 import { createClient } from "microcms-js-sdk"
 
