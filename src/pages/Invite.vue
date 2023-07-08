@@ -1,3 +1,3 @@
 <template>
-    <RouterView />
+    Invite
 </template>
