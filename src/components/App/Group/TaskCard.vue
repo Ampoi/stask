@@ -27,10 +27,32 @@
                 <div class="h-full bg-blue-400/40" :style="{width: `${100}%`}"/>
             </div>
         </div>
+        <TransitionRoot
+            :show="showCardMenu.value"
+            enter-from="h-0"
+            enter="duration-300 ease-out"
+            enter-to="h-80"
+            leave-from="h-80"
+            leave="duration-300 ease-in"
+            leave-to="h-0"
+            class="overflow-hidden flex flex-col gap-2"
+            >
+            <div class="w-full bg-gray-100 border-gray-200 border-[1px] h-80 rounded-lg p-4">
+                <PageUnitOptions
+                    v-model:page-unit="cardUnit"/>
+                <div class="flex flex-row gap-2 text-lg">
+                    <span>{{ cardUnit.symbol(30) }}</span>
+                    <span>{{ cardUnit.symbol(30) }}</span>
+                </div>
+            </div>
+        </TransitionRoot>
     </div>
 </template>
 <script setup lang="ts">
 import { ref } from "vue"
+import { TransitionRoot } from "@headlessui/vue"
+
+import PageUnitOptions from "./pageUnitOptions.vue";
 
 class Switch {
     switch: boolean
@@ -49,6 +71,7 @@ class Switch {
 }
 
 const showCardMenu = ref(new Switch(false))
+const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
 
 const card = {
     done: true,

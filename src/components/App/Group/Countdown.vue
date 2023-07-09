@@ -4,7 +4,7 @@
         <div class="grid items-center pb-4 w-full h-full absolute top-0">
             <div class="text-center text-orange-400">
                 <p>期末考査まで</p>
-                <p class="font-bold"><span class="text-5xl">{{ daysLeft }}</span>日</p>
+                <p class="font-bold"><span class="text-5xl">{{ props.daysLeft }}</span>日</p>
             </div>
         </div>
         <div class="absolute bottom-0 w-full py-2 text-center text-orange-400">
