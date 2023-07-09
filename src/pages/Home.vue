@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 w-screen h-screen px-6 box-border relative">
+    <div class="bg-gray-100 w-screen h-screen px-6 py-12 box-border relative">
         <component :is="Group"/>
         <NavBar class="absolute"/>
     </div>
