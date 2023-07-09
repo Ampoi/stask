@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full p-4 bg-white/80 border-2 border-l-8 border-blue-400/40 rounded-xl flex flex-col">
+    <div class="w-full p-4 bg-white/80 border-2 border-l-8 border-blue-400/40 rounded-xl flex flex-col gap-2">
         <div class="flex flex-row items-stretch gap-4 h-8">
             <button
                 class="border-2 rounded-full basis-8 grid place-content-center"
@@ -21,6 +21,11 @@
                         '-scale-y-100': !showCardMenu.value
                     }"/>
             </button>
+        </div>
+        <div>
+            <div class="w-full h-1 rounded-full overflow-hidden bg-slate-100">
+                <div class="h-full bg-blue-400/40" :style="{width: `${100}%`}"/>
+            </div>
         </div>
     </div>
 </template>
