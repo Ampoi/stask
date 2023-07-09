@@ -8,9 +8,7 @@
             </div>
         </Section>
         <Section title="課題一覧">
-            <div class="w-full h-20 bg-white/80 rounded-xl">
-                aaa
-            </div>
+            <TaskCard/>
         </Section>
     </div>
 </template>
@@ -19,4 +17,5 @@ import Section from "./Group/Section.vue"
 
 import AddCountdownButton from "./Group/AddCountdownButton.vue"
 import Countdown from "./Group/Countdown.vue"
+import TaskCard from "./Group/TaskCard.vue"
 </script>
