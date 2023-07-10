@@ -33,8 +33,7 @@
             leave-from="h-[280px]"
             leave="duration-300 ease-in overflow-hidden"
             leave-to="h-0"
-            class="flex flex-col gap-2"
-            >
+            class="flex flex-col gap-2">
             <div class="w-full bg-gray-100 border-gray-200 border-[1px] h-56 rounded-lg p-4 flex flex-col gap-2 overflow-y-auto">
                 <div class="grow overflow-scroll flex flex-col gap-2">
                     <PageUnitOptions v-model:page-unit="cardUnit"/>
@@ -83,13 +82,6 @@
             </div>
         </TransitionRoot>
     </div>
-    <!--
-    <Dialog
-        :open="showEditCardModal.value"
-        class="fixed bottom-0 w-screen h-screen bg-black/20 p-0"
-        @click="showEditCardModal.turn()">
-        <div class="w-full h-5/6 fixed bottom-0 rounded-t-3xl mt-auto bg-white p-6">aaa</div>
-    </Dialog>-->
 </template>
 <script setup lang="ts">
 import { ref } from "vue"
@@ -99,25 +91,9 @@ import PageUnitOptions from "./pageUnitOptions.vue";
 import ProgressBar from "./progressBar.vue";
 import Page from "./page.vue"
 
-class Switch {
-    switch: boolean
-
-    constructor( defaultData: boolean ){
-        this.switch = defaultData
-    }
-
-    get value(){
-        return this.switch
-    }
-
-    turn(){
-        this.switch = !this.switch
-    }
-}
-
+import { Switch } from "../../../functions/switch"
 
 const showCardMenu = ref(new Switch(false))
-//const showEditPageModal = ref(new Switch(true))
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
 
 const card = {
