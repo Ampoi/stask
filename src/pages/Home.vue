@@ -23,16 +23,21 @@ import NavBar from "../components/App/NavBar.vue"
 import Modal from "../components/App/modal.vue";
 
 import Group from "../components/App/Group.vue"
+import NotLogin from "../components/App/notLogin.vue"
 import { router } from "../router";
 
 const pages = {
-    group: Group
+    group: Group,
+    notLogin: NotLogin
 }
 
-const nowPage: keyof typeof pages = "group"
+const nowPage = ref<keyof typeof pages>("group")
 
 const showLoginModal = ref(false)
 
 const { isLogin, login, logout } = await useAuth()
-if( !isLogin ){ showLoginModal.value = true }
+if( !isLogin ){
+    nowPage.value = "notLogin"
+    showLoginModal.value = true
+}
 </script>
