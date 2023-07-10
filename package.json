@@ -8,7 +8,8 @@
     "demo": "vite --host",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "publish": "export CURRENT_BRANCH=\"$(git branch --contains | cut -b 3-)\" && git push origin $CURRENT_BRANCH"
+    "publish": "export CURRENT_BRANCH=\"$(git branch --contains | cut -b 3-)\" && git push origin $CURRENT_BRANCH",
+    "pull": "export CURRENT_BRANCH=\"$(git branch --contains | cut -b 3-)\" && git pull origin $CURRENT_BRANCH"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.14",
