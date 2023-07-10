@@ -1,7 +1,7 @@
 <template>
 	<button
 		class="flex flex-row gap-2 items-center text-xl py-3 px-4 border-white border-[1px] rounded-lg"
-		@click="showEditPageModal.turn()">
+		@click="showEditPageModal = !showEditPageModal">
 		<span>{{ props.cardUnit.symbol(startPage) }}</span>
 		<ProgressBar :percent="getLevelOfAchivement" sub-color="white"/>
 		<span>{{ props.cardUnit.symbol(endPage) }}</span>
@@ -32,8 +32,6 @@ import { computed, ref } from "vue";
 import ProgressBar from "./progressBar.vue";
 import Modal from "../modal.vue";
 
-import { Switch } from "../../../functions/switch"
-
 const props = defineProps<{
 	cardUnit: {
 		name: string
@@ -41,7 +39,7 @@ const props = defineProps<{
 	}
 }>()
 
-const showEditPageModal = ref(new Switch(false))
+const showEditPageModal = ref(false)
 const startPage = ref(30)
 const endPage = ref(60)
 const nowPage = ref(40)

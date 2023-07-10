@@ -1,5 +1,5 @@
 <template>
-    <TransitionRoot appear :show="props.open.value" as="template">
+    <TransitionRoot appear :show="props.open" as="template">
 		<Dialog class="fixed bottom-0 w-screen h-screen p-0 bg-transparent">
 			<TransitionChild
 				enter-from="opacity-0"
@@ -30,13 +30,13 @@
 import { TransitionRoot, TransitionChild, Dialog } from "@headlessui/vue";
 import { Switch } from "../../functions/switch";
 
-const props = defineProps<{ open: Switch }>()
-const emit = defineEmits<{ (e: "update:open", newOpen: Switch): void }>()
+const props = defineProps<{ open: boolean }>()
+const emit = defineEmits<{ (e: "update:open", newOpen: boolean): void }>()
 
 function turnOpen(){
-    const newOpen = new Switch(props.open.value)
+    const newOpen = new Switch(props.open)
     newOpen.turn()
 
-    emit("update:open", newOpen)
+    emit("update:open", newOpen.value)
 }
 </script>

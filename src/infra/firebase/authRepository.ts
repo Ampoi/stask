@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app"
-import { User, getAuth, onAuthStateChanged, signOut } from "firebase/auth"
+import { User, getAuth, onAuthStateChanged, signOut, signInWithRedirect, GoogleAuthProvider } from "firebase/auth"
 
 import firebaseConfig from "./config"
 
@@ -25,11 +25,19 @@ export const AuthRepository = {
             })
         })
     },
-    async signOut(){
-        signOut(auth).then(() => {
-            console.log("サインアウトしました！");
-        }).catch((error: string) => {
-            throw new Error(error)
-        });
+    Login(loginSuccessFunc: Function){
+        const provider = new GoogleAuthProvider()
+        signInWithRedirect(auth, provider)
+            .then((value) => loginSuccessFunc(value))
+            .catch((err) => { throw new Error(err) })
+    },
+    async Logout(){
+        signOut(auth)
+            .then(() => {
+                console.log("サインアウトしました！");
+            })
+            .catch((error: string) => {
+                throw new Error(error)
+            });
     }
 }

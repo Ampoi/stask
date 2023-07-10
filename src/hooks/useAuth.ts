@@ -3,22 +3,30 @@ import { AuthRepository } from "../infra/firebase/authRepository";
 
 export default async () => {
     const isLogin = await AuthRepository.isLogin()
-    
-    const { uid, userName, userIcon } = await (async () => {
-        const user = await AuthRepository.getUser()
-        if( user ){
-            return {
-                uid: user.uid,
-                userName: user.displayName,
-                userIcon: user.photoURL
+
+    async function getUserData(){
+        return await (async () => {
+            const user = await AuthRepository.getUser()
+            if( user ){
+                return {
+                    uid: user.uid,
+                    userName: user.displayName,
+                    userIcon: user.photoURL
+                }
+            }else{
+                throw new Error("ログインしていません！")
             }
-        }else{
-            throw new Error("ログインしていません！")
-        }
-    })()
+        })()
+    }
+
+    function login(){
+        AuthRepository.Login(()=>{
+            window.location.reload()
+        })
+    }
 
     function logout(router: Router){
-        AuthRepository.signOut()
+        AuthRepository.Logout()
             .then(()=>{
                 router.push("/")
             })
@@ -27,5 +35,5 @@ export default async () => {
             })
     }
 
-    return { isLogin, uid, userName, userIcon, logout }
+    return { isLogin, getUserData, login, logout }
 }
