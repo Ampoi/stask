@@ -7,24 +7,18 @@
         leave-to="opacity-0 ease-in translate-y-10"
         leave="duration-300">
         <MenuItems class="absolute bottom-[72px] bg-white rounded-md p-3 w-[calc(100vw-48px)] flex flex-col gap-2">
-            <MenuItem
-                v-for="(link, index) in links"
-                :key="index">
-                <RouterLink
-                    :to="link.to"
-                    class="font-bold text-black/60 flex flex-row gap-2">
-                    <i :class="`bi ${link.icon}`"/>
-                    <p>{{ link.name }}</p>
-                </RouterLink>
-            </MenuItem>
+            <MenuItem name="About" icon="bi-question-lg" action="/"/>
+            <MenuItem name="グループ一覧" icon="bi-people-fill" action="/home" />
+            <MenuItem name="ログアウト" icon="bi-box-arrow-right" :action="() => { logout(router) }"/>
         </MenuItems>
     </TransitionRoot>
 </template>
 <script setup lang="ts">
-import { MenuItems, MenuItem, TransitionRoot } from "@headlessui/vue"
+import { MenuItems, TransitionRoot } from "@headlessui/vue"
 
-const links = [
-    { name: "About", icon: "bi-question-lg", to: "/" },
-    { name: "グループ一覧", icon: "bi-people-fill", to: "/home" },
-]
+import MenuItem from "./MenuItem.vue";
+import useAuth from "../../../hooks/useAuth";
+import { router } from "../../../router";
+
+const { logout } = await useAuth()
 </script>
