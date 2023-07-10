@@ -23,9 +23,7 @@
             </button>
         </div>
         <div>
-            <div class="w-full h-1 rounded-full overflow-hidden bg-slate-100">
-                <div class="h-full bg-blue-400/40" :style="{width: `${100}%`}"/>
-            </div>
+            <ProgressBar :percent="80" sub-color="#F3F4F6"/>
         </div>
         <TransitionRoot
             :show="showCardMenu.value"
@@ -37,13 +35,27 @@
             leave-to="h-0"
             class="overflow-hidden flex flex-col gap-2"
             >
-            <div class="w-full bg-gray-100 border-gray-200 border-[1px] h-80 rounded-lg p-4">
-                <PageUnitOptions
-                    v-model:page-unit="cardUnit"/>
-                <div class="flex flex-row gap-2 text-lg">
+            <div class="w-full bg-gray-100 border-gray-200 border-[1px] h-56 rounded-lg p-4 flex flex-col gap-2 relative overflow-y-auto">
+                <PageUnitOptions v-model:page-unit="cardUnit"/>
+                <div class="flex flex-row gap-2 items-center text-xl py-3 px-4 border-white border-[1px] rounded-lg">
                     <span>{{ cardUnit.symbol(30) }}</span>
+                    <ProgressBar :percent="80" sub-color="white"/>
                     <span>{{ cardUnit.symbol(30) }}</span>
                 </div>
+                <div class="flex flex-row gap-2 items-center text-xl py-3 px-4 border-white border-[1px] rounded-lg">
+                    <span>{{ cardUnit.symbol(30) }}</span>
+                    <ProgressBar :percent="80" sub-color="white"/>
+                    <span>{{ cardUnit.symbol(30) }}</span>
+                </div>
+                <div class="flex flex-row gap-2 items-center text-xl py-3 px-4 border-white border-[1px] rounded-lg">
+                    <span>{{ cardUnit.symbol(30) }}</span>
+                    <ProgressBar :percent="80" sub-color="white"/>
+                    <span>{{ cardUnit.symbol(30) }}</span>
+                </div>
+                <button
+                    class="rounded-lg p-2 bg-white w-full sticky left-0 bottom-0">
+                    <i class="bi bi-file-earmark-plus"></i>
+                </button>
             </div>
         </TransitionRoot>
     </div>
@@ -53,6 +65,7 @@ import { ref } from "vue"
 import { TransitionRoot } from "@headlessui/vue"
 
 import PageUnitOptions from "./pageUnitOptions.vue";
+import ProgressBar from "./progressBar.vue";
 
 class Switch {
     switch: boolean

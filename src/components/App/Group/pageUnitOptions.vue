@@ -2,7 +2,8 @@
   <Listbox
     :model-value="props.pageUnit"
     @update:model-value="value => updateCardUnit(value)"
-    v-slot="{ open }">
+    v-slot="{ open }"
+    as="div">
       <ListboxButton
           class="rounded-lg p-2 bg-white w-full"
           :class="{ 'rounded-b-none': open }">
