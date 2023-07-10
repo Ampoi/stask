@@ -4,9 +4,12 @@
         <NavBar
             class="absolute"
             :now-page="nowPage"/>
+        {{ isLogin }}
     </div>
 </template>
 <script setup lang="ts">
+import useAuth from "../hooks/useAuth"
+
 import NavBar from "../components/App/NavBar.vue"
 
 import Group from "../components/App/Group.vue"
@@ -16,4 +19,6 @@ const pages = {
 }
 
 const nowPage: keyof typeof pages = "group"
+
+const { isLogin } = await useAuth()
 </script>

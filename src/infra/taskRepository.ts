@@ -1,5 +1,5 @@
 import { createRealtimeDatabaseRepository } from "./firebase/realtimeDatabaseRepository"
 
 export const taskRepository = (groupID: string)=>{
-    return createRealtimeDatabaseRepository(`/groups/${groupID}/cards`)
+    return createRealtimeDatabaseRepository(`/groups/${groupID}/tasks`)
 }
