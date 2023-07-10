@@ -37,7 +37,7 @@
             <div class="w-full bg-gray-100 border-gray-200 border-[1px] h-56 rounded-lg p-4 flex flex-col gap-2 overflow-y-auto">
                 <div class="grow overflow-scroll flex flex-col gap-2">
                     <PageUnitOptions v-model:page-unit="cardUnit"/>
-                    <Page :symbol-function="cardUnit.symbol"/>
+                    <Page :cardUnit="cardUnit"/>
                 </div>
                 <button
                     class="rounded-lg p-2 bg-white w-full">
