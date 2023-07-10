@@ -18,7 +18,7 @@
 					leave-from="translate-y-0"
 					leave="duration-300 ease-out"
 					leave-to="translate-y-full"
-					class="bg-white p-6 rounded-t-3xl h-full"
+					class="bg-white p-6 pt-10 rounded-t-3xl h-full"
 					as="div">
                     <slot></slot>
 				</TransitionChild>
