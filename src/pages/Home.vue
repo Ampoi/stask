@@ -6,7 +6,7 @@
             :now-page="nowPage"/>
         <Modal
             :open="showLoginModal"
-            class="text-center opacity-0">
+            class="text-center">
             <h2 class="text-4xl font-bold">ログイン</h2>
             <p class="mt-2">Staskを利用するにはログインしてください</p>
             <div class="max-w-[240px] flex flex-col items-stretch mx-auto mt-4 gap-2">
@@ -39,7 +39,7 @@ const pages = {
     notLogin: NotLogin
 }
 
-const nowPage = ref<keyof typeof pages>("group")
+const nowPage = ref<keyof typeof pages>("notLogin")
 
 const showLoginModal = ref(false)
 
@@ -47,5 +47,7 @@ const { isLogin, login } = await useAuth()
 if( !isLogin ){
     nowPage.value = "notLogin"
     showLoginModal.value = true
+}else{
+    nowPage.value = "group"
 }
 </script>
