@@ -6,7 +6,7 @@
             :now-page="nowPage"/>
         <Modal
             :open="showLoginModal"
-            class="text-center">
+            class="text-center opacity-0">
             <h2 class="text-4xl font-bold">ログイン</h2>
             <p class="mt-2">Staskを利用するにはログインしてください</p>
             <div class="max-w-[240px] flex flex-col items-stretch mx-auto mt-4 gap-2">
