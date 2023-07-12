@@ -6,7 +6,7 @@ export type Scope = {
     now: { [key: Uid]: number }
 }
 
-type Subject = {
+export type Subject = {
     name: string
     color: `#${string}`
 }

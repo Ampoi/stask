@@ -46,37 +46,10 @@
                 </button>
             </div>
             <div class="flex flex-row items-stretch gap-2 h-10">
-                <Listbox
-                    v-model="cardSubject"
-                    v-slot="{ open }"
-                    as="div"
-                    class="grow">
-                    <ListboxButton
-                        class="rounded-lg p-2 border-[1px] border-gray-100 w-full"
-                        :class="{ 'rounded-b-none': open }">
-                        教科：{{ cardSubject.name }}
-                    </ListboxButton>
-                    <TransitionRoot
-                        enter-from="opacity-0 ease-out -translate-y-10"
-                        enter="duration-300"
-                        enter-to="opacity-100 translate-y-0"
-                        leave-from="opacity-100 translate-y-0"
-                        leave-to="opacity-0 ease-in -translate-y-10"
-                        leave="duration-300"
-                        class="relative w-full">
-                        <ListboxOptions
-                            class="p-2 w-full bg-white rounded-b-lg border-[1px] border-t-0 border-gray-100 flex flex-col absolute"
-                            ref="unitsOptions">
-                            <ListboxOption
-                                v-for="(subject, index) in subjects"
-                                :key="index"
-                                :value="subject"
-                                class="p-1 text-center">
-                                {{ subject.name }}
-                            </ListboxOption>
-                        </ListboxOptions>
-                    </TransitionRoot>
-                </Listbox>
+                <SubjectOptions
+                    v-model:card-subject="cardSubject"
+                    :subjects="subjects"
+                    />
                 <button class="rounded-lg border-[1px] border-red-400 text-red-400 text-lg w-10 grid place-content-center">
                     <i class="bi bi-trash3"></i>
                 </button>
@@ -86,14 +59,15 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue"
-import { Listbox, ListboxButton, ListboxOption, ListboxOptions, TransitionRoot } from "@headlessui/vue"
+import { TransitionRoot } from "@headlessui/vue"
 
-import PageUnitOptions from "./pageUnitOptions.vue";
-import ProgressBar from "./progressBar.vue";
-import Page from "./page.vue"
+import PageUnitOptions from "./TaskCard/pageUnitOptions.vue";
+import ProgressBar from "./TaskCard/progressBar.vue";
+import Page from "./TaskCard/page.vue"
+import SubjectOptions from "./TaskCard/subjectOptions.vue";
 
 import { Switch } from "../../../functions/switch"
-import { Scope, Task } from "../../../models/task";
+import { Scope, Subject, Task } from "../../../models/task";
 import useAuth from "../../../hooks/useAuth";
 
 const showCardMenu = ref(new Switch(false))
@@ -111,14 +85,14 @@ const props = defineProps<{
     task: Task,
 }>()
 
-const subjects = [
+const subjects: Subject[] = [
     { name: "国語", color: "#F44335" },
     { name: "数学", color: "#2196F3" },
     { name: "理科", color: "#4BAF51" },
     { name: "社会", color: "#FFC105" },
     { name: "英語", color: "#E040FB" }
 ]
-const cardSubject = subjects[0]
+const cardSubject = ref(subjects[0])
 
 const isDone = computed({
     get(){

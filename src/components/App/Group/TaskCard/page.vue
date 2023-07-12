@@ -30,7 +30,7 @@
 import { computed, ref } from "vue";
 
 import ProgressBar from "./progressBar.vue";
-import Modal from "../modal.vue";
+import Modal from "../../modal.vue";
 
 const props = defineProps<{
 	cardUnit: {
