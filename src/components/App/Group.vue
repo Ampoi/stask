@@ -9,9 +9,9 @@
         </Section>
         <Section title="課題一覧">
             <TaskCard
-                v-for="(task, index) in tasks"
+                v-for="(_task, index) in tasks"
                 :key="index"
-                :task="task"/>
+                :task="tasks[index]"/>
         </Section>
     </div>
 </template>

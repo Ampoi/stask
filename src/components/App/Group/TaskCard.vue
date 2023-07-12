@@ -65,7 +65,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from "vue"
+import { computed, ref, watch } from "vue"
 import { TransitionRoot } from "@headlessui/vue"
 
 import DoneButton from "./TaskCard/doneButton.vue";
@@ -90,15 +90,14 @@ const { getUserData } = await useAuth()
 const { uid } = await getUserData()
 
 const props = defineProps<{ task: Task }>()
-const editableTask = computed({
-    get(){
-        console.log(props.task)
-        return props.task
-    },
-    set(newTask: Task){
-        console.log(newTask);
-    }
-})
+const emit = defineEmits<{
+    (e: "update:task", newTask: Task): void
+}>()
+
+const editableTask = ref(props.task)
+watch(editableTask, (newTask: Task) => {
+    emit("update:task", newTask)
+}, { deep: true })
 
 const subjects: Subject[] = [
     { name: "国語", color: "#F44335" },
@@ -134,7 +133,7 @@ const isDone = computed({
             return oldScope
         })
 
-        console.log(newScopes);
+        editableTask.value.scopes = newScopes
     }
 })
 </script>
