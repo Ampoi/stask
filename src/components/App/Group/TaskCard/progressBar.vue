@@ -4,12 +4,18 @@
 		:style="{
 			backgroundColor: subColor
 		}">
-		<div class="h-full bg-blue-400/40" :style="{width: `${props.percent}%`}"/>
+		<div
+			class="h-full"
+			:style="{
+				width: `${props.percent}%`,
+				background: `${props.mainColor}70`
+			}"/>
 	</div>
 </template>
 <script setup lang="ts">
 const props = defineProps<{
 	percent: number
+	mainColor: string
 	subColor: string
 }>()
 </script>

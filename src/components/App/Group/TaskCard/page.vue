@@ -3,7 +3,10 @@
 		class="flex flex-row gap-2 items-center text-xl py-3 px-4 border-white border-[1px] rounded-lg"
 		@click="showEditPageModal = !showEditPageModal">
 		<span>{{ props.cardUnit.symbol(editableScope.first) }}</span>
-		<ProgressBar :percent="getLevelOfAchivement" sub-color="white"/>
+		<ProgressBar
+			:percent="getLevelOfAchivement"
+			:main-color="color"
+			sub-color="white"/>
 		<span>{{ props.cardUnit.symbol(editableScope.last) }}</span>
 	</button>
 
@@ -40,7 +43,8 @@ const props = defineProps<{
 		name: string
 		symbol: (page: number) => string //TODO:Modelか何かでまとめたい
 	},
-	scope: Scope
+	scope: Scope,
+	color: string
 }>()
 console.log(props.scope);
 

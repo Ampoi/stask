@@ -23,7 +23,10 @@
             </button>
         </div>
         <div>
-            <ProgressBar :percent="donePercent" sub-color="#F3F4F6"/>
+            <ProgressBar
+                :percent="donePercent"
+                :main-color="editableTask.subject.color"
+                sub-color="#F3F4F6"/>
         </div>
         <TransitionRoot
             :show="showCardMenu.value"
@@ -41,6 +44,7 @@
                         v-for="(_scope, index) in editableTask.scopes"
                         :key="index"
                         v-model:scope="editableTask.scopes[index]"
+                        :color="editableTask.subject.color"
                         :cardUnit="cardUnit"/>
                 </div>
                 <button
