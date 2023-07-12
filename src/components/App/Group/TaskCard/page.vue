@@ -59,7 +59,7 @@ const nowPage = computed(() => {
 
 const getLevelOfAchivement = computed(()=>{
 	const allPageAmount = editableScope.value.last - editableScope.value.first + 1
-	const achivedPageAmount = ( nowPage.value ) - editableScope.value.first + 1
+	const achivedPageAmount = nowPage.value - editableScope.value.first + 1	
 
 	return achivedPageAmount / allPageAmount * 100
 })

@@ -24,7 +24,7 @@
             </button>
         </div>
         <div>
-            <ProgressBar :percent="80" sub-color="#F3F4F6"/>
+            <ProgressBar :percent="donePercent" sub-color="#F3F4F6"/>
         </div>
         <TransitionRoot
             :show="showCardMenu.value"
@@ -104,17 +104,23 @@ const subjects: Subject[] = [
 ]
 const cardSubject = ref(subjects[0])
 
+const donePercent = computed(() => {
+    let allPagesAmount = 0
+    let donePagesAmount = 0
+        
+    props.task.scopes.forEach((scope) => {
+        const myNowPaage: number | undefined = scope.now[uid]
+
+        allPagesAmount += scope.last - scope.first
+        donePagesAmount += (myNowPaage ?? scope.first) - scope.first
+    })
+
+    return (donePagesAmount / allPagesAmount) * 100
+})
+
 const isDone = computed({
     get(){
-        let isDone = true
-        
-        props.task.scopes.forEach((scope) => {
-            const myNowPaage: number | undefined = scope.now[uid]
-            
-            if( !myNowPaage || myNowPaage < scope.last ){ isDone = false }
-        })
-
-        return isDone
+        return donePercent.value == 100
     },
     set(done: boolean){
         const newScopes = props.task.scopes.map((scope: Scope): Scope  => {
