@@ -3,7 +3,8 @@
         <div class="flex flex-row items-stretch gap-4 h-8">
             <button
                 class="border-2 rounded-full basis-8 grid place-content-center"
-                :class="{ 'border-blue-400/40 bg-blue-400/30 text-white': card.done, 'border-none text-blue-400/40': !card.done }">
+                :class="{ 'border-blue-400/40 bg-blue-400/30 text-white': isDone, 'border-transparent text-blue-400/40': !isDone }"
+                @click="isDone = !isDone">
                 <i class="bi bi-check text-3xl"/>
             </button>
             <input
@@ -84,7 +85,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue"
+import { computed, ref } from "vue"
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions, TransitionRoot } from "@headlessui/vue"
 
 import PageUnitOptions from "./pageUnitOptions.vue";
@@ -92,6 +93,8 @@ import ProgressBar from "./progressBar.vue";
 import Page from "./page.vue"
 
 import { Switch } from "../../../functions/switch"
+import { Scope, Task } from "../../../models/task";
+import useAuth from "../../../hooks/useAuth";
 
 const showCardMenu = ref(new Switch(false))
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
@@ -101,6 +104,12 @@ const card = {
     name: "数学A"
 }
 
+const { getUserData } = await useAuth()
+const { uid } = await getUserData()
+
+const props = defineProps<{
+    task: Task,
+}>()
 
 const subjects = [
     { name: "国語", color: "#F44335" },
@@ -110,4 +119,28 @@ const subjects = [
     { name: "英語", color: "#E040FB" }
 ]
 const cardSubject = subjects[0]
+
+const isDone = computed({
+    get(){
+        let isDone = true
+        
+        props.task.scopes.forEach((scope) => {
+            const myNowPaage: number | undefined = scope.now[uid]
+            
+            if( !myNowPaage || myNowPaage < scope.last ){ isDone = false }
+        })
+
+        return isDone
+    },
+    set(done: boolean){
+        const newScopes = props.task.scopes.map((scope: Scope): Scope  => {
+            let oldScope = { ...scope }
+            oldScope.now[uid] = done ? scope.last : scope.first
+            
+            return oldScope
+        })
+
+        console.log(newScopes);
+    }
+})
 </script>

@@ -1,6 +1,6 @@
 type Uid = string
 
-type Scope = {
+export type Scope = {
     first: number
     last: number
     now: { [key: Uid]: number }

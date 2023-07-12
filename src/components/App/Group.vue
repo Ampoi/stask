@@ -8,7 +8,10 @@
             </div>
         </Section>
         <Section title="課題一覧">
-            <TaskCard/>
+            <TaskCard
+                v-for="(task, index) in tasks"
+                :key="index"
+                :task="task"/>
         </Section>
     </div>
 </template>
@@ -21,6 +24,4 @@ import TaskCard from "./Group/TaskCard.vue"
 import useTasks from "../../hooks/useTasks";
 
 const { tasks } = await useTasks("school")
-console.log(tasks.value);
-
 </script>
