@@ -38,7 +38,11 @@
             <div class="w-full bg-gray-100 border-gray-200 border-[1px] h-56 rounded-lg p-4 flex flex-col gap-2 overflow-y-auto">
                 <div class="grow overflow-scroll flex flex-col gap-2">
                     <PageUnitOptions v-model:page-unit="cardUnit"/>
-                    <Page :cardUnit="cardUnit"/>
+                    <Page
+                        v-for="(_scope, index) in editableTask.scopes"
+                        :key="index"
+                        v-model:scope="editableTask.scopes[index]"
+                        :cardUnit="cardUnit"/>
                 </div>
                 <button
                     class="rounded-lg p-2 bg-white w-full">
@@ -81,9 +85,15 @@ const card = {
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()
 
-const props = defineProps<{
-    task: Task,
-}>()
+const props = defineProps<{ task: Task }>()
+const editableTask = computed({
+    get(){
+        return props.task
+    },
+    set(newTask: Task){
+        console.log(newTask);
+    }
+})
 
 const subjects: Subject[] = [
     { name: "国語", color: "#F44335" },
