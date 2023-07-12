@@ -14,14 +14,31 @@
                 v-model:task="tasks[index]"/>
         </Section>
     </div>
+    <AddTaskModal
+        v-model:open="showAddTaskModal"
+        @addTask="addTask"/>
 </template>
 <script setup lang="ts">
 import Section from "./Group/Section.vue"
 import AddCountdownButton from "./Group/AddCountdownButton.vue"
 import Countdown from "./Group/Countdown.vue"
 import TaskCard from "./Group/TaskCard.vue"
+import AddTaskModal from "./Group/addTaskModal.vue"
 
 import useTasks from "../../hooks/useTasks";
+import { ref } from "vue"
+import { Task } from "../../models/task"
 
 const { tasks } = await useTasks("school")
+
+const showAddTaskModal = ref(true)
+function startAddTask(){ showAddTaskModal.value = true }
+function addTask(newTask: Task){
+    console.log(newTask);
+    
+    tasks.value.push(newTask)
+    showAddTaskModal.value = false
+}
+
+defineExpose({ addTask: startAddTask })
 </script>

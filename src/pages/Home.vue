@@ -1,9 +1,12 @@
 <template>
     <div class="bg-gray-100 w-screen h-screen px-6 py-12 box-border relative">
-        <component :is="pages[nowPage]"/>
+        <component
+            :is="pages[nowPage]"
+            ref="groupPage"/>
         <NavBar
             class="absolute"
-            :now-page="nowPage"/>
+            :now-page="nowPage"
+            @addTask="addTask()"/>
         <Modal
             :open="showLoginModal"
             class="text-center">
@@ -49,5 +52,10 @@ if( !isLogin ){
     showLoginModal.value = true
 }else{
     nowPage.value = "group"
+}
+
+const groupPage = ref()
+function addTask(){
+    groupPage.value.$.exposed.addTask()
 }
 </script>
