@@ -9,7 +9,7 @@
             <input
                 type="text"
                 class="rounded-lg grow text-xl"
-                v-model="card.name"
+                v-model="editableTask.name"
                 placeholder="課題名を入力...">
             <button
                 class="rounded-full basis-8 grid place-content-center"
@@ -81,11 +81,6 @@ import useAuth from "../../../hooks/useAuth";
 const showCardMenu = ref(new Switch(false))
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
 
-const card = {
-    done: true,
-    name: "数学A"
-}
-
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()
 
@@ -95,7 +90,7 @@ const emit = defineEmits<{
 }>()
 
 const editableTask = ref(props.task)
-watch(editableTask, (newTask: Task) => {
+watch(editableTask, (newTask: Task) => {    
     emit("update:task", newTask)
 }, { deep: true })
 

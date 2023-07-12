@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { taskRepository as firebaseRepository } from "../infra/taskRepository";
 
 export default async (groupID: string) => {
@@ -7,10 +7,21 @@ export default async (groupID: string) => {
         const newTasks = await taskRepository.get()
         return newTasks ?? []
     })()
-
+    
+    let changedByDatabase = true
+    taskRepository.onChange((snapshot)=>{
+        changedByDatabase = true
+        tasks.value = snapshot.val()
+    })
+    
     const tasks = ref(tasksData)
-
-    taskRepository.onChange((snapshot)=>{ tasks.value = snapshot.val() })
+    watch(tasks, async () => {
+        if(changedByDatabase){
+            changedByDatabase = false
+        }else{
+            await taskRepository.update(tasks.value)
+        }
+    }, { deep: true })
 
     return { tasks }
 }

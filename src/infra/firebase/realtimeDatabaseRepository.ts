@@ -1,5 +1,6 @@
-import { getDatabase, ref, get, set, onValue, DataSnapshot } from "firebase/database"
+import { getDatabase, ref, get, set, onValue, DataSnapshot, update } from "firebase/database"
 import { AuthRepository } from "./authRepository"
+import { Updates } from "./func/getUpdates"
 
 const db = getDatabase()
 
@@ -27,6 +28,23 @@ export const createRealtimeDatabaseRepository = <T>(path: string) => {
             set(dataRef, saveData)
                 .catch((err)=>{          
                     throw `path(set): ${path}\nerr: ${err.toString()}`
+                })
+        },
+        update: async (updateData: T): Promise<void> => {
+            if(!AuthRepository.isLogin()){ throw new Error("データベースに保存する際はログインが必須です") }
+
+            const oldDB = createRealtimeDatabaseRepository<T>(path)
+            const oldDBdata = await oldDB.get()
+
+            if(typeof updateData != "object" || !updateData){ throw new Error("アップデートするデータはObjectでなければいけません") }
+            if(typeof oldDBdata != "object" || !oldDBdata){ throw new Error("アップデート先のデータはObjectではなくてはありません") }
+
+            const updateClass: Updates = new Updates(oldDBdata, updateData)
+            const updates = updateClass.updates
+
+            update(dataRef, updates)
+                .catch((err) => {
+                    throw `path(update): ${path}\nerr: ${err.toString()}`
                 })
         },
         onChange(callback: (snapshot: DataSnapshot) => unknown){

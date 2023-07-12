@@ -11,16 +11,16 @@
             <TaskCard
                 v-for="(_task, index) in tasks"
                 :key="index"
-                :task="tasks[index]"/>
+                v-model:task="tasks[index]"/>
         </Section>
     </div>
 </template>
 <script setup lang="ts">
 import Section from "./Group/Section.vue"
-
 import AddCountdownButton from "./Group/AddCountdownButton.vue"
 import Countdown from "./Group/Countdown.vue"
 import TaskCard from "./Group/TaskCard.vue"
+
 import useTasks from "../../hooks/useTasks";
 
 const { tasks } = await useTasks("school")

@@ -46,7 +46,6 @@ const props = defineProps<{
 	scope: Scope,
 	color: string
 }>()
-console.log(props.scope);
 
 const emit = defineEmits<{
 	(e: "update:scope", newScope: Scope): void
