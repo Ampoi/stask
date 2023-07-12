@@ -1,12 +1,11 @@
 <template>
-    <div class="w-full p-4 bg-white/80 border-2 border-l-8 border-blue-400/40 rounded-xl flex flex-col gap-2">
+    <div
+        class="w-full p-4 bg-white/80 border-2 border-l-8 rounded-xl flex flex-col gap-2"
+        :style="{ borderColor: `${editableTask.subject.color}70` }">
         <div class="flex flex-row items-stretch gap-4 h-8">
-            <button
-                class="border-2 rounded-full basis-8 grid place-content-center"
-                :class="{ 'border-blue-400/40 bg-blue-400/30 text-white': isDone, 'border-transparent text-blue-400/40': !isDone }"
-                @click="isDone = !isDone">
-                <i class="bi bi-check text-3xl"/>
-            </button>
+            <DoneButton
+                v-model:is-done="isDone"
+                :color="editableTask.subject.color"/>
             <input
                 type="text"
                 class="rounded-lg grow text-xl"
@@ -51,7 +50,7 @@
             </div>
             <div class="flex flex-row items-stretch gap-2 h-10">
                 <SubjectOptions
-                    v-model:card-subject="cardSubject"
+                    v-model:card-subject="editableTask.subject"
                     :subjects="subjects"
                     />
                 <button class="rounded-lg border-[1px] border-red-400 text-red-400 text-lg w-10 grid place-content-center">
@@ -65,6 +64,7 @@
 import { computed, ref } from "vue"
 import { TransitionRoot } from "@headlessui/vue"
 
+import DoneButton from "./TaskCard/doneButton.vue";
 import PageUnitOptions from "./TaskCard/pageUnitOptions.vue";
 import ProgressBar from "./TaskCard/progressBar.vue";
 import Page from "./TaskCard/page.vue"
@@ -88,6 +88,7 @@ const { uid } = await getUserData()
 const props = defineProps<{ task: Task }>()
 const editableTask = computed({
     get(){
+        console.log(props.task)
         return props.task
     },
     set(newTask: Task){
@@ -102,7 +103,6 @@ const subjects: Subject[] = [
     { name: "社会", color: "#FFC105" },
     { name: "英語", color: "#E040FB" }
 ]
-const cardSubject = ref(subjects[0])
 
 const donePercent = computed(() => {
     let allPagesAmount = 0
