@@ -57,7 +57,9 @@
                     v-model:card-subject="editableTask.subject"
                     :subjects="subjects"
                     />
-                <button class="rounded-lg border-[1px] border-red-400 text-red-400 text-lg w-10 grid place-content-center">
+                <button
+                    class="rounded-lg border-[1px] border-red-400 text-red-400 text-lg w-10 grid place-content-center"
+                    @click="emit('deleteThisTask')">
                     <i class="bi bi-trash3"></i>
                 </button>
             </div>
@@ -84,9 +86,10 @@ const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {ret
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()
 
-const props = defineProps<{ task: Partial<Task> }>()
+const props = defineProps<{ task: Partial<Task> }>()    
 const emit = defineEmits<{
     (e: "update:task", newTask: Task): void
+    (e: "deleteThisTask"): void
 }>()
 
 const subjects: Subject[] = [

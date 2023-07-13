@@ -11,7 +11,8 @@
             <TaskCard
                 v-for="(_task, index) in tasks"
                 :key="index"
-                v-model:task="tasks[index]"/>
+                v-model:task="tasks[index]"
+                @deleteThisTask="deleteTask(index)"/>
         </Section>
     </div>
     <AddTaskModal
@@ -29,13 +30,12 @@ import useTasks from "../../hooks/useTasks";
 import { ref } from "vue"
 import { Task } from "../../models/task"
 
-const { tasks } = await useTasks("school")
+const { tasks, deleteTask } = await useTasks("school")
 
 const showAddTaskModal = ref(true)
 function startAddTask(){ showAddTaskModal.value = true }
 function addTask(newTask: Task){
-    console.log(newTask);
-    
+    if( !tasks.value ){ tasks.value = [] }
     tasks.value.push(newTask)
     showAddTaskModal.value = false
 }
