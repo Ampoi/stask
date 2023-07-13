@@ -96,5 +96,6 @@ function deleteScope(index: number){ newTask.value.scopes.splice(index, 1) }
 
 function addTask(){
     emit("addTask", newTask.value)
+    newTask.value = Task.create(subjects)
 }
 </script>
