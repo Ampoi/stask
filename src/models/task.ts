@@ -11,8 +11,8 @@ export type Scope = {
 export const Scope = {
     create(): Scope {
         return {
-            first: 0,
-            last: 0,
+            first: 1,
+            last: 2,
             now: {}
         }
     }

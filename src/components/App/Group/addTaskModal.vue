@@ -31,7 +31,7 @@
                                     type="number"
                                     class="text-3xl font-bold bg-transparent w-[65px] text-center"
                                     v-model="newTask.scopes[index].first"
-                                    min="0" :max="newTask.scopes[index].last-1">
+                                    min="1" :max="newTask.scopes[index].last-1">
                             </div>
                             <button
                                 class="p-4 rounded-full"

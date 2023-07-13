@@ -1,11 +1,11 @@
 <template>
-    <div class="bg-gray-100 w-screen h-screen px-6 py-12 box-border relative flex flex-col gap-4">
-        <component
-            :is="pages[nowPage]"
-            ref="groupPage"
-            class="overflow-y-auto"/>
+    <div class="bg-gray-100 w-screen h-screen px-6 py-12 box-border flex flex-col gap-4 items-stretch">
+        <div class="overflow-y-auto max-h-[calc(100%-64px)] grow">
+            <component
+                :is="pages[nowPage]"
+                ref="groupPage"/>
+        </div>
         <NavBar
-            class="absolute"
             :now-page="nowPage"
             @addTask="addTask()"/>
     </div>
