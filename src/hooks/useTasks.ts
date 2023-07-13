@@ -1,6 +1,5 @@
 import { ref, watch } from "vue";
 import { taskRepository as firebaseRepository } from "../infra/taskRepository";
-import { Task } from "vitest";
 
 export default async (groupID: string) => {
     const taskRepository = firebaseRepository(groupID)
@@ -9,13 +8,13 @@ export default async (groupID: string) => {
         return newTasks ?? []
     })()
     
+    const tasks = ref(tasksData)
+
     let changedByDatabase = true
     taskRepository.onChange((snapshot)=>{
         changedByDatabase = true
         tasks.value = snapshot.val()
     })
-    
-    const tasks = ref(tasksData)
     
     watch(tasks, async () => {
         if(changedByDatabase){
@@ -26,7 +25,7 @@ export default async (groupID: string) => {
     }, { deep: true })
 
     function deleteTask(index: number){
-        tasks.value.splice(index-1, 1)
+        tasks.value.splice(index, 1)
     }
 
     return { tasks, deleteTask }

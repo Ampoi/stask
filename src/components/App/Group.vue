@@ -32,7 +32,7 @@ import { Task } from "../../models/task"
 
 const { tasks, deleteTask } = await useTasks("school")
 
-const showAddTaskModal = ref(true)
+const showAddTaskModal = ref(false)
 function startAddTask(){ showAddTaskModal.value = true }
 function addTask(newTask: Task){
     if( !tasks.value ){ tasks.value = [] }

@@ -1,8 +1,8 @@
 <template>
     <MenuItem>
         <RouterLink
-            v-if="typeof action == 'string'"
-            :to="action"
+            v-if="typeof props.action === 'string'"
+            :to="props.action"
             class="font-bold text-black/60 flex flex-row gap-2">
             <i :class="`bi ${icon}`"/>
             <p>{{ name }}</p>
@@ -10,7 +10,7 @@
 
         <button
             v-else
-            @click="action"
+            @click="props.action"
             class="font-bold text-black/60 flex flex-row gap-2">
             <i :class="`bi ${icon}`"/>
             <p>{{ name }}</p>

@@ -105,8 +105,17 @@ function returnPerfectTask(){
 }
 
 const editableTask = ref(returnPerfectTask())
-watch(editableTask, (newTask: Task) => { 
-    emit("update:task", newTask)
+const changedByProp = ref(false)
+watch(() => props.task, () => {
+    changedByProp.value = true
+    editableTask.value = returnPerfectTask()
+})
+
+watch(editableTask, (newTask: Task) => {
+    if(!changedByProp.value){
+        changedByProp.value = false
+        emit("update:task", newTask)
+    }
 }, { deep: true })
 
 const donePercent = computed(() => {

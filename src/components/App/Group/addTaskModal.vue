@@ -39,7 +39,7 @@
                                 <i class="bi bi-trash3 text-black/60 text-xl"/>
                             </button>
                             <div class="flex flex-col items-center">
-                                <p class="text-black/60 text-sm">始めのページ</p>
+                                <p class="text-black/60 text-sm">最後のページ</p>
                                 <input
                                     type="number"
                                     class="text-3xl font-bold bg-transparent w-[65px] text-center"
