@@ -30,7 +30,7 @@
 	</Modal>
 </template>
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 import ProgressBar from "./progressBar.vue";
 import Modal from "../../modal.vue";
@@ -43,7 +43,7 @@ const props = defineProps<{
 		name: string
 		symbol: (page: number) => string //TODO:Modelか何かでまとめたい
 	},
-	scope: Scope,
+	scope: Partial<Scope>,
 	color: string
 }>()
 
@@ -67,12 +67,21 @@ const getLevelOfAchivement = computed(()=>{
 	return achivedPageAmount / allPageAmount * 100
 })
 
-const editableScope = computed({
-	get(){
-		return props.scope
-	},
-	set(newScope: Scope){
-		emit("update:scope", newScope)
+function returnPerfectScope(){ return { ...Scope.create(), ...props.scope } }
+
+const editableScope = ref(returnPerfectScope())
+const changedByProp = ref(false)
+
+watch(() => props.scope, () => {
+	editableScope.value = returnPerfectScope()
+	changedByProp.value = true
+})
+
+watch(editableScope, () => {
+	if( changedByProp.value ){
+		changedByProp.value = false
+	}else{
+		emit("update:scope", editableScope.value)
 	}
 })
 </script>

@@ -48,7 +48,8 @@
                         :cardUnit="cardUnit"/>
                 </div>
                 <button
-                    class="rounded-lg p-2 bg-white w-full">
+                    class="rounded-lg p-2 bg-white w-full"
+                    @click="addScope">
                     <i class="bi bi-file-earmark-plus"></i>
                 </button>
             </div>
@@ -100,9 +101,7 @@ const subjects: Subject[] = [
     { name: "英語", color: "#E040FB" }
 ]
 
-function returnPerfectTask(){
-    return { ...Task.create(subjects), ...props.task }
-}
+function returnPerfectTask(){ return { ...Task.create(subjects), ...props.task } }
 
 const editableTask = ref(returnPerfectTask())
 const changedByProp = ref(false)
@@ -116,6 +115,7 @@ watch(editableTask, (newTask: Task) => {
         changedByProp.value = false
         emit("update:task", newTask)
     }
+    console.log("aaaa");
 }, { deep: true })
 
 const donePercent = computed(() => {
@@ -147,4 +147,8 @@ const isDone = computed({
         editableTask.value.scopes = newScopes
     }
 })
+
+function addScope(){
+    editableTask.value.scopes.push(Scope.create())
+}
 </script>
