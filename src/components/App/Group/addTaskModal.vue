@@ -1,6 +1,6 @@
 <template>
     <Modal
-        :open="open"
+        :open="props.open"
         @update:open="(newOpen) => emit('update:open', newOpen)">
         <div class="flex flex-col items-center gap-4 h-full">
             <h1 class="text-3xl font-semibold">課題を追加する</h1>
@@ -68,7 +68,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { Task, Scope } from "../../../models/task";
+import { Task, Scope, Subject } from "../../../models/task";
 import Modal from "../modal.vue"
 
 const props = defineProps<{

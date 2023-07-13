@@ -36,11 +36,16 @@ export const createRealtimeDatabaseRepository = <T>(path: string) => {
             const oldDB = createRealtimeDatabaseRepository<T>(path)
             const oldDBdata = await oldDB.get()
 
+            console.log(updateData)
+            console.log(oldDBdata);
+
             if(typeof updateData != "object" || !updateData){ throw new Error("アップデートするデータはObjectでなければいけません") }
             if(typeof oldDBdata != "object" || !oldDBdata){ throw new Error("アップデート先のデータはObjectではなくてはありません") }
 
             const updateClass: Updates = new Updates(oldDBdata, updateData)
             const updates = updateClass.updates
+
+            console.log(updates);
 
             update(dataRef, updates)
                 .catch((err) => {

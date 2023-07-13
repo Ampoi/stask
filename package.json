@@ -9,13 +9,15 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "publish": "export CURRENT_BRANCH=\"$(git branch --contains | cut -b 3-)\" && git push origin $CURRENT_BRANCH",
-    "pull": "export CURRENT_BRANCH=\"$(git branch --contains | cut -b 3-)\" && git pull origin $CURRENT_BRANCH"
+    "pull": "export CURRENT_BRANCH=\"$(git branch --contains | cut -b 3-)\" && git pull origin $CURRENT_BRANCH",
+    "test": "vitest"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.14",
     "@types/webfontloader": "^1.6.35",
     "bootstrap-icons": "^1.10.5",
     "firebase": "^10.0.0",
+    "vitest": "^0.33.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4",
     "webfontloader": "^1.6.28"

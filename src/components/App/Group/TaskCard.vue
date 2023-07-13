@@ -84,15 +84,10 @@ const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {ret
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()
 
-const props = defineProps<{ task: Task }>()
+const props = defineProps<{ task: Partial<Task> }>()
 const emit = defineEmits<{
     (e: "update:task", newTask: Task): void
 }>()
-
-const editableTask = ref(props.task)
-watch(editableTask, (newTask: Task) => {    
-    emit("update:task", newTask)
-}, { deep: true })
 
 const subjects: Subject[] = [
     { name: "国語", color: "#F44335" },
@@ -102,15 +97,24 @@ const subjects: Subject[] = [
     { name: "英語", color: "#E040FB" }
 ]
 
+function returnPerfectTask(){
+    return { ...Task.create(subjects), ...props.task }
+}
+
+const editableTask = ref(returnPerfectTask())
+watch(editableTask, (newTask: Task) => { 
+    emit("update:task", newTask)
+}, { deep: true })
+
 const donePercent = computed(() => {
     let allPagesAmount = 0
     let donePagesAmount = 0
         
-    props.task.scopes.forEach((scope) => {
-        const myNowPaage: number | undefined = scope.now[uid]
+    editableTask.value.scopes.forEach((scope) => {
+        const myNowPaage: number | undefined = scope.now ? scope.now[uid] : 0
 
-        allPagesAmount += scope.last - scope.first
-        donePagesAmount += (myNowPaage ?? scope.first) - scope.first
+        allPagesAmount += (scope.last ?? 0) - (scope.first ?? 0)
+        donePagesAmount += (myNowPaage ?? (scope.first ?? 0)) - (scope.first ?? 0)
     })
 
     return (donePagesAmount / allPagesAmount) * 100
@@ -121,9 +125,9 @@ const isDone = computed({
         return donePercent.value == 100
     },
     set(done: boolean){
-        const newScopes = props.task.scopes.map((scope: Scope): Scope  => {
+        const newScopes = editableTask.value.scopes.map((scope: Scope): Scope  => {
             let oldScope = { ...scope }
-            oldScope.now[uid] = done ? scope.last : scope.first
+            oldScope.now[uid] = done ? (scope.last ?? 0) : (scope.first ?? 0)
             
             return oldScope
         })
