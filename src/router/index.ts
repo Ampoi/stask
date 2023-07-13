@@ -8,7 +8,7 @@ export const router = createRouter({
     routes: [
         { path: "/", name: "Landing", component: Landing },
         { path: "/home", name: "Home", component: Home },
-        { path: "/invite/", name: "Invite", component: Invite }
+        { path: "/invite", name: "Invite", component: Invite }
     ],
     history: createWebHistory()
 })
