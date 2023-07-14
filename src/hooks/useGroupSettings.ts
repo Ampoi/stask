@@ -11,17 +11,19 @@ export default async (groupID: string) => {
     if( !isLogin ){ throw new Error("ログインしてません！") }
     const { uid, userName, userIcon } = await getUserData()
 
+    function returnPerfectSettings(newSettings: Partial<GroupSettings>){ return { ...GroupSettings.create(uid, userName ?? "unknown", userIcon), ...newSettings } }
+
     const groupSettingsData = await (async () => {
         const newGroupSettings = await groupSettingsRepository.get()
-        return newGroupSettings ?? GroupSettings.create(uid, userName ?? "unknown", userIcon)
+        return newGroupSettings ?? {}
     })()
     
-    const groupSettings = ref(groupSettingsData)
+    const groupSettings = ref(returnPerfectSettings(groupSettingsData))
 
     let changedByDatabase = true
     groupSettingsRepository.onChange((snapshot)=>{
         changedByDatabase = true
-        groupSettings.value = snapshot.val()
+        groupSettings.value = returnPerfectSettings(snapshot.val())
     })
     
     watch(groupSettings, async () => {

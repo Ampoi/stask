@@ -6,6 +6,7 @@
             <h1 class="text-3xl font-semibold">グループの設定</h1>
             <div class="mx-4 grow w-full flex flex-col gap-4 overflow-y-auto">
                 <NameSection v-model:name="newGroupSettings.name"/>
+                <PermissionSection v-model:permissions="newGroupSettings.permissions"/>
                 <SubjectSection v-model:subjects="newGroupSettings.subjects"/>
                 <MemberSection v-model:members="newGroupSettings.members"/>
             </div>
@@ -23,11 +24,12 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
-import Modal from "../modal.vue"
+import Modal from "../modal.vue";
 
 import NameSection from "./groupSettingsModal/nameSection.vue";
 import SubjectSection from "./groupSettingsModal/subjectSection.vue";
 import MemberSection from "./groupSettingsModal/memberSection.vue";
+import PermissionSection from "./groupSettingsModal/permissionSection.vue";
 
 import useGroupSettings from "../../../hooks/useGroupSettings";
 

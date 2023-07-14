@@ -10,10 +10,22 @@ export type Member = {
     role: Role
 }
 
+export type Permissions = {
+    [key in Role]: {
+        card: boolean
+        members: boolean
+        settings: {
+            permissions: boolean
+            subjects: boolean
+        }
+    }
+}
+
 export type GroupSettings = {
     name: string
     subjects: Subject[]
     members: { [key: Uid]: Member }
+    permissions: Permissions
 }
 
 export const GroupSettings = {
@@ -32,6 +44,24 @@ export const GroupSettings = {
                     name: name,
                     icon: iconURL,
                     role: "admin"
+                }
+            },
+            permissions: {
+                admin: {
+                    card: true,
+                    members: true,
+                    settings: {
+                        permissions: true,
+                        subjects: true
+                    }
+                },
+                member: {
+                    card: true,
+                    members: false,
+                    settings: {
+                        permissions: false,
+                        subjects: false
+                    }
                 }
             }
         }
