@@ -16,25 +16,16 @@
                     </div>
                 </div>
                 <div class="bg-gray-100 border-gray-200 border-[1px] rounded-lg p-4 flex flex-col gap-2">
-                    <div
-                        v-for="(subject, index) in newGroupSettings.subjects"
-                        class="flex flex-row gap-2 items-center p-2">
-                        <div
-                            class="w-8 h-8 rounded-full border-4 border-solid"
-                            :style="{
-                                background: `${subject.color}50`,
-                                borderColor: `${subject.color}20`
-                            }"/>
-                        <input
-                            type="text"
-                            class="p-2 rounded-md border-white border-[1px] bg-transparent grow"
-                            v-model="newGroupSettings.subjects[index].name"
-                            placeholder="教科の名前">
-                        <button
-                            class="w-8 h-8 rounded-full grid place-content-center text-red-400 bg-red-200/80">
-                            <i class="bi bi-trash3 text-md"/>
-                        </button>
-                    </div>
+                    <Subject
+                        v-for="(_subject, index) in newGroupSettings.subjects"
+                        :key="index"
+                        v-model:subject="newGroupSettings.subjects[index]"/>
+                </div>
+                <div class="bg-gray-100 border-gray-200 border-[1px] rounded-lg p-4 flex flex-col gap-2">
+                    <Member
+                        v-for="(_member, index) in newGroupSettings.members"
+                        :key="index"
+                        v-model:member="newGroupSettings.members[index]"/>
                 </div>
             </div>
             <button
@@ -50,7 +41,10 @@
 </template>
 <script setup lang="ts">
 import { ref, watch } from "vue";
+
 import Modal from "../modal.vue"
+import Subject from "./groupSettingsModal/subject.vue"
+import Member from "./groupSettingsModal/member.vue"
 
 import useGroupSettings from "../../../hooks/useGroupSettings";
 

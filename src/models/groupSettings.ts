@@ -4,7 +4,7 @@ export type Uid = string
 
 export type Role = "admin" | "member"
 
-type Member = {
+export type Member = {
     icon: string
     name: string
     role: Role
