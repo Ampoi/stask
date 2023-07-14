@@ -22,6 +22,15 @@ export type Subject = {
     color: `#${string}`
 }
 
+export const Subject = {
+    create(): Subject {
+        return {
+            name: "",
+            color: "#626262"
+        }
+    }
+}
+
 export type Task = {
     name: string
     term: `${number}-${string}-${string}`

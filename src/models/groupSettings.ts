@@ -17,7 +17,7 @@ export type GroupSettings = {
 }
 
 export const GroupSettings = {
-    create: ( uid: Uid, name: string, iconURL: string ): GroupSettings => {
+    create( uid: Uid, name: string, iconURL: string ): GroupSettings {
         return {
             name: "",
             subjects: [

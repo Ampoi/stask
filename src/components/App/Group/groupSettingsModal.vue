@@ -16,11 +16,16 @@
                     </div>
                 </ModalSection>
                 <ModalSection class="flex flex-col gap-2">
-                    <Subject
+                    <SubjectItem
                         v-for="(_subject, index) in newGroupSettings.subjects"
                         :key="index"
                         v-model:subject="newGroupSettings.subjects[index]"
                         @deleteSubject="deleteSubject(index)"/>
+                    <button
+                        class="w-full p-2 rounded-lg bg-white"
+                        @click="addSubject()">
+                        <i class="bi bi-bookmark-plus"></i>
+                    </button>
                 </ModalSection>
                 <ModalSection class="flex flex-col gap-2">
                     <Member
@@ -47,10 +52,11 @@ import { ref, watch } from "vue";
 import Modal from "../modal.vue"
 import ModalSection from "../modal/section.vue"
 
-import Subject from "./groupSettingsModal/subject.vue"
+import SubjectItem from "./groupSettingsModal/subjectItem.vue"
 import Member from "./groupSettingsModal/member.vue"
 
 import useGroupSettings from "../../../hooks/useGroupSettings";
+import { Subject } from "../../../models/task";
 
 const props = defineProps<{
     open: boolean
@@ -74,6 +80,11 @@ watch(() => props.open, () => {
 function submitNewSettings(){
     groupSettings.value = newGroupSettings.value
     emit("update:open", false)
+}
+
+function addSubject(){
+    const newSubject = { ...Subject.create() }
+    newGroupSettings.value.subjects.push(newSubject)
 }
 
 function deleteSubject(index: number){
