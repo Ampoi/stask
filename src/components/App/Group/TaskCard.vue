@@ -86,7 +86,9 @@ const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {ret
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()
 
-const props = defineProps<{ task: Partial<Task> }>()    
+const props = defineProps<{
+    task: Partial<Task>
+}>()    
 const emit = defineEmits<{
     (e: "update:task", newTask: Task): void
     (e: "deleteThisTask"): void
