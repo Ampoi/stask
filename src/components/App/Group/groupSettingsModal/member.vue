@@ -10,7 +10,8 @@
         <MemberRoleOption
             v-model:member-role="member.role"/>
         <button
-            class="w-8 h-8 rounded-full grid place-content-center text-red-400 bg-red-200/80">
+            class="w-8 h-8 rounded-full grid place-content-center text-red-400 bg-red-200/80"
+            @click="emit('deleteMember')">
             <i class="bi bi-trash3 text-md"/>
         </button>
     </div>
@@ -23,4 +24,8 @@ import { Member } from "../../../../models/groupSettings"
 const props = defineProps<{
     member: Member
 }>()//TODO:Propsだけでv-modelみたいなことするのをやめたい
+
+const emit = defineEmits<{
+    (e: "deleteMember"): void
+}>()
 </script>

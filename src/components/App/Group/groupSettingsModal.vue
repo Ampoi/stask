@@ -19,13 +19,15 @@
                     <Subject
                         v-for="(_subject, index) in newGroupSettings.subjects"
                         :key="index"
-                        v-model:subject="newGroupSettings.subjects[index]"/>
+                        v-model:subject="newGroupSettings.subjects[index]"
+                        @deleteSubject="deleteSubject(index)"/>
                 </div>
                 <div class="bg-gray-100 border-gray-200 border-[1px] rounded-lg p-4 flex flex-col gap-2">
                     <Member
-                        v-for="(_member, index) in newGroupSettings.members"
-                        :key="index"
-                        v-model:member="newGroupSettings.members[index]"/>
+                        v-for="(_member, key) in newGroupSettings.members"
+                        :key="key"
+                        v-model:member="newGroupSettings.members[key]"
+                        @deleteMember="deleteMember(key)"/>
                 </div>
             </div>
             <button
@@ -70,5 +72,13 @@ watch(() => props.open, () => {
 function submitNewSettings(){
     groupSettings.value = newGroupSettings.value
     emit("update:open", false)
+}
+
+function deleteSubject(index: number){
+    newGroupSettings.value.subjects.splice(index, 1)
+}
+
+function deleteMember(key: string | number){
+    delete newGroupSettings.value.members[key]
 }
 </script>

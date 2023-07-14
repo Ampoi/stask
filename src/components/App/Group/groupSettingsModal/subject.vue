@@ -13,7 +13,8 @@
             v-model="subject.name"
             placeholder="教科の名前">
         <button
-            class="w-8 h-8 rounded-full grid place-content-center text-red-400 bg-red-200/80">
+            class="w-8 h-8 rounded-full grid place-content-center text-red-400 bg-red-200/80"
+            @click="emit('deleteSubject')">
             <i class="bi bi-trash3 text-md"/>
         </button>
     </div>
@@ -22,4 +23,8 @@
 import { Subject } from "../../../../models/task"
 
 const props = defineProps<{ subject: Subject }>()
+
+const emit = defineEmits<{
+    (e: "deleteSubject"): void
+}>()
 </script>
