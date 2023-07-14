@@ -77,7 +77,7 @@ import Page from "./TaskCard/page.vue"
 import SubjectOptions from "./TaskCard/subjectOptions.vue";
 
 import { Switch } from "../../../functions/switch"
-import { Scope, Subject, Task } from "../../../models/task";
+import { Scope, Task } from "../../../models/task";
 import useAuth from "../../../hooks/useAuth";
 import useGroupSettings from "../../../hooks/useGroupSettings";
 

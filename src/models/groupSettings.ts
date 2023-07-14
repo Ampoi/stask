@@ -21,6 +21,29 @@ export type Permissions = {
     }
 }
 
+export const Permissions = {
+    create(): Permissions {
+        return {
+            admin: {
+                card: true,
+                members: true,
+                settings: {
+                    permissions: true,
+                    subjects: true
+                }
+            },
+            member: {
+                card: true,
+                members: false,
+                settings: {
+                    permissions: false,
+                    subjects: false
+                }
+            }
+        }
+    }
+}
+
 export type GroupSettings = {
     name: string
     subjects: Subject[]
@@ -46,24 +69,7 @@ export const GroupSettings = {
                     role: "admin"
                 }
             },
-            permissions: {
-                admin: {
-                    card: true,
-                    members: true,
-                    settings: {
-                        permissions: true,
-                        subjects: true
-                    }
-                },
-                member: {
-                    card: true,
-                    members: false,
-                    settings: {
-                        permissions: false,
-                        subjects: false
-                    }
-                }
-            }
+            permissions: Permissions.create()
         }
     }
 }
