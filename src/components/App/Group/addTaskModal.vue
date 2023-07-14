@@ -4,7 +4,7 @@
         @update:open="(newOpen) => emit('update:open', newOpen)">
         <div class="flex flex-col items-center gap-4 h-full">
             <h1 class="text-3xl font-semibold">課題を追加する</h1>
-            <div class="mx-4 grow w-full bg-gray-100 border-gray-200 border-[1px] rounded-lg p-4 flex flex-col gap-4 overflow-y-auto">
+            <ModalSection class="mx-4 grow w-full flex flex-col gap-4 overflow-y-auto">
                 <div class="flex flex-row gap-2 items-center p-2">
                     <p class="text-lg">課題名</p>
                     <input
@@ -54,7 +54,7 @@
                         <i class="bi bi-file-earmark-plus"></i>
                     </button>
                 </div>
-            </div>
+            </ModalSection>
             <button
                 class="basis-16 min-h-[64px] w-full rounded-full bg-orange-300 text-white grid place-content-center"
                 @click="addTask()">
@@ -70,6 +70,7 @@
 import { ref } from "vue";
 import { Task, Scope, Subject } from "../../../models/task";
 import Modal from "../modal.vue"
+import ModalSection from "../modal/section.vue"
 
 const props = defineProps<{
     open: boolean

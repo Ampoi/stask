@@ -5,7 +5,7 @@
         <div class="flex flex-col items-center gap-4 h-full">
             <h1 class="text-3xl font-semibold">グループの設定</h1>
             <div class="mx-4 grow w-full flex flex-col gap-4 overflow-y-auto">
-                <div class="bg-gray-100 border-gray-200 border-[1px] rounded-lg p-4 flex flex-col gap-2">
+                <ModalSection>
                     <div class="flex flex-row gap-2 items-center p-2">
                         <p class="text-lg">グループ名</p>
                         <input
@@ -14,21 +14,21 @@
                             v-model="newGroupSettings.name"
                             placeholder="学校 / 3-Aのグループ / etc...">
                     </div>
-                </div>
-                <div class="bg-gray-100 border-gray-200 border-[1px] rounded-lg p-4 flex flex-col gap-2">
+                </ModalSection>
+                <ModalSection class="flex flex-col gap-2">
                     <Subject
                         v-for="(_subject, index) in newGroupSettings.subjects"
                         :key="index"
                         v-model:subject="newGroupSettings.subjects[index]"
                         @deleteSubject="deleteSubject(index)"/>
-                </div>
-                <div class="bg-gray-100 border-gray-200 border-[1px] rounded-lg p-4 flex flex-col gap-2">
+                </ModalSection>
+                <ModalSection class="flex flex-col gap-2">
                     <Member
                         v-for="(_member, key) in newGroupSettings.members"
                         :key="key"
                         v-model:member="newGroupSettings.members[key]"
                         @deleteMember="deleteMember(key)"/>
-                </div>
+                </ModalSection>
             </div>
             <button
                 class="basis-16 min-h-[64px] w-full rounded-full bg-orange-300 text-white grid place-content-center"
@@ -45,6 +45,8 @@
 import { ref, watch } from "vue";
 
 import Modal from "../modal.vue"
+import ModalSection from "../modal/section.vue"
+
 import Subject from "./groupSettingsModal/subject.vue"
 import Member from "./groupSettingsModal/member.vue"
 
