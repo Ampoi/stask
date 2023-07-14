@@ -68,12 +68,14 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { Task, Scope, Subject } from "../../../models/task";
+import { Task, Scope } from "../../../models/task";
 import Modal from "../modal.vue"
 import ModalSection from "../modal/section.vue"
+import useGroupSettings from "../../../hooks/useGroupSettings";
 
 const props = defineProps<{
     open: boolean
+    groupID: string
 }>()
 
 const emit = defineEmits<{
@@ -81,13 +83,9 @@ const emit = defineEmits<{
     (e: "addTask", newTask: Task): void
 }>()
 
-const subjects: Subject[] = [
-    { name: "国語", color: "#F44335" },
-    { name: "数学", color: "#2196F3" },
-    { name: "理科", color: "#4BAF51" },
-    { name: "社会", color: "#FFC105" },
-    { name: "英語", color: "#E040FB" }
-]
+const { groupSettings } = await useGroupSettings(props.groupID)
+
+const subjects = groupSettings.value.subjects
 
 const newTask = ref(Task.create(subjects))
 

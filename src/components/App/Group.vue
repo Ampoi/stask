@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-4">
         <div class="flex flex-row gap-2 items-center">
-            <h1 class="text-5xl font-bold">学校</h1>
+            <h1 class="text-5xl font-bold">{{ groupSettings.name }}</h1>
             <button
                 class="text-2xl text-gray-400 h-12 w-12 rounded-full grid place-content-center"
                 @click="openGroupSettings">
@@ -19,12 +19,14 @@
                 v-for="(_task, index) in tasks"
                 :key="index"
                 v-model:task="tasks[index]"
+                :groupID="groupID"
                 @deleteThisTask="deleteTask(index)"/>
         </Section>
     </div>
 
     <AddTaskModal
         v-model:open="showAddTaskModal"
+        :groupID="groupID"
         @addTask="addTask"/>
 
     <GroupSettingsModal
@@ -42,10 +44,12 @@ import GroupSettingsModal from "./Group/groupSettingsModal.vue"
 import useTasks from "../../hooks/useTasks";
 import { ref } from "vue"
 import { Task } from "../../models/task"
+import useGroupSettings from "../../hooks/useGroupSettings"
 
 const groupID = "school"
 
 const { tasks, deleteTask } = await useTasks(groupID)
+const { groupSettings } = await useGroupSettings(groupID)
 
 const showAddTaskModal = ref(false)
 function startAddTask(){ showAddTaskModal.value = true }

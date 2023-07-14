@@ -79,6 +79,7 @@ import SubjectOptions from "./TaskCard/subjectOptions.vue";
 import { Switch } from "../../../functions/switch"
 import { Scope, Subject, Task } from "../../../models/task";
 import useAuth from "../../../hooks/useAuth";
+import useGroupSettings from "../../../hooks/useGroupSettings";
 
 const showCardMenu = ref(new Switch(false))
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
@@ -88,19 +89,15 @@ const { uid } = await getUserData()
 
 const props = defineProps<{
     task: Partial<Task>
+    groupID: string
 }>()    
 const emit = defineEmits<{
     (e: "update:task", newTask: Task): void
     (e: "deleteThisTask"): void
 }>()
 
-const subjects: Subject[] = [
-    { name: "国語", color: "#F44335" },
-    { name: "数学", color: "#2196F3" },
-    { name: "理科", color: "#4BAF51" },
-    { name: "社会", color: "#FFC105" },
-    { name: "英語", color: "#E040FB" }
-]
+const { groupSettings } = await useGroupSettings(props.groupID)
+const subjects = groupSettings.value.subjects
 
 function returnPerfectTask(){ return { ...Task.create(subjects), ...props.task } }
 
