@@ -6,9 +6,9 @@
             <h1 class="text-3xl font-semibold">グループの設定</h1>
             <div class="mx-4 grow w-full flex flex-col gap-4 overflow-y-auto">
                 <NameSection v-model:name="newGroupSettings.name"/>
-                <PermissionSection v-model:permissions="newGroupSettings.permissions"/>
                 <SubjectSection v-model:subjects="newGroupSettings.subjects"/>
                 <MemberSection v-model:members="newGroupSettings.members"/>
+                <PermissionSection v-model:permissions="newGroupSettings.permissions"/>
             </div>
             <button
                 class="basis-16 min-h-[64px] w-full rounded-full bg-orange-300 text-white grid place-content-center"

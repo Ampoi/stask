@@ -15,6 +15,7 @@ export type Permissions = {
         card: boolean
         members: boolean
         settings: {
+            name: boolean
             permissions: boolean
             subjects: boolean
         }
@@ -28,6 +29,7 @@ export const Permissions = {
                 card: true,
                 members: true,
                 settings: {
+                    name: true,
                     permissions: true,
                     subjects: true
                 }
@@ -36,6 +38,7 @@ export const Permissions = {
                 card: true,
                 members: false,
                 settings: {
+                    name: false,
                     permissions: false,
                     subjects: false
                 }
