@@ -5,35 +5,9 @@
         <div class="flex flex-col items-center gap-4 h-full">
             <h1 class="text-3xl font-semibold">グループの設定</h1>
             <div class="mx-4 grow w-full flex flex-col gap-4 overflow-y-auto">
-                <ModalSection>
-                    <div class="flex flex-row gap-2 items-center p-2">
-                        <p class="text-lg">グループ名</p>
-                        <input
-                            type="text"
-                            class="p-2 rounded-md border-white border-[1px] bg-transparent grow"
-                            v-model="newGroupSettings.name"
-                            placeholder="学校 / 3-Aのグループ / etc...">
-                    </div>
-                </ModalSection>
-                <ModalSection class="flex flex-col gap-2">
-                    <SubjectItem
-                        v-for="(_subject, index) in newGroupSettings.subjects"
-                        :key="index"
-                        v-model:subject="newGroupSettings.subjects[index]"
-                        @deleteSubject="deleteSubject(index)"/>
-                    <button
-                        class="w-full p-2 rounded-lg bg-white"
-                        @click="addSubject()">
-                        <i class="bi bi-bookmark-plus"></i>
-                    </button>
-                </ModalSection>
-                <ModalSection class="flex flex-col gap-2">
-                    <Member
-                        v-for="(_member, key) in newGroupSettings.members"
-                        :key="key"
-                        v-model:member="newGroupSettings.members[key]"
-                        @deleteMember="deleteMember(key)"/>
-                </ModalSection>
+                <NameSection v-model:name="newGroupSettings.name"/>
+                <SubjectSection v-model:subjects="newGroupSettings.subjects"/>
+                <MemberSection v-model:members="newGroupSettings.members"/>
             </div>
             <button
                 class="basis-16 min-h-[64px] w-full rounded-full bg-orange-300 text-white grid place-content-center"
@@ -50,13 +24,12 @@
 import { ref, watch } from "vue";
 
 import Modal from "../modal.vue"
-import ModalSection from "../modal/section.vue"
 
-import SubjectItem from "./groupSettingsModal/subjectItem.vue"
-import Member from "./groupSettingsModal/member.vue"
+import NameSection from "./groupSettingsModal/nameSection.vue";
+import SubjectSection from "./groupSettingsModal/subjectSection.vue";
+import MemberSection from "./groupSettingsModal/memberSection.vue";
 
 import useGroupSettings from "../../../hooks/useGroupSettings";
-import { Subject } from "../../../models/task";
 
 const props = defineProps<{
     open: boolean
@@ -80,18 +53,5 @@ watch(() => props.open, () => {
 function submitNewSettings(){
     groupSettings.value = newGroupSettings.value
     emit("update:open", false)
-}
-
-function addSubject(){
-    const newSubject = { ...Subject.create() }
-    newGroupSettings.value.subjects.push(newSubject)
-}
-
-function deleteSubject(index: number){
-    newGroupSettings.value.subjects.splice(index, 1)
-}
-
-function deleteMember(key: string | number){
-    delete newGroupSettings.value.members[key]
 }
 </script>

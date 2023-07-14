@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import MemberRoleOption from "./memberRoleOption.vue";
 
-import { Member } from "../../../../models/groupSettings"
+import { Member } from "../../../../../models/GroupSettings"
 
 const props = defineProps<{
     member: Member
