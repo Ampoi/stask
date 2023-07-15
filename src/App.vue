@@ -1,7 +1,9 @@
 <template>
     <RouterView v-slot="{ Component }">
         <Suspense timeout="0">
-            <component :is="Component"/>
+            <div>
+                <component :is="Component"/>
+            </div>
             <template #fallback>Loading...</template> <!--TODO:ローディング画面を作成する-->
         </Suspense>
     </RouterView>
