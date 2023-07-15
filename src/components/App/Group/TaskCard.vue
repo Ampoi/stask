@@ -8,7 +8,7 @@
                 :color="editableTask.subject.color"/>
             <input
                 type="text"
-                class="rounded-lg grow text-xl"
+                class="rounded-lg grow max-w-[calc(100%-88px)] text-xl"
                 v-model="editableTask.name"
                 placeholder="課題名を入力...">
             <button
