@@ -8,6 +8,15 @@
         </Suspense>
     </RouterView>
 </template>
+<script setup lang="ts">
+import { onMounted } from 'vue';
+
+onMounted(() => {
+    document.addEventListener("dblclick", (event)=>{
+        event.preventDefault()
+    }, { passive: false })
+})
+</script>
 <style>
 body {
     font-family: 'Noto Sans JP';
