@@ -11,6 +11,7 @@
 	</button>
 
 	<Modal v-model:open="showEditPageModal">
+		{{ editableScope }}
 		<div class="flex flex-col gap-8 items-center">
 			<div class="flex flex-row items-center justify-center gap-12">
 				<div class="flex flex-col items-center">
@@ -107,7 +108,7 @@ watch(editableScope, () => {
 	}else{
 		emit("update:scope", editableScope.value)
 	}
-})
+}, { deep: true })
 
 const firstTouchX = ref(0)
 const firstTouchNowPage = ref(0)
