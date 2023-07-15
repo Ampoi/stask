@@ -1,4 +1,4 @@
-import { GroupSettings } from "../models/GroupSettings"
+import { GroupSettings } from "../models/groupSettings"
 import { createRealtimeDatabaseRepository } from "./firebase/realtimeDatabaseRepository"
 
 export const groupSettingsRepository = (groupID: string)=>{

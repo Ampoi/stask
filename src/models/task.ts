@@ -1,5 +1,5 @@
 import twoDigitNumber from "../functions/twoDigitNumber"
-import { Uid } from "./GroupSettings"
+import { Uid } from "./groupSettings"
 
 export type Scope = {
     first: number

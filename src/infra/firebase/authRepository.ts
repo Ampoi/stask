@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app"
-import { User, getAuth, onAuthStateChanged, signOut, signInWithRedirect, GoogleAuthProvider } from "firebase/auth"
+import { User, getAuth, onAuthStateChanged, signOut, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
 
 import firebaseConfig from "./config"
 
@@ -27,7 +27,7 @@ export const AuthRepository = {
     },
     Login(loginSuccessFunc: Function){
         const provider = new GoogleAuthProvider()
-        signInWithRedirect(auth, provider)
+        signInWithPopup(auth, provider)
             .then((value) => loginSuccessFunc(value))
             .catch((err) => { throw new Error(err) })
     },

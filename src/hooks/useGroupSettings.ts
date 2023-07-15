@@ -1,6 +1,6 @@
 import { ref, watch } from "vue";
 import { groupSettingsRepository as firebaseRepository } from "../infra/groupSettingsRepository";
-import { GroupSettings } from "../models/GroupSettings";
+import { GroupSettings } from "../models/groupSettings";
 
 import useAuth from "./useAuth";
 
