@@ -31,7 +31,7 @@ import { ref, watch } from "vue";
 import ModalSection from "../../modal/section.vue"
 import PermissionItem from "./permissionSection/permissionItem.vue"
 
-import { Permissions } from "../../../../models/GroupSettings"
+import { Permissions } from "../../../../models/groupSettings"
 
 const props = defineProps<{ permissions: Partial<Permissions> }>()
 const emit = defineEmits<{ (e: "update:permissions", newPermissions: Permissions): void }>()

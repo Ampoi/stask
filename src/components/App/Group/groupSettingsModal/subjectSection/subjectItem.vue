@@ -4,8 +4,8 @@
         <div
             class="w-8 h-8 rounded-full border-4 border-solid"
             :style="{
-                background: `${subject.color}50`,
-                borderColor: `${subject.color}20`
+                background: `${props.subject.color}50`,
+                borderColor: `${props.subject.color}20`
             }"/>
         <input
             type="text"
@@ -20,7 +20,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { Subject } from "../../../../models/task"
+import { Subject } from "../../../../../models/task"
 
 const props = defineProps<{ subject: Subject }>()
 

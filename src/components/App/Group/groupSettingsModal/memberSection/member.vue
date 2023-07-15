@@ -4,9 +4,9 @@
         <div
             class="w-8 h-8 rounded-full !bg-cover !bg-center"
             :style="{
-                background: `url(${member.icon})`,
+                background: `url(${props.member.icon})`,
             }"/>
-        <p class="grow p-2">{{ member.name }}</p>
+        <p class="grow p-2">{{ props.member.name }}</p>
         <MemberRoleOption
             v-model:member-role="member.role"/>
         <button
@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import MemberRoleOption from "./memberRoleOption.vue";
 
-import { Member } from "../../../../../models/GroupSettings"
+import { Member } from "../../../../../models/groupSettings"
 
 const props = defineProps<{
     member: Member

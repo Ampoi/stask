@@ -33,7 +33,7 @@
 </template>
 <script setup lang="ts">
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions, TransitionRoot } from "@headlessui/vue"
-import { Role } from "../../../../models/groupSettings";
+import { Role } from "../../../../../models/groupSettings";
 
 const props = defineProps<{
   memberRole: Role

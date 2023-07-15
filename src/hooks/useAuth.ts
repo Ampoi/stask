@@ -1,5 +1,6 @@
 import { Router } from "vue-router";
 import { AuthRepository } from "../infra/firebase/authRepository";
+import { createCloudStorageRepository } from "../infra/firebase/cloudStorageRepository";
 
 export default async () => {
     const isLogin = await AuthRepository.isLogin()
@@ -7,11 +8,20 @@ export default async () => {
     async function getUserData(){
         return await (async () => {
             const user = await AuthRepository.getUser()
+
             if( user ){
+                const userIconURL = await (async () => {
+                    if(!user.photoURL){
+                        const defaultIconRepository = createCloudStorageRepository("staskLogo.png")
+                        return await defaultIconRepository.get()
+                    }else{
+                        return user.photoURL
+                    }
+                })()
                 return {
                     uid: user.uid,
-                    userName: user.displayName,
-                    userIcon: user.photoURL
+                    userName: user.displayName ?? "unknown",
+                    userIcon: userIconURL
                 }
             }else{
                 throw new Error("ログインしていません！")

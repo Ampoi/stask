@@ -11,7 +11,7 @@ export default async (groupID: string) => {
     if( !isLogin ){ throw new Error("ログインしてません！") }
     const { uid, userName, userIcon } = await getUserData()
 
-    function returnPerfectSettings(newSettings: Partial<GroupSettings>){ return { ...GroupSettings.create(uid, userName ?? "unknown", userIcon), ...newSettings } }
+    function returnPerfectSettings(newSettings: Partial<GroupSettings>){ return { ...GroupSettings.create(uid, userName, userIcon), ...newSettings } }
 
     const groupSettingsData = await (async () => {
         const newGroupSettings = await groupSettingsRepository.get()

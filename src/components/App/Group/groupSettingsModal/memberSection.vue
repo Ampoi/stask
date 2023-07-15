@@ -11,7 +11,7 @@
 import ModalSection from "../../modal/section.vue"
 import MemberItem from "./memberSection/member.vue";
 
-import { Member } from "../../../../models/GroupSettings";
+import { Member } from "../../../../models/groupSettings";
 
 const props = defineProps<{
     members: { [key: string]: Member }
