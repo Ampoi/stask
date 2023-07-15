@@ -56,7 +56,8 @@
             <div class="flex flex-row items-stretch gap-2 h-10">
                 <SubjectOptions
                     v-model:card-subject="editableTask.subject"
-                    :subjects="subjects"/>
+                    :subjects="subjects"
+                    class="grow"/>
                 <button
                     class="rounded-lg border-[1px] border-red-400 text-red-400 text-lg w-10 grid place-content-center"
                     @click="emit('deleteThisTask')">

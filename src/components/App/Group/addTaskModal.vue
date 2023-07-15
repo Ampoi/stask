@@ -20,7 +20,10 @@
                         class="p-2 rounded-md border-white border-[1px] bg-transparent grow"
                         v-model="newTask.term">
                 </div>
-                <div class="p-4 rounded-md border-white border-[1px] bg-transparent max-h-[calc(100%-150px)] flex flex-col">
+                <SubjectOptions
+                    :subjects="groupSettings.subjects"
+                    v-model:card-subject="newTask.subject"/>
+                <div class="p-4 rounded-md border-white border-[1px] bg-transparent max-h-[calc(100%-208px)] flex flex-col">
                     <div class="flex flex-col gap-4 max-h-[calc(100%-40px)] overflow-y-auto">
                         <div
                             class="flex flex-row items-center justify-between border-[1px] border-white p-4"
@@ -68,9 +71,12 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { Task, Scope } from "../../../models/task";
+
 import Modal from "../modal.vue"
 import ModalSection from "../modal/section.vue"
+import SubjectOptions from "./TaskCard/subjectOptions.vue";
+
+import { Task, Scope } from "../../../models/task";
 import useGroupSettings from "../../../hooks/useGroupSettings";
 
 const props = defineProps<{

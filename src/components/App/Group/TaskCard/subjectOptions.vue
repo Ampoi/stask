@@ -2,12 +2,14 @@
     <Listbox
         v-model="editableCardSubject"
         v-slot="{ open }"
-        as="div"
-        class="grow">
+        as="div">
         <ListboxButton
-            class="rounded-lg p-2 border-[1px] border-gray-100 w-full"
+            class="rounded-lg p-2 border-[1px] border-gray-100 w-full flex flex-row gap-2 items-center justify-center bg-white"
             :class="{ 'rounded-b-none': open }">
-            教科：{{ props.cardSubject.name }}
+            <div
+                class="w-4 h-4 rounded-full"
+                :style="{ backgroundColor: `${props.cardSubject.color}50` }"/>
+            <p>{{ props.cardSubject.name }}</p>
         </ListboxButton>
         <TransitionRoot
             enter-from="opacity-0 ease-out -translate-y-10"
@@ -24,8 +26,11 @@
                     v-for="(subject, index) in props.subjects"
                     :key="index"
                     :value="subject"
-                    class="p-1 text-center">
-                    {{ subject.name }}
+                    class="p-1 text-center flex flex-row gap-2 items-center justify-center">
+                    <div
+                        class="w-4 h-4 rounded-full"
+                        :style="{ backgroundColor: `${subject.color}50` }"/>
+                    <p>{{ subject.name }}</p>
                 </ListboxOption>
             </ListboxOptions>
         </TransitionRoot>

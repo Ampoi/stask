@@ -59,7 +59,7 @@ function addTask(newTask: Task){
     showAddTaskModal.value = false
 }
 
-const showGroupSettings = ref(true)
+const showGroupSettings = ref(false)
 function openGroupSettings(){
     showGroupSettings.value = true
 }
