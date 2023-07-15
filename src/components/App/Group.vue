@@ -46,10 +46,12 @@ import { ref } from "vue"
 import { Task } from "../../models/task"
 import useGroupSettings from "../../hooks/useGroupSettings"
 
-const groupID = "school"
+const props = defineProps<{
+    groupID: string
+}>()
 
-const { tasks, deleteTask } = await useTasks(groupID)
-const { groupSettings } = await useGroupSettings(groupID)
+const { tasks, deleteTask } = await useTasks(props.groupID)
+const { groupSettings } = await useGroupSettings(props.groupID)
 
 const showAddTaskModal = ref(false)
 function startAddTask(){ showAddTaskModal.value = true }

@@ -3,6 +3,7 @@
         <div class="overflow-y-auto max-h-[calc(100%-64px)] grow">
             <component
                 :is="pages[nowPage]"
+                :groupID="groupID"
                 ref="groupPage"/>
         </div>
         <NavBar
@@ -38,6 +39,8 @@ import Modal from "../components/App/modal.vue";
 import Group from "../components/App/Group.vue"
 import NotLogin from "../components/App/notLogin.vue"
 
+import { useRoute } from "vue-router";
+
 const pages = {
     group: Group,
     notLogin: NotLogin
@@ -47,12 +50,20 @@ const nowPage = ref<keyof typeof pages>("notLogin")
 
 const showLoginModal = ref(false)
 
+const groupID = ref<string | undefined>()
+
 const { isLogin, login } = await useAuth()
 if( !isLogin ){
     nowPage.value = "notLogin"
     showLoginModal.value = true
 }else{
-    nowPage.value = "group"
+    const route = useRoute()
+    if(typeof route.params.groupID == "string"){
+        groupID.value = route.params.groupID
+        nowPage.value = "group"
+    }else{
+        console.log("oh,");
+    }
 }
 
 const groupPage = ref()
