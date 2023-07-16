@@ -10,23 +10,8 @@
             :now-page="nowPage"
             @addTask="addTask()"/>
     </div>
-    <Modal
-        :open="showLoginModal"
-        class="text-center">
-        <h2 class="text-4xl font-bold">ログイン</h2>
-        <p class="mt-2">Staskを利用するにはログインしてください</p>
-        <div class="max-w-[240px] flex flex-col items-stretch mx-auto mt-4 gap-2">
-            <button @click="login()">
-                <img src="../assets/sign_in_with_google.png">
-            </button>
-            <RouterLink
-                to="/"
-                class="px-4 py-3 border-gray-100 border-2 rounded-md flex flex-row gap-2 items-baseline justify-center">
-                <i class="bi bi-door-closed"/>
-                <p>紹介ページにいく</p>
-            </RouterLink>
-        </div>
-    </Modal>
+    <LoginModal
+        :showLoginModal="showLoginModal"/>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
@@ -34,7 +19,7 @@ import { ref } from "vue";
 import useAuth from "../hooks/useAuth"
 
 import NavBar from "../components/App/NavBar.vue"
-import Modal from "../components/App/modal.vue";
+import LoginModal from "../components/loginModal.vue";
 
 import Group from "../components/App/Group.vue"
 import NotLogin from "../components/App/notLogin.vue"
@@ -52,7 +37,7 @@ const showLoginModal = ref(false)
 
 const groupID = ref<string | undefined>()
 
-const { isLogin, login } = await useAuth()
+const { isLogin } = await useAuth()
 if( !isLogin ){
     nowPage.value = "notLogin"
     showLoginModal.value = true
