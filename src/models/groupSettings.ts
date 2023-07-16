@@ -10,6 +10,12 @@ export type Member = {
     role: Role
 }
 
+export const Member = {
+    create(icon: string, name: string, role: Role): Member {
+        return {icon, name, role}
+    }
+}
+
 export type Permissions = {
     [key in Role]: {
         card: boolean

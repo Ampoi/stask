@@ -4,7 +4,7 @@
             <IsInvited
                 v-if="isInvited"
                 :groupID="groupID"
-                @clickJoinButton="joinInvitedGroup"/>
+                @clickJoinButton="joinInvitedGroup(router)"/>
             <NotInvited
                 v-else/>
         </div>
@@ -16,15 +16,12 @@ import NotInvited from "./notInvited.vue"
 
 import { useRoute } from 'vue-router';
 import useInvite from "../../hooks/useInvite"
+import { router } from "../../router";
 
 const route = useRoute()
 const { groupID, inviteID } = route.params
 if( typeof groupID != "string" ){ throw new Error("GroupIDが正しくありません") }
 if( typeof inviteID != "string" ){ throw new Error("InviteIDが正しくありません") }
 
-const { isInvited } = await useInvite(groupID, inviteID)
-
-function joinInvitedGroup(){
-
-}
+const { isInvited, joinInvitedGroup } = await useInvite(groupID, inviteID)
 </script>

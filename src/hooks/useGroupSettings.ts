@@ -1,11 +1,11 @@
 import { ref, watch } from "vue";
-import { groupSettingsRepository as firebaseRepository } from "../infra/groupSettingsRepository";
+import { createGroupSettingsRepository } from "../infra/groupSettingsRepository";
 import { GroupSettings } from "../models/groupSettings";
 
 import useAuth from "./useAuth";
 
 export default async (groupID: string) => {
-    const groupSettingsRepository = firebaseRepository(groupID)
+    const groupSettingsRepository = createGroupSettingsRepository(groupID)
 
     const { isLogin, getUserData } = await useAuth()
     if( !isLogin ){ throw new Error("ログインしてません！") }
