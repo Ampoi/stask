@@ -15,13 +15,18 @@ import IsInvited from "./isInvited.vue"
 import NotInvited from "./notInvited.vue"
 
 import { useRoute } from 'vue-router';
-import useInvite from "../../hooks/useInvite"
 import { router } from "../../router";
+
+import useInvite from "../../hooks/useInvite"
+import useMember from "../../hooks/useMember"
 
 const route = useRoute()
 const { groupID, inviteID } = route.params
 if( typeof groupID != "string" ){ throw new Error("GroupIDが正しくありません") }
 if( typeof inviteID != "string" ){ throw new Error("InviteIDが正しくありません") }
+
+const { isMember } = await useMember(groupID)
+if( isMember ){ router.push(`/app/${groupID}`) }
 
 const { isInvited, joinInvitedGroup } = await useInvite(groupID, inviteID)
 </script>
