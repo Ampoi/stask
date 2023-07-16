@@ -22,16 +22,13 @@ import NavBar from "../components/App/NavBar.vue"
 import LoginModal from "../components/loginModal.vue";
 
 import Group from "../components/App/Group.vue"
-import NotLogin from "../components/App/notLogin.vue"
+import NotLogin from "../components/notLogin.vue"
 
 import { useRoute } from "vue-router";
 
-const pages = {
-    group: Group,
-    notLogin: NotLogin
-}
+const pages = { Group, NotLogin }
 
-const nowPage = ref<keyof typeof pages>("notLogin")
+const nowPage = ref<keyof typeof pages>("NotLogin")
 
 const showLoginModal = ref(false)
 
@@ -39,13 +36,13 @@ const groupID = ref<string | undefined>()
 
 const { isLogin } = await useAuth()
 if( !isLogin ){
-    nowPage.value = "notLogin"
+    nowPage.value = "NotLogin"
     showLoginModal.value = true
 }else{
     const route = useRoute()
     if(typeof route.params.groupID == "string"){
         groupID.value = route.params.groupID
-        nowPage.value = "group"
+        nowPage.value = "Group"
     }else{
         console.log("oh,");
     }

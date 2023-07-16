@@ -1,31 +1,27 @@
 <template>
-    <main class="w-screen h-screen grid place-content-center bg-gray-100">
-        <div class="w-[calc(100vw-32px)] bg-white border-gray-200 border-[1px] mx-auto rounded-xl px-4 py-6">
-            <IsInvited
-                v-if="isInvited"
-                :groupID="groupID"
-                @clickJoinButton="joinInvitedGroup"/>
-            <NotInvited
-                v-else/>
-        </div>
-    </main>
+    <div class="h-screen">
+        <component :is="pages[nowPage]"/>
+    </div>
+    <LoginModal :showLoginModal="showLoginModal"/>
 </template>
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { ref } from 'vue';
 
-import IsInvited from "../components/invite/isInvited.vue"
-import NotInvited from "../components/invite/notInvited.vue"
+import LoginModal from '../components/loginModal.vue';
 
-import useInvite from "../hooks/useInvite"
+import CheckInvite from '../components/invite/checkInvite.vue';
+import NotLogin from '../components/notLogin.vue';
 
-const route = useRoute()
-const { groupID, inviteID } = route.params
-if( typeof groupID != "string" ){ throw new Error("GroupIDが正しくありません") }
-if( typeof inviteID != "string" ){ throw new Error("InviteIDが正しくありません") }
+import useAuth from '../hooks/useAuth';
 
-const { isInvited } = await useInvite(groupID, inviteID)
+const pages = { CheckInvite, NotLogin }
+const nowPage = ref<keyof typeof pages>("NotLogin")
+const showLoginModal = ref(false)
 
-function joinInvitedGroup(){
-
+const { isLogin } = await useAuth()
+if( isLogin ){
+    nowPage.value = "CheckInvite"
+}else{
+    showLoginModal.value = true
 }
 </script>

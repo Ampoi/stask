@@ -30,5 +30,5 @@ const emit = defineEmits<{
     (e: "addTask"): void
 }>()
 
-const isGroupPage = props.nowPage == "group"
+const isGroupPage = props.nowPage == "Group"
 </script>
