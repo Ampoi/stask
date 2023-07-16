@@ -47,11 +47,16 @@ export const Permissions = {
     }
 }
 
+export type Invite = {
+    expires: string
+}
+
 export type GroupSettings = {
     name: string
     subjects: Subject[]
     members: { [key: Uid]: Member }
-    permissions: Permissions
+    permissions: Permissions,
+    invites: Invite[]
 }
 
 export const GroupSettings = {
@@ -72,7 +77,8 @@ export const GroupSettings = {
                     role: "admin"
                 }
             },
-            permissions: Permissions.create()
+            permissions: Permissions.create(),
+            invites: []
         }
     }
 }
