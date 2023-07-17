@@ -23,7 +23,7 @@ export default async (groupID: string, inviteID: string) => {
         const membersRepository = createMembersRepository(groupID)
         const members = await membersRepository.get() ?? {}
 
-        const newMembers = { ...members, ...{ [uid]: Member.create(userName, userIcon, "member") } }
+        const newMembers = { ...members, ...{ [uid]: Member.create(userIcon, userName, "member") } }
         membersRepository.update(newMembers)
 
         router.push(`/app/${groupID}`)
