@@ -7,7 +7,8 @@ import Invite from "../pages/Invite.vue"
 export const router = createRouter({
     routes: [
         { path: "/", name: "Landing", component: Landing },
-        { path: "/app/:groupID", name: "Home", component: Home },
+        { path: "/app", name: "Home", component: Home },
+        { path: "/group/:groupID", name: "Group", component: Home },
         { path: "/invite/:groupID/:inviteID", name: "Invite", component: Invite }
     ],
     history: createWebHistory()

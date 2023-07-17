@@ -21,12 +21,13 @@ import useAuth from "../hooks/useAuth"
 import NavBar from "../components/App/NavBar.vue"
 import LoginModal from "../components/loginModal.vue";
 
+import MyGroups from "../components/App/myGroups.vue";
 import Group from "../components/App/Group.vue"
 import NotLogin from "../components/notLogin.vue"
 
 import { useRoute } from "vue-router";
 
-const pages = { Group, NotLogin }
+const pages = { MyGroups, Group, NotLogin }
 
 const nowPage = ref<keyof typeof pages>("NotLogin")
 
@@ -44,7 +45,7 @@ if( !isLogin ){
         groupID.value = route.params.groupID
         nowPage.value = "Group"
     }else{
-        console.log("oh,");
+        nowPage.value = "MyGroups"
     }
 }
 

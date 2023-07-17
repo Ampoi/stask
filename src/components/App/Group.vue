@@ -45,10 +45,18 @@ import useTasks from "../../hooks/useTasks";
 import { ref } from "vue"
 import { Task } from "../../models/task"
 import useGroupSettings from "../../hooks/useGroupSettings"
+import useMember from "../../hooks/useMember"
+import { router } from "../../router"
 
 const props = defineProps<{
     groupID: string
 }>()
+
+const { isMember } = await useMember(props.groupID)
+if( !isMember ){
+    await router.push({ path:"/app" })
+    window.location.reload()
+}
 
 const { tasks, deleteTask } = await useTasks(props.groupID)
 const { groupSettings } = await useGroupSettings(props.groupID)
