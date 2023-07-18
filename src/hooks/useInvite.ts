@@ -1,6 +1,6 @@
 import { Router } from "vue-router";
 import { createInviteRepository } from "../infra/inviteRepository";
-import { createMembersRepository } from "../infra/membersRepository";
+import { createMemberRepository } from "../infra/memberRepository";
 import { Member } from "../models/groupSettings";
 import useAuth from "./useAuth";
 
@@ -20,11 +20,9 @@ export default async (groupID: string, inviteID: string) => {
 
         const { uid, userName, userIcon } = await getUserData()
 
-        const membersRepository = createMembersRepository(groupID)
-        const members = await membersRepository.get() ?? {}
+        const memberRepository = createMemberRepository(groupID, uid)
 
-        const newMembers = { ...members, ...{ [uid]: Member.create(userIcon, userName, "member") } }
-        membersRepository.update(newMembers)
+        memberRepository.set(Member.create(userIcon, userName, "member"))
 
         router.push(`/app/${groupID}`)
     }

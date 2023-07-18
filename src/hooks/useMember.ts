@@ -1,4 +1,4 @@
-import { createMembersRepository } from "../infra/membersRepository";
+import { createMemberRepository } from "../infra/memberRepository";
 import useAuth from "./useAuth";
 
 export default async (groupID: string) => {
@@ -7,7 +7,7 @@ export default async (groupID: string) => {
         if( !isLogin ){ return false }
         const { uid } = await getUserData()
 
-        const membersRepository = createMembersRepository(groupID, uid)
+        const membersRepository = createMemberRepository(groupID, uid)
 
         const myMemberData = await membersRepository.get()
         return !!myMemberData
