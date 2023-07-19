@@ -22,11 +22,11 @@
     </div>
 </template>
 <script setup lang="ts">
-const groupName = "学校"
-
 const props = defineProps<{
     groupID: string
 }>()
+
+const groupName = `aa${props.groupID}` //TODO:Cloud Functionsを用いて招待されている時のみグループ名を取得できるようにする
 
 const emit = defineEmits<{
     (e: "clickJoinButton"): void

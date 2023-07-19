@@ -26,7 +26,7 @@ if( typeof groupID != "string" ){ throw new Error("GroupIDが正しくありま�
 if( typeof inviteID != "string" ){ throw new Error("InviteIDが正しくありません") }
 
 const { isMember } = await useMember(groupID)
-if( isMember ){ router.push(`/app/${groupID}`) }
+if( isMember ){ router.push(`/group/${groupID}`) }
 
 const { isInvited, joinInvitedGroup } = await useInvite(groupID, inviteID)
 </script>
