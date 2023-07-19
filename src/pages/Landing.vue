@@ -10,11 +10,11 @@
                     </h1>
                     <p>Staskは学生のために特化した課題管理アプリです。<br>Staskを使うことでより能動的に課題を進めることができるようになります。</p>
                     <div>
-                        <a
-                            class="bg-gradient-to-bl from-orange-300 to-red-400 font-bold text-white py-2.5 px-6 rounded-full"
-                            href="/login">
+                        <RouterLink
+                            class="bg-gradient-to-bl from-orange-300 to-red-400 font-semibold text-white py-2.5 px-6 rounded-full"
+                            to="/app">
                             Get Started
-                        </a>
+                        </RouterLink>
                     </div>
                 </div>
                 <img

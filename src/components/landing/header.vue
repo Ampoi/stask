@@ -1,16 +1,16 @@
 <template>
-    <v-app-bar flat class="bg-transparent px-8 py-3">
-        <div class="w-[800px] mx-auto px-4 flex flex-row items-center gap-2 justify-between">
-            <a href="/welcome">
+    <div class="px-4 py-6">
+        <div class="max-w-[800px] mx-auto flex flex-row items-center gap-2 justify-between">
+            <RouterLink to="/">
                 <Logo />
-            </a>
-            <a
-                class="bg-gradient-to-bl from-orange-300 to-red-400 font-bold text-white py-2.5 px-6 rounded-full"
-                href="/login">
+            </RouterLink>
+            <RouterLink
+                class="bg-gradient-to-bl from-orange-300 to-red-400 font-semibold text-white py-2.5 px-6 rounded-full"
+                to="/app">
                 Get Started
-            </a>
+            </RouterLink>
         </div>
-    </v-app-bar>
+    </div>
 </template>
 <script setup lang="ts">
 import Logo from './logo.vue';
