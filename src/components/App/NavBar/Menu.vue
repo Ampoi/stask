@@ -8,7 +8,18 @@
         leave="duration-300">
         <MenuItems class="absolute bottom-[72px] bg-white rounded-md p-3 w-[calc(100vw-48px)] flex flex-col gap-2">
             <MenuItem name="Staskについて" icon="bi-question-lg" action="/"/>
-            <MenuItem name="グループ一覧" icon="bi-people-fill" action="/app" />
+            <MenuItem name="グループ一覧" icon="bi-house-fill" action="/app" />
+            <div class="pl-2 flex flex-col gap-2">
+                <div
+                    v-for="(group, groupID) in groupsData"
+                    :key="groupID">
+                    <MenuItem
+                        v-if="group"
+                        icon="bi-people-fill"
+                        :name="group.name"
+                        :action="`/group/${groupID}`"/>
+                </div>
+            </div>
             <MenuItem name="ログアウト" icon="bi-box-arrow-right" :action="() => { logout(router) }"/>
         </MenuItems>
     </TransitionRoot>
@@ -19,6 +30,8 @@ import { MenuItems, TransitionRoot } from "@headlessui/vue"
 import MenuItem from "./MenuItem.vue";
 import useAuth from "../../../hooks/useAuth";
 import { router } from "../../../router";
+import useGroups from "../../../hooks/useGroups";
 
 const { logout } = await useAuth()
+const { groupsData } = await useGroups()
 </script>

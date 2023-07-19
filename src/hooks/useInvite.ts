@@ -30,7 +30,7 @@ export default async (groupID: string, inviteID: string) => {
         groupsRepository.update( newGroup )
 
 
-        router.push(`/app/${groupID}`)
+        router.push({ name: "Group", query: { groupID } })
     }
 
     return { isInvited, joinInvitedGroup }
