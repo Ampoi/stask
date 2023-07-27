@@ -15,6 +15,10 @@
                 description="グループのメンバー全体に表示されるグループ名を編集できるようにします"
                 v-model:isAllowed="editablePermissions.member.settings.name"/>
             <PermissionItem
+                title="設定 / グループの注意書きを変更する"
+                description="グループのメンバー全体に表示されるグループの注意書きを編集できるようにします"
+                v-model:isAllowed="editablePermissions.member.settings.note"/>
+            <PermissionItem
                 title="設定 / 教科を編集する"
                 description="カードに設定する教科のメニュー内容を編集できるようにします"
                 v-model:isAllowed="editablePermissions.member.settings.subjects"/>

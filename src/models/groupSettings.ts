@@ -22,6 +22,7 @@ export type Permissions = {
         members: boolean
         settings: {
             name: boolean
+            note: boolean
             permissions: boolean
             subjects: boolean
         }
@@ -36,6 +37,7 @@ export const Permissions = {
                 members: true,
                 settings: {
                     name: true,
+                    note: true,
                     permissions: true,
                     subjects: true
                 }
@@ -45,6 +47,7 @@ export const Permissions = {
                 members: false,
                 settings: {
                     name: false,
+                    note: false,
                     permissions: false,
                     subjects: false
                 }
@@ -59,6 +62,7 @@ export type Invite = {
 
 export type GroupSettings = {
     name: string
+    note: string
     subjects: Subject[]
     members: { [key: Uid]: Member }
     permissions: Permissions,
@@ -69,6 +73,7 @@ export const GroupSettings = {
     create( uid: Uid, name: string, iconURL: string ): GroupSettings {
         return {
             name: "",
+            note: "",
             subjects: [
                 { name: "国語", color: "#F44335" },
                 { name: "数学", color: "#2196F3" },

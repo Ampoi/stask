@@ -6,6 +6,7 @@
             <h1 class="text-3xl font-semibold">グループを作成する</h1>
             <div class="mx-4 grow w-full flex flex-col gap-4 overflow-y-auto">
                 <NameSection v-model:name="newGroup.settings.name"/>
+                <NoteSection v-model:note="newGroup.settings.note"/>
             </div>
             <button
                 class="basis-16 min-h-[64px] w-full rounded-full bg-orange-300 text-white grid place-content-center"
@@ -20,7 +21,9 @@
 </template>
 <script setup lang="ts">
 import Modal from './modal.vue';
+
 import NameSection from './Group/groupSettingsModal/nameSection.vue';
+import NoteSection from './Group/groupSettingsModal/noteSection.vue';
 
 import { Group } from "../../models/group"
 import { ref } from 'vue';

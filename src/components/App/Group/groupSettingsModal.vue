@@ -6,6 +6,7 @@
             <h1 class="text-3xl font-semibold">グループの設定</h1>
             <div class="mx-4 grow w-full flex flex-col gap-4 overflow-y-auto">
                 <NameSection v-model:name="newGroupSettings.name"/>
+                <NoteSection v-model:note="newGroupSettings.note"/>
                 <SubjectSection v-model:subjects="newGroupSettings.subjects"/>
                 <MemberSection v-model:members="newGroupSettings.members"/>
                 <PermissionSection v-model:permissions="newGroupSettings.permissions"/>
@@ -32,6 +33,7 @@ import MemberSection from "./groupSettingsModal/memberSection.vue";
 import PermissionSection from "./groupSettingsModal/permissionSection.vue";
 
 import useGroupSettings from "../../../hooks/useGroupSettings";
+import NoteSection from "./groupSettingsModal/noteSection.vue";
 
 const props = defineProps<{
     open: boolean

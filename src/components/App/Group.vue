@@ -8,6 +8,12 @@
                 <i class="bi bi-sliders"></i>
             </button>
         </div>
+        <p
+            v-if="!!groupSettings.note"
+            class="flex flex-row gap-2 items-center text-gray-400">
+            <i class="bi bi-info-circle"/>
+            <p class="text-sm">{{ groupSettings.note }}</p>
+        </p>
         <Section title="カウントダウン一覧">
             <div class="h-40 flex flex-row items-stretch gap-4 overflow-x-auto">
                 <AddCountdownButton @click=""/>
