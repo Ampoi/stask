@@ -24,7 +24,7 @@
         </div>
         <div>
             <ProgressBar
-                :percent="donePercent"
+                :scope="doneData"
                 :main-color="editableTask.subject.color"
                 sub-color="#F3F4F6"/>
         </div>
@@ -81,6 +81,7 @@ import { Switch } from "../../../functions/switch"
 import { Scope, Task } from "../../../models/task";
 import useAuth from "../../../hooks/useAuth";
 import useGroupSettings from "../../../hooks/useGroupSettings";
+import { Uid } from "../../../models/groupSettings";
 
 const showCardMenu = ref(new Switch(false))
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
@@ -117,23 +118,37 @@ watch(editableTask, (newTask: Task) => {
     }
 }, { deep: true })
 
-const donePercent = computed(() => {
+const doneData = computed((): {
+    first: number
+    last: number
+    now: { [key: string]: number }
+} => {
     let allPagesAmount = 0
-    let donePagesAmount = 0
-        
-    editableTask.value.scopes.forEach((scope) => {
-        const myNowPaage: number | undefined = scope.now ? scope.now[uid] : 0
+    let donePagesAmount: { [key: Uid]: number } = {}
 
+    editableTask.value.scopes.forEach((scope) => {
         allPagesAmount += (scope.last ?? 0) - (scope.first ?? 0)
-        donePagesAmount += (myNowPaage ?? (scope.first ?? 0)) - (scope.first ?? 0)
     })
 
-    return (donePagesAmount / allPagesAmount) * 100
+    Object.keys(groupSettings.value.members).forEach((uid) => {
+        editableTask.value.scopes.forEach((scope) => {
+            const myNowPaage: number | undefined = scope.now ? scope.now[uid] : 0
+
+            if(!donePagesAmount[uid]){ donePagesAmount[uid] = 0 }
+            donePagesAmount[uid] += (myNowPaage ?? (scope.first ?? 0)) - (scope.first ?? 0)
+        })
+    })
+
+    return {
+        first: 0,
+        last: allPagesAmount,
+        now: donePagesAmount
+    }
 })
 
 const isDone = computed({
     get(){
-        return donePercent.value == 100
+        return (doneData.value.now[uid] ?? 0) / (doneData.value.last - doneData.value.first) == 100
     },
     set(done: boolean){
         const newScopes = editableTask.value.scopes.map((scope: Scope): Scope  => {

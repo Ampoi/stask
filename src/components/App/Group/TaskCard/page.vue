@@ -4,7 +4,7 @@
 		@click="showEditPageModal = !showEditPageModal">
 		<span>{{ props.cardUnit.symbol(editableScope.first) }}</span>
 		<ProgressBar
-			:percent="getLevelOfAchivement"
+			:scope="editableScope"
 			:main-color="color"
 			sub-color="white"/>
 		<span>{{ props.cardUnit.symbol(editableScope.last) }}</span>
@@ -17,7 +17,7 @@
 		:uid="uid"/>
 </template>
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 
 import EditPageModal from "./page/editPageModal.vue"
 import ProgressBar from "./progressBar.vue";
@@ -42,13 +42,6 @@ const showEditPageModal = ref(false)
 
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()
-
-const getLevelOfAchivement = computed(()=>{
-	const allPageAmount = editableScope.value.last - editableScope.value.first + 1
-	const achivedPageAmount = editableScope.value.now[uid] - editableScope.value.first + 1	
-
-	return achivedPageAmount / allPageAmount * 100
-})
 
 function returnPerfectScope(){ return { ...Scope.create(), ...props.scope } }
 

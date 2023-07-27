@@ -20,13 +20,14 @@
     </Modal>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import Modal from './modal.vue';
 
 import NameSection from './Group/groupSettingsModal/nameSection.vue';
 import NoteSection from './Group/groupSettingsModal/noteSection.vue';
 
 import { Group } from "../../models/group"
-import { ref } from 'vue';
 import useAuth from '../../hooks/useAuth';
 
 const props = defineProps<{
@@ -35,7 +36,6 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (e: "update:open", newOpen: boolean): void
-    (e: "createGroup"): void
 }>()
 
 const { isLogin, getUserData } = await useAuth()
@@ -45,6 +45,7 @@ const { uid, userName, userIcon } = await getUserData()
 const newGroup = ref(Group.create(uid, userName, userIcon))
 
 function createGroup(){
-    emit("createGroup")
+    console.log("createGroup!");
+    console.log(newGroup.value) //TODO:グループを作成するときの処理の追加
 }
 </script>
