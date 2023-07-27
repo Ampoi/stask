@@ -4,10 +4,22 @@
             <component
                 :is="pages[nowPage]"/>
         </div>
-        <NavBar/>
+        <NavBar>
+            <button
+                v-if="nowPage == 'Home'"
+                class="grow rounded-full bg-orange-300 text-white grid place-content-center"
+                @click="createGroup()">
+                <div class="flex flex-row gap-2 items-center">
+                    <i class="bi bi-plus text-3xl"/>
+                    <span class="text-xl">グループを作成する</span>
+                </div>
+            </button>
+        </NavBar>
     </div>
     <LoginModal
         :showLoginModal="showLoginModal"/>
+    <CreateGroupModal
+        v-model:open="showCreateGroupModal"/>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
@@ -16,6 +28,7 @@ import useAuth from "../hooks/useAuth"
 
 import NavBar from "../components/App/NavBar.vue"
 import LoginModal from "../components/loginModal.vue";
+import CreateGroupModal from "../components/App/createGroupModal.vue";
 
 import Home from "../components/App/home.vue"
 import NotLogin from "../components/notLogin.vue"
@@ -32,5 +45,12 @@ if( !isLogin ){
     showLoginModal.value = true
 }else{
     nowPage.value = "Home"
+}
+
+const showCreateGroupModal = ref(false)
+
+function createGroup(){
+    console.log("create group!!");
+    showCreateGroupModal.value = true
 }
 </script>
