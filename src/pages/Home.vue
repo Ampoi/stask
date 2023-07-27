@@ -4,7 +4,7 @@
             <component
                 :is="pages[nowPage]"/>
         </div>
-        <NavBar :now-page="nowPage"/>
+        <NavBar/>
     </div>
     <LoginModal
         :showLoginModal="showLoginModal"/>

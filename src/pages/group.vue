@@ -6,9 +6,17 @@
                 :groupID="groupID"
                 ref="groupPage"/>
         </div>
-        <NavBar
-            :now-page="nowPage"
-            @addTask="addTask()"/>
+        <NavBar>
+            <button
+                v-if="nowPage == 'Group'"
+                class="grow rounded-full bg-orange-300 text-white grid place-content-center"
+                @click="addTask()">
+                <div class="flex flex-row gap-2 items-center">
+                    <i class="bi bi-journal-plus text-3xl"/>
+                    <span class="text-xl">課題を追加する</span>
+                </div>
+            </button>
+        </NavBar>
     </div>
     <LoginModal
         :showLoginModal="showLoginModal"/>
