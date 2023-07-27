@@ -26,6 +26,7 @@
             <ProgressBar
                 :scope="doneData"
                 :main-color="editableTask.subject.color"
+                :groupID="groupID"
                 sub-color="#F3F4F6"/>
         </div>
         <TransitionRoot
@@ -45,7 +46,8 @@
                         :key="index"
                         v-model:scope="editableTask.scopes[index]"
                         :color="editableTask.subject.color"
-                        :cardUnit="cardUnit"/>
+                        :cardUnit="cardUnit"
+                        :groupID="groupID"/>
                 </div>
                 <button
                     class="rounded-lg p-2 bg-white w-full"

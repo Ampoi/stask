@@ -6,6 +6,7 @@
 		<ProgressBar
 			:scope="editableScope"
 			:main-color="color"
+			:groupID="groupID"
 			sub-color="white"/>
 		<span>{{ props.cardUnit.symbol(editableScope.last) }}</span>
 	</button>
@@ -32,6 +33,7 @@ const props = defineProps<{
 	},
 	scope: Partial<Scope>,
 	color: string
+	groupID: string
 }>()
 
 const emit = defineEmits<{
