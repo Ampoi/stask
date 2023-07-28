@@ -6,7 +6,7 @@
             <p class="text-black/60">に招待されています</p>
             <button
                 class="px-4 py-3 border-gray-100 border-2 rounded-md flex flex-row gap-2 items-baseline justify-center"
-                @click="emit('clickJoinButton')">
+                @click="hey()">
                 グループに参加する
             </button>
         </div>
@@ -22,13 +22,23 @@
     </div>
 </template>
 <script setup lang="ts">
+import { getApp } from 'firebase/app';
+import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions';
+
 const props = defineProps<{
     groupID: string
 }>()
 
 const groupName = `${props.groupID}` //TODO:Cloud Functionsを用いて招待されている時のみグループ名を取得できるようにする
 
+const functions = getFunctions(getApp())
+connectFunctionsEmulator(functions, "127.0.0.1", 5001);
+
+const hey = httpsCallable(functions, "hey")
+
+
+/*
 const emit = defineEmits<{
     (e: "clickJoinButton"): void
-}>()
+}>()*/
 </script>
