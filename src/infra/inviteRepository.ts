@@ -1,6 +1,8 @@
-import { Invite } from "../models/groupSettings"
-import { createRealtimeDatabaseRepository } from "./firebase/realtimeDatabaseRepository"
+import { createCloudFunctionsRepository } from "./firebase/cloudFunctionsRepository";
 
-export const createInviteRepository = (groupID: string, inviteID: string)=>{
-    return createRealtimeDatabaseRepository<Invite>(`/groups/${groupID}/settings/invites/${inviteID}`)
+export const inviteRepository = {
+    getInviteGroupData: createCloudFunctionsRepository<{
+        groupID: string
+        inviteID: string
+    }, unknown>("getInviteGroupData")
 }

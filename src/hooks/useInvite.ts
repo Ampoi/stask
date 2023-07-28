@@ -1,20 +1,21 @@
 import { Router } from "vue-router";
-import { createInviteRepository } from "../infra/inviteRepository";
 import { createMemberRepository } from "../infra/memberRepository";
 import { createGroupsRepository } from "../infra/groups";
 import { Member } from "../models/groupSettings";
 import useAuth from "./useAuth";
+import { inviteRepository } from "../infra/inviteRepository";
 
 export default async (groupID: string, inviteID: string) => {
-    const inviteRepository = createInviteRepository(groupID, inviteID)
+    const { getInviteGroupData } = inviteRepository
 
-    const isInvited = await (async () => {
-        const invite = await inviteRepository.get()        
-        return !!invite
-    })()
+    getInviteGroupData({ groupID, inviteID })
+
+    const isInvited = false/*await (async () => {
+        return !!(await getInviteGroupData())
+    })()*/
 
     async function joinInvitedGroup(router: Router){
-        if( !isInvited ){ throw new Error("招待されていません！") }
+        /*if( !isInvited ){ throw new Error("招待されていません！") }
         
         const { isLogin, getUserData } = await useAuth()
         if( !isLogin ){ throw new Error("ログインしていません！") }
@@ -30,7 +31,7 @@ export default async (groupID: string, inviteID: string) => {
         groupsRepository.update( newGroup )
 
 
-        router.push({ name: "Group", query: { groupID } })
+        router.push({ name: "Group", query: { groupID } })*/
     }
 
     return { isInvited, joinInvitedGroup }
