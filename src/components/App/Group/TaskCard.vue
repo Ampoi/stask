@@ -150,7 +150,7 @@ const doneData = computed((): {
 
 const isDone = computed({
     get(){
-        return (doneData.value.now[uid] ?? 0) / (doneData.value.last - doneData.value.first) == 100
+        return (doneData.value.now[uid] ?? 0) / (doneData.value.last - doneData.value.first) == 1
     },
     set(done: boolean){
         const newScopes = editableTask.value.scopes.map((scope: Scope): Scope  => {
