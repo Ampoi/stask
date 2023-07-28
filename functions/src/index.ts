@@ -9,7 +9,6 @@ export const getInviteGroupData = onCall(
     const groupID: string = request.data.groupID
     const inviteID: string = request.data.inviteID
 
-    
     console.log("hey!",groupID,inviteID);
   }
 );
