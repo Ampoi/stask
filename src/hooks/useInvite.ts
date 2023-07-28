@@ -8,7 +8,10 @@ import { inviteRepository } from "../infra/inviteRepository";
 export default async (groupID: string, inviteID: string) => {
     const { getInviteGroupData } = inviteRepository
 
-    getInviteGroupData({ groupID, inviteID })
+    const inviteGroupResult = await getInviteGroupData({ groupID, inviteID })
+    const inviteGroupData = inviteGroupResult.data
+
+    console.log(inviteGroupData);
 
     const isInvited = false/*await (async () => {
         return !!(await getInviteGroupData())
