@@ -9,16 +9,12 @@
             class="p-4 bg-white/60 border-white/20 border-2 rounded-md">
             <div
                 v-if="group"
-                class="flex flex-col">
+                class="flex flex-col gap-2">
                 <h2 class="text-2xl font-semibold">{{ group.name }}</h2>
-                <div class="flex flex-col p-2 gap-2">
-                    <div class="flex flex-row gap-2">
-                        <i class="bi bi-people-fill text-emerald-400"/>
+                <div class="flex flex-col px-2 gap-2">
+                    <div class="flex flex-row gap-2 text-gray-400">
+                        <i class="bi bi-people-fill"/>
                         <p>メンバー数：{{ group.memberAmount }}</p>
-                    </div>
-                    <div class="flex flex-row gap-2">
-                        <i class="bi bi-journal-bookmark-fill text-orange-400"/>
-                        <p>達成した課題数：32/60</p>
                     </div>
                 </div>
             </div>
@@ -32,7 +28,9 @@
                         <p class="text-sm text-black/60">グループID: {{ groupID }}</p>
                     </div>
                 </div>
-                <button class="text-red-400 bg-red-100 p-2 rounded-md flex flex-row gap-2 justify-center items-center">
+                <button
+                    class="text-red-400 bg-red-100 p-2 rounded-md flex flex-row gap-2 justify-center items-center"
+                    @click="deleteGroupFromList(groupID as string)">
                     <i class="bi bi-trash3" />
                     <p>グループをリストから削除する</p>
                 </button>
@@ -43,5 +41,5 @@
 <script setup lang="ts">
 import useGroups from '../../hooks/useGroups';
 
-const { groupsData } = await useGroups()
+const { groupsData, deleteGroupFromList } = await useGroups()
 </script>

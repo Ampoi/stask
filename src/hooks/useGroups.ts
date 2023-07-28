@@ -42,7 +42,7 @@ export default async ()=>{
   
     function deleteGroupFromList(name: string){
       const index = groups.value.indexOf(name)
-      groups.value.splice(index, 1)
+      groups.value.splice(index, 1)      
     }
   
     return { groups, groupsData, deleteGroupFromList }
