@@ -3,7 +3,7 @@ import { onCall } from "firebase-functions/v2/https"
 
 initializeApp()
 
-exports.hey = onCall(
+export const hey = onCall(
   { cors: [/stask(\_(develop|release))?\.ampoi\.net|localhost/] },
   (request) => {
     console.log("hey!");
