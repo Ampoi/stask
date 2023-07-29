@@ -1,6 +1,7 @@
-import { Member } from "../models/groupSettings"
-import { createRealtimeDatabaseRepository } from "./firebase/realtimeDatabaseRepository"
+import { createCloudFunctionsRepository } from "./firebase/cloudFunctionsRepository"
 
-export const createMemberRepository = (groupID: string, uid: string)=>{
-    return createRealtimeDatabaseRepository<Member>(`/groups/${groupID}/settings/members/${uid}`)
+export const memberRepository = {
+    checkMember: createCloudFunctionsRepository<{
+        groupID: string
+    }, boolean>("checkMember")
 }

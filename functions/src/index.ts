@@ -19,7 +19,8 @@ export const getInviteGroupData = onCall(
     const isInvited = await checkInvited(request.data.groupID, request.data.inviteID)
     if( !isInvited ){ return undefined }
 
-    const groupName = await createRealtimeDatabaseRepository(`/groups/${request.data.groupID}/settings/name`).get() as string
+    const groupNameRepository = createRealtimeDatabaseRepository(`/groups/${request.data.groupID}/settings/name`)
+    const groupName = await groupNameRepository.get() as string
     return {
         name: groupName
     }
@@ -48,5 +49,20 @@ export const joinInviteGroup = onCall(
     })
 
     return "join success!!"
+  }
+)
+
+export const checkMember = onCall(
+  { cors: corForStask },
+  async (request) => {
+    const { groupID } = request.data as { groupID: string }
+    
+    const requestAuthUID = request.auth?.uid
+    if( !requestAuthUID ){ return false }
+
+    const groupMemberRepository = createRealtimeDatabaseRepository(`/groups/${groupID}/settings/members/${requestAuthUID}`)
+    const requestUserDataInGroup = await groupMemberRepository.get()
+
+    return !!requestUserDataInGroup
   }
 )
