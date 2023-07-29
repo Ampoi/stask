@@ -8,15 +8,25 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
+import useTasksAnalytics from '../../../../hooks/useTasksAnalytics';
 
 const props = defineProps<{
     isDone: boolean
     color: `#${string}`
+    taskID: string
 }>()
 
 const emit = defineEmits<{ (e: "update:isDone", newIsDone: boolean): void }>()
 
-function turnDone(){
+async function turnDone(){
+    const { logTasksAnalytics  } = await useTasksAnalytics()
+    logTasksAnalytics({
+        name: "checkButton",
+        old: props.isDone,
+        new: !props.isDone,
+        kadai_id: props.taskID
+    })
+
     const newDone = !props.isDone
     emit("update:isDone", newDone)
 }

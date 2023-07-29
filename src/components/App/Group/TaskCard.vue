@@ -5,7 +5,8 @@
         <div class="flex flex-row items-stretch gap-4 h-8">
             <DoneButton
                 v-model:is-done="isDone"
-                :color="editableTask.subject.color"/>
+                :color="editableTask.subject.color"
+                :taskID="'aaa'"/>
             <input
                 type="text"
                 class="rounded-lg grow max-w-[calc(100%-88px)] text-xl"
