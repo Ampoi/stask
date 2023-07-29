@@ -13,9 +13,7 @@ export default async (groupID: string, inviteID: string) => {
 
     console.log(inviteGroupData);
 
-    const isInvited = false/*await (async () => {
-        return !!(await getInviteGroupData())
-    })()*/
+    const isInvited = !!inviteGroupData
 
     async function joinInvitedGroup(router: Router){
         /*if( !isInvited ){ throw new Error("招待されていません！") }
@@ -37,5 +35,5 @@ export default async (groupID: string, inviteID: string) => {
         router.push({ name: "Group", query: { groupID } })*/
     }
 
-    return { isInvited, joinInvitedGroup }
+    return { isInvited, inviteGroupData, joinInvitedGroup }
 }

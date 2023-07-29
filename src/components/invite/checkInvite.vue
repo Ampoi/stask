@@ -3,7 +3,7 @@
         <div class="w-[calc(100vw-32px)] bg-white border-gray-200 border-[1px] mx-auto rounded-xl px-4 py-6">
             <IsInvited
                 v-if="isInvited"
-                :groupID="groupID"
+                :inviteGroupData="inviteGroupData"
                 @clickJoinButton="joinInvitedGroup(router)"/>
             <NotInvited
                 v-else/>
@@ -28,5 +28,5 @@ if( typeof inviteID != "string" ){ throw new Error("InviteIDが正しくあり�
 const { isMember } = await useMember(groupID)
 if( isMember ){ router.push(`/group/${groupID}`) }
 
-const { isInvited, joinInvitedGroup } = await useInvite(groupID, inviteID)
+const { isInvited, inviteGroupData, joinInvitedGroup } = await useInvite(groupID, inviteID)
 </script>

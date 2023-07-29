@@ -14,7 +14,7 @@ export const getInviteGroupData = onCall(
     const inviteData = await createRealtimeDatabaseRepository(`/groups/${groupID}/settings/invites/${inviteID}`).get() as { expires: string } | undefined
     
     if( !inviteData ){
-        return false
+        return undefined
     }else{
         const groupName = await createRealtimeDatabaseRepository(`/groups/${groupID}/settings/name`).get() as string
 
