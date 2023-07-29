@@ -6,7 +6,10 @@ import useAuth from "./useAuth";
 import { inviteRepository } from "../infra/inviteRepository";
 
 export default async (groupID: string, inviteID: string) => {
-    const { getInviteGroupData } = inviteRepository
+    const { getInviteGroupData, joinInviteGroup } = inviteRepository
+
+    const { isLogin, getUserData } = await useAuth()
+    if( !isLogin ){ throw new Error("ログインしていません！") }
 
     const inviteGroupResult = await getInviteGroupData({ groupID, inviteID })
     const inviteGroupData = inviteGroupResult.data
@@ -15,25 +18,21 @@ export default async (groupID: string, inviteID: string) => {
 
     const isInvited = !!inviteGroupData
 
-    async function joinInvitedGroup(router: Router){
-        /*if( !isInvited ){ throw new Error("招待されていません！") }
-        
-        const { isLogin, getUserData } = await useAuth()
-        if( !isLogin ){ throw new Error("ログインしていません！") }
-
+    async function join(router: Router){
         const { uid, userName, userIcon } = await getUserData()
 
-        const memberRepository = createMemberRepository(groupID, uid)
-        memberRepository.set(Member.create(userIcon, userName, "member"))
-        
-        const groupsRepository = createGroupsRepository(uid)
-        const oldGroup = await groupsRepository.get() ?? []
-        const newGroup = [ ...oldGroup, ...[ groupID ] ]
-        groupsRepository.update( newGroup )
+        await joinInviteGroup({
+            groupID,
+            inviteID,
+            userData: {
+                uid: uid,
+                name: userName,
+                icon: userIcon
+            }
+        })
 
-
-        router.push({ name: "Group", query: { groupID } })*/
+        router.push({ name: "Group", query: { groupID } })
     }
 
-    return { isInvited, inviteGroupData, joinInvitedGroup }
+    return { isInvited, inviteGroupData, join }
 }

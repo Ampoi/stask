@@ -4,7 +4,7 @@
             <IsInvited
                 v-if="isInvited"
                 :inviteGroupData="inviteGroupData"
-                @clickJoinButton="joinInvitedGroup(router)"/>
+                @clickJoinButton="joinInvitedGroup(router)"/><!--TODO:Cloud Functionsと同じ型を使って定義したい-->
             <NotInvited
                 v-else/>
         </div>

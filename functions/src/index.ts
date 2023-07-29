@@ -5,22 +5,24 @@ import { createRealtimeDatabaseRepository } from "./infra/firebase/realtimeDatab
 
 initializeApp()
 
+const checkInvited = async (groupID: string, inviteID: string) => {
+  const inviteData = await createRealtimeDatabaseRepository(`/groups/${groupID}/settings/invites/${inviteID}`).get() as { expires: string } | undefined
+  
+  return !!inviteData
+}
+
 export const getInviteGroupData = onCall(
   { cors: [/stask(\_(develop|release))?\.ampoi\.net|localhost/] },
   async (request) => {
-    const groupID: string = request.data.groupID
-    const inviteID: string = request.data.inviteID
+    const isInvited = await checkInvited(request.data.groupID, request.data.inviteID)
 
-    const inviteData = await createRealtimeDatabaseRepository(`/groups/${groupID}/settings/invites/${inviteID}`).get() as { expires: string } | undefined
-    
-    if( !inviteData ){
-        return undefined
+    if( !isInvited ){
+      return undefined
     }else{
-        const groupName = await createRealtimeDatabaseRepository(`/groups/${groupID}/settings/name`).get() as string
-
-        return {
-            name: groupName
-        }
+      const groupName = await createRealtimeDatabaseRepository(`/groups/${request.data.groupID}/settings/name`).get() as string
+      return {
+          name: groupName
+      }
     }
   }
 );

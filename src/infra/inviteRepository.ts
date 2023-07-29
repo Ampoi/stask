@@ -4,5 +4,14 @@ export const inviteRepository = {
     getInviteGroupData: createCloudFunctionsRepository<{
         groupID: string
         inviteID: string
-    }, unknown>("getInviteGroupData")
+    }, unknown>("getInviteGroupData"),
+    joinInviteGroup: createCloudFunctionsRepository<{
+        groupID: string
+        inviteID: string
+        userData: {
+            uid: string
+            name: string
+            icon: string
+        }
+    }, unknown>("joinInviteGroup")
 }
