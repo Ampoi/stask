@@ -4,7 +4,7 @@
             <IsInvited
                 v-if="isInvited"
                 :inviteGroupData="inviteGroupData"
-                @clickJoinButton="joinInvitedGroup(router)"/><!--TODO:Cloud Functionsと同じ型を使って定義したい-->
+                @clickJoinButton="join()"/><!--TODO:Cloud Functionsと同じ型を使って定義したい-->
             <NotInvited
                 v-else/>
         </div>
@@ -28,5 +28,5 @@ if( typeof inviteID != "string" ){ throw new Error("InviteIDが正しくあり�
 const { isMember } = await useMember(groupID)
 if( isMember ){ router.push(`/group/${groupID}`) }
 
-const { isInvited, inviteGroupData, joinInvitedGroup } = await useInvite(groupID, inviteID)
+const { isInvited, inviteGroupData, join } = await useInvite(groupID, inviteID)
 </script>

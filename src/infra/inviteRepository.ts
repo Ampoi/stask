@@ -8,10 +8,5 @@ export const inviteRepository = {
     joinInviteGroup: createCloudFunctionsRepository<{
         groupID: string
         inviteID: string
-        userData: {
-            uid: string
-            name: string
-            icon: string
-        }
-    }, unknown>("joinInviteGroup")
+    }, string>("joinInviteGroup")
 }
