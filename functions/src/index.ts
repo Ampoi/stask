@@ -1,63 +1,9 @@
 import { initializeApp } from "firebase-admin/app"
 
-import { createRealtimeDatabaseRepository } from "./infra/firebase/realtimeDatabaseRepository.js";
-import { createCallableFunc } from "./function/createCallableFunc.js";
+import { checkMember } from "./function/checkMember.js"
+import { getInviteGroupData } from "./function/getInviteGroupData.js"
+import { joinInviteGroup } from "./function/joinInviteGroup.js"
 
 initializeApp()
 
-const checkInvited = async (groupID: string, inviteID: string) => {
-  const inviteData = await createRealtimeDatabaseRepository(`/groups/${groupID}/settings/invites/${inviteID}`).get() as { expires: string } | undefined
-  
-  return !!inviteData
-}
-
-export const getInviteGroupData = createCallableFunc(
-  async (request) => {
-    const isInvited = await checkInvited(request.data.groupID, request.data.inviteID)
-    if( !isInvited ){ return undefined }
-
-    const groupNameRepository = createRealtimeDatabaseRepository(`/groups/${request.data.groupID}/settings/name`)
-    const groupName = await groupNameRepository.get() as string
-    return {
-        name: groupName
-    }
-  }
-);
-
-export const joinInviteGroup = createCallableFunc(
-  async (request): Promise<string> => {
-    if( !request.auth ){ return "authentication required" }
-    
-    const isInvited = await checkInvited(request.data.groupID, request.data.inviteID)
-    if( !isInvited ){ return "invitation required" }
-
-    const [uid, userName, userIcon] = [
-      request.auth.token.uid,
-      request.auth.token.name as string,
-      request.auth.token.picture
-    ]
-
-    const invitedGroupMemberMeRepository = createRealtimeDatabaseRepository(`/groups/${request.data.groupID}/settings/members/${uid}`)
-    await invitedGroupMemberMeRepository.set({
-      icon: userIcon,
-      name: userName,
-      role: "member"
-    })
-
-    return "join success!!"
-  }
-)
-
-export const checkMember = createCallableFunc(
-  async (request) => {
-    const { groupID } = request.data as { groupID: string }
-    
-    const requestAuthUID = request.auth?.uid
-    if( !requestAuthUID ){ return false }
-
-    const groupMemberRepository = createRealtimeDatabaseRepository(`/groups/${groupID}/settings/members/${requestAuthUID}`)
-    const requestUserDataInGroup = await groupMemberRepository.get()
-
-    return !!requestUserDataInGroup
-  }
-)
+export { checkMember, getInviteGroupData, joinInviteGroup }
