@@ -6,8 +6,8 @@
 sequenceDiagram
     autonumber
     participant client as ユーザー
-    participant db as RealtimeDatabase
     participant cloud as CloudFunctions
+    participant db as RealtimeDatabase
     
     client ->> cloud : 招待されたグループの情報を取得
     Note left of cloud: 招待ID

@@ -33,9 +33,7 @@ export const AuthRepository = {
     },
     async Logout(){
         signOut(auth)
-            .then(() => {
-                console.log("サインアウトしました！");
-            })
+            .then(() => { console.log("サインアウトしました！"); })
             .catch((error: string) => {
                 throw new Error(error)
             });

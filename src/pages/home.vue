@@ -50,7 +50,6 @@ if( !isLogin ){
 const showCreateGroupModal = ref(false)
 
 function createGroup(){
-    console.log("create group!!");
     showCreateGroupModal.value = true
 }
 </script>

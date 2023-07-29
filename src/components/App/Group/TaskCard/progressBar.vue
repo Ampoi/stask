@@ -60,7 +60,6 @@ const members = groupSettings.value.members
 function getPercent(uid: string): number{
 	const all = props.scope.last - props.scope.first
 	const done = (props.scope.now[uid] ?? props.scope.first) - props.scope.first
-	console.log(all, done);
 
 	return Math.floor(all == 0 ? 0 : done / all * 100)
 }
