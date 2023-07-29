@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase-admin/app"
-import { onCall } from "firebase-functions/v2/https"
 
 import { createRealtimeDatabaseRepository } from "./infra/firebase/realtimeDatabaseRepository.js";
+import { createCallableFunc } from "./function/createCallableFunc.js";
 
 initializeApp()
 
@@ -11,10 +11,7 @@ const checkInvited = async (groupID: string, inviteID: string) => {
   return !!inviteData
 }
 
-const corForStask = /stask(\_(develop|release))?\.ampoi\.net|localhost/
-
-export const getInviteGroupData = onCall(
-  { cors: [corForStask] },
+export const getInviteGroupData = createCallableFunc(
   async (request) => {
     const isInvited = await checkInvited(request.data.groupID, request.data.inviteID)
     if( !isInvited ){ return undefined }
@@ -27,8 +24,7 @@ export const getInviteGroupData = onCall(
   }
 );
 
-export const joinInviteGroup = onCall(
-  { cors: [corForStask] },
+export const joinInviteGroup = createCallableFunc(
   async (request): Promise<string> => {
     if( !request.auth ){ return "authentication required" }
     
@@ -52,8 +48,7 @@ export const joinInviteGroup = onCall(
   }
 )
 
-export const checkMember = onCall(
-  { cors: corForStask },
+export const checkMember = createCallableFunc(
   async (request) => {
     const { groupID } = request.data as { groupID: string }
     
