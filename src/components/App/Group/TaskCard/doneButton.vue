@@ -2,7 +2,7 @@
     <button
         class="border-2 rounded-full basis-8 grid place-content-center"
         :style="buttonStyle"
-        @click="editableIsDone = !editableIsDone">
+        @click="turnDone()">
         <i class="bi bi-check text-3xl"/>
     </button>
 </template>
@@ -14,14 +14,12 @@ const props = defineProps<{
     color: `#${string}`
 }>()
 
-const emit = defineEmits<{
-    (e: "update:isDone", newIsDone: boolean): void
-}>()
+const emit = defineEmits<{ (e: "update:isDone", newIsDone: boolean): void }>()
 
-const editableIsDone = computed({
-    get(){ return props.isDone },
-    set( newIsDone: boolean ){ emit("update:isDone", newIsDone) }
-})
+function turnDone(){
+    const newDone = !props.isDone
+    emit("update:isDone", newDone)
+}
 
 const doneStyle = {
     borderColor: `${props.color}20`,
@@ -34,7 +32,5 @@ const notDoneStyle = {
     color: `${props.color}70`
 }
 
-const buttonStyle = computed(() => {
-    return editableIsDone.value ? doneStyle : notDoneStyle
-})
+const buttonStyle = computed(() => { return props.isDone ? doneStyle : notDoneStyle })
 </script>
