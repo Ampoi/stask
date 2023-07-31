@@ -3,8 +3,8 @@
         <div class="w-[calc(100vw-32px)] bg-white border-gray-200 border-[1px] mx-auto rounded-xl px-4 py-6">
             <IsInvited
                 v-if="isInvited"
-                :inviteGroupData="inviteGroupData"
-                @clickJoinButton="join()"/><!--TODO:Cloud Functionsと同じ型を使って定義したい-->
+                :inviteGroupData="(inviteGroupData as InviteGroupData)"
+                @clickJoinButton="join()"/>
             <NotInvited
                 v-else/>
         </div>
@@ -19,6 +19,7 @@ import { router } from "../../router";
 
 import useInvite from "../../hooks/useInvite"
 import useMember from "../../hooks/useMember"
+import { InviteGroupData } from "../../../model/invites";
 
 const route = useRoute()
 const { groupID, inviteID } = route.params
