@@ -78,6 +78,7 @@ import SubjectOptions from "./TaskCard/subjectOptions.vue";
 
 import { Task, Scope } from "../../../models/task";
 import useGroupSettings from "../../../hooks/useGroupSettings";
+import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
 
 const props = defineProps<{
     open: boolean
@@ -99,7 +100,12 @@ function addScope(){ newTask.value.scopes.push(Scope.create()) }
 
 function deleteScope(index: number){ newTask.value.scopes.splice(index, 1) }
 
+const { logTasksAnalytics } = await useTasksAnalytics()
 function addTask(){
+    logTasksAnalytics({
+        name: "createTask",
+        kadai_id: "createdTask"
+    })
     emit("addTask", newTask.value)
     newTask.value = Task.create(subjects)
 }

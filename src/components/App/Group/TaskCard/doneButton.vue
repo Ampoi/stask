@@ -21,7 +21,7 @@ const emit = defineEmits<{ (e: "update:isDone", newIsDone: boolean): void }>()
 async function turnDone(){
     const { logTasksAnalytics  } = await useTasksAnalytics()
     logTasksAnalytics({
-        name: "checkButton",
+        name: "switchDone",
         old: props.isDone,
         new: !props.isDone,
         kadai_id: props.taskID

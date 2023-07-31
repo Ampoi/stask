@@ -14,12 +14,12 @@
             <i class="bi bi-info-circle"/>
             <p class="text-sm">{{ groupSettings.note }}</p>
         </p>
-        <Section title="カウントダウン一覧">
+        <!--<Section title="カウントダウン一覧">
             <div class="h-40 flex flex-row items-stretch gap-4 overflow-x-auto">
                 <AddCountdownButton @click=""/>
                 <Countdown :daysLeft="80"/>
             </div>
-        </Section>
+        </Section>-->
         <Section title="課題一覧">
             <TaskCard
                 v-for="(_task, index) in tasks"
@@ -41,8 +41,8 @@
 </template>
 <script setup lang="ts">
 import Section from "./Group/Section.vue"
-import AddCountdownButton from "./Group/AddCountdownButton.vue"
-import Countdown from "./Group/Countdown.vue"
+//import AddCountdownButton from "./Group/AddCountdownButton.vue"
+//import Countdown from "./Group/Countdown.vue"
 import TaskCard from "./Group/TaskCard.vue"
 import AddTaskModal from "./Group/addTaskModal.vue"
 import GroupSettingsModal from "./Group/groupSettingsModal.vue"

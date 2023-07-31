@@ -1,5 +1,6 @@
 import { ref, watch } from "vue";
 import { taskRepository as firebaseRepository } from "../infra/taskRepository";
+import useTasksAnalytics from "./useTasksAnalytics";
 
 export default async (groupID: string) => {
     const taskRepository = firebaseRepository(groupID)
@@ -24,7 +25,12 @@ export default async (groupID: string) => {
         }
     }, { deep: true })
 
+    const { logTasksAnalytics } = await useTasksAnalytics()
     function deleteTask(index: number){
+        logTasksAnalytics({
+            name: "deleteTask",
+            kadai_id: "aaa"
+        })
         tasks.value.splice(index, 1)
     }
 

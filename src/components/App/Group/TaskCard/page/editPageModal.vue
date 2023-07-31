@@ -99,7 +99,7 @@ const oldScope = props.scope.now[uid]
 function updateScope(){
 	const newScope = editableScope.value.now[uid]
 	logTasksAnalytics({
-		name: "editPage",
+		name: "editScope",
 		old: oldScope,
 		new: newScope,
 		kadai_id: props.taskID,

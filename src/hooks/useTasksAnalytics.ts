@@ -1,16 +1,24 @@
 import useAnalytics from "./useAnalytics";
 
-type CheckButtonData = {
-  name: "checkButton",
+type SwitchDone = {
+  name: "switchDone",
   old: boolean,
   new: boolean
 }
 
-type EditScopeData = {
-  name: "editPage"
+type EditScope = {
+  name: "editScope"
   old: number
   new: number
   scope_id: string
+}
+
+type CreateTask = {
+  name: "createTask"
+}
+
+type DeleteTask = {
+  name: "deleteTask"
 }
 
 type BasicTaskData = {
@@ -20,7 +28,7 @@ type BasicTaskData = {
 export default async () => {
   const { createAnalytics } = await useAnalytics()
 
-  const logTasksAnalytics = createAnalytics<(CheckButtonData | EditScopeData) & BasicTaskData>("task")
+  const logTasksAnalytics = createAnalytics<(SwitchDone | EditScope | CreateTask | DeleteTask) & BasicTaskData>("task")
 
   return { logTasksAnalytics }
 }
