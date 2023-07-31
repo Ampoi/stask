@@ -6,6 +6,13 @@ type CheckButtonData = {
   new: boolean
 }
 
+type EditScopeData = {
+  name: "editPage"
+  old: number
+  new: number
+  scope_id: string
+}
+
 type BasicTaskData = {
   kadai_id: string
 }
@@ -13,7 +20,7 @@ type BasicTaskData = {
 export default async () => {
   const { createAnalytics } = await useAnalytics()
 
-  const logTasksAnalytics = createAnalytics<CheckButtonData & BasicTaskData>("task")
+  const logTasksAnalytics = createAnalytics<(CheckButtonData | EditScopeData) & BasicTaskData>("task")
 
   return { logTasksAnalytics }
 }

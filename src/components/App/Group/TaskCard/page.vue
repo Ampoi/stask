@@ -15,7 +15,8 @@
 		v-model:scope="editableScope"
 		v-model:open="showEditPageModal"
 		:cardUnit="cardUnit"
-		:uid="uid"/>
+		:uid="uid"
+		:taskID="taskID"/>
 </template>
 <script setup lang="ts">
 import { ref, watch } from "vue";
@@ -31,7 +32,8 @@ const props = defineProps<{
 		name: string
 		symbol: (page: number) => string //TODO:Modelか何かでまとめたい
 	},
-	scope: Partial<Scope>,
+	scope: Partial<Scope>
+	taskID: string
 	color: string
 	groupID: string
 }>()

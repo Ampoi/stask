@@ -6,7 +6,7 @@
             <DoneButton
                 v-model:is-done="isDone"
                 :color="editableTask.subject.color"
-                :taskID="'aaa'"/>
+                :taskID="taskID"/>
             <input
                 type="text"
                 class="rounded-lg grow max-w-[calc(100%-88px)] text-xl"
@@ -48,7 +48,8 @@
                         v-model:scope="editableTask.scopes[index]"
                         :color="editableTask.subject.color"
                         :cardUnit="cardUnit"
-                        :groupID="groupID"/>
+                        :groupID="groupID"
+                        :taskID="taskID"/>
                 </div>
                 <button
                     class="rounded-lg p-2 bg-white w-full"
@@ -88,6 +89,8 @@ import { Uid } from "../../../models/groupSettings";
 
 const showCardMenu = ref(new Switch(false))
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
+
+const taskID = 'aaa'
 
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()

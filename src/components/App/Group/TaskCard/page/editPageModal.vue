@@ -52,6 +52,9 @@ import ModalSection from "../../../modal/section.vue"
 import { Scope } from "../../../../../models/task"
 import { computed } from "vue";
 
+import useTasksAnalytics from "../../../../../hooks/useTasksAnalytics";
+import useAuth from "../../../../../hooks/useAuth";
+
 const props = defineProps<{
     open: boolean
     scope: Scope
@@ -60,6 +63,7 @@ const props = defineProps<{
 		symbol: (page: number) => string //TODO:Modelか何かでまとめたい
 	},
     uid: string
+	taskID: string
 }>()
 
 const emit = defineEmits<{
@@ -68,7 +72,6 @@ const emit = defineEmits<{
 }>()
 
 const editableScope = ref(JSON.parse(JSON.stringify(props.scope)) as Scope)
-const changedByProp = ref(false)
 
 const getLevelOfAchivement = computed(()=>{
 	const allPageAmount = editableScope.value.last - editableScope.value.first + 1
@@ -79,7 +82,6 @@ const getLevelOfAchivement = computed(()=>{
 
 watch(() => props.scope, () => {
 	editableScope.value = props.scope
-	changedByProp.value = true
 })
 
 const showEditPageModal = computed({
@@ -87,7 +89,22 @@ const showEditPageModal = computed({
     set(newOpen: boolean){ emit("update:open", newOpen) }
 })
 
+const { isLogin, getUserData } = await useAuth()
+if( !isLogin ){ throw new Error("ログインしていません！") }
+const { uid } = await getUserData()
+
+const { logTasksAnalytics } = await useTasksAnalytics()
+
+const oldScope = props.scope.now[uid]
 function updateScope(){
+	const newScope = editableScope.value.now[uid]
+	logTasksAnalytics({
+		name: "editPage",
+		old: oldScope,
+		new: newScope,
+		kadai_id: props.taskID,
+		scope_id: 'aaa'//props.scope.id
+	})
     emit("update:scope", { ...editableScope.value})
 }
 
