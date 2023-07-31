@@ -29,7 +29,7 @@ export default async (groupID: string) => {
     function deleteTask(index: number){
         logTasksAnalytics({
             name: "deleteTask",
-            kadai_id: "aaa"
+            kadai_id: tasks.value[index].id
         })
         tasks.value.splice(index, 1)
     }

@@ -1,3 +1,4 @@
+import { createUid } from "../functions/createUid"
 import twoDigitNumber from "../functions/twoDigitNumber"
 import { Uid } from "./groupSettings"
 
@@ -5,14 +6,17 @@ export type Scope = {
     first: number
     last: number
     now: { [key: Uid]: number }
+    id: `${string}-${string}`
 }
 
 export const Scope = {
     create(): Scope {
+        const scopeID = createUid()
         return {
             first: 1,
             last: 2,
-            now: {}
+            now: {},
+            id: scopeID
         }
     }
 }
@@ -36,6 +40,7 @@ export type Task = {
     term: `${number}-${string}-${string}`
     scopes: Scope[]
     subject: Subject
+    id: `${string}-${string}`
 }
 
 export const Task = {
@@ -45,11 +50,14 @@ export const Task = {
         const thisMonth = twoDigitNumber(today.getMonth()+1)
         const thisDate = twoDigitNumber(today.getDate())
 
+        const taskID = createUid()
+
         return {
             name: "",
             term: `${thisYear}-${thisMonth}-${thisDate}`,
             scopes: [],
-            subject: subjects[0]
+            subject: subjects[0],
+            id: taskID
         }
     }
 }

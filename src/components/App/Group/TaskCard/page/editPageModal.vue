@@ -103,7 +103,7 @@ function updateScope(){
 		old: oldScope,
 		new: newScope,
 		kadai_id: props.taskID,
-		scope_id: 'aaa'//props.scope.id
+		scope_id:  props.scope.id
 	})
     emit("update:scope", { ...editableScope.value})
 }

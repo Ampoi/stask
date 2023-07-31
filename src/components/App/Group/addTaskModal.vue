@@ -104,7 +104,7 @@ const { logTasksAnalytics } = await useTasksAnalytics()
 function addTask(){
     logTasksAnalytics({
         name: "createTask",
-        kadai_id: "createdTask"
+        kadai_id: newTask.value.id
     })
     emit("addTask", newTask.value)
     newTask.value = Task.create(subjects)
