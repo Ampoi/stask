@@ -31,7 +31,8 @@ export default async (groupID: string) => {
             name: "deleteTask",
             kadai_id: tasks.value[index].id
         })
-        tasks.value.splice(index, 1)
+        //tasks.value.splice(index, 1)
+        tasks.value[index].deleted = true
     }
 
     return { tasks, deleteTask }

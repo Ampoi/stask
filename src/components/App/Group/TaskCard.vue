@@ -1,7 +1,8 @@
 <template>
     <div
         class="w-full p-4 bg-white/80 border-2 border-l-8 rounded-xl flex flex-col gap-2"
-        :style="{ borderColor: `${editableTask.subject.color}70` }">
+        :style="{ borderColor: `${editableTask.subject.color}70` }"
+        v-if="!task.deleted">
         <div class="flex flex-row items-stretch gap-4 h-8">
             <DoneButton
                 v-model:is-done="isDone"
