@@ -3,7 +3,7 @@ import { checkInvited } from "../checkInvited.js";
 
 import { createRealtimeDatabaseRepository } from "../infra/firebase/realtimeDatabaseRepository.js";
 
-import { InviteGroupData } from "../../../model/invites.js"
+import { InviteGroupData } from "../model/invites.js"
 
 export const getInviteGroupData = createCallableFunc(
   async (request): Promise<InviteGroupData | undefined> => {

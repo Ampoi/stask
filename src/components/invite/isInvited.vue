@@ -22,7 +22,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { InviteGroupData } from "../../../model/invites"
+import { InviteGroupData } from "../../../functions/src/model/invites";
 
 const props = defineProps<{
     inviteGroupData: InviteGroupData

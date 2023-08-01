@@ -1,4 +1,4 @@
-import { InviteGroupData } from "../../model/invites";
+import { InviteGroupData } from "../../functions/src/model/invites";
 import { createCloudFunctionsRepository } from "./firebase/cloudFunctionsRepository";
 
 export const inviteRepository = {

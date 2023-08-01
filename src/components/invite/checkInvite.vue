@@ -19,7 +19,7 @@ import { router } from "../../router";
 
 import useInvite from "../../hooks/useInvite"
 import useMember from "../../hooks/useMember"
-import { InviteGroupData } from "../../../model/invites";
+import { InviteGroupData } from "../../../functions/src/model/invites";
 
 const route = useRoute()
 const { groupID, inviteID } = route.params

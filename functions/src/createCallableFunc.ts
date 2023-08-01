@@ -1,7 +1,12 @@
 import { CallableRequest, onCall } from "firebase-functions/v2/https"
 
-const corForStask = /stask(\_(develop|release))?\.ampoi\.net|localhost/
+const corForStask = [
+  /localhost/,
+  /stask\.ampoi\.net/,
+  /stask\-develop\.ampoi\.net/,
+  /stask\-release\.ampoi\.net/
+]
 
 export const createCallableFunc = (func: (request: CallableRequest<any>) => any) => {
-  return onCall({ cors: [corForStask] }, func);
+  return onCall({ cors: corForStask }, func);
 }
