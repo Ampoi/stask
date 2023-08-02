@@ -34,16 +34,21 @@ export default async ()=>{
             memberAmount: memberAmount
         }
     }
+
     const groupsData = await (async () => {
         let newGroupsData: { [key: string]: Group } = {}
         await Promise.all(groups.value.map(async (groupID: string) => newGroupsData[groupID] = await getGroupData(groupID) ))
         return newGroupsData
     })()
+
+    function addGroupToList(name: string){
+      groups.value.push(name)
+    }
   
     function deleteGroupFromList(name: string){
       const index = groups.value.indexOf(name)
       groups.value.splice(index, 1)      
     }
   
-    return { groups, groupsData, deleteGroupFromList }
+    return { groups, groupsData, addGroupToList, deleteGroupFromList }
   }

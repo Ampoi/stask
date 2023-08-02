@@ -53,13 +53,19 @@ import { Task } from "../../models/task"
 import useGroupSettings from "../../hooks/useGroupSettings"
 import useMember from "../../hooks/useMember"
 import { router } from "../../router"
+import useGroups from "../../hooks/useGroups";
 
 const props = defineProps<{
     groupID: string
 }>()
 
 const { isMember } = await useMember(props.groupID)
-if( !isMember ){
+if( isMember ){
+    const { groups, addGroupToList } = await useGroups()
+    if( !groups.value.includes( props.groupID ) ){
+        addGroupToList( props.groupID )
+    }
+}else{
     await router.push({ path:"/app" })
     window.location.reload()
 }

@@ -1,5 +1,6 @@
 import { inviteRepository } from "../infra/inviteRepository";
 import { router } from "../router";
+import useGroups from "./useGroups";
 
 export default async (groupID: string, inviteID: string) => {
     const { getInviteGroupData, joinInviteGroup } = inviteRepository
