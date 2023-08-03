@@ -11,8 +11,10 @@
             <input
                 type="text"
                 class="rounded-lg grow max-w-[calc(100%-88px)] text-xl"
-                :modelValue="props.task.name"
-                @update:modelValue="(newName: string) => updateTask({ name: newName })"
+                :value="props.task.name"
+                @input="
+                    //@ts-ignore
+                    (event: Event) => updateTask({ name: event.target.value as string ?? '' })"
                 placeholder="課題名を入力...">
             <button
                 class="rounded-full basis-8 grid place-content-center"
