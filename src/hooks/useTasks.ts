@@ -1,7 +1,7 @@
 import { ref, watch } from "vue";
 import { createTaskRepository } from "../infra/taskRepository";
 import useTasksAnalytics from "./useTasksAnalytics";
-import { Task } from "../models/task";
+import { Task, Scope } from "../models/task";
 import useGroupSettings from "./useGroupSettings";
 
 export default async (groupID: string) => {
@@ -9,8 +9,12 @@ export default async (groupID: string) => {
     const tasksData: Task[] = await (async () => {
         const newPartialTasks = await taskRepository.get() ?? []
         const { groupSettings } = await useGroupSettings(groupID)
-        const newTasks = newPartialTasks.map((newPartialTask) => {
-            return { ...Task.create(groupSettings.value.subjects), ...newPartialTask }
+        const newTasks: Task[] = newPartialTasks.map((newPartialTask) => {
+            const newTask = { ...Task.create(groupSettings.value.subjects), ...newPartialTask }
+            const newScopes = newTask.scopes.map((newTaskScope) => {
+                return { ...Scope.create(), ...newTaskScope }
+            })
+            return { ...newTask, ...{ scopes: newScopes } }
         })
         return newTasks ?? []
     })()
