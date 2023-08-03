@@ -1,17 +1,18 @@
 <template>
     <div
         class="w-full p-4 bg-white/80 border-2 border-l-8 rounded-xl flex flex-col gap-2"
-        :style="{ borderColor: `${editableTask.subject.color}70` }"
+        :style="{ borderColor: `${props.task.subject.color}70` }"
         v-if="!task.deleted">
         <div class="flex flex-row items-stretch gap-4 h-8">
             <DoneButton
                 v-model:is-done="isDone"
-                :color="editableTask.subject.color"
-                :taskID="editableTask.id"/>
+                :color="props.task.subject.color"
+                :taskID="props.task.id"/>
             <input
                 type="text"
                 class="rounded-lg grow max-w-[calc(100%-88px)] text-xl"
-                v-model="editableTask.name"
+                :modelValue="props.task.name"
+                @update:modelValue="(newName: string) => updateTask({ name: newName })"
                 placeholder="課題名を入力...">
             <button
                 class="rounded-full basis-8 grid place-content-center"
@@ -27,7 +28,7 @@
         <div>
             <ProgressBar
                 :scope="doneData"
-                :main-color="editableTask.subject.color"
+                :main-color="props.task.subject.color"
                 :groupID="groupID"
                 sub-color="#F3F4F6"/>
         </div>
@@ -44,13 +45,13 @@
                 <div class="grow overflow-scroll flex flex-col gap-2">
                     <PageUnitOptions v-model:page-unit="cardUnit"/>
                     <Page
-                        v-for="(_scope, index) in editableTask.scopes"
+                        v-for="(_scope, index) in props.task.scopes"
                         :key="index"
-                        v-model:scope="editableTask.scopes[index]"
-                        :color="editableTask.subject.color"
+                        v-model:scope="props.task.scopes[index]"
+                        :color="props.task.subject.color"
                         :cardUnit="cardUnit"
                         :groupID="groupID"
-                        :taskID="editableTask.id"/>
+                        :taskID="props.task.id"/>
                 </div>
                 <button
                     class="rounded-lg p-2 bg-white w-full"
@@ -60,7 +61,7 @@
             </div>
             <div class="flex flex-row items-stretch gap-2 h-10">
                 <SubjectOptions
-                    v-model:card-subject="editableTask.subject"
+                    v-model:card-subject="props.task.subject"
                     :subjects="subjects"
                     class="grow"/>
                 <button
@@ -73,7 +74,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { computed, ref, watch } from "vue"
+import { computed, ref } from "vue"
 import { TransitionRoot } from "@headlessui/vue"
 
 import DoneButton from "./TaskCard/doneButton.vue";
@@ -95,7 +96,7 @@ const { getUserData } = await useAuth()
 const { uid } = await getUserData()
 
 const props = defineProps<{
-    task: Partial<Task>
+    task: Task
     groupID: string
 }>()    
 const emit = defineEmits<{
@@ -106,23 +107,6 @@ const emit = defineEmits<{
 const { groupSettings } = await useGroupSettings(props.groupID)
 const subjects = groupSettings.value.subjects
 
-function returnPerfectTask(){ return { ...Task.create(subjects), ...props.task } }
-
-const editableTask = ref(returnPerfectTask())
-const changedByProp = ref(false)
-watch(() => props.task, () => {
-    changedByProp.value = true
-    editableTask.value = returnPerfectTask()
-})
-
-watch(editableTask, (newTask: Task) => {
-    if(!changedByProp.value){
-        emit("update:task", newTask)
-    }else{
-        changedByProp.value = false
-    }
-}, { deep: true })
-
 const doneData = computed((): {
     first: number
     last: number
@@ -131,12 +115,12 @@ const doneData = computed((): {
     let allPagesAmount = 0
     let donePagesAmount: { [key: Uid]: number } = {}
 
-    editableTask.value.scopes.forEach((scope) => {
+    props.task.scopes.forEach((scope) => {
         allPagesAmount += (scope.last ?? 0) - (scope.first ?? 0)
     })
 
     Object.keys(groupSettings.value.members).forEach((uid) => {
-        editableTask.value.scopes.forEach((scope) => {
+        props.task.scopes.forEach((scope) => {
             const myNowPaage: number | undefined = scope.now ? scope.now[uid] : 0
 
             if(!donePagesAmount[uid]){ donePagesAmount[uid] = 0 }
@@ -151,23 +135,31 @@ const doneData = computed((): {
     }
 })
 
+function updateTask(updates: Partial<Task>){
+    const newTask: Task = { ...props.task, ...updates }
+    emit("update:task", newTask)
+}
+
 const isDone = computed({
     get(){
         return (doneData.value.now[uid] ?? 0) / (doneData.value.last - doneData.value.first) == 1
     },
     set(done: boolean){
-        const newScopes = editableTask.value.scopes.map((scope: Scope): Scope  => {
+        const newScopes = props.task.scopes.map((scope: Scope): Scope  => {
             let oldScope = { ...scope }
             oldScope.now[uid] = done ? (scope.last ?? 0) : (scope.first ?? 0)
             
             return oldScope
         })
 
-        editableTask.value.scopes = newScopes
+        updateTask({ scopes: newScopes })
     }
 })
 
 function addScope(){
-    editableTask.value.scopes.push(Scope.create())
+    let newScopes = props.task.scopes
+    newScopes.push(Scope.create())
+
+    updateTask({ scopes: newScopes })
 }
 </script>
