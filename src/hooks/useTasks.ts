@@ -1,11 +1,17 @@
 import { ref, watch } from "vue";
-import { taskRepository as firebaseRepository } from "../infra/taskRepository";
+import { createTaskRepository } from "../infra/taskRepository";
 import useTasksAnalytics from "./useTasksAnalytics";
+import { Task } from "../models/task";
+import useGroupSettings from "./useGroupSettings";
 
 export default async (groupID: string) => {
-    const taskRepository = firebaseRepository(groupID)
-    const tasksData = await (async () => {
-        const newTasks = await taskRepository.get()
+    const taskRepository = createTaskRepository(groupID)
+    const tasksData: Task[] = await (async () => {
+        const newPartialTasks = await taskRepository.get() ?? []
+        const { groupSettings } = await useGroupSettings(groupID)
+        const newTasks = newPartialTasks.map((newPartialTask) => {
+            return { ...Task.create(groupSettings.value.subjects), ...newPartialTask }
+        })
         return newTasks ?? []
     })()
     
