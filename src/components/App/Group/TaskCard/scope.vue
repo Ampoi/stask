@@ -1,7 +1,7 @@
 <template>
 	<button
 		class="flex flex-row gap-2 items-center text-xl py-3 px-4 border-white border-[1px] rounded-lg"
-		@click="showEditPageModal = !showEditPageModal">
+		@click="showEditScopeModal = !showEditScopeModal">
 		<span>{{ props.cardUnit.symbol(editableScope.first) }}</span>
 		<ProgressBar
 			:scope="editableScope"
@@ -11,9 +11,9 @@
 		<span>{{ props.cardUnit.symbol(editableScope.last) }}</span>
 	</button>
 
-	<EditPageModal
+	<EditScopeModal
 		v-model:scope="editableScope"
-		v-model:open="showEditPageModal"
+		v-model:open="showEditScopeModal"
 		:cardUnit="cardUnit"
 		:uid="uid"
 		:taskID="taskID"/>
@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
-import EditPageModal from "./page/editPageModal.vue"
+import EditScopeModal from "./scope/editScopeModal.vue"
 import ProgressBar from "./progressBar.vue";
 
 import { Scope } from "../../../../models/task";
@@ -30,7 +30,7 @@ import useAuth from "../../../../hooks/useAuth";
 const props = defineProps<{
 	cardUnit: {
 		name: string
-		symbol: (page: number) => string //TODO:Modelか何かでまとめたい
+		symbol: (scope: number) => string //TODO:Modelか何かでまとめたい
 	},
 	scope: Partial<Scope>
 	taskID: string
@@ -42,7 +42,7 @@ const emit = defineEmits<{
 	(e: "update:scope", newScope: Scope): void
 }>()
 
-const showEditPageModal = ref(false)
+const showEditScopeModal = ref(false)
 
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()

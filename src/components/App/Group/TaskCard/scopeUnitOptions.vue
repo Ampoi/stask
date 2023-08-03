@@ -1,13 +1,13 @@
 <template>
   <Listbox
-    :model-value="props.pageUnit"
+    :model-value="props.scopeUnit"
     @update:model-value="value => updateCardUnit(value)"
     v-slot="{ open }"
     as="div">
       <ListboxButton
           class="rounded-lg p-2 bg-white w-full"
           :class="{ 'rounded-b-none': open }">
-          単位：{{ props.pageUnit.name }}
+          単位：{{ props.scopeUnit.name }}
       </ListboxButton>
       <TransitionRoot
           enter-from="opacity-0 ease-out -translate-y-10"
@@ -36,23 +36,23 @@ import { Listbox, ListboxButton, ListboxOption, ListboxOptions, TransitionRoot }
 
 type Unit = {
   name: string
-  symbol: (page: number) => string
+  symbol: (scope: number) => string
 }
 
 const props = defineProps<{
-  pageUnit: Unit
+  scopeUnit: Unit
 }>()
 
 const emit = defineEmits<{
-  (e: "update:pageUnit", newPageUnit: Unit): void
+  (e: "update:scopeUnit", newScopeUnit: Unit): void
 }>()
 
 const units: Unit[] = [
-    { name: "ページ", symbol: (page: number): string => {return `p.${page}`} },
-    { name: "問題(四角)", symbol: (page: number): string => {return `[${page}]`} },
+    { name: "ページ", symbol: (scope: number): string => {return `p.${scope}`} },
+    { name: "問題(四角)", symbol: (scope: number): string => {return `[${scope}]`} },
 ]
 
-function updateCardUnit(newPageUnit: Unit){ 
-  emit("update:pageUnit", newPageUnit)
+function updateCardUnit(newScopeUnit: Unit){ 
+  emit("update:scopeUnit", newScopeUnit)
 }
 </script>

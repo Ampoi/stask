@@ -45,8 +45,8 @@
             class="flex flex-col gap-2">
             <div class="w-full bg-gray-100 border-gray-200 border-[1px] h-56 rounded-lg p-4 flex flex-col gap-2 overflow-y-auto">
                 <div class="grow overflow-scroll flex flex-col gap-2">
-                    <PageUnitOptions v-model:page-unit="cardUnit"/>
-                    <Page
+                    <ScopeUnitOptions v-model:scope-unit="cardUnit"/>
+                    <ScopeListItem
                         v-for="(_scope, index) in props.task.scopes"
                         :key="index"
                         v-model:scope="props.task.scopes[index]"
@@ -80,9 +80,9 @@ import { computed, ref } from "vue"
 import { TransitionRoot } from "@headlessui/vue"
 
 import DoneButton from "./TaskCard/doneButton.vue";
-import PageUnitOptions from "./TaskCard/pageUnitOptions.vue";
+import ScopeUnitOptions from "./TaskCard/scopeUnitOptions.vue";
 import ProgressBar from "./TaskCard/progressBar.vue";
-import Page from "./TaskCard/page.vue"
+import ScopeListItem from "./TaskCard/scope.vue"
 import SubjectOptions from "./TaskCard/subjectOptions.vue";
 
 import { Switch } from "../../../functions/switch"
@@ -114,26 +114,26 @@ const doneData = computed((): {
     last: number
     now: { [key: string]: number }
 } => {
-    let allPagesAmount = 0
-    let donePagesAmount: { [key: Uid]: number } = {}
+    let allScopesAmount = 0
+    let doneScopesAmount: { [key: Uid]: number } = {}
 
     props.task.scopes.forEach((scope) => {
-        allPagesAmount += (scope.last ?? 0) - (scope.first ?? 0)
+        allScopesAmount += (scope.last ?? 0) - (scope.first ?? 0)
     })
 
     Object.keys(groupSettings.value.members).forEach((uid) => {
         props.task.scopes.forEach((scope) => {
             const myNowPaage: number | undefined = scope.now ? scope.now[uid] : 0
 
-            if(!donePagesAmount[uid]){ donePagesAmount[uid] = 0 }
-            donePagesAmount[uid] += (myNowPaage ?? (scope.first ?? 0)) - (scope.first ?? 0)
+            if(!doneScopesAmount[uid]){ doneScopesAmount[uid] = 0 }
+            doneScopesAmount[uid] += (myNowPaage ?? (scope.first ?? 0)) - (scope.first ?? 0)
         })
     })
 
     return {
         first: 0,
-        last: allPagesAmount,
-        now: donePagesAmount
+        last: allScopesAmount,
+        now: doneScopesAmount
     }
 })
 

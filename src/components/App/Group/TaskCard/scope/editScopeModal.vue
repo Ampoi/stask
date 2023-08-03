@@ -1,6 +1,6 @@
 <template>
     <Modal
-        v-model:open="showEditPageModal"
+        v-model:open="showEditScopeModal"
         @update:open="updateScope">
 		<div class="flex flex-col gap-8 items-center">
 			<div class="flex flex-row items-center justify-center gap-12">
@@ -37,8 +37,8 @@
 				</div>
 				<div
 					class="absolute w-full h-full left-0 top-0 right-0 bg-transparent"
-					@touchmove="(event) => moveChangeNowPage(event)"
-					@touchend="endChangeNowPage()"/>
+					@touchmove="(event) => moveChangeNowScope(event)"
+					@touchend="endChangeNowScope()"/>
 			</ModalSection>
 		</div>
 	</Modal>
@@ -60,7 +60,7 @@ const props = defineProps<{
     scope: Scope
     cardUnit: {
 		name: string
-		symbol: (page: number) => string //TODO:Modelか何かでまとめたい
+		symbol: (scope: number) => string //TODO:Modelか何かでまとめたい
 	},
     uid: string
 	taskID: string
@@ -74,17 +74,17 @@ const emit = defineEmits<{
 const editableScope = ref(JSON.parse(JSON.stringify(props.scope)) as Scope)
 
 const getLevelOfAchivement = computed(()=>{
-	const allPageAmount = editableScope.value.last - editableScope.value.first + 1
-	const achivedPageAmount = editableScope.value.now[props.uid] - editableScope.value.first + 1	
+	const allScopeAmount = editableScope.value.last - editableScope.value.first + 1
+	const achivedScopeAmount = editableScope.value.now[props.uid] - editableScope.value.first + 1	
 
-	return achivedPageAmount / allPageAmount * 100
+	return achivedScopeAmount / allScopeAmount * 100
 })
 
 watch(() => props.scope, () => {
 	editableScope.value = props.scope
 })
 
-const showEditPageModal = computed({
+const showEditScopeModal = computed({
     get(){ return props.open },
     set(newOpen: boolean){ emit("update:open", newOpen) }
 })
@@ -109,10 +109,10 @@ function updateScope(){
 }
 
 const firstTouchX = ref(0)
-const firstTouchNowPage = ref(0)
+const firstTouchNowScope = ref(0)
 const firstTouch = ref(true)
 
-function moveChangeNowPage(touchEvent: TouchEvent){
+function moveChangeNowScope(touchEvent: TouchEvent){
 	touchEvent.preventDefault()
 	const touch = touchEvent.touches.item(0)
 	if(touch){
@@ -120,21 +120,21 @@ function moveChangeNowPage(touchEvent: TouchEvent){
 
 		if(firstTouch.value){
 			firstTouchX.value = touchClientX
-			firstTouchNowPage.value = editableScope.value.now[props.uid] ?? editableScope.value.first
+			firstTouchNowScope.value = editableScope.value.now[props.uid] ?? editableScope.value.first
 			firstTouch.value = false
 		}else{
-			const newPage = Math.floor((touchClientX - firstTouchX.value) / 10) + firstTouchNowPage.value
+			const newScope = Math.floor((touchClientX - firstTouchX.value) / 10) + firstTouchNowScope.value
 			
-			if(newPage < editableScope.value.first){
+			if(newScope < editableScope.value.first){
 				editableScope.value.now[props.uid] = editableScope.value.first
-			}else if(newPage > editableScope.value.last){
+			}else if(newScope > editableScope.value.last){
 				editableScope.value.now[props.uid] = editableScope.value.last
 			}else{
-				editableScope.value.now[props.uid] = newPage
+				editableScope.value.now[props.uid] = newScope
 			}
 		}
 	}
 }
 
-function endChangeNowPage(){ firstTouch.value = true }
+function endChangeNowScope(){ firstTouch.value = true }
 </script>
