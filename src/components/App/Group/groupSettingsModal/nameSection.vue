@@ -6,9 +6,7 @@
                 type="text"
                 class="p-2 rounded-md border-white border-[1px] bg-transparent grow"
                 :value="props.name"
-                @input="
-                    //@ts-ignore
-                    (event) => emit('update:name', event.target.value)"
+                @input="(event: any) => emit('update:name', event.target.value)"
                 placeholder="学校 / 3-Aのグループ / etc...">
         </div>
     </ModalSection>

@@ -5,9 +5,7 @@
             <textarea
                 class="p-2 rounded-md border-white border-[1px] bg-transparent grow resize-none"
                 :value="props.note"
-                @update="
-                    //@ts-ignore
-                    (event) => emit('update:note', event.target.value)"
+                @update="(event: any) => emit('update:note', event.target.value)"
                 placeholder="共有されているタスクで編集できるものは編集して大丈夫です"/>
         </div>
     </ModalSection>
