@@ -1,6 +1,7 @@
 <template>
     <Listbox
-        v-model="editableCardSubject"
+        :modelValue="props.cardSubject"
+        @update:modelValue="(newCardSubject: Subject) => emit('update:cardSubject', newCardSubject)"
         v-slot="{ open }"
         as="div">
         <ListboxButton
@@ -37,7 +38,6 @@
     </Listbox>
 </template>
 <script setup lang="ts">
-import { computed } from "vue";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions, TransitionRoot } from "@headlessui/vue"
 import { Subject } from "../../../../models/task";
 
@@ -49,13 +49,4 @@ const props = defineProps<{
 const emit = defineEmits<{
     (e: "update:cardSubject", newCardSubject: Subject): void
 }>()
-
-const editableCardSubject = computed({
-    get(){
-        return props.cardSubject
-    },
-    set(newCardSubject: Subject){
-        emit("update:cardSubject", newCardSubject)
-    }
-})
 </script>
