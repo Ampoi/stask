@@ -1,6 +1,6 @@
 import { ref, watch } from "vue";
 import { createGroupSettingsRepository } from "../infra/groupSettingsRepository";
-import { GroupSettings } from "../models/groupSettings";
+import { GroupSettings, Permissions } from "../models/groupSettings";
 
 import useAuth from "./useAuth";
 
@@ -13,9 +13,12 @@ export default async (groupID: string) => {
 
     function returnPerfectSettings(newSettings: Partial<GroupSettings>){ return { ...GroupSettings.create(uid, userName, userIcon), ...newSettings } }
 
-    const groupSettingsData = await (async () => {
-        const newGroupSettings = await groupSettingsRepository.get()
-        return newGroupSettings ?? {}
+    const groupSettingsData: GroupSettings = await (async () => {
+        const newPartialGroupSettings = await groupSettingsRepository.get() ?? {}
+        let newGroupSettings = { ...GroupSettings.create(uid, userName, userIcon), ...newPartialGroupSettings }
+        newGroupSettings.permissions = { ...Permissions.create(), ...newGroupSettings.permissions }
+
+        return newGroupSettings
     })()
     
     const groupSettings = ref(returnPerfectSettings(groupSettingsData))

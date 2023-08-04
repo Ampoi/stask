@@ -37,17 +37,15 @@ import PermissionItem from "./permissionSection/permissionItem.vue"
 
 import { Permissions } from "../../../../models/groupSettings"
 
-const props = defineProps<{ permissions: Partial<Permissions> }>()
+const props = defineProps<{ permissions: Permissions }>()
 const emit = defineEmits<{ (e: "update:permissions", newPermissions: Permissions): void }>()
 
-function returnPerfectPermissions(){ return { ...Permissions.create(), ...props.permissions } }
-
-const editablePermissions = ref(returnPerfectPermissions())
+const editablePermissions = ref(props.permissions)
 const changedByProp = ref(false)
 
 watch(() => props.permissions, () => {
     changedByProp.value = true
-    editablePermissions.value = returnPerfectPermissions()
+    editablePermissions.value = props.permissions
 })
 
 watch(editablePermissions, (newPermissions: Permissions) => {
