@@ -63,3 +63,10 @@ export const Task = {
         }
     }
 }
+
+export type TaskFromText = {
+    name: string
+    term?: `${number}-${number}-${number}`
+    scopes?: {first: number, last: number}[]
+    subject?: string
+}

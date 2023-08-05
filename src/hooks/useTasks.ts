@@ -1,8 +1,10 @@
 import { ref, watch } from "vue";
 import { createTaskRepository } from "../infra/taskRepository";
+import { createTaskFromTextRepository } from "../infra/taskFromTextRepository"
+
 import useTasksAnalytics from "./useTasksAnalytics";
-import { Task, Scope } from "../models/task";
 import useGroupSettings from "./useGroupSettings";
+import { Task, Scope } from "../models/task";
 
 export default async (groupID: string) => {
     const taskRepository = createTaskRepository(groupID)
@@ -13,7 +15,8 @@ export default async (groupID: string) => {
 
         const newTasks: Task[] = newPartialTasks.map((newPartialTask) => {
             const newTask = { ...Task.create(groupSettings.value.subjects), ...newPartialTask }
-
+            if( !newTask.term ){ newTask.term = Task.create(groupSettings.value.subjects).term }
+            if( !newTask.subject ){ newTask.subject = Task.create(groupSettings.value.subjects).subject }
             const newScopes = newTask.scopes.map((newTaskScope) => {
                 const newScope = { ...Scope.create(), ...newTaskScope }
                 const members = groupSettings.value.members
@@ -36,6 +39,25 @@ export default async (groupID: string) => {
         const dbTasks = await taskRepository.get()
         return await getTask(dbTasks)
     })()
+
+    const createTaskFromText = async (taskText: string) => {
+        if( taskText == "" ){ return "taskTextが空です！" }
+        
+        const { groupSettings } = await useGroupSettings(groupID)
+        const subjects = groupSettings.value.subjects
+        const subjectNames = subjects.map(subject => subject.name)
+
+        const taskFromText = await createTaskFromTextRepository(subjectNames, taskText)
+        const newTasks = await getTask([{
+            name: taskFromText.name,
+            //@ts-ignore
+            scopes: taskFromText.scopes,
+            subject: subjects.find(subject => subject.name == taskFromText.subject),
+            term: taskFromText.term
+        }])
+
+        return newTasks[0]
+    }
     
     const tasks = ref(tasksData)
 
@@ -63,5 +85,5 @@ export default async (groupID: string) => {
         tasks.value[index].deleted = true
     }
 
-    return { tasks, deleteTask }
+    return { tasks, deleteTask, createTaskFromText }
 }

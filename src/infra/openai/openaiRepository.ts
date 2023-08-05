@@ -1,4 +1,4 @@
-export const openAIRepository = async (prompt: string, message: string) => {
+export const openAIRepository = async <T>(prompt: string, message: string) => {
     const OpenAIapiKey = import.meta.env.VITE_OPENAI_API_KEY
 
     const APIoptions = {
@@ -34,5 +34,7 @@ export const openAIRepository = async (prompt: string, message: string) => {
         .then(data => data)
         .catch(err => { throw new err });
 
-    return response
+    const result: T = JSON.parse(response.choices[0].message.content as string)
+
+    return result
 }
