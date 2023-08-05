@@ -4,6 +4,20 @@
         @update:open="(newOpen) => emit('update:open', newOpen)">
         <div class="flex flex-col gap-4 items-center h-full">
             <h1 class="text-3xl font-semibold">課題を追加する</h1>
+            <ModalSection class="flex flex-row gap-4 w-full">
+                <button
+                    class="p-2 bg-white rounded-md text-center transition duration-150 basis-1/2"
+                    :class="(editWith == 'EditWithText') ? 'text-black' : 'text-black/40'"
+                    @click="editWith = 'EditWithText'">
+                    テキスト
+                </button>
+                <button
+                    class="p-2 bg-white rounded-md text-center transition duration-150 basis-1/2"
+                    :class="(editWith == 'EditWithManual') ? 'text-black' : 'text-black/40'"
+                    @click="editWith = 'EditWithManual'">
+                    手動
+                </button>
+            </ModalSection>
             <component
                 :is="edits[editWith]"
                 :groupID="groupID"
@@ -13,6 +27,7 @@
 </template>
 <script setup lang="ts">
 import Modal from "../modal.vue"
+import ModalSection from "../modal/section.vue"
 
 import { Task } from "../../../models/task";
 
