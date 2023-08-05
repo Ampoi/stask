@@ -6,8 +6,9 @@ import useGroupSettings from "./useGroupSettings";
 
 export default async (groupID: string) => {
     const taskRepository = createTaskRepository(groupID)
-    const tasksData: Task[] = await (async () => {
-        const newPartialTasks = await taskRepository.get() ?? []
+
+    const getTask = async (dbTasks: Partial<Task>[] | undefined) => {
+        const newPartialTasks = dbTasks ?? []
         const { groupSettings } = await useGroupSettings(groupID)
 
         const newTasks: Task[] = newPartialTasks.map((newPartialTask) => {
@@ -25,19 +26,23 @@ export default async (groupID: string) => {
 
                 return { ...newScope, ...{now: newScopeNows} }
             })
-            console.log({ ...newTask, ...{ scopes: newScopes } })
             return { ...newTask, ...{ scopes: newScopes } }
         })
 
         return newTasks ?? []
+    }
+
+    const tasksData: Task[] = await (async () => {
+        const dbTasks = await taskRepository.get()
+        return await getTask(dbTasks)
     })()
     
     const tasks = ref(tasksData)
 
     let changedByDatabase = true
-    taskRepository.onChange((snapshot)=>{
+    taskRepository.onChange(async (snapshot)=>{
         changedByDatabase = true
-        tasks.value = snapshot.val()
+        tasks.value = await getTask(snapshot.val())
     })
     
     watch(tasks, async () => {

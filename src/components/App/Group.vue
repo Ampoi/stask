@@ -21,12 +21,15 @@
             </div>
         </Section>-->
         <Section title="課題一覧">
-            <TaskCard
-                v-for="(_task, index) in tasks"
-                :key="index"
-                v-model:task="tasks[index]"
-                :groupID="groupID"
-                @deleteThisTask="deleteTask(index)"/>
+            <div
+                v-for="(task, index) in tasks"
+                :key="index">
+                <TaskCard
+                    v-if="!task.deleted"
+                    v-model:task="tasks[index]"
+                    :groupID="groupID"
+                    @deleteThisTask="deleteTask(index)"/>
+            </div>
         </Section>
     </div>
 

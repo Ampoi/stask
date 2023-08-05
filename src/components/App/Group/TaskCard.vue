@@ -1,8 +1,8 @@
 <template>
     <div
         class="w-full p-4 bg-white/80 border-2 border-l-8 rounded-xl flex flex-col gap-2"
-        :style="{ borderColor: `${props.task.subject.color}70` }"
-        v-if="!task.deleted">
+        :style="{ borderColor: `${props.task.subject.color}70` }">
+        {{ task }}
         <div class="flex flex-row items-stretch gap-4 h-8">
             <DoneButton
                 v-model:is-done="isDone"
@@ -98,7 +98,8 @@ const { uid } = await getUserData()
 const props = defineProps<{
     task: Task
     groupID: string
-}>()    
+}>()
+
 const emit = defineEmits<{
     (e: "update:task", newTask: Task): void
     (e: "deleteThisTask"): void
@@ -114,7 +115,7 @@ const doneData = computed((): {
 } => {
     let allScopesAmount = 0
     let doneScopesAmount: { [key: Uid]: number } = {}
-
+    console.log(props.task)
     props.task.scopes.forEach((scope) => {
         allScopesAmount += (scope.last ?? 0) - (scope.first ?? 0)
     })
