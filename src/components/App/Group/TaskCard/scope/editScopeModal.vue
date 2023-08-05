@@ -71,7 +71,7 @@ const emit = defineEmits<{
     (e: "update:open", newOpen: boolean): void
 }>()
 
-const editableScope = ref(JSON.parse(JSON.stringify(props.scope)) as Scope)
+const editableScope = ref({ ...props.scope })
 
 const getLevelOfAchivement = computed(()=>{
 	const allScopeAmount = editableScope.value.last - editableScope.value.first + 1
@@ -105,7 +105,7 @@ function updateScope(){
 		kadai_id: props.taskID,
 		scope_id:  props.scope.id
 	})
-    emit("update:scope", { ...editableScope.value})
+    emit("update:scope", { ...editableScope.value })
 }
 
 const firstTouchX = ref(0)
