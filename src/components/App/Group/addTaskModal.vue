@@ -50,7 +50,7 @@ const emit = defineEmits<{
 const edits = { EditWithManual, EditWithText }
 type EditComponent = keyof typeof edits
 
-const editWith = ref<EditComponent>("EditWithManual")
+const editWith = ref<EditComponent>("EditWithText")
 
 const { logTasksAnalytics } = await useTasksAnalytics()
 function addTask(newTask: Task){
