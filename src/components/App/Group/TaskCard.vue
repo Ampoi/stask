@@ -114,7 +114,6 @@ const doneData = computed((): {
 } => {
     let allScopesAmount = 0
     let doneScopesAmount: { [key: Uid]: number } = {}
-    console.log(props.task)
     props.task.scopes.forEach((scope) => {
         allScopesAmount += (scope.last ?? 0) - (scope.first ?? 0)
     })
