@@ -28,7 +28,8 @@
                     v-if="!task.deleted"
                     v-model:task="tasks[index]"
                     :groupID="groupID"
-                    @deleteThisTask="deleteTask(index)"/>
+                    @deleteThisTask="deleteTask(index)"
+                    class="mt-2"/>
             </div>
         </Section>
     </div>

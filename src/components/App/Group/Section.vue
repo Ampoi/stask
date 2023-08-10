@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col">
         <h2 class="text-xl font-bold text-gray-400">{{ props.title }}</h2>
         <slot></slot>
     </div>
