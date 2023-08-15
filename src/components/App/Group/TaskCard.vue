@@ -45,13 +45,14 @@
                 <div class="grow overflow-scroll flex flex-col gap-2">
                     <ScopeUnitOptions v-model:scope-unit="cardUnit"/>
                     <ScopeListItem
-                        v-for="(_scope, index) in props.task.scopes"
-                        :key="index"
+                        v-for="(scope, index) in props.task.scopes"
+                        :key="scope.id"
                         v-model:scope="props.task.scopes[index]"
                         :color="props.task.subject.color"
                         :cardUnit="cardUnit"
                         :groupID="groupID"
-                        :taskID="props.task.id"/>
+                        :taskID="props.task.id"
+                        @deleteThisScope="deleteScope(index)"/>
                 </div>
                 <button
                     class="rounded-lg p-2 bg-white w-full"
@@ -88,6 +89,7 @@ import { Scope, Task } from "../../../models/task";
 import useAuth from "../../../hooks/useAuth";
 import useGroupSettings from "../../../hooks/useGroupSettings";
 import { Uid } from "../../../models/groupSettings";
+import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
 
 const showCardMenu = ref(new Switch(false))
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
@@ -161,5 +163,17 @@ function addScope(){
     newScopes.push(Scope.create())
 
     updateTask({ scopes: newScopes })
+}
+
+const { logTasksAnalytics } = await useTasksAnalytics()
+
+function deleteScope(index: number){
+    logTasksAnalytics({
+        name: "deleteScope",
+        scope_id: props.task.scopes[index].id,
+        kadai_id: props.task.id
+    })
+    
+    props.task.scopes.splice(index, 1)
 }
 </script>

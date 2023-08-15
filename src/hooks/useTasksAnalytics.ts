@@ -6,10 +6,20 @@ type SwitchDone = {
   new: boolean
 }
 
+type CreateScope = {
+  name: "createScope"
+  scope_id: string
+}
+
 type EditScope = {
   name: "editScope"
   old: number
   new: number
+  scope_id: string
+}
+
+type DeleteScope = {
+  name: "deleteScope"
   scope_id: string
 }
 
@@ -28,7 +38,13 @@ type BasicTaskData = {
 export default async () => {
   const { createAnalytics } = await useAnalytics()
 
-  const logTasksAnalytics = createAnalytics<(SwitchDone | EditScope | CreateTask | DeleteTask) & BasicTaskData>("task")
+  const logTasksAnalytics = createAnalytics<(
+    SwitchDone |
+    CreateScope |
+    EditScope |
+    DeleteScope |
+    CreateTask |
+    DeleteTask) & BasicTaskData>("task")
 
   return { logTasksAnalytics }
 }

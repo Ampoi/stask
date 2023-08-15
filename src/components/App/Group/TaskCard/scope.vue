@@ -9,6 +9,11 @@
 			:groupID="groupID"
 			sub-color="white"/>
 		<span>{{ props.cardUnit.symbol(props.scope.last) }}</span>
+		<button
+			class="border-[1px] border-red-400 text-red-400 text-sm py-1.5 px-2 rounded-full grid place-content-center"
+			@click="emit('deleteThisScope')">
+			<i class="bi bi-trash3"/>
+		</button>
 	</button>
 
 	<EditScopeModal
@@ -41,6 +46,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
 	(e: "update:scope", newScope: Scope): void
+	(e: "deleteThisScope"): void
 }>()
 
 const showEditScopeModal = ref(false)
