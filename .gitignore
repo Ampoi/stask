@@ -4,4 +4,6 @@ dist
 .idea
 
 **/*.log
+.DS_Store
+**/.DS_Store
 stask.code-workspace
