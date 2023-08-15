@@ -42,6 +42,7 @@ export type Task = {
     subject: Subject
     id: `${string}-${string}`
     deleted: boolean
+    workon: Uid[]
 }
 
 export const Task = {
@@ -59,7 +60,8 @@ export const Task = {
             scopes: [],
             subject: subjects[0],
             id: taskID,
-            deleted: false
+            deleted: false,
+            workon: []
         }
     }
 }

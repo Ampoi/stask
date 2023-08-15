@@ -25,7 +25,7 @@
                 v-for="(task, index) in tasks"
                 :key="index">
                 <TaskCard
-                    v-if="!task.deleted"
+                    v-if="!task.deleted && task.workon.includes(uid)"
                     v-model:task="tasks[index]"
                     :groupID="groupID"
                     @deleteThisTask="deleteTask(index)"
@@ -34,7 +34,7 @@
         </Section>
     </div>
 
-    <AddTaskModal
+    <AddTaskFromSharedTaskModal
         v-model:open="showAddTaskModal"
         :groupID="groupID"
         @addTask="addTask"/>
@@ -48,7 +48,7 @@ import Section from "./Group/Section.vue"
 //import AddCountdownButton from "./Group/AddCountdownButton.vue"
 //import Countdown from "./Group/Countdown.vue"
 import TaskCard from "./Group/TaskCard.vue"
-import AddTaskModal from "./Group/addTaskModal.vue"
+import AddTaskFromSharedTaskModal from "./Group/addTaskFromSharedTaskModal.vue"
 import GroupSettingsModal from "./Group/groupSettingsModal.vue"
 
 import useTasks from "../../hooks/useTasks";
@@ -56,6 +56,7 @@ import { ref } from "vue"
 import { Task } from "../../models/task"
 import useGroupSettings from "../../hooks/useGroupSettings"
 import useMember from "../../hooks/useMember"
+import useAuth from "../../hooks/useAuth";
 import { router } from "../../router"
 import useGroups from "../../hooks/useGroups";
 
@@ -76,6 +77,8 @@ if( isMember ){
 
 const { tasks, deleteTask } = await useTasks(props.groupID)
 const { groupSettings } = await useGroupSettings(props.groupID)
+const { getUserData } = await useAuth()
+const { uid } = await getUserData()
 
 const showAddTaskModal = ref(false)
 function startAddTask(){ showAddTaskModal.value = true }

@@ -20,18 +20,9 @@
 				aspectRatio: 1/1,
 				left: `calc((100% - 32px) * ${getPercent(memberUid)} / 100)`
 			}">
-			<div class="relative w-full h-full">
-				<div
-					class="absolute top-0 left-0 w-full h-full border-2 border-white bg-cover bg-center rounded-full"
-					:style="{
-						backgroundImage: `url(${members[memberUid].icon})`
-					}"/>
-				<div
-					class="absolute top-0 left-0 w-full h-full border-2 rounded-full"
-					:style="{
-						borderColor: `${props.mainColor}70`,
-					}"/>
-			</div>
+			<UserIcon
+				:iconURL="members[memberUid].icon"
+				:color="mainColor"/>
 		</div>
 	</div>
 </template>
@@ -39,6 +30,8 @@
 import useAuth from '../../../../hooks/useAuth';
 import useGroupSettings from '../../../../hooks/useGroupSettings';
 import { Uid } from '../../../../models/groupSettings';
+
+import UserIcon from "./progressBar/userIcon.vue"
 
 const props = defineProps<{
 	mainColor: string
