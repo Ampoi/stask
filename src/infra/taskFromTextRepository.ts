@@ -26,7 +26,9 @@ subject: ${subjectTypes}
 
 You must reponse strictly according to these information.
 - "title" is homework name.
-- Response only JSON data.`,
+- Response only JSON data.
+- "term" is following in this format: "yyyy-mm-dd".
+- If there are no infomation about date use ${2023}-${'08'}-${16} instead.`,
         taskText
     )
 }

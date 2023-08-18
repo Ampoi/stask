@@ -35,7 +35,8 @@
     </Modal>
     <CreateTaskModal
         v-model:open="showCreateTaskModal"
-        :groupID="groupID"/>
+        :groupID="groupID"
+        @createTask="addCreatedTask"/>
 </template>
 <script setup lang="ts">
 import Modal from "../modal.vue"
@@ -46,6 +47,8 @@ import useAuth from "../../../hooks/useAuth";
 
 import CreateTaskModal from "./createTaskModal.vue";
 import { ref } from "vue";
+import { Task } from "../../../models/task";
+
 
 //import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
 
@@ -74,6 +77,11 @@ const { uid } = await getUserData()
 const showCreateTaskModal = ref(false)
 function createTask(){
     showCreateTaskModal.value = true
+}
+
+function addCreatedTask(task: Task){
+    tasks.value.push(task)
+    showCreateTaskModal.value = false
 }
 
 //const { logTasksAnalytics } = await useTasksAnalytics()

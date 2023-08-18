@@ -60,7 +60,7 @@ export default async (groupID: string) => {
         return newTasks[0]
     }
     
-    const tasks = ref(tasksData)
+    const tasks = ref<Task[]>(tasksData)
 
     let changedByDatabase = true
     taskRepository.onChange(async (snapshot)=>{

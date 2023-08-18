@@ -33,8 +33,8 @@ import { Task } from "../../../models/task";
 
 import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
 
-import EditWithManual from "./addTaskModal/editWithManual.vue"
-import EditWithText from "./addTaskModal/editWithText.vue"
+import EditWithManual from "./createTaskModal/editWithManual.vue"
+import EditWithText from "./createTaskModal/editWithText.vue"
 import { ref } from "vue";
 
 const props = defineProps<{
@@ -44,7 +44,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (e: "update:open", newOpen: boolean): void
-    (e: "addTask", newTask: Task): void
+    (e: "createTask", newTask: Task): void
 }>()
 
 const edits = { EditWithManual, EditWithText }
@@ -58,6 +58,6 @@ function addTask(newTask: Task){
         name: "createTask",
         kadai_id: newTask.id
     })
-    emit("addTask", newTask)
+    emit("createTask", newTask)
 }
 </script>
