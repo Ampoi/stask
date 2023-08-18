@@ -48,6 +48,7 @@ export default async (groupID: string) => {
         const subjectNames = subjects.map(subject => subject.name)
 
         const taskFromText = await createTaskFromTextRepository(subjectNames, taskText)
+        console.log(taskFromText)
         const newTasks = await getTask([{
             name: taskFromText.name,
             //@ts-ignore

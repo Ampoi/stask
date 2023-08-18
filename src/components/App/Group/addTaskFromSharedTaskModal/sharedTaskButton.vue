@@ -1,8 +1,9 @@
 <template>
     <button
         class="w-full p-4 bg-white/80 border-2 border-l-8 rounded-xl flex flex-col gap-2"
+        :class="{ 'opacity-40': isInQue }"
         :style="{ borderColor: `${task.subject.color}70` }"
-        @click="emit('selected')">
+        @click="addTaskToQue">
         <h2 class="text-lg font-semibold">{{ task.name }}</h2>
         <div class="flex flex-row gap-4">
             <div class="flex flex-row">
@@ -23,6 +24,7 @@ import useGroupSettings from "../../../../hooks/useGroupSettings";
 const props = defineProps<{
     task: Task
     groupID: string
+    isInQue: boolean
 }>()
 
 const emit = defineEmits<{
@@ -32,5 +34,9 @@ const emit = defineEmits<{
 const { groupSettings } = await useGroupSettings(props.groupID)
 const getMemberIcon = (uid: string) => {
     return groupSettings.value.members[uid].icon
+}
+
+const addTaskToQue = () => {
+    emit("selected")
 }
 </script>
