@@ -5,8 +5,8 @@
         :style="{ borderColor: `${task.subject.color}70` }"
         @click="addTaskToQue">
         <h2 class="text-lg font-semibold">{{ task.name }}</h2>
-        <div class="flex flex-row gap-4">
-            <div class="flex flex-row">
+        <div class="flex flex-row gap-4 w-full">
+            <div class="flex flex-row h-8 basis-40">
                 <UserIcon
                     v-for="(uid, index) in props.task.workon"
                     :key="index"
