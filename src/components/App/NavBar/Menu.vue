@@ -7,31 +7,38 @@
         leave-to="opacity-0 ease-in translate-y-10"
         leave="duration-300">
         <MenuItems class="absolute bottom-[72px] bg-white rounded-md p-3 w-[calc(100vw-48px)] flex flex-col gap-2">
-            <MenuItem name="Staskについて" icon="bi-question-lg" action="/"/>
-            <MenuItem name="グループ一覧" icon="bi-house-fill" action="/app" />
+            <MenuLink name="Staskについて" icon="bi-question-lg" to="/"/>
+            <MenuLink name="グループ一覧" icon="bi-house-fill" to="/app" />
             <div class="pl-2 flex flex-col gap-2">
                 <div
                     v-for="(group, groupID) in groupsData"
                     :key="groupID">
-                    <MenuItem
+                    <MenuButton
                         v-if="group"
                         icon="bi-people-fill"
                         :name="group.name"
-                        :action="`/group/${groupID}`"/>
+                        :action="() => goToAnotherGroup(groupID)"/>
                 </div>
             </div>
-            <MenuItem name="ログアウト" icon="bi-box-arrow-right" :action="() => { logout(router) }"/>
+            <MenuButton name="ログアウト" icon="bi-box-arrow-right" :action="() => { logout(router) }"/>
         </MenuItems>
     </TransitionRoot>
 </template>
 <script setup lang="ts">
 import { MenuItems, TransitionRoot } from "@headlessui/vue"
 
-import MenuItem from "./MenuItem.vue";
+import MenuLink from "./MenuLink.vue";
+import MenuButton from "./MenuButton.vue";
 import useAuth from "../../../hooks/useAuth";
-import { router } from "../../../router";
 import useGroups from "../../../hooks/useGroups";
+import { router } from "../../../router";
 
 const { logout } = await useAuth()
 const { groupsData } = await useGroups()
+
+const goToAnotherGroup = async (groupID: string | number) => {
+    console.log(groupID)
+    await router.push({name: "Group", params: { groupID }})
+    window.location.reload()
+}
 </script>
