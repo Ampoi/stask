@@ -5,6 +5,7 @@ import { createTaskFromTextRepository } from "../infra/taskFromTextRepository"
 import useTasksAnalytics from "./useTasksAnalytics";
 import useGroupSettings from "./useGroupSettings";
 import { Task, Scope } from "../models/task";
+import useAuth from "./useAuth";
 
 export default async (groupID: string) => {
     const taskRepository = createTaskRepository(groupID)
@@ -77,14 +78,25 @@ export default async (groupID: string) => {
     }, { deep: true })
 
     const { logTasksAnalytics } = await useTasksAnalytics()
-    function deleteTask(index: number){
+    /*function deleteTask(index: number){
         logTasksAnalytics({
             name: "deleteTask",
             kadai_id: tasks.value[index].id
         })
         //tasks.value.splice(index, 1)
         tasks.value[index].deleted = true
+    }*/
+
+    const { getUserData } = await useAuth()
+    const { uid } = await getUserData()
+
+    function unPinTask(index: number){
+        logTasksAnalytics({
+            name: "deleteTask",
+            kadai_id: tasks.value[index].id
+        })
+        tasks.value[index].workon = tasks.value[index].workon.filter(userUid => userUid != uid)
     }
 
-    return { tasks, deleteTask, createTaskFromText }
+    return { tasks, unPinTask, createTaskFromText }
 }

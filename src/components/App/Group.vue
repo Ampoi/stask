@@ -28,7 +28,7 @@
                     v-if="!task.deleted && task.workon.includes(uid)"
                     v-model:task="tasks[index]"
                     :groupID="groupID"
-                    @deleteThisTask="deleteTask(index)"
+                    @unPinThisTask="unPinTask(index)"
                     class="mt-2"/>
             </div>
         </Section>
@@ -75,7 +75,7 @@ if( isMember ){
     window.location.reload()
 }
 
-const { tasks, deleteTask } = await useTasks(props.groupID)
+const { tasks, unPinTask } = await useTasks(props.groupID)
 const { groupSettings } = await useGroupSettings(props.groupID)
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()

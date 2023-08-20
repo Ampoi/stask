@@ -67,8 +67,8 @@
                     class="grow"/>
                 <button
                     class="rounded-lg border-[1px] border-red-400 text-red-400 text-lg w-10 grid place-content-center"
-                    @click="emit('deleteThisTask')">
-                    <i class="bi bi-trash3"></i>
+                    @click="emit('unPinThisTask')">
+                    <i class="bi bi-box-arrow-right"/>
                 </button>
             </div>
         </TransitionRoot>
@@ -86,9 +86,9 @@ import SubjectOptions from "./TaskCard/subjectOptions.vue";
 
 import { Switch } from "../../../functions/switch"
 import { Scope, Task } from "../../../models/task";
+import { Uid } from "../../../models/groupSettings";
 import useAuth from "../../../hooks/useAuth";
 import useGroupSettings from "../../../hooks/useGroupSettings";
-import { Uid } from "../../../models/groupSettings";
 import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
 
 const showCardMenu = ref(new Switch(false))
@@ -104,7 +104,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (e: "update:task", newTask: Task): void
-    (e: "deleteThisTask"): void
+    (e: "unPinThisTask"): void
 }>()
 
 const { groupSettings } = await useGroupSettings(props.groupID)

@@ -16,8 +16,7 @@
 			class="absolute top-0 h-full"
 			v-for="memberUid in Object.keys(props.scope.now)"
 			:key="memberUid"
-			:style="{ left: `calc((100% - 32px) * ${getPercent(memberUid)} / 100)` }"
-			>
+			:style="{ left: `calc((100% - 32px) * ${getPercent(memberUid)} / 100)` }">
 			<UserIcon
 				:iconURL="members[memberUid].icon"
 				:color="mainColor"/>
