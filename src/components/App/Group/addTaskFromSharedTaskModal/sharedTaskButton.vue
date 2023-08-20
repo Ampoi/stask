@@ -1,17 +1,20 @@
 <template>
     <button
         class="w-full p-4 bg-white/80 border-2 border-l-8 rounded-xl flex flex-col gap-2"
-        :class="{ 'opacity-40': isInQue }"
+        :class="{ '!bg-gray-100': isInQue }"
         :style="{ borderColor: `${task.subject.color}70` }"
         @click="addTaskToQue">
         <h2 class="text-lg font-semibold">{{ task.name }}</h2>
         <div class="flex flex-row gap-4 w-full">
             <div class="flex flex-row h-8 basis-40">
-                <UserIcon
+                <div
                     v-for="(uid, index) in props.task.workon"
                     :key="index"
-                    :iconURL="getMemberIcon(uid)"
-                    :color="task.subject.color"/>
+                    class="-ml-4 first:m-0">
+                    <UserIcon
+                        :iconURL="getMemberIcon(uid)"
+                        :color="task.subject.color"/>
+                </div>
             </div>
         </div>
     </button>
