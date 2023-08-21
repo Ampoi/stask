@@ -37,8 +37,11 @@
             </div>
         </RouterLink>
     </div>
+
+    <IntroducePwaModal />
 </template>
 <script setup lang="ts">
+import IntroducePwaModal from './introducePwaModal.vue';
 import useGroups from '../../hooks/useGroups';
 
 const { groupsData, deleteGroupFromList } = await useGroups()

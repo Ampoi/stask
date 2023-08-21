@@ -42,6 +42,7 @@
     <GroupSettingsModal
         v-model:open="showGroupSettings"
         :groupID="groupID"/>
+    <IntroducePwaModal/>
 </template>
 <script setup lang="ts">
 import Section from "./Group/Section.vue"
@@ -50,6 +51,7 @@ import Section from "./Group/Section.vue"
 import TaskCard from "./Group/TaskCard.vue"
 import AddTaskFromSharedTaskModal from "./Group/addTaskFromSharedTaskModal.vue"
 import GroupSettingsModal from "./Group/groupSettingsModal.vue"
+import IntroducePwaModal from "./introducePwaModal.vue"
 
 import useTasks from "../../hooks/useTasks";
 import { ref } from "vue"

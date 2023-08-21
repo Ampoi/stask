@@ -12,9 +12,10 @@ export default defineConfig({
         lang: 'ja',
         name: 'Stask',
         short_name: 'Stask',
+        start_url: "/app?usingPWA=true",
         background_color: '#F3F4F6',
         theme_color: '#F3F4F6',
-        display: 'standalone',
+        display: "standalone",
         icons: [
           {
             src: 'touch_icon.png',

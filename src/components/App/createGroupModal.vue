@@ -3,7 +3,7 @@
         :open="props.open"
         @update:open="(newOpen) => emit('update:open', newOpen)">
         <div class="flex flex-col items-center gap-4 h-full">
-            <h1 class="text-3xl font-semibold">グループを作成する</h1>
+            <ModalTitle value="グループを作成する"/>
             <div class="mx-4 grow w-full flex flex-col gap-4 overflow-y-auto">
                 <NameSection v-model:name="newGroup.settings.name"/>
                 <NoteSection v-model:note="newGroup.settings.note"/>
@@ -23,6 +23,7 @@
 import { ref } from 'vue';
 
 import Modal from './modal.vue';
+import ModalTitle from "./modal/title.vue"
 
 import NameSection from './Group/groupSettingsModal/nameSection.vue';
 import NoteSection from './Group/groupSettingsModal/noteSection.vue';
