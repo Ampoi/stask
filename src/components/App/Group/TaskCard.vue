@@ -36,11 +36,16 @@
             :show="showCardMenu.value"
             enter-from="h-0"
             enter="duration-300 ease-out overflow-hidden"
-            enter-to="h-[280px]"
-            leave-from="h-[280px]"
+            enter-to="h-[324px]"
+            leave-from="h-[324px]"
             leave="duration-300 ease-in overflow-hidden"
             leave-to="h-0"
             class="flex flex-col gap-2">
+            <input
+                type="date"
+                class="h-10 w-full rounded-lg border-[1px] border-gray-299 text-lg text-center"
+                :value="props.task.term"
+                @input="(event: any) => updateTask({ term: event.target.value })">
             <div class="w-full bg-gray-100 border-gray-200 border-[1px] h-56 rounded-lg p-4 flex flex-col gap-2 overflow-y-auto">
                 <div class="grow overflow-scroll flex flex-col gap-2">
                     <ScopeUnitOptions v-model:scope-unit="cardUnit"/>
