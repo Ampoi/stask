@@ -1,16 +1,21 @@
 <template>
     <div
-        class="w-full p-4 bg-white/80 border-2 border-l-8 rounded-xl flex flex-col gap-2"
+        class="w-full p-4 border-2 border-l-8 rounded-xl flex flex-col gap-2 relative"
         :class="{ 'opacity-40': isDone }"
         :style="{ borderColor: `${props.task.subject.color}70` }">
-        <div class="flex flex-row items-stretch gap-4 h-8">
+        <div class="absolute top-0 left-0 h-full w-full bg-white">
+            <div
+                class="h-full bg-black/5"
+                :style="{ width: `${(1 - getRemainDates(props.task.term)) * 100}%` }"/>
+        </div>
+        <div class="flex flex-row items-stretch gap-4 h-8 z-10">
             <DoneButton
                 v-model:is-done="isDone"
                 :color="props.task.subject.color"
                 :taskID="props.task.id"/>
             <input
                 type="text"
-                class="rounded-lg grow max-w-[calc(100%-88px)] text-xl"
+                class="rounded-lg grow max-w-[calc(100%-88px)] text-xl bg-transparent"
                 :value="props.task.name"
                 @input="(event: any) => updateTask({ name: event.target.value as string ?? '' })"
                 placeholder="課題名を入力...">
@@ -40,13 +45,13 @@
             leave-from="h-[324px]"
             leave="duration-300 ease-in overflow-hidden"
             leave-to="h-0"
-            class="flex flex-col gap-2">
+            class="flex flex-col gap-2 z-20">
             <input
                 type="date"
-                class="h-10 w-full rounded-lg border-[1px] border-gray-299 text-lg text-center"
+                class="h-10 w-full rounded-lg border-[1px] border-gray-299 text-lg text-center bg-transparent"
                 :value="props.task.term"
                 @input="(event: any) => updateTask({ term: event.target.value })">
-            <div class="w-full bg-gray-100 border-gray-200 border-[1px] h-56 rounded-lg p-4 flex flex-col gap-2 overflow-y-auto">
+            <div class="w-full bg-gray-200/50 border-gray-200 border-[1px] h-56 rounded-lg p-4 flex flex-col gap-2 overflow-y-auto">
                 <div class="grow overflow-scroll flex flex-col gap-2">
                     <ScopeUnitOptions v-model:scope-unit="cardUnit"/>
                     <ScopeListItem
@@ -180,5 +185,16 @@ function deleteScope(index: number){
     })
     
     props.task.scopes.splice(index, 1)
+}
+
+function getRemainDates( termString: string ){
+    const termDate = new Date(termString)
+    const nowDate = new Date()
+
+    const remainDates = Math.round((termDate.getTime() - nowDate.getTime()) / 1000 / 3600 / 24 / 14 * 100) / 100
+
+    //console.log((1 - remainDates) * 100)
+
+    return remainDates
 }
 </script>

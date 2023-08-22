@@ -5,7 +5,7 @@
         v-slot="{ open }"
         as="div">
         <ListboxButton
-            class="rounded-lg p-2 border-[1px] border-gray-100 w-full flex flex-row gap-2 items-center justify-center bg-white"
+            class="rounded-lg p-2 border-[1px] border-gray-100 w-full flex flex-row gap-2 items-center justify-center"
             :class="{ 'rounded-b-none': open }">
             <div
                 class="w-4 h-4 rounded-full"
