@@ -1,5 +1,9 @@
 <template>
-    <TransitionRoot appear :show="props.open" as="template">
+    <TransitionRoot
+		appear
+		:show="props.open"
+		as="template"
+		class="z-30">
 		<Dialog class="fixed bottom-0 w-screen h-screen p-0 bg-transparent">
 			<TransitionChild
 				enter-from="opacity-0"
