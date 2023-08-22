@@ -3,7 +3,7 @@
         class="w-full p-4 border-2 border-l-8 rounded-xl flex flex-col gap-2 relative"
         :class="{ 'opacity-40': isDone }"
         :style="{ borderColor: `${props.task.subject.color}70` }">
-        <div class="absolute top-0 left-0 h-full w-full bg-white">
+        <div class="absolute top-0 left-0 h-full w-full bg-white overflow-hidden rounded-xl">
             <div
                 class="h-full bg-black/5"
                 :style="{ width: `${(1 - getRemainDates(props.task.term)) * 100}%` }"/>
