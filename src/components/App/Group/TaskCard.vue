@@ -178,13 +178,15 @@ function addScope(){
 const { logTasksAnalytics } = await useTasksAnalytics()
 
 function deleteScope(index: number){
-    logTasksAnalytics({
-        name: "deleteScope",
-        scope_id: props.task.scopes[index].id,
-        kadai_id: props.task.id
-    })
-    
-    props.task.scopes.splice(index, 1)
+    const acceptDelete = window.confirm("範囲を本当に削除してもいいですか?")
+    if( acceptDelete ){
+        logTasksAnalytics({
+            name: "deleteScope",
+            scope_id: props.task.scopes[index].id,
+            kadai_id: props.task.id
+        })
+        props.task.scopes.splice(index, 1)
+    }
 }
 
 function getRemainDates( termString: string ){
