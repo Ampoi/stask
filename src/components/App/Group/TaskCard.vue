@@ -30,6 +30,9 @@
                     }"/>
             </button>
         </div>
+        <div class="flex flex-row gap-4 z-10 text-gray-400">
+            <p>合計ページ数:{{ totalScope }}</p>
+        </div>
         <div>
             <ProgressBar
                 :scope="doneData"
@@ -174,6 +177,15 @@ function addScope(){
 
     updateTask({ scopes: newScopes })
 }
+
+const totalScope = computed(() => {
+    let totalScope = 0
+    props.task.scopes.forEach((scope) => {
+        const scopeLength = scope.last - scope.first + 1
+        totalScope += scopeLength
+    })
+    return totalScope
+})
 
 const { logTasksAnalytics } = await useTasksAnalytics()
 
