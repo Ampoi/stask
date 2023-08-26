@@ -6,7 +6,7 @@
         <div class="absolute top-0 left-0 h-full w-full bg-white overflow-hidden rounded-xl">
             <div
                 class="h-full bg-black/5"
-                :style="{ width: `${(1 - getRemainDates(props.task.term)) * 100}%` }"/>
+                :style="{ width: `${(1 - getRemainHourPercents(getRemainHours(props.task.term))) * 100}%` }"/>
         </div>
         <div class="flex flex-row items-stretch gap-4 h-8 z-10">
             <DoneButton
@@ -32,6 +32,7 @@
         </div>
         <div class="flex flex-row gap-4 z-10 text-gray-400">
             <p>合計ページ数:{{ totalScope }}</p>
+            <p>期限まであと{{ getRemainHours(props.task.term) }}時間</p>
         </div>
         <div>
             <ProgressBar
@@ -201,14 +202,19 @@ function deleteScope(index: number){
     }
 }
 
-function getRemainDates( termString: string ){
+function getRemainHours( termString: string ){
     const termDate = new Date(termString)
     const nowDate = new Date()
 
-    const remainDates = Math.round((termDate.getTime() - nowDate.getTime()) / 1000 / 3600 / 24 / 14 * 100) / 100
+    const remainDates = Math.round((termDate.getTime() - nowDate.getTime()) / 1000 / 3600)
 
     //console.log((1 - remainDates) * 100)
 
     return remainDates
+}
+
+function getRemainHourPercents( remainDate: number ){
+    const allDate = 14
+    return Math.round(remainDate / 24 / allDate * 100) / 100
 }
 </script>
