@@ -6,7 +6,7 @@
         <div class="absolute top-0 left-0 h-full w-full bg-white overflow-hidden rounded-xl">
             <div
                 class="h-full bg-black/5"
-                :style="{ width: `${(1 - getRemainHourPercents(getRemainHours(props.task.term))) * 100}%` }"/>
+                :style="{ width: `${(1 - remainHourPercents) * 100}%` }"/>
         </div>
         <div class="flex flex-row items-stretch gap-4 h-8 z-10">
             <DoneButton
@@ -32,7 +32,7 @@
         </div>
         <div class="flex flex-row gap-4 z-10 text-gray-400">
             <p>合計ページ数:{{ totalScope }}</p>
-            <p>期限まであと{{ getRemainHours(props.task.term) }}時間</p>
+            <p>期限まであと{{ remainHours }}時間</p>
         </div>
         <div>
             <ProgressBar
@@ -124,6 +124,7 @@ const emit = defineEmits<{
 const { groupSettings } = await useGroupSettings(props.groupID)
 const subjects = groupSettings.value.subjects
 
+//自分がどれだけ達成したのか
 const doneData = computed((): {
     first: number
     last: number
@@ -151,11 +152,13 @@ const doneData = computed((): {
     }
 })
 
+//タスクの一部を入力するだけでタスクを更新できるようにする関数
 function updateTask(updates: Partial<Task>){
     const newTask: Task = { ...props.task, ...updates }
     emit("update:task", newTask)
 }
 
+//課題を達成しているかを切り替える・取得する算出プロパティ
 const isDone = computed({
     get(){
         return (doneData.value.now[uid] ?? 0) / (doneData.value.last - doneData.value.first) == 1
@@ -172,13 +175,15 @@ const isDone = computed({
     }
 })
 
+//新しい範囲を追加する関数
 function addScope(){
-    let newScopes = props.task.scopes
+    const newScopes = props.task.scopes
     newScopes.push(Scope.create())
 
     updateTask({ scopes: newScopes })
 }
 
+//全ての範囲の合計ページを取得する算出プロパティ
 const totalScope = computed(() => {
     let totalScope = 0
     props.task.scopes.forEach((scope) => {
@@ -190,6 +195,7 @@ const totalScope = computed(() => {
 
 const { logTasksAnalytics } = await useTasksAnalytics()
 
+//範囲を削除する関数
 function deleteScope(index: number){
     const acceptDelete = window.confirm("範囲を本当に削除してもいいですか?")
     if( acceptDelete ){
@@ -202,8 +208,9 @@ function deleteScope(index: number){
     }
 }
 
-function getRemainHours( termString: string ){
-    const termDate = new Date(termString)
+//残りの日数を取得する算出プロパティ
+const remainHours = computed(() => {
+    const termDate = new Date(props.task.term)
     const nowDate = new Date()
 
     const remainDates = Math.round((termDate.getTime() - nowDate.getTime()) / 1000 / 3600)
@@ -211,10 +218,11 @@ function getRemainHours( termString: string ){
     //console.log((1 - remainDates) * 100)
 
     return remainDates
-}
+})
 
-function getRemainHourPercents( remainDate: number ){
+//残りどれだけの日数が残っているのかを取得する算出プロパティ
+const remainHourPercents = computed(() => {
     const allDate = 14
-    return Math.round(remainDate / 24 / allDate * 100) / 100
-}
+    return Math.round(remainHours.value / 24 / allDate * 100) / 100
+})
 </script>
