@@ -10,8 +10,8 @@
             <div class="flex flex-row gap-4 w-full">
                 <div class="flex flex-row h-8 basis-40">
                     <div
-                        v-for="(uid, index) in props.task.workon"
-                        :key="index"
+                        v-for="uid in membersList"
+                        :key="uid"
                         class="-ml-4 first:m-0">
                         <UserIcon
                             :iconURL="getMemberIcon(uid)"
@@ -31,6 +31,7 @@
 import { Task } from "../../../../models/task"
 import UserIcon from "../TaskCard/progressBar/userIcon.vue";
 import useGroupSettings from "../../../../hooks/useGroupSettings";
+import { computed } from "vue";
 
 const props = defineProps<{
     task: Task
@@ -47,6 +48,13 @@ const { groupSettings } = await useGroupSettings(props.groupID)
 const getMemberIcon = (uid: string) => {
     return groupSettings.value.members[uid].icon
 }
+
+const membersList = computed(() => {
+    const members = props.task.workon
+    const membersMaxAmount = 3
+    const membersShowAmount = members.length >= membersMaxAmount ? membersMaxAmount : members.length
+    return members.slice(0, membersShowAmount)
+})
 
 const addTaskToQue = () => {
     emit("selected")
