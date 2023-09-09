@@ -5,7 +5,7 @@
   >
     <div class="flex flex-col gap-4 items-center h-full">
       <ModalTitle value="課題を追加する"/>
-      <div class="grow flex flex-col w-full">
+      <div class="grow flex flex-col w-full overflow-y-auto">
         <button
           class="mb-2 border-gray-200 border-2 text-gray-400 p-4 rounded-md flex flex-row gap-2 justify-center items-center"
           @click="createTask"
@@ -13,7 +13,8 @@
           <i class="bi bi-journal-plus text-2xl" />
           <p>課題を新しく作成する</p>
         </button>
-        <div v-for="task in tasks" :key="task.id">
+        <div
+          v-for="task in tasks" :key="task.id">
           <SharedTaskButton
             v-if="!task.deleted && !task.workon.includes(uid)"
             :task="task"

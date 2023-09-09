@@ -8,14 +8,19 @@
             @click="addTaskToQue">
             <h2 class="text-lg font-semibold text-left">{{ task.name }}</h2>
             <div class="flex flex-row gap-4 w-full">
-                <div class="flex flex-row h-8 basis-40">
+                <div class="flex flex-row h-8 z-0">
                     <div
-                        v-for="uid in membersList"
+                        v-for="uid in membersList.members"
                         :key="uid"
                         class="-ml-4 first:m-0">
                         <UserIcon
                             :iconURL="getMemberIcon(uid)"
                             :color="task.subject.color"/>
+                    </div>
+                    <div
+                        class="-ml-4 z-10 h-8 w-8 bg-orange-200 border-orange-300 border-2 rounded-full text-sm text-orange-400 grid place-content-center"
+                        v-if="membersList.overs > 0">
+                        <span>+{{ membersList.overs }}</span>
                     </div>
                 </div>
             </div>
@@ -51,9 +56,13 @@ const getMemberIcon = (uid: string) => {
 
 const membersList = computed(() => {
     const members = props.task.workon
-    const membersMaxAmount = 3
-    const membersShowAmount = members.length >= membersMaxAmount ? membersMaxAmount : members.length
-    return members.slice(0, membersShowAmount)
+    const membersMaxAmount = 6
+    const overMax = members.length - membersMaxAmount
+    const membersShowAmount = overMax >= 0 ? membersMaxAmount : members.length
+    return {
+        members: members.slice(0, membersShowAmount),
+        overs: overMax
+    }
 })
 
 const addTaskToQue = () => {
