@@ -22,7 +22,7 @@
         </Section>-->
         <Section title="課題一覧">
             <div
-                v-for="(task, index) in tasks"
+                v-for="(task, index) in sortedTask"
                 :key="index">
                 <TaskCard
                     v-if="!task.deleted && task.workon.includes(uid)"
@@ -54,8 +54,8 @@ import GroupSettingsModal from "./Group/groupSettingsModal.vue"
 import IntroducePwaModal from "./introducePwaModal.vue"
 
 import useTasks from "../../hooks/useTasks";
-import { ref } from "vue"
-import { Task } from "../../models/task"
+import { computed, ref } from "vue"
+import { Scope, Task } from "../../models/task"
 import useGroupSettings from "../../hooks/useGroupSettings"
 import useMember from "../../hooks/useMember"
 import useAuth from "../../hooks/useAuth";
@@ -81,6 +81,24 @@ const { tasks, unPinTask } = await useTasks(props.groupID)
 const { groupSettings } = await useGroupSettings(props.groupID)
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()
+
+const getScopeTotalLength = (scopes: Scope[]) => {
+    let total = 0
+    scopes.forEach((scope) => {
+        total += scope.last - scope.first + 1
+    })
+    return total
+}
+
+const sortedTask = computed(() => {
+    const sorted = tasks.value.sort((a, b) => {
+        const aLength = getScopeTotalLength(a.scopes)
+        const bLength = getScopeTotalLength(b.scopes)
+
+        return aLength > bLength ? -1 : aLength == bLength ? 0 : 1
+    })
+    return sorted
+})
 
 const showAddTaskModal = ref(false)
 function startAddTask(){ showAddTaskModal.value = true }
