@@ -90,13 +90,36 @@ const getScopeTotalLength = (scopes: Scope[]) => {
     return total
 }
 
-const sortedTask = computed(() => {
-    const sorted = tasks.value.sort((a, b) => {
-        const aLength = getScopeTotalLength(a.scopes)
-        const bLength = getScopeTotalLength(b.scopes)
+const isDone = (scopes: Scope[]) => {
+    let returnDone = false
+    for( let scope of scopes ){
+        const isScopeDone = scope.now[uid] == scope.last
+        if( isScopeDone ){
+            returnDone = true
+            break
+        }
+    }
 
-        return aLength > bLength ? -1 : aLength == bLength ? 0 : 1
-    })
+    return returnDone
+}
+
+const sortedTask = computed(() => {
+    const sorted = tasks.value
+        .sort((a, b) => {
+            const aLength = getScopeTotalLength(a.scopes)
+            const bLength = getScopeTotalLength(b.scopes)
+
+            return aLength > bLength ? -1 : aLength == bLength ? 0 : 1
+        })
+        .sort((a, b) => {
+            const aDone = isDone(a.scopes)
+            const bDone = isDone(b.scopes)
+
+            return (
+                (aDone == bDone) ? 0 : aDone ? 1 : -1
+            )
+        })
+
     return sorted
 })
 
