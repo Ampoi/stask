@@ -24,6 +24,7 @@
             <div
                 v-for="(task, index) in sortedTask"
                 :key="index">
+                <div v-if="!task.deleted && task.workon.includes(uid)">{{ index }}</div>
                 <TaskCard
                     v-if="!task.deleted && task.workon.includes(uid)"
                     v-model:task="tasks[index]"
@@ -82,42 +83,48 @@ const { groupSettings } = await useGroupSettings(props.groupID)
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()
 
-const getScopeTotalLength = (scopes: Scope[]) => {
+const getScopeTotalRemainLength = (scopes: Scope[]) => {
     let total = 0
     scopes.forEach((scope) => {
-        total += scope.last - scope.first + 1
+        total += scope.now[uid] - scope.first
     })
     return total
 }
 
-const isDone = (scopes: Scope[]) => {
-    let returnDone = false
-    for( let scope of scopes ){
-        const isScopeDone = scope.now[uid] == scope.last
-        if( isScopeDone ){
-            returnDone = true
-            break
-        }
-    }
+const getDone = (scopes: Scope[]) => {
+    const scopeTotalRemainLength = getScopeTotalRemainLength(scopes)
+    return scopeTotalRemainLength == 0
+}
 
-    return returnDone
+const getRemainDates = (date: string) => {
+    const todayTimeStamp = new Date().getDate()
+    const dateTimeStamp = new Date(date).getDate()
+    
+    return dateTimeStamp - todayTimeStamp
+}
+
+const getTaskYabasa = (task:Task) => {
+    const remainScope = getScopeTotalRemainLength(task.scopes)
+    const remianDates = getRemainDates(task.term)
+
+    const yabasa = remainScope + remianDates * 10
+
+    return yabasa
 }
 
 const sortedTask = computed(() => {
     const sorted = tasks.value
         .sort((a, b) => {
-            const aLength = getScopeTotalLength(a.scopes)
-            const bLength = getScopeTotalLength(b.scopes)
+            const aYabasa = getTaskYabasa(a)
+            const bYabasa = getTaskYabasa(b)
 
-            return aLength > bLength ? -1 : aLength == bLength ? 0 : 1
+            return aYabasa > bYabasa ? 1 : aYabasa == bYabasa ? 0 : -1
         })
         .sort((a, b) => {
-            const aDone = isDone(a.scopes)
-            const bDone = isDone(b.scopes)
+            const aDone = getDone(a.scopes)
+            const bDone = getDone(b.scopes)
 
-            return (
-                (aDone == bDone) ? 0 : aDone ? 1 : -1
-            )
+            return aDone && bDone ? 0 : aDone ? -1 : 1
         })
 
     return sorted
