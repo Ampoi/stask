@@ -24,7 +24,6 @@
             <div
                 v-for="(task, index) in sortedTask"
                 :key="index">
-                <div v-if="!task.deleted && task.workon.includes(uid)">{{ index }}</div>
                 <TaskCard
                     v-if="!task.deleted && task.workon.includes(uid)"
                     v-model:task="tasks[index]"
@@ -86,7 +85,7 @@ const { uid } = await getUserData()
 const getScopeTotalRemainLength = (scopes: Scope[]) => {
     let total = 0
     scopes.forEach((scope) => {
-        total += scope.now[uid] - scope.first
+        total += scope.last - scope.now[uid]
     })
     return total
 }
@@ -107,9 +106,7 @@ const getTaskYabasa = (task:Task) => {
     const remainScope = getScopeTotalRemainLength(task.scopes)
     const remianDates = getRemainDates(task.term)
 
-    const yabasa = remainScope + remianDates * 10
-
-    return yabasa
+    return remainScope / remianDates
 }
 
 const sortedTask = computed(() => {
@@ -118,7 +115,7 @@ const sortedTask = computed(() => {
             const aYabasa = getTaskYabasa(a)
             const bYabasa = getTaskYabasa(b)
 
-            return aYabasa > bYabasa ? 1 : aYabasa == bYabasa ? 0 : -1
+            return aYabasa > bYabasa ? -1 : aYabasa == bYabasa ? 0 : 1
         })
         .sort((a, b) => {
             const aDone = getDone(a.scopes)
