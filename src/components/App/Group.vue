@@ -55,12 +55,14 @@ import IntroducePwaModal from "./introducePwaModal.vue"
 
 import useTasks from "../../hooks/useTasks";
 import { computed, ref } from "vue"
-import { Scope, Task } from "../../models/task"
+import { Task } from "../../models/task"
 import useGroupSettings from "../../hooks/useGroupSettings"
 import useMember from "../../hooks/useMember"
 import useAuth from "../../hooks/useAuth";
 import { router } from "../../router"
 import useGroups from "../../hooks/useGroups";
+
+import { getTaskYabasa, getDone } from "../../utils/getYabasa"
 
 const props = defineProps<{
     groupID: string
@@ -82,44 +84,19 @@ const { groupSettings } = await useGroupSettings(props.groupID)
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()
 
-const getScopeTotalRemainLength = (scopes: Scope[]) => {
-    let total = 0
-    scopes.forEach((scope) => {
-        total += scope.last - scope.now[uid]
-    })
-    return total
-}
 
-const getDone = (scopes: Scope[]) => {
-    const scopeTotalRemainLength = getScopeTotalRemainLength(scopes)
-    return scopeTotalRemainLength == 0
-}
-
-const getRemainDates = (date: string) => {
-    const todayTimeStamp = new Date().getDate()
-    const dateTimeStamp = new Date(date).getDate()
-    
-    return dateTimeStamp - todayTimeStamp
-}
-
-const getTaskYabasa = (task:Task) => {
-    const remainScope = getScopeTotalRemainLength(task.scopes)
-    const remianDates = getRemainDates(task.term)
-
-    return remainScope / remianDates
-}
 
 const sortedTask = computed(() => {
     const sorted = tasks.value
         .sort((a, b) => {
-            const aYabasa = getTaskYabasa(a)
-            const bYabasa = getTaskYabasa(b)
+            const aYabasa = getTaskYabasa(a, uid)
+            const bYabasa = getTaskYabasa(b, uid)
 
             return aYabasa > bYabasa ? -1 : aYabasa == bYabasa ? 0 : 1
         })
         .sort((a, b) => {
-            const aDone = getDone(a.scopes)
-            const bDone = getDone(b.scopes)
+            const aDone = getDone(a.scopes, uid)
+            const bDone = getDone(b.scopes, uid)
 
             return aDone && bDone ? 0 : aDone ? -1 : 1
         })

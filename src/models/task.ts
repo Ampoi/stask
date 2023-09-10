@@ -1,5 +1,5 @@
-import { createUid } from "../functions/createUid"
-import twoDigitNumber from "../functions/twoDigitNumber"
+import { createUid } from "../utils/createUid"
+import twoDigitNumber from "../utils/twoDigitNumber"
 import { Uid } from "./groupSettings"
 
 export type Scope = {

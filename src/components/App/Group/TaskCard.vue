@@ -1,4 +1,5 @@
 <template>
+    {{getTaskYabasa(props.task, uid)}}
     <div
         class="w-full p-4 border-2 border-l-8 rounded-xl flex flex-col gap-2 relative"
         :class="{ 'opacity-40': isDone }"
@@ -108,12 +109,14 @@ import ProgressBar from "./TaskCard/progressBar.vue";
 import ScopeListItem from "./TaskCard/scope.vue"
 import SubjectOptions from "./TaskCard/subjectOptions.vue";
 
-import { Switch } from "../../../functions/switch"
+import { Switch } from "../../../utils/switch"
 import { Scope, Task } from "../../../models/task";
 import { Uid } from "../../../models/groupSettings";
 import useAuth from "../../../hooks/useAuth";
 import useGroupSettings from "../../../hooks/useGroupSettings";
 import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
+
+import { getTaskYabasa } from "../../../utils/getYabasa";
 
 const showCardMenu = ref(new Switch(false))
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
@@ -246,7 +249,7 @@ const remainHourPercents = computed(() => {
 const isPassedTerm = computed(() => { return remainHours.value < 0 })
 
 const isYabaiTerm = computed(() => {
-    const yabaiHours = 3 * 24
-    return remainHours.value < yabaiHours
+    const yabasa = getTaskYabasa(props.task, uid)
+    return yabasa > 10
 })
 </script>

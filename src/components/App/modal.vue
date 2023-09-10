@@ -32,7 +32,7 @@
 </template>
 <script setup lang="ts">
 import { TransitionRoot, TransitionChild, Dialog } from "@headlessui/vue";
-import { Switch } from "../../functions/switch";
+import { Switch } from "../../utils/switch";
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ (e: "update:open", newOpen: boolean): void }>()
