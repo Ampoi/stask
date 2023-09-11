@@ -1,17 +1,17 @@
 <template>
     <div
         class="absolute top-0 left-0 h-full w-full overflow-hidden rounded-l-md rounded-r-[10px]"
-        :class="isPassedTerm ? 'bg-red-200' : isYabaiTerm ? 'bg-amber-400/20' : 'bg-white'">
+        :class="done || (!isYabaiTerm && !isPassedTerm) ? 'bg-white' : !isPassedTerm ? 'bg-amber-400/20' : 'bg-red-200'">
         <div
             v-if="!isPassedTerm"
             class="h-full"
-            :class="isYabaiTerm ? 'bg-orange-400/20' : 'bg-black/5'"
+            :class="isYabaiTerm && !done ? 'bg-orange-400/20' : 'bg-black/5'"
             :style="{ width: `${100 - remainHourPercents}%` }"/>
     </div>
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
-import { getTaskYabasa, getRemainHours } from '../../../../utils/getYabasa';
+import { getTaskYabasa, getRemainHours, isDone } from '../../../../utils/getYabasa';
 import { Task } from '../../../../models/task';
 
 const props = defineProps<{
@@ -36,4 +36,6 @@ const isYabaiTerm = computed(() => {
     const yabasa = getTaskYabasa(props.task, props.uid)
     return yabasa > 10
 })
+
+const done = computed(() => isDone(props.task.scopes, props.uid))
 </script>

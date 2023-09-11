@@ -56,13 +56,13 @@ import useTasksAnalytics from "../../../../../hooks/useTasksAnalytics";
 import useAuth from "../../../../../hooks/useAuth";
 
 const props = defineProps<{
-    open: boolean
-    scope: Scope
-    cardUnit: {
+	open: boolean
+	scope: Scope
+	cardUnit: {
 		name: string
 		symbol: (scope: number) => string //TODO:Modelか何かでまとめたい
 	},
-    uid: string
+	uid: string
 	taskID: string
 }>()
 
@@ -105,9 +105,10 @@ function updateScope(){
 		kadai_id: props.taskID,
 		scope_id:  props.scope.id
 	})
-    emit("update:scope", { ...editableScope.value })
+	emit("update:scope", { ...editableScope.value })
 }
 
+//スライドして現在の達成度編集する関連
 const firstTouchX = ref(0)
 const firstTouchNowScope = ref(0)
 const firstTouch = ref(true)

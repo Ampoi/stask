@@ -62,7 +62,7 @@ import useAuth from "../../hooks/useAuth";
 import { router } from "../../router"
 import useGroups from "../../hooks/useGroups";
 
-import { getTaskYabasa, getDone } from "../../utils/getYabasa"
+import { getTaskYabasa, isDone } from "../../utils/getYabasa"
 
 const props = defineProps<{
     groupID: string
@@ -95,8 +95,8 @@ const sortedTask = computed(() => {
             return aYabasa > bYabasa ? -1 : aYabasa == bYabasa ? 0 : 1
         })
         .sort((a, b) => {
-            const aDone = getDone(a.scopes, uid)
-            const bDone = getDone(b.scopes, uid)
+            const aDone = isDone(a.scopes, uid)
+            const bDone = isDone(b.scopes, uid)
 
             return aDone && bDone ? 0 : aDone ? -1 : 1
         })

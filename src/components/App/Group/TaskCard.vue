@@ -21,9 +21,11 @@
                 v-model:showCardMenu="showCardMenu"/>
         </div>
         <div
-            class="flex flex-row gap-4 z-10 text-gray-400">
-            <p>残り合計ページ数:{{ totalRemainScope }}</p>
-            <p>期限まであと{{ remainHours }}時間</p>
+            class="flex flex-row gap-4 z-10 text-gray-400"
+            :class="((remainHours > 0) && !(getTaskYabasa(props.task, uid) > 10)) || isDone ? 'text-gray-400' : (remainHours > 0) ? 'text-orange-400' : 'text-red-400'">
+            <p>残り{{ totalRemainScope }}ページ</p>
+            <p v-if="remainHours > 0">期限まで{{ remainHours }}時間</p>
+            <p v-else>期限を過ぎてます</p>
         </div>
         <div>
             <ProgressBar
@@ -90,7 +92,7 @@ import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
 
 import { Uid } from "../../../models/groupSettings";
 import { Scope, Task } from "../../../models/task";
-import { getRemainHours, getScopeTotalRemainLength } from "../../../utils/getYabasa";
+import { getRemainHours, getScopeTotalRemainLength, getTaskYabasa } from "../../../utils/getYabasa";
 
 const showCardMenu = ref(false)
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
