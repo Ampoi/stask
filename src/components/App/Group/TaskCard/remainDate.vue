@@ -1,6 +1,6 @@
 <template>
     <div
-        class="h-full w-full overflow-hidden rounded-l-md rounded-r-[10px]"
+        class="absolute top-0 left-0 h-full w-full overflow-hidden rounded-l-md rounded-r-[10px]"
         :class="isPassedTerm ? 'bg-red-200' : isYabaiTerm ? 'bg-amber-400/20' : 'bg-white'">
         <div
             v-if="!isPassedTerm"

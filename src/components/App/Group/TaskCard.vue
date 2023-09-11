@@ -4,7 +4,6 @@
         :class="{ 'opacity-40': isDone }"
         :style="{ borderColor: `${props.task.subject.color}70` }">
         <RemainDate
-            class="absolute top-0 left-0"
             :task="task"
             :uid="uid"/>
         <div class="flex flex-row items-stretch gap-4 h-8 z-10">
@@ -18,20 +17,12 @@
                 :value="props.task.name"
                 @input="(event: any) => updateTask({ name: event.target.value as string ?? '' })"
                 placeholder="課題名を入力...">
-            <button
-                class="rounded-full basis-8 grid place-content-center"
-                @click="showCardMenu.turn()">
-                <i
-                    class="bi bi-chevron-up transition-all duration-300"
-                    :class="{
-                        'scale-y-100': showCardMenu.value,
-                        '-scale-y-100': !showCardMenu.value
-                    }"/>
-            </button>
+            <ToggleButton
+                v-model:showCardMenu="showCardMenu"/>
         </div>
         <div
             class="flex flex-row gap-4 z-10 text-gray-400">
-            <p>合計ページ数:{{ totalScope }}</p>
+            <p>残り合計ページ数:{{ totalRemainScope }}</p>
             <p>期限まであと{{ remainHours }}時間</p>
         </div>
         <div>
@@ -42,7 +33,7 @@
                 sub-color="#F3F4F6"/>
         </div>
         <TransitionRoot
-            :show="showCardMenu.value"
+            :show="showCardMenu"
             enter-from="h-0"
             enter="duration-300 ease-out overflow-hidden"
             enter-to="h-[324px]"
@@ -98,16 +89,16 @@ import ProgressBar from "./TaskCard/progressBar.vue";
 import ScopeListItem from "./TaskCard/scope.vue"
 import SubjectOptions from "./TaskCard/subjectOptions.vue";
 
-import { Switch } from "../../../utils/switch"
 import { Scope, Task } from "../../../models/task";
 import { Uid } from "../../../models/groupSettings";
 import useAuth from "../../../hooks/useAuth";
 import useGroupSettings from "../../../hooks/useGroupSettings";
 import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
-import { getRemainHours } from "../../../utils/getYabasa";
+import { getRemainHours, getScopeTotalRemainLength } from "../../../utils/getYabasa";
 import RemainDate from "./TaskCard/remainDate.vue"
+import ToggleButton from "./TaskCard/toggleButton.vue";
 
-const showCardMenu = ref(new Switch(false))
+const showCardMenu = ref(false)
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
 
 const { getUserData } = await useAuth()
@@ -207,14 +198,8 @@ function deleteScope(index: number){
     }
 }
 
-//全ての範囲の合計ページを取得する算出プロパティ
-const totalScope = computed(() => {
-    let totalScope = 0
-    props.task.scopes.forEach((scope) => {
-        const scopeLength = scope.last - scope.first + 1
-        totalScope += scopeLength
-    })
-    return totalScope
+const totalRemainScope = computed(() => {
+    return getScopeTotalRemainLength(props.task.scopes, uid)
 })
 
 const remainHours = computed(() => {

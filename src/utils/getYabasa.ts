@@ -1,6 +1,6 @@
 import { Task, Scope } from "../models/task"
 
-const getScopeTotalRemainLength = (scopes: Scope[], uid: string) => {
+export const getScopeTotalRemainLength = (scopes: Scope[], uid: string) => {
     let total = 0
     scopes.forEach((scope) => {
         total += scope.last - scope.now[uid]
