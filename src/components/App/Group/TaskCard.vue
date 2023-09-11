@@ -1,22 +1,12 @@
 <template>
-    {{getTaskYabasa(props.task, uid)}}
     <div
         class="w-full p-4 border-2 border-l-8 rounded-xl flex flex-col gap-2 relative"
         :class="{ 'opacity-40': isDone }"
         :style="{ borderColor: `${props.task.subject.color}70` }">
-        <div
-            v-if="isPassedTerm"
-            class="absolute top-0 left-0 h-full w-full bg-red-200 overflow-hidden rounded-sm"/>
-        <div
-            v-else
-            class="absolute top-0 left-0 h-full w-full overflow-hidden rounded-sm"
-            :class="isYabaiTerm ? 'bg-amber-400/20' : 'bg-white'">
-            <div
-                class="h-full"
-                :class="isYabaiTerm ? 'bg-orange-400/20' : 'bg-black/5'"
-                :style="{ width: `${(1 - remainHourPercents) * 100}%` }"/>
-        </div>
-        
+        <RemainDate
+            class="absolute top-0 left-0"
+            :task="task"
+            :uid="uid"/>
         <div class="flex flex-row items-stretch gap-4 h-8 z-10">
             <DoneButton
                 v-model:is-done="isDone"
@@ -40,8 +30,7 @@
             </button>
         </div>
         <div
-            class="flex flex-row gap-4 z-10"
-            :class="isYabaiTerm ? 'text-black' : 'text-gray-400'">
+            class="flex flex-row gap-4 z-10 text-gray-400">
             <p>合計ページ数:{{ totalScope }}</p>
             <p>期限まであと{{ remainHours }}時間</p>
         </div>
@@ -115,8 +104,8 @@ import { Uid } from "../../../models/groupSettings";
 import useAuth from "../../../hooks/useAuth";
 import useGroupSettings from "../../../hooks/useGroupSettings";
 import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
-
-import { getTaskYabasa } from "../../../utils/getYabasa";
+import { getRemainHours } from "../../../utils/getYabasa";
+import RemainDate from "./TaskCard/remainDate.vue"
 
 const showCardMenu = ref(new Switch(false))
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
@@ -228,28 +217,7 @@ const totalScope = computed(() => {
     return totalScope
 })
 
-//残りの日数を取得する算出プロパティ
 const remainHours = computed(() => {
-    const termDate = new Date(props.task.term)
-    const nowDate = new Date()
-
-    const remainDates = Math.round((termDate.getTime() - nowDate.getTime()) / 1000 / 3600)
-
-    //console.log((1 - remainDates) * 100)
-
-    return remainDates
-})
-
-//残りどれだけの日数が残っているのかを取得する算出プロパティ
-const remainHourPercents = computed(() => {
-    const allDate = 14
-    return Math.round(remainHours.value / 24 / allDate * 100) / 100
-})
-
-const isPassedTerm = computed(() => { return remainHours.value < 0 })
-
-const isYabaiTerm = computed(() => {
-    const yabasa = getTaskYabasa(props.task, uid)
-    return yabasa > 10
+    return getRemainHours(props.task.term)
 })
 </script>

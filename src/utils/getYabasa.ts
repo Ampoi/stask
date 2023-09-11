@@ -8,11 +8,11 @@ const getScopeTotalRemainLength = (scopes: Scope[], uid: string) => {
     return total
 }
 
-const getRemainDates = (date: string) => {
-    const todayTimeStamp = new Date().getDate()
-    const dateTimeStamp = new Date(date).getDate()
+export const getRemainHours = (date: string) => {
+    const todayTimeStamp = new Date().getTime()
+    const dateTimeStamp = new Date(date).getTime()
     
-    return dateTimeStamp - todayTimeStamp
+    return Math.round((dateTimeStamp - todayTimeStamp) / 1000 / 3600)
 }
 
 export const getDone = (scopes: Scope[], uid: string) => {
@@ -22,7 +22,7 @@ export const getDone = (scopes: Scope[], uid: string) => {
 
 export const getTaskYabasa = (task:Task, uid: string) => {
     const remainScope = getScopeTotalRemainLength(task.scopes, uid)
-    const remianDates = getRemainDates(task.term)
+    const remianHours = getRemainHours(task.term)
 
-    return remainScope / remianDates
+    return remainScope / remianHours
 }
