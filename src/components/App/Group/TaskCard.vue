@@ -32,15 +32,8 @@
                 :groupID="groupID"
                 sub-color="#F3F4F6"/>
         </div>
-        <TransitionRoot
-            :show="showCardMenu"
-            enter-from="h-0"
-            enter="duration-300 ease-out overflow-hidden"
-            enter-to="h-[324px]"
-            leave-from="h-[324px]"
-            leave="duration-300 ease-in overflow-hidden"
-            leave-to="h-0"
-            class="flex flex-col gap-2 z-20">
+        <DetailMenu
+            :show="showCardMenu">
             <input
                 type="date"
                 class="h-10 w-full rounded-lg border-[1px] border-gray-299 text-lg text-center bg-transparent"
@@ -76,27 +69,28 @@
                     <i class="bi bi-box-arrow-right"/>
                 </button>
             </div>
-        </TransitionRoot>
+        </DetailMenu>
     </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from "vue"
-import { TransitionRoot } from "@headlessui/vue"
+import { computed, ref } from "vue";
 
 import DoneButton from "./TaskCard/doneButton.vue";
-import ScopeUnitOptions from "./TaskCard/scopeUnitOptions.vue";
 import ProgressBar from "./TaskCard/progressBar.vue";
-import ScopeListItem from "./TaskCard/scope.vue"
+import ScopeListItem from "./TaskCard/scope.vue";
+import ScopeUnitOptions from "./TaskCard/scopeUnitOptions.vue";
 import SubjectOptions from "./TaskCard/subjectOptions.vue";
+import RemainDate from "./TaskCard/remainDate.vue";
+import ToggleButton from "./TaskCard/toggleButton.vue";
+import DetailMenu from "./TaskCard/detailMenu/transition.vue";
 
-import { Scope, Task } from "../../../models/task";
-import { Uid } from "../../../models/groupSettings";
 import useAuth from "../../../hooks/useAuth";
 import useGroupSettings from "../../../hooks/useGroupSettings";
 import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
+
+import { Uid } from "../../../models/groupSettings";
+import { Scope, Task } from "../../../models/task";
 import { getRemainHours, getScopeTotalRemainLength } from "../../../utils/getYabasa";
-import RemainDate from "./TaskCard/remainDate.vue"
-import ToggleButton from "./TaskCard/toggleButton.vue";
 
 const showCardMenu = ref(false)
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
