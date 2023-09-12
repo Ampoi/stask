@@ -3,9 +3,9 @@
         class="w-full p-4 border-2 border-l-8 border-orange-300 bg-white rounded-xl flex flex-col gap-2 relative"
         @click="showModal = !showModal">
         <div
-            class="absolute bg-orange-300/20 h-full top-0 left-0"
+            class="absolute border-r-[1px] border-orange-400 bg-gradient-to-l from-orange-400/80 via-orange-400/30 via-30% to-orange-300/40 h-full top-0 left-0"
             :style="{ width: `${100 - daysLeftPercent}%` }"/>
-        <div>
+        <div class="z-10">
             <h3 class="font-semibold text-lg">
                 <span class="text-2xl">{{ props.countdown.name }}</span>まで
                 <span v-if="remainHours < 200">
