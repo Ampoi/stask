@@ -1,6 +1,7 @@
 <template>
-    <button class="basis-20 rounded-xl grid place-content-center bg-white/80" @click="emits('click')">
+    <button class="rounded-xl p-4 flex flex-row bg-white/80" @click="emits('click')">
         <i class="bi bi-calendar-plus text-2xl"/>
+        カウントダウンを追加する
     </button>
 </template>
 <script setup lang="ts">

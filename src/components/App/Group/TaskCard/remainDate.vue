@@ -11,7 +11,8 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
-import { getTaskYabasa, getRemainHours, isDone } from '../../../../utils/getYabasa';
+import { getTaskYabasa, isDone } from '../../../../utils/getYabasa';
+import { getRemainHours } from '../../../../utils/getRemainHours';
 import { Task } from '../../../../models/task';
 
 const props = defineProps<{

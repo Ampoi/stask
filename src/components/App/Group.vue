@@ -14,12 +14,18 @@
             <i class="bi bi-info-circle"/>
             <p class="text-sm">{{ groupSettings.note }}</p>
         </p>
-        <!--<Section title="カウントダウン一覧">
-            <div class="h-40 flex flex-row items-stretch gap-4 overflow-x-auto">
-                <AddCountdownButton @click=""/>
-                <Countdown :daysLeft="80"/>
+        <Section
+            title="カウントダウン一覧"
+            :showButton="true"
+            @click="console.log('aaaa')">
+            <div class="flex flex-col items-stretch gap-2 overflow-x-auto mt-2">
+                <Countdown
+                    :countdown="{
+                        name: '文化祭',
+                        term: '2023-09-16'
+                    }"/>
             </div>
-        </Section>-->
+        </Section>
         <Section title="課題一覧">
             <div
                 v-for="(task, index) in sortedTask"
@@ -46,8 +52,7 @@
 </template>
 <script setup lang="ts">
 import Section from "./Group/Section.vue"
-//import AddCountdownButton from "./Group/AddCountdownButton.vue"
-//import Countdown from "./Group/Countdown.vue"
+import Countdown from "./Group/countdown.vue"
 import TaskCard from "./Group/TaskCard.vue"
 import AddTaskFromSharedTaskModal from "./Group/addTaskFromSharedTaskModal.vue"
 import GroupSettingsModal from "./Group/groupSettingsModal.vue"
@@ -98,7 +103,7 @@ const sortedTask = computed(() => {
             const aDone = isDone(a.scopes, uid)
             const bDone = isDone(b.scopes, uid)
 
-            return aDone && bDone ? 0 : aDone ? -1 : 1
+            return aDone && bDone ? 0 : aDone ? 1 : -1
         })
 
     return sorted

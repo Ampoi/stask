@@ -1,4 +1,5 @@
 import { Task, Scope } from "../models/task"
+import { getRemainHours } from "./getRemainHours"
 
 export const getScopeTotalRemainLength = (scopes: Scope[], uid: string) => {
     let total = 0
@@ -6,13 +7,6 @@ export const getScopeTotalRemainLength = (scopes: Scope[], uid: string) => {
         total += scope.last - scope.now[uid]
     })
     return total
-}
-
-export const getRemainHours = (date: string) => {
-    const todayTimeStamp = new Date().getTime()
-    const dateTimeStamp = new Date(date).getTime()
-    
-    return Math.round((dateTimeStamp - todayTimeStamp) / 1000 / 3600)
 }
 
 export const isDone = (scopes: Scope[], uid: string) => {

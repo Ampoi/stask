@@ -92,7 +92,8 @@ import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
 
 import { Uid } from "../../../models/groupSettings";
 import { Scope, Task } from "../../../models/task";
-import { getRemainHours, getScopeTotalRemainLength, getTaskYabasa } from "../../../utils/getYabasa";
+import { getScopeTotalRemainLength, getTaskYabasa } from "../../../utils/getYabasa";
+import { getRemainHours } from "../../../utils/getRemainHours"
 
 const showCardMenu = ref(false)
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
