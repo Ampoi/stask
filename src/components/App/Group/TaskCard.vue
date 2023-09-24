@@ -1,4 +1,6 @@
 <template>
+    {{ yabasaLevel }}
+    {{ getTaskYabasa(task, uid) }}
     <div
         class="w-full p-4 border-2 border-l-8 rounded-xl flex flex-col gap-2 relative"
         :class="{ 'opacity-40': isDone }"
@@ -22,9 +24,14 @@
         </div>
         <div
             class="flex flex-row gap-4 z-10 text-gray-400"
-            :class="((remainHours > 0) && !(getTaskYabasa(props.task, uid) > 10)) || isDone ? 'text-gray-400' : (remainHours > 0) ? 'text-orange-400' : 'text-red-400'">
-            <p>残り{{ totalRemainScope }}ページ</p>
-            <p v-if="remainHours > 0">期限まで{{ remainHours }}時間</p>
+            :class="
+                {
+                    'text-gray-400': yabasaLevel == 'daijobu',
+                    'text-orange-600': yabasaLevel == 'yabai',
+                    'text-red-400': yabasaLevel == 'girigiri',
+                    'text-purple-700': yabasaLevel == 'passed'
+                }">
+            <p v-if="remainHours > 0">一日{{ Math.ceil(totalRemainScope / Math.round(remainHours / 24)) }}ページやれば終わります</p>
             <p v-else>期限を過ぎてます</p>
         </div>
         <div>
@@ -36,6 +43,19 @@
         </div>
         <DetailMenu
             :show="showCardMenu">
+            <div
+                class="flex flex-row gap-4 z-10 text-gray-400"
+                :class="
+                    {
+                        'text-gray-400': yabasaLevel == 'daijobu',
+                        'text-orange-600': yabasaLevel == 'yabai',
+                        'text-red-400': yabasaLevel == 'girigiri',
+                        'text-purple-700': yabasaLevel == 'passed'
+                    }">
+                <p>残り{{ totalRemainScope }}ページ</p>
+                <p v-if="remainHours > 0">期限まで{{ remainHours }}時間</p>
+                <p v-else>期限を過ぎてます</p>
+            </div>
             <input
                 type="date"
                 class="h-10 w-full rounded-lg border-[1px] border-gray-299 text-lg text-center bg-transparent"
@@ -92,7 +112,7 @@ import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
 
 import { Uid } from "../../../models/groupSettings";
 import { Scope, Task } from "../../../models/task";
-import { getScopeTotalRemainLength, getTaskYabasa } from "../../../utils/getYabasa";
+import { getScopeTotalRemainLength, getTaskYabasa, /*getTaskYabasa,*/ getYabasaLevel } from "../../../utils/getYabasa";
 import { getRemainHours } from "../../../utils/getRemainHours"
 
 const showCardMenu = ref(false)
@@ -115,6 +135,9 @@ const { logTasksAnalytics } = await useTasksAnalytics()
 
 const { groupSettings } = await useGroupSettings(props.groupID)
 const subjects = groupSettings.value.subjects
+
+//const taskYabasa = computed(() => getTaskYabasa(props.task, uid))
+const yabasaLevel = computed(() => getYabasaLevel(props.task, uid))
 
 //自分がどれだけ達成したのか
 const doneData = computed((): {

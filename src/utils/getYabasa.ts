@@ -1,3 +1,4 @@
+import { computed } from "vue"
 import { Task, Scope } from "../models/task"
 import { getRemainHours } from "./getRemainHours"
 
@@ -14,9 +15,34 @@ export const isDone = (scopes: Scope[], uid: string) => {
     return scopeTotalRemainLength == 0
 }
 
+//一日3時間やる想定
+const getRemainDates = (date: string) => {
+    const todayTimeStamp = new Date().getTime()
+    const dateTimeStamp = new Date(date).getTime()
+    
+    return Math.round((dateTimeStamp - todayTimeStamp) / 1000 / 3600 / 24)
+}
+
 export const getTaskYabasa = (task:Task, uid: string) => {
     const remainScope = getScopeTotalRemainLength(task.scopes, uid)
-    const remianHours = getRemainHours(task.term)
+    const remianDates = getRemainDates(task.term)
 
-    return remainScope / remianHours
+    return remainScope / ( remianDates * 3 )
+}
+
+export const getYabasaLevel = (task: Task, uid: string) => {
+    const isPassed = getRemainHours(task.term) <= 0
+    const taskYabasa = getTaskYabasa(task, uid)
+
+    if( isPassed ){
+        return "passed"
+    }else{
+        if( taskYabasa > 10 ){
+            return "girigiri"
+        }else if( taskYabasa > 5 ){
+            return "yabai"
+        }else{
+            return "daijobu"
+        }
+    }
 }

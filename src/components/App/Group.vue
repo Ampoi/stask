@@ -14,7 +14,7 @@
             <i class="bi bi-info-circle"/>
             <p class="text-sm">{{ groupSettings.note }}</p>
         </p>
-        <Section
+        <!--<Section
             title="カウントダウン一覧"
             :showButton="true"
             @click="console.log('aaaa')">
@@ -25,7 +25,7 @@
                         term: '2023-09-16'
                     }"/>
             </div>
-        </Section>
+        </Section>-->
         <Section title="課題一覧">
             <div
                 v-for="(task, index) in sortedTask"
@@ -52,7 +52,7 @@
 </template>
 <script setup lang="ts">
 import Section from "./Group/Section.vue"
-import Countdown from "./Group/countdown.vue"
+//import Countdown from "./Group/countdown.vue"
 import TaskCard from "./Group/TaskCard.vue"
 import AddTaskFromSharedTaskModal from "./Group/addTaskFromSharedTaskModal.vue"
 import GroupSettingsModal from "./Group/groupSettingsModal.vue"
@@ -88,8 +88,6 @@ const { tasks, unPinTask } = await useTasks(props.groupID)
 const { groupSettings } = await useGroupSettings(props.groupID)
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()
-
-
 
 const sortedTask = computed(() => {
     const sorted = tasks.value
