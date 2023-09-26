@@ -3,10 +3,10 @@
         class="rounded-full basis-8 grid place-content-center"
         @click="emit('update:showCardMenu', !props.showCardMenu)">
         <i
-            class="bi bi-chevron-up transition-all duration-300"
+            class="bi transition-all duration-300"
             :class="{
-                'scale-y-100': props.showCardMenu,
-                '-scale-y-100': !props.showCardMenu
+                'scale-100 bi-x': props.showCardMenu,
+                '-scale-100 bi-three-dots text-lg': !props.showCardMenu
             }"/>
     </button>
 </template>

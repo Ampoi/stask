@@ -22,6 +22,7 @@
             :isInAddQue="addQue.includes(task.id)"
             @selected="addTaskToQue(task.id)"
             @promoteThisTask="promoteTask(task.id)"
+            @deleteThisTask="deleteTask(task.id)"
             class="mb-2"
           />
         </div>
@@ -86,6 +87,15 @@ async function promoteTask(taskID: TaskID) {
       tasks.value.find((task) => task.id == taskID)?.workon.push(memberUid);
     });
   }
+}
+
+function deleteTask(taskID: TaskID){
+  const deleteTask = tasks.value.find((task) => task.id == taskID)
+  if (!deleteTask) {
+    console.log("タスクが見つかりませんでした");
+    return
+  }
+  deleteTask.deleted = true
 }
 
 const { tasks } = await useTasks(props.groupID);
