@@ -10,7 +10,7 @@
         <RemainDate
             :task="task"
             :uid="uid"/>
-        <div class="flex flex-row items-stretch gap-4 h-8 z-10">
+        <div class="flex flex-row items-center gap-4 h-8 z-10">
             <DoneButton
                 v-model:is-done="isDone"
                 :color="props.task.subject.color"

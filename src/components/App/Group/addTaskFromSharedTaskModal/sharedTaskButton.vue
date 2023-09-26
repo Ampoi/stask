@@ -26,9 +26,14 @@
             </div>
         </button>
         <button
-            class="basis-12 grid place-content-center border-gray-200 border-2 rounded-md"
+            class="p-2 grid place-content-center"
             @click="promoteTaskToEveryone">
             <i class="bi bi-megaphone-fill"/>
+        </button>
+        <button
+            class="p-2 grid place-content-center text-red-400"
+            @click="deleteTask">
+            <i class="bi bi-trash3-fill"/>
         </button>
     </div>
 </template>
@@ -47,6 +52,7 @@ const props = defineProps<{
 const emit = defineEmits<{
     (e: "selected"): void
     (e: "promoteThisTask"): void
+    (e: "deleteThisTask"): void
 }>()
 
 const { groupSettings } = await useGroupSettings(props.groupID)
@@ -70,6 +76,12 @@ const addTaskToQue = () => {
 }
 
 const promoteTaskToEveryone = () => {
-    emit("promoteThisTask")
+    const acceptPromote = window.confirm("課題を本当に全体に公開してもいいですか？")
+    if( acceptPromote ) emit("promoteThisTask")
+}
+
+const deleteTask = () => {
+    const acceptDelete = window.confirm("課題を本当に全体から削除してもいいですか？")
+    if( acceptDelete ) emit("deleteThisTask")
 }
 </script>
