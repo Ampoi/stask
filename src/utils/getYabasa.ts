@@ -1,4 +1,3 @@
-import { computed } from "vue"
 import { Task, Scope } from "../models/task"
 import { getRemainHours } from "./getRemainHours"
 
@@ -34,15 +33,13 @@ export const getYabasaLevel = (task: Task, uid: string) => {
     const isPassed = getRemainHours(task.term) <= 0
     const taskYabasa = getTaskYabasa(task, uid)
 
-    if( isPassed ){
+    if( taskYabasa == 0 || ( taskYabasa < 5 && !isPassed ) ){
+        return "daijobu"
+    }else if( isPassed ){
         return "passed"
+    }else if( taskYabasa < 10 ){
+        return "yabai"
     }else{
-        if( taskYabasa > 10 ){
-            return "girigiri"
-        }else if( taskYabasa > 5 ){
-            return "yabai"
-        }else{
-            return "daijobu"
-        }
+        return "girigiri"
     }
 }

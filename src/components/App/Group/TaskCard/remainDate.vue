@@ -4,16 +4,16 @@
         :class="{
             'bg-white': yabasaLevel == 'daijobu',
             'bg-amber-400/20': yabasaLevel == 'yabai',
-            'bg-red-100': yabasaLevel == 'girigiri',
-            'bg-purple-400/50': yabasaLevel == 'passed'
+            'bg-orange-400/40': yabasaLevel == 'girigiri',
+            'bg-red-400': yabasaLevel == 'passed'
         }">
         <div
             v-if="!isPassedTerm"
             class="h-full"
             :class="{
                 'bg-black/5': yabasaLevel == 'daijobu',
-                'bg-orange-400/20': yabasaLevel == 'yabai',
-                'bg-red-400/20': yabasaLevel == 'girigiri'
+                'bg-amber-400/20': yabasaLevel == 'yabai',
+                'bg-orange-400/20': yabasaLevel == 'girigiri'
             }"
             :style="{ width: `${100 - remainHourPercents}%` }"/>
     </div>

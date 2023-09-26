@@ -1,9 +1,11 @@
 <template>
-    {{ yabasaLevel }}
-    {{ getTaskYabasa(task, uid) }}
+    <!--{{ yabasaLevel }}
+    {{ getTaskYabasa(task, uid) }}-->
     <div
         class="w-full p-4 border-2 border-l-8 rounded-xl flex flex-col gap-2 relative"
-        :class="{ 'opacity-40': isDone }"
+        :class="{
+            'opacity-40': isDone
+        }"
         :style="{ borderColor: `${props.task.subject.color}70` }">
         <RemainDate
             :task="task"
@@ -16,6 +18,9 @@
             <input
                 type="text"
                 class="rounded-lg grow max-w-[calc(100%-88px)] text-xl bg-transparent"
+                :class="{
+                    'font-semibold': yabasaLevel == 'passed' || yabasaLevel == 'girigiri'
+                }"
                 :value="props.task.name"
                 @input="(event: any) => updateTask({ name: event.target.value as string ?? '' })"
                 placeholder="課題名を入力...">
@@ -26,10 +31,11 @@
             class="flex flex-row gap-4 z-10 text-gray-400"
             :class="
                 {
-                    'text-gray-400': yabasaLevel == 'daijobu',
+                    'text-gray-600': yabasaLevel == 'daijobu',
                     'text-orange-600': yabasaLevel == 'yabai',
-                    'text-red-400': yabasaLevel == 'girigiri',
-                    'text-purple-700': yabasaLevel == 'passed'
+                    'text-orange-700': yabasaLevel == 'girigiri',
+                    'text-white': yabasaLevel == 'passed',
+                    'font-semibold': yabasaLevel == 'passed' || yabasaLevel == 'girigiri'
                 }">
             <p v-if="remainHours > 0">一日{{ Math.ceil(totalRemainScope / Math.round(remainHours / 24)) }}ページやれば終わります</p>
             <p v-else>期限を過ぎてます</p>
@@ -47,14 +53,13 @@
                 class="flex flex-row gap-4 z-10 text-gray-400"
                 :class="
                     {
-                        'text-gray-400': yabasaLevel == 'daijobu',
+                        'text-gray-600': yabasaLevel == 'daijobu',
                         'text-orange-600': yabasaLevel == 'yabai',
-                        'text-red-400': yabasaLevel == 'girigiri',
-                        'text-purple-700': yabasaLevel == 'passed'
+                        'text-orange-700': yabasaLevel == 'girigiri',
+                        'text-white': yabasaLevel == 'passed'
                     }">
                 <p>残り{{ totalRemainScope }}ページ</p>
-                <p v-if="remainHours > 0">期限まで{{ remainHours }}時間</p>
-                <p v-else>期限を過ぎてます</p>
+                <p>期限まで{{ remainHours }}時間</p>
             </div>
             <input
                 type="date"
@@ -112,7 +117,7 @@ import useTasksAnalytics from "../../../hooks/useTasksAnalytics";
 
 import { Uid } from "../../../models/groupSettings";
 import { Scope, Task } from "../../../models/task";
-import { getScopeTotalRemainLength, getTaskYabasa, /*getTaskYabasa,*/ getYabasaLevel } from "../../../utils/getYabasa";
+import { getScopeTotalRemainLength, getYabasaLevel } from "../../../utils/getYabasa";
 import { getRemainHours } from "../../../utils/getRemainHours"
 
 const showCardMenu = ref(false)
