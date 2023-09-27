@@ -26,6 +26,7 @@
 			<SwipeEditor
 				:min="scope.first"
 				:max="scope.last"
+				:sensitivity="10"
 				v-model:value="scope.now[uid]"/>
 		</div>
 	</Modal>

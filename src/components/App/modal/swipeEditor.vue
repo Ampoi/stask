@@ -25,6 +25,7 @@ const props = defineProps<{
   value: number
   min: number
   max: number
+  sensitivity: number
 }>()
 
 const emit = defineEmits<{
@@ -50,7 +51,7 @@ function moveChangeNowScope(touchEvent: TouchEvent){
 			firstTouchNowScope.value = props.value
 			firstTouch.value = false
 		}else{
-			const newScope = Math.floor((touchClientX - firstTouchX.value) / 10) + firstTouchNowScope.value
+			const newScope = Math.floor((touchClientX - firstTouchX.value) / 100 * props.sensitivity) + firstTouchNowScope.value
 			
 			if(newScope < props.min){
 				emit("update:value", props.min)

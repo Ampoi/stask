@@ -50,7 +50,8 @@
                 :value="props.task.term"
                 @input="(event: any) => updateTask({ term: event.target.value })">
             <MinutePerPage
-                :value="task.minutePerScope"/>
+                :value="task.minutePerScope"
+                @update:value="(newMinutes) => updateTask({ minutePerScope: newMinutes })"/>
             <div class="w-full bg-gray-200/50 border-gray-200 border-[1px] h-56 rounded-lg p-4 flex flex-col gap-2 overflow-y-auto">
                 <div class="grow overflow-scroll flex flex-col gap-2">
                     <ScopeListItem
