@@ -27,19 +27,10 @@
             <ToggleButton
                 v-model:showCardMenu="showCardMenu"/>
         </div>
-        <div
-            class="flex flex-row gap-4 z-10 text-gray-400"
-            :class="
-                {
-                    'text-gray-600': yabasaLevel == 'daijobu',
-                    'text-orange-600': yabasaLevel == 'yabai',
-                    'text-orange-700': yabasaLevel == 'girigiri',
-                    'text-white': yabasaLevel == 'passed',
-                    'font-semibold': yabasaLevel == 'passed' || yabasaLevel == 'girigiri'
-                }">
-            <p v-if="remainHours > 0">1日{{ pagesToDoneInRemianDates }}ページやれば終わります</p>
-            <p v-else>期限を過ぎてます</p>
-        </div>
+        <PagePerDate
+            :yabasa-level="yabasaLevel"
+            :remain-hours="remainHours"
+            :total-remain-scope="totalRemainScope"/>
         <div>
             <ProgressBar
                 :scope="doneData"
@@ -49,19 +40,10 @@
         </div>
         <DetailMenu
             :show="showCardMenu">
-            <div
-                class="flex flex-row gap-4 z-10 text-gray-400"
-                :class="
-                    {
-                        'text-gray-600': yabasaLevel == 'daijobu',
-                        'text-orange-600': yabasaLevel == 'yabai',
-                        'text-orange-700': yabasaLevel == 'girigiri',
-                        'text-white': yabasaLevel == 'passed'
-                    }">
-                <p>残り{{ totalRemainScope }}ページ</p>
-                <p v-if="remainHours < 100">期限まで{{ remainHours }}時間</p>
-                <p v-else>期限まで{{ Math.round(remainHours / 24) }}日</p>
-            </div>
+            <TaskDetail
+                :yabasa-level="yabasaLevel"
+                :remain-hours="remainHours"
+                :total-remain-scope="totalRemainScope"/>
             <input
                 type="date"
                 class="h-10 w-full rounded-lg border-[1px] border-gray-299 text-lg text-center bg-transparent"
@@ -109,6 +91,8 @@ import SubjectOptions from "./TaskCard/subjectOptions.vue";
 import RemainDate from "./TaskCard/remainDate.vue";
 import ToggleButton from "./TaskCard/toggleButton.vue";
 import DetailMenu from "./TaskCard/detailMenu/transition.vue";
+import PagePerDate from "./TaskCard/pagePerDate.vue";
+import TaskDetail from "./TaskCard/taskDetail.vue";
 
 import useAuth from "../../../hooks/useAuth";
 import useGroupSettings from "../../../hooks/useGroupSettings";
@@ -143,12 +127,6 @@ const subjects = groupSettings.value.subjects
 
 //const taskYabasa = computed(() => getTaskYabasa(props.task, uid))
 const yabasaLevel = computed(() => getYabasaLevel(props.task, uid))
-
-const pagesToDoneInRemianDates = computed(() => {
-    const remianDates = Math.round(remainHours.value / 24)
-    const countRemainDates = remianDates <= 0 ? 1 : remianDates
-    return Math.ceil(totalRemainScope.value / countRemainDates)
-})
 
 //自分がどれだけ達成したのか
 const doneData = computed((): {
