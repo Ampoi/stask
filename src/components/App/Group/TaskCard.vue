@@ -29,6 +29,7 @@
         </div>
         <PagePerDate
             :yabasa-level="yabasaLevel"
+            :minute-per-scope="task.minutePerScope"
             :remain-hours="remainHours"
             :total-remain-scope="totalRemainScope"/>
         <div>

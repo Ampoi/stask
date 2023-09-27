@@ -9,7 +9,9 @@
               'text-white': yabasaLevel == 'passed',
               'font-semibold': yabasaLevel == 'passed' || yabasaLevel == 'girigiri'
           }">
-      <p v-if="remainHours > 0">1日{{ pagesToDoneInRemianDates }}ページやれば終わります</p>
+      <p v-if="remainHours > 0">
+        1日{{ pagesToDoneInRemianDates }}ページやれば終わります({{ pagesToDoneInRemianDates * minutePerScope }}分)
+      </p>
       <p v-else>期限を過ぎてます</p>
   </div>
 </template>
@@ -20,6 +22,7 @@ const props = defineProps<{
   yabasaLevel: string
   remainHours: number
   totalRemainScope: number
+  minutePerScope: number
 }>()
 
 const pagesToDoneInRemianDates = computed(() => {
