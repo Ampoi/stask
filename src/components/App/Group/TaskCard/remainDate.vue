@@ -39,7 +39,8 @@ const remainHours = computed(() => {
 //残りどれだけの日数が残っているのかを取得する算出プロパティ
 const remainHourPercents = computed(() => {
     const allDate = 14
-    return Math.round(remainHours.value / 24 / allDate * 100)
+    const percents = Math.round(remainHours.value / 24 / allDate * 100)
+    return percents < 100 ? percents : 100
 })
 
 const isPassedTerm = computed(() => { return remainHours.value < 0 })

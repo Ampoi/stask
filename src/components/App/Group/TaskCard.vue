@@ -37,7 +37,7 @@
                     'text-white': yabasaLevel == 'passed',
                     'font-semibold': yabasaLevel == 'passed' || yabasaLevel == 'girigiri'
                 }">
-            <p v-if="remainHours > 0">一日{{ Math.ceil(totalRemainScope / Math.round(remainHours / 24)) }}ページやれば終わります</p>
+            <p v-if="remainHours > 0">1日{{ Math.ceil(totalRemainScope / Math.round(remainHours / 24)) }}ページやれば終わります</p>
             <p v-else>期限を過ぎてます</p>
         </div>
         <div>
@@ -59,7 +59,8 @@
                         'text-white': yabasaLevel == 'passed'
                     }">
                 <p>残り{{ totalRemainScope }}ページ</p>
-                <p>期限まで{{ remainHours }}時間</p>
+                <p v-if="remainHours < 100">期限まで{{ remainHours }}時間</p>
+                <p v-else>期限まで{{ Math.round(remainHours / 24) }}日</p>
             </div>
             <input
                 type="date"
