@@ -37,7 +37,7 @@
                     'text-white': yabasaLevel == 'passed',
                     'font-semibold': yabasaLevel == 'passed' || yabasaLevel == 'girigiri'
                 }">
-            <p v-if="remainHours > 0">1日{{ Math.ceil(totalRemainScope / Math.round(remainHours / 24)) }}ページやれば終わります</p>
+            <p v-if="remainHours > 0">1日{{ pagesToDoneInRemianDates }}ページやれば終わります</p>
             <p v-else>期限を過ぎてます</p>
         </div>
         <div>
@@ -69,7 +69,6 @@
                 @input="(event: any) => updateTask({ term: event.target.value })">
             <div class="w-full bg-gray-200/50 border-gray-200 border-[1px] h-56 rounded-lg p-4 flex flex-col gap-2 overflow-y-auto">
                 <div class="grow overflow-scroll flex flex-col gap-2">
-                    <ScopeUnitOptions v-model:scope-unit="cardUnit"/>
                     <ScopeListItem
                         v-for="(scope, index) in props.task.scopes"
                         :key="scope.id"
@@ -106,7 +105,6 @@ import { computed, ref } from "vue";
 import DoneButton from "./TaskCard/doneButton.vue";
 import ProgressBar from "./TaskCard/progressBar.vue";
 import ScopeListItem from "./TaskCard/scope.vue";
-import ScopeUnitOptions from "./TaskCard/scopeUnitOptions.vue";
 import SubjectOptions from "./TaskCard/subjectOptions.vue";
 import RemainDate from "./TaskCard/remainDate.vue";
 import ToggleButton from "./TaskCard/toggleButton.vue";
@@ -123,6 +121,7 @@ import { getRemainHours } from "../../../utils/getRemainHours"
 
 const showCardMenu = ref(false)
 const cardUnit = ref({ name: "ページ", symbol: (page: number): string => {return `p.${page}`} })
+//TODO:単位の変更をしなくてもいいようにする
 
 const { getUserData } = await useAuth()
 const { uid } = await getUserData()
@@ -144,6 +143,12 @@ const subjects = groupSettings.value.subjects
 
 //const taskYabasa = computed(() => getTaskYabasa(props.task, uid))
 const yabasaLevel = computed(() => getYabasaLevel(props.task, uid))
+
+const pagesToDoneInRemianDates = computed(() => {
+    const remianDates = Math.round(remainHours.value / 24)
+    const countRemainDates = remianDates <= 0 ? 1 : remianDates
+    return Math.ceil(totalRemainScope.value / countRemainDates)
+})
 
 //自分がどれだけ達成したのか
 const doneData = computed((): {
