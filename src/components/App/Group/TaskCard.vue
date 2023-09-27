@@ -49,6 +49,8 @@
                 class="h-10 w-full rounded-lg border-[1px] border-gray-299 text-lg text-center bg-transparent"
                 :value="props.task.term"
                 @input="(event: any) => updateTask({ term: event.target.value })">
+            <MinutePerPage
+                :value="task.minutePerScope"/>
             <div class="w-full bg-gray-200/50 border-gray-200 border-[1px] h-56 rounded-lg p-4 flex flex-col gap-2 overflow-y-auto">
                 <div class="grow overflow-scroll flex flex-col gap-2">
                     <ScopeListItem
@@ -93,6 +95,7 @@ import ToggleButton from "./TaskCard/toggleButton.vue";
 import DetailMenu from "./TaskCard/detailMenu/transition.vue";
 import PagePerDate from "./TaskCard/pagePerDate.vue";
 import TaskDetail from "./TaskCard/taskDetail.vue";
+import MinutePerPage from "./TaskCard/minutePerPage.vue"
 
 import useAuth from "../../../hooks/useAuth";
 import useGroupSettings from "../../../hooks/useGroupSettings";

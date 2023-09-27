@@ -39,6 +39,7 @@ export type Task = {
     name: string
     term: `${number}-${string}-${string}`
     scopes: Scope[]
+    minutePerScope: number
     subject: Subject
     id: `${string}-${string}`
     deleted: boolean
@@ -58,6 +59,7 @@ export const Task = {
             name: "",
             term: `${thisYear}-${thisMonth}-${thisDate}`,
             scopes: [],
+            minutePerScope: 5,
             subject: subjects[0],
             id: taskID,
             deleted: false,
