@@ -10,7 +10,7 @@
               'font-semibold': yabasaLevel == 'passed' || yabasaLevel == 'girigiri'
           }">
       <p v-if="remainHours > 0">
-        1日{{ pagesToDoneInRemianDates }}ページやれば終わります({{ pagesToDoneInRemianDates * minutePerScope }}分)
+        1日{{ pagesToDoneInRemianDates }}ページ　<i class="bi bi-stopwatch"/>{{ pagesToDoneInRemianDates * minutePerScope }}分/日
       </p>
       <p v-else>期限を過ぎてます</p>
   </div>
