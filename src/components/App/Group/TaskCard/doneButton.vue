@@ -1,6 +1,6 @@
 <template>
     <button
-        class="border-2 rounded-full basis-8 grid place-content-center"
+        class="border-2 rounded-full basis-60 grid place-content-center"
         :style="buttonStyle"
         @click="turnDone()">
         <i class="bi bi-check text-3xl"/>
@@ -31,16 +31,20 @@ async function turnDone(){
     emit("update:isDone", newDone)
 }
 
-const doneStyle = {
-    borderColor: `${props.color}20`,
-    backgroundColor: `${props.color}50`,
-    color: "white"
-}
+const doneStyle = computed(() => {
+    return {
+        borderColor: `${props.color}20`,
+        backgroundColor: `${props.color}50`,
+        color: "white"
+    }
+})
 
-const notDoneStyle = {
-    borderColor: 'transparent',
-    color: `${props.color}70`
-}
+const notDoneStyle = computed(() => {
+    return {
+        borderColor: 'transparent',
+        color: `${props.color}70`
+    }
+})
 
-const buttonStyle = computed(() => { return props.isDone ? doneStyle : notDoneStyle })
+const buttonStyle = computed(() => props.isDone ? doneStyle.value : notDoneStyle.value)
 </script>
