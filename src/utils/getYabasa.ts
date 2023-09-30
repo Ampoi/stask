@@ -26,18 +26,18 @@ export const getTaskYabasa = (task:Task, uid: string) => {
     const remainScope = getScopeTotalRemainLength(task.scopes, uid)
     const remianDates = getRemainDates(task.term)
 
-    return remainScope / ( remianDates * 3 )
+    return remainScope / ( remianDates * 3 ) * task.minutePerScope
 }
 
 export const getYabasaLevel = (task: Task, uid: string) => {
     const isPassed = getRemainHours(task.term) <= 0
     const taskYabasa = getTaskYabasa(task, uid)
 
-    if( taskYabasa == 0 || ( taskYabasa < 5 && !isPassed ) ){
+    if( taskYabasa == 0 || ( taskYabasa < 30 && !isPassed ) ){
         return "daijobu"
     }else if( isPassed ){
         return "passed"
-    }else if( taskYabasa < 10 ){
+    }else if( taskYabasa < 90 ){
         return "yabai"
     }else{
         return "girigiri"
