@@ -1,0 +1,63 @@
+{
+  "rules": {
+    "data": {
+      "$uid": {
+        ".read": "$uid == auth.uid",
+        ".write": "$uid == auth.uid"
+      }
+    },
+    "groups": {
+      "$group_id": {
+        ".read": "root.child('groups').child($group_id).child('settings').child('members').child(auth.uid).exists()",
+        "cards": {
+          ".write": "root.child('groups').child($group_id).child('settings').child('permissions').child(root.child('groups').child($group_id).child('settings').child('members').child(auth.uid).child('role').val()).child('card').val() == true"
+        },
+        "tasks": {
+          ".write": "root.child('groups').child($group_id).child('settings').child('permissions').child(root.child('groups').child($group_id).child('settings').child('members').child(auth.uid).child('role').val()).child('card').val() == true"
+        },
+        "settings": {
+          "name": {
+            ".write": "root.child('groups').child($group_id).child('settings').child('permissions').child(root.child('groups').child($group_id).child('settings').child('members').child(auth.uid).child('role').val()).child('settings').child('name').val() == true"
+          },
+          "note": {
+            ".write": "root.child('groups').child($group_id).child('settings').child('permissions').child(root.child('groups').child($group_id).child('settings').child('members').child(auth.uid).child('role').val()).child('settings').child('note').val() == true"
+          },
+          "subjects": {
+            ".write": "root.child('groups').child($group_id).child('settings').child('permissions').child(root.child('groups').child($group_id).child('settings').child('members').child(auth.uid).child('role').val()).child('settings').child('subjects').val() == true"
+          },
+          "permissions": {
+            "admin": {
+              ".write": "false"
+            },
+            "member": {
+              ".write": "root.child('groups').child($group_id).child('settings').child('permissions').child(root.child('groups').child($group_id).child('settings').child('members').child(auth.uid).child('role').val()).child('settings').child('permissions').val() == true"
+            }
+          },
+          "members": {
+            ".write": "root.child('groups').child($group_id).child('settings').child('permissions').child(root.child('groups').child($group_id).child('settings').child('members').child(auth.uid).child('role').val()).child('members').val() == true",
+            ".read": "auth != null && root.child('groups').child($group_id).child('settings').child('members').child(auth.uid).exists() == true",
+            "$user": {
+              "name": { ".write": "$user == auth.uid" },
+							"icon": { ".write": "$user == auth.uid" },
+              "role": {
+                ".write": "root.child('groups').child($group_id).child('settings').child('permissions').child(root.child('groups').child($group_id).child('settings').child('members').child(auth.uid).child('role').val()).child('members').val() == true"
+              }
+            }
+          },
+          "invites": {
+            ".read": "root
+              					.child('groups')
+              					.child($group_id)
+              					.child('settings')
+              					.child('members')
+                        .child(auth.uid)
+              					.exists()",
+            "$inviteIndex": {
+              ".read": "true"
+            }
+          } 
+        }
+      }
+    }
+  }
+}

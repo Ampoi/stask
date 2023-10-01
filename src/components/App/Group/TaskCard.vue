@@ -1,6 +1,4 @@
 <template>
-    <!--{{ yabasaLevel }}
-    {{ getTaskYabasa(task, uid) }}-->
     <div
         class="w-full p-4 border-2 border-l-8 rounded-xl flex flex-col gap-2 relative"
         :class="{
