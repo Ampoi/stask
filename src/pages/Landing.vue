@@ -6,7 +6,7 @@
                 <div class="flex flex-col gap-4 z-10 relative">
                     <h1
                         class="text-6xl tablet:text-5xl laptop:text-6xl desktop:text-7xl font-bold leading-none">
-                        課題管理を、<br class="tablet:hidden laptop:hidden desktop:hidden">もっと楽しく
+                        宿題管理を、<br class="tablet:hidden laptop:hidden desktop:hidden">もっと効果的に
                     </h1>
                     <p>Staskは学生のために特化した課題管理アプリです。<br>Staskを使うことでより能動的に課題を進めることができるようになります。</p>
                     <div>
