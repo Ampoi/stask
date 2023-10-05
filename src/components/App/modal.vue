@@ -1,5 +1,5 @@
 <template>
-    <TransitionRoot
+	<TransitionRoot
 		appear
 		:show="props.open"
 		as="template"
@@ -12,7 +12,7 @@
 				leave-from="opacity-100"
 				leave="duration-300 ease-in"
 				leave-to="opacity-0">
-				<div class="w-full h-full fixed bottom-0 bg-black/20" @click="turnOpen()"/>
+				<div class="w-full h-screen fixed top-0 bg-black/20" @click="turnOpen()"/>
 			</TransitionChild>
 			<div class="w-full h-5/6 fixed bottom-0">
 				<TransitionChild
@@ -22,9 +22,14 @@
 					leave-from="translate-y-0"
 					leave="duration-300 ease-out"
 					leave-to="translate-y-full"
-					class="bg-white p-6 pt-10 rounded-t-3xl h-full"
+					class="bg-white p-6 pt-10 rounded-t-3xl h-full relative"
 					as="div">
-                    <slot></slot>
+					<div class="absolute -top-14 w-[calc(100%-48px)]">
+						<button class="h-10 w-10 bg-white rounded-full mx-auto block" @click="turnOpen()">
+							<i class="bi bi-x"></i>
+						</button>
+					</div>
+					<slot></slot>
 				</TransitionChild>
 			</div>
 		</Dialog>

@@ -7,14 +7,14 @@
 				<div class="flex flex-col items-center">
 					<p class="font-bold text-black/40">始めの{{ props.cardUnit.name }}</p>
 					<input
-						type="number"
+						type="number" inputmode="numeric"
 						class="text-5xl text-center font-bold w-[90px]"
 						v-model="editableScope.first">
 				</div>
 				<div class="flex flex-col items-center">
 					<p class="font-bold text-black/40">最後の{{ props.cardUnit.name }}</p>
 					<input
-						type="number"
+						type="number" inputmode="numeric"
 						class="text-5xl text-center font-bold w-[90px]"
 						v-model="editableScope.last">
 				</div>
