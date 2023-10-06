@@ -1,7 +1,7 @@
 <template>
   <Modal
     :open="props.open"
-    @update:open="(newOpen) => emit('update:open', newOpen)"
+    @update:open="closeModal"
   >
     <div class="flex flex-col gap-4 items-center h-full">
       <ModalTitle value="課題を追加する"/>
@@ -75,6 +75,11 @@ const addTaskToQue = (taskID: TaskID) => {
   }
 };
 
+function closeModal(){
+  addQue.value = []
+  emit("update:open", false)
+}
+
 const { groupSettings } = await useGroupSettings(props.groupID);
 const members = groupSettings.value.members;
 
@@ -125,6 +130,6 @@ function addTask() {
       tasks.value.find((task) => task.id == taskID)?.workon.push(uid);
     }
   });
-  emit("update:open", false);
+  closeModal()
 }
 </script>

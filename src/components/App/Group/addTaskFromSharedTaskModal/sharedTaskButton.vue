@@ -1,13 +1,14 @@
 <template>
     <div
         class="w-full p-4 bg-white/80 border-2 border-l-8 rounded-xl flex flex-row items-stretch"
-        :class="{ '!bg-gray-100': isInAddQue }"
+        :class="{ '!bg-black/10': isInAddQue }"
         :style="{ borderColor: `${task.subject.color}70` }">
         <button
             class="grow flex flex-col gap-2"
             @click="addTaskToQue">
             <h2 class="text-lg font-semibold text-left">{{ task.name }}</h2>
             <div class="flex flex-row gap-4 w-full">
+                <p class="flex flex-row gap-2 text-black/50"><i class="bi bi-calendar-event"/>{{ task.term }}</p>
                 <div class="flex flex-row h-8 z-0">
                     <div
                         v-for="uid in membersList.members"
