@@ -19,16 +19,27 @@ export default async (groupID: string) => {
             if( !newTask.term ){ newTask.term = Task.create(groupSettings.value.subjects).term }
             if( !newTask.subject ){ newTask.subject = Task.create(groupSettings.value.subjects).subject }
             const newScopes = newTask.scopes.map((newTaskScope) => {
-                const newScope = { ...Scope.create(), ...newTaskScope }
+                let newScope = { ...Scope.create(), ...newTaskScope }
                 const members = groupSettings.value.members
-                let newScopeNows: { [key: string]: number } = {}
+                const newScopeNows: { [key: string]: number } = {}
                 Object.entries(members).forEach(member => {
                     const [ uid ] = member
                     const oldScopeNow: number | undefined = newScope.now[uid]
                     newScopeNows[uid] = oldScopeNow ?? newScope.first
                 });
 
-                return { ...newScope, ...{now: newScopeNows} }
+                newScope = { ...newScope, ...{now: newScopeNows} }
+
+                //自分の進捗が範囲外なら揃える
+                Object.entries(newScope.now).forEach(([uid, progress]) => {
+                    if( progress < newScope.first ){
+                        newScope.now[uid] = newScope.first
+                    }else if( newScope.last < progress ){
+                        newScope.now[uid] = newScope.last
+                    }
+                })
+
+                return newScope
             })
             return { ...newTask, ...{ scopes: newScopes } }
         })
