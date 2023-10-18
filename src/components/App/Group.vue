@@ -14,6 +14,7 @@
             <i class="bi bi-info-circle"/>
             <p class="text-sm">{{ groupSettings.note }}</p>
         </p>
+        <AllTaskProgressBar :groupID="groupID"/>
         <!--<Section
             title="カウントダウン一覧"
             :showButton="true"
@@ -57,6 +58,7 @@ import TaskCard from "./Group/TaskCard.vue"
 import AddTaskFromSharedTaskModal from "./Group/addTaskFromSharedTaskModal.vue"
 import GroupSettingsModal from "./Group/groupSettingsModal.vue"
 import IntroducePwaModal from "./introducePwaModal.vue"
+import AllTaskProgressBar from "./Group/allTaskProgressBar.vue"
 
 import useTasks from "../../hooks/useTasks";
 import { computed, ref } from "vue"
