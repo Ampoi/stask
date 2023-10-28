@@ -28,6 +28,24 @@
 				:max="scope.last"
 				:sensitivity="10"
 				v-model:value="editableScope.now[uid]"/>
+			<div class="flex flex-col gap-4 items-center">
+				<div
+					class="flex flex-row gap-2 text-lg items-center"
+					v-for="
+						([uid, progress], index) in Object.entries(editableScope.now)
+							.sort(([_Auid, Aprogress], [_Buid, Bprogress]) => Aprogress == Bprogress ? 0 : Aprogress > Bprogress ? -1 : 1)
+							.slice(0, 3)">
+					<i
+						v-if="index == 0"
+						class="bi bi-trophy-fill text-orange-300 -ml-6"/>
+					<p>{{ index+1 }}位</p>
+					<img
+						:src="groupSettings.members[uid].icon"
+						alt="userIcon"
+						class="w-8 h-8 rounded-full">
+					<p>{{ progress }}ページ</p>
+				</div>
+			</div>
 		</div>
 	</Modal>
 </template>
@@ -42,6 +60,7 @@ import { computed } from "vue";
 
 import useTasksAnalytics from "../../../../../hooks/useTasksAnalytics";
 import useAuth from "../../../../../hooks/useAuth";
+import useGroupSettings from "../../../../../hooks/useGroupSettings";
 
 const props = defineProps<{
 	open: boolean
@@ -52,6 +71,7 @@ const props = defineProps<{
 	},
 	uid: string
 	taskID: string
+	groupID: string
 }>()
 
 const emit = defineEmits<{
@@ -59,7 +79,8 @@ const emit = defineEmits<{
     (e: "update:open", newOpen: boolean): void
 }>()
 
-const editableScope = ref(JSON.parse(JSON.stringify(props.scope)))
+const editableScope = ref<Scope>(JSON.parse(JSON.stringify(props.scope)))
+const { groupSettings } = await useGroupSettings(props.groupID)
 
 watch(() => props.scope, () => {
 	editableScope.value = props.scope

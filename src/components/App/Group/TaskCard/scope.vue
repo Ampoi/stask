@@ -22,7 +22,8 @@
 		v-model:open="showEditScopeModal"
 		:cardUnit="cardUnit"
 		:uid="uid"
-		:taskID="taskID"/>
+		:taskID="taskID"
+		:groupID="groupID"/>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";

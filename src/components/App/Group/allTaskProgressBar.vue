@@ -26,6 +26,7 @@ const allTaskScope = computed<Scope>(() => {
     tasks.value
         .filter((task) => task.workon.includes(uid) && !task.deleted)
         .forEach((task) => {
+            const time = task.minutePerScope
             task.scopes.forEach((scope) => {
                 const {
                     first: scopeFirst,
@@ -33,10 +34,10 @@ const allTaskScope = computed<Scope>(() => {
                     now: scopeNow
                 } = scope
                 
-                last += scopeLast - scopeFirst
+                last += (scopeLast - scopeFirst) * time
                 Object.entries(scopeNow).forEach(([uid, progress]) => {
                     if( !now[uid] ) now[uid] = 0
-                    now[uid] += progress - scopeFirst
+                    now[uid] += (progress - scopeFirst) * time
                 })
             })
         })
