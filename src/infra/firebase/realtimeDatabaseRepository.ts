@@ -4,8 +4,8 @@ import { Updates } from "./func/getUpdates"
 
 const db = getDatabase()
 
-import { connectDatabaseEmulator } from "firebase/database"
-connectDatabaseEmulator(db, "127.0.0.1", 9000)
+//import { connectDatabaseEmulator } from "firebase/database"
+//connectDatabaseEmulator(db, "127.0.0.1", 9000)
 
 export const createRealtimeDatabaseRepository = <T>(path: string) => {
     const dataRef = ref(db, path)
