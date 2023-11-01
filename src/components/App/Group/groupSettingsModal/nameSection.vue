@@ -4,7 +4,7 @@
             <p class="text-lg">グループ名</p>
             <input
                 type="text"
-                class="p-2 rounded-md border-white border-[1px] bg-transparent grow"
+                class="p-2 rounded-md border-white border-[1px] bg-transparent grow max-w-[calc(100%-100px)]"
                 :value="props.name"
                 @input="(event: any) => emit('update:name', event.target.value)"
                 placeholder="学校 / 3-Aのグループ / etc...">

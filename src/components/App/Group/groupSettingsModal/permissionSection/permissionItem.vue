@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col">
         <div class="flex flex-row justify-between items-center">
-            <p class="text-lg">{{ title }}</p>
+            <p class="text-lg max-w-[calc(100%-48px)]">{{ title }}</p>
             <Switch
                 v-model="enabled"
                 :class="enabled ? 'bg-orange-300' : 'bg-gray-200'"

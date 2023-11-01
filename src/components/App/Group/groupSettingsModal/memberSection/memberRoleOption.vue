@@ -4,7 +4,11 @@
       @update:model-value="value => updateMemberRole(value)"
       as="div">
         <ListboxButton
-            class="rounded-full py-1.5 px-2.5 bg-white w-full flex flex-row gap-2">
+            class="rounded-full py-1.5 bg-white w-full flex flex-row gap-2"
+            :class="{
+              'px-2.5': props.memberRole == 'member',
+              'px-5': props.memberRole == 'admin'
+            }">
             <i :class="`bi bi-${roles[props.memberRole].icon}`"/>
             <p>{{ roles[props.memberRole].name }}</p>
         </ListboxButton>

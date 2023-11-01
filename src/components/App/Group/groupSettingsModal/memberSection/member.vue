@@ -6,7 +6,7 @@
             :style="{
                 background: `url(${props.member.icon})`,
             }"/>
-        <p class="grow p-2">{{ props.member.name }}</p>
+        <p class="grow py-2 whitespace-nowrap max-w-[calc(100%-196px)] overflow-hidden text-ellipsis">{{ props.member.name }}</p>
         <MemberRoleOption
             v-model:member-role="member.role"/>
         <button
