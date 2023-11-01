@@ -13,40 +13,43 @@ export default async ()=>{
     const groupsRepository = createGroupsRepository(uid)
     const dbGroupsData = await groupsRepository.get() ?? []
     const groups = ref<string[]>(dbGroupsData)
+    const groupsData = ref<{ [key: string]: Group }>({})
+    await updateGroupsData()
+
+    async function getGroupData(groupID: string): Promise<Group> {
+      const { isMember } = await useMember(groupID)
+      if( !isMember ){ return false }
+      const { groupSettings } = await useGroupSettings(groupID)
+      const memberAmount = Object.entries(groupSettings.value.members).length
+      return {
+          name: groupSettings.value.name,
+          memberAmount: memberAmount
+      }
+    }
+
+    async function updateGroupsData(){
+      console.log("aaaaa")
+      await Promise.all(groups.value.map(async (groupID: string) => groupsData.value[groupID] = await getGroupData(groupID) ))
+    }
   
-    watch(groups, (newData)=>{
+    watch(groups, async (newData)=>{
       groupsRepository.update(newData)
+      await updateGroupsData()
     }, { deep: true })
+
+    groupsRepository.onChange((newData) => groups.value = newData.val())
 
     type Group = {
         name: string
         memberAmount: number
     } | false
-    
-    
-    async function getGroupData(groupID: string): Promise<Group> {
-        const { isMember } = await useMember(groupID)
-        if( !isMember ){ return false }
-        const { groupSettings } = await useGroupSettings(groupID)
-        const memberAmount = Object.entries(groupSettings.value.members).length
-        return {
-            name: groupSettings.value.name,
-            memberAmount: memberAmount
-        }
-    }
 
-    const groupsData = await (async () => {
-        let newGroupsData: { [key: string]: Group } = {}
-        await Promise.all(groups.value.map(async (groupID: string) => newGroupsData[groupID] = await getGroupData(groupID) ))
-        return newGroupsData
-    })()
-
-    function addGroupToList(name: string){
-      groups.value.push(name)
+    function addGroupToList(groupID: string){
+      groups.value.push(groupID)
     }
   
-    function deleteGroupFromList(name: string){
-      const index = groups.value.indexOf(name)
+    function deleteGroupFromList(groupID: string){
+      const index = groups.value.indexOf(groupID)
       groups.value.splice(index, 1)      
     }
   
