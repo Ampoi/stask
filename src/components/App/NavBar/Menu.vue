@@ -20,7 +20,7 @@
                         :action="() => goToAnotherGroup(groupID)"/>
                 </div>
             </div>
-            <MenuButton name="ログアウト" icon="bi-box-arrow-right" :action="() => { logout(router) }"/>
+            <MenuButton name="ログアウト" icon="bi-box-arrow-right" :action="logout"/>
         </MenuItems>
     </TransitionRoot>
 </template>

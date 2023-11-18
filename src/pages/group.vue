@@ -32,26 +32,20 @@ import LoginModal from "../components/loginModal.vue";
 import Group from "../components/App/Group.vue"
 import NotLogin from "../components/notLogin.vue"
 
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const pages = { Group, NotLogin }
 
-const nowPage = ref<keyof typeof pages>("NotLogin")
+const nowPage = ref<keyof typeof pages>("Group")
 
 const showLoginModal = ref(false)
 
-const groupID = ref<string>()
+const route = useRoute()
+const groupID = ref<string>(route.params.groupID as string)
 
 const { isLogin } = await useAuth()
-if( !isLogin ){
-    nowPage.value = "NotLogin"
-    showLoginModal.value = true
-}else{
-    const route = useRoute()
-
-    groupID.value = route.params.groupID as string
-    nowPage.value = "Group"
-}
+const router = useRouter()
+if( !isLogin ) router.push({ path: "/login", query: { from: `/group/${groupID.value}` } })
 
 const groupPage = ref()
 function addTask(){

@@ -17,8 +17,3 @@ onMounted(() => {
     }, { passive: false })
 })
 </script>
-<style>
-body {
-    font-family: 'Noto Sans JP';
-}
-</style>

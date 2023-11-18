@@ -1,6 +1,6 @@
-import { Router } from "vue-router";
 import { AuthRepository } from "../infra/firebase/authRepository";
 import { createCloudStorageRepository } from "../infra/firebase/cloudStorageRepository";
+import { router } from "../router";
 
 export default async () => {
     const isLogin = await AuthRepository.isLogin()
@@ -29,13 +29,11 @@ export default async () => {
         })()
     }
 
-    function login(){
-        AuthRepository.Login(()=>{
-            window.location.reload()
-        })
+    function login(successGoLink: string){
+        AuthRepository.Login(()=>router.push(successGoLink))
     }
 
-    function logout(router: Router){
+    function logout(){
         AuthRepository.Logout()
             .then(()=>{
                 router.push("/")
