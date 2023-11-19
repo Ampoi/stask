@@ -52,15 +52,12 @@
             </button>
         </NavBar>
     </div>
-    <LoginModal
-        :showLoginModal="showLoginModal"/>
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import NavBar from "../components/App/NavBar.vue";
-import LoginModal from "../components/loginModal.vue";
 import Section from "../components/App/Group/Section.vue";
 import TaskCard from "../components/App/Group/TaskCard.vue";
 import AddTaskFromSharedTaskModal from "../components/App/Group/addTaskFromSharedTaskModal.vue";
@@ -78,8 +75,6 @@ import { router } from "../router";
 
 import { getTaskYabasa } from "../utils/getYabasa";
 
-const showLoginModal = ref(false)
-
 const route = useRoute()
 const groupID = ref<string>(route.params.groupID as string)
 
@@ -93,7 +88,7 @@ if( isMember ){
         addGroupToList( groupID.value )
     }
 }else{
-    await router.push({ path:"/app" })
+    await router.push({ path:"/home" })
     window.location.reload()
 }
 

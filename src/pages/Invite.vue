@@ -1,27 +1,18 @@
 <template>
     <div class="h-screen">
-        <component :is="pages[nowPage]"/>
+        <CheckInvite/>
     </div>
-    <LoginModal :showLoginModal="showLoginModal"/>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-
-import LoginModal from '../components/loginModal.vue';
-
+import { useRoute } from 'vue-router';
 import CheckInvite from '../components/invite/checkInvite.vue';
-import NotLogin from '../components/notLogin.vue';
 
 import useAuth from '../hooks/useAuth';
+import { router } from '../router';
 
-const pages = { CheckInvite, NotLogin }
-const nowPage = ref<keyof typeof pages>("NotLogin")
-const showLoginModal = ref(false)
+const route = useRoute()
+const { groupID, inviteID } = route.params
 
 const { isLogin } = await useAuth()
-if( isLogin ){
-    nowPage.value = "CheckInvite"
-}else{
-    showLoginModal.value = true
-}
+if( !isLogin ) router.push({ path: "/login", query: { from: `/invite/${groupID}/${inviteID}` } })
 </script>
