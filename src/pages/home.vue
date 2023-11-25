@@ -62,9 +62,9 @@ import { ref } from "vue";
 import useAuth from "../hooks/useAuth"
 import useGroups from '../hooks/useGroups';
 
-import NavBar from "../components/App/NavBar.vue"
-import CreateGroupModal from "../components/App/createGroupModal.vue";
-import IntroducePwaModal from '../components/App/introducePwaModal.vue';
+import NavBar from "../components/NavBar.vue"
+import CreateGroupModal from "../components/createGroupModal.vue";
+import IntroducePwaModal from '../components/introducePwaModal.vue';
 
 import { router } from "../router";
 

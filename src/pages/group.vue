@@ -57,13 +57,13 @@
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
-import NavBar from "../components/App/NavBar.vue";
-import Section from "../components/App/Group/Section.vue";
-import TaskCard from "../components/App/Group/TaskCard.vue";
-import AddTaskFromSharedTaskModal from "../components/App/Group/addTaskFromSharedTaskModal.vue";
-import AllTaskProgressBar from "../components/App/Group/allTaskProgressBar.vue";
-import GroupSettingsModal from "../components/App/Group/groupSettingsModal.vue";
-import IntroducePwaModal from "../components/App/introducePwaModal.vue";
+import NavBar from "../components/NavBar.vue";
+import Section from "../components/Group/Section.vue";
+import TaskCard from "../components/Group/TaskCard.vue";
+import AddTaskFromSharedTaskModal from "../components/Group/addTaskFromSharedTaskModal.vue";
+import AllTaskProgressBar from "../components/Group/allTaskProgressBar.vue";
+import GroupSettingsModal from "../components/Group/groupSettingsModal.vue";
+import IntroducePwaModal from "../components/introducePwaModal.vue";
 
 import useGroupSettings from "../hooks/useGroupSettings";
 import useGroups from "../hooks/useGroups";
