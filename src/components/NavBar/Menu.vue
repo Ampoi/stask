@@ -37,7 +37,6 @@ const { logout } = await useAuth()
 const { groupsData } = await useGroups()
 
 const goToAnotherGroup = async (groupID: string | number) => {
-    console.log(groupID)
     await router.push({name: "Group", params: { groupID }})
     window.location.reload()
 }

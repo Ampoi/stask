@@ -85,21 +85,17 @@ const members = groupSettings.value.members;
 
 async function promoteTask(taskID: TaskID) {
   if (!tasks.value.find((task) => task.id == taskID)) {
-    console.log("タスクが見つかりませんでした");
-  } else {
-    Object.entries(members).forEach((data) => {
-      const [memberUid, _userData] = data;
-      tasks.value.find((task) => task.id == taskID)?.workon.push(memberUid);
-    });
+    throw new Error("公開するタスクがありません！")
   }
+  Object.entries(members).forEach((data) => {
+    const [memberUid, _userData] = data;
+    tasks.value.find((task) => task.id == taskID)?.workon.push(memberUid);
+  });
 }
 
 function deleteTask(taskID: TaskID){
   const deleteTask = tasks.value.find((task) => task.id == taskID)
-  if (!deleteTask) {
-    console.log("タスクが見つかりませんでした");
-    return
-  }
+  if( !deleteTask ) throw new Error("削除するタスクがありません")
   deleteTask.deleted = true
 }
 
@@ -124,11 +120,8 @@ function addTask() {
         kadai_id: newTask.id
     })*/
   addQue.value.forEach((taskID: `${string}-${string}`) => {
-    if (!tasks.value.find((task) => task.id == taskID)) {
-      console.log("タスクが見つかりませんでした");
-    } else {
-      tasks.value.find((task) => task.id == taskID)?.workon.push(uid);
-    }
+    if (!tasks.value.find((task) => task.id == taskID)) throw new Error("キューに追加するタスクが見つかりませんでした")
+    tasks.value.find((task) => task.id == taskID)?.workon.push(uid);
   });
   closeModal()
 }

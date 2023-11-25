@@ -44,7 +44,6 @@ const { createTaskFromText } = await useTasks(props.groupID)
 
 async function addTask(){
     const newTask = await createTaskFromText(newTaskText.value)
-    console.log(newTask)
     if( newTask == "taskTextが空です！" ){
         taskTextIsEmpty.value = true
     }else{

@@ -28,7 +28,6 @@ export default async ()=>{
     }
 
     async function updateGroupsData(){
-      console.log("aaaaa")
       await Promise.all(groups.value.map(async (groupID: string) => groupsData.value[groupID] = await getGroupData(groupID) ))
     }
   

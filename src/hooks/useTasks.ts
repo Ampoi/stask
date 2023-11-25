@@ -4,22 +4,25 @@ import { createTaskFromTextRepository } from "../infra/taskFromTextRepository"
 
 import useTasksAnalytics from "./useTasksAnalytics";
 import useGroupSettings from "./useGroupSettings";
-import { Task, Scope } from "../models/task";
+import { Task, Scope, Subject } from "../models/task";
 import useAuth from "./useAuth";
 
 export default async (groupID: string) => {
     const taskRepository = createTaskRepository(groupID)
 
-    const getTask = async (dbTasks: Partial<Task>[] | undefined) => {
+    type DeepPartial<T> = {
+        [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+    };
+
+    const getTask = async (dbTasks: DeepPartial<Task>[] | undefined) => {
         const newPartialTasks = dbTasks ?? []
         const { groupSettings } = await useGroupSettings(groupID)
+        const defaultTask: Readonly<Task> = Task.create(groupSettings.value.subjects)
 
         const newTasks: Task[] = newPartialTasks.map((newPartialTask) => {
-            const newTask = { ...Task.create(groupSettings.value.subjects), ...newPartialTask }
-            if( !newTask.term ){ newTask.term = Task.create(groupSettings.value.subjects).term }
-            if( !newTask.subject ){ newTask.subject = Task.create(groupSettings.value.subjects).subject }
-            const newScopes = newTask.scopes.map((newTaskScope) => {
-                let newScope = { ...Scope.create(), ...newTaskScope }
+            const newTask = { ...defaultTask, ...newPartialTask }
+            const newScopes: Scope[] = newTask.scopes.map((newTaskScope) => {
+                const newScope = { ...Scope.create(), ...newTaskScope }
                 const members = groupSettings.value.members
                 const newScopeNows: { [key: string]: number } = {}
                 Object.entries(members).forEach(member => {
@@ -28,20 +31,32 @@ export default async (groupID: string) => {
                     newScopeNows[uid] = oldScopeNow ?? newScope.first
                 });
 
-                newScope = { ...newScope, ...{now: newScopeNows} }
-
                 //自分の進捗が範囲外なら揃える
-                Object.entries(newScope.now).forEach(([uid, progress]) => {
+                Object.entries(newScopeNows).forEach(([uid, progress]) => {
                     if( progress < newScope.first ){
-                        newScope.now[uid] = newScope.first
+                        newScopeNows[uid] = newScope.first
                     }else if( newScope.last < progress ){
-                        newScope.now[uid] = newScope.last
+                        newScopeNows[uid] = newScope.last
                     }
                 })
 
-                return newScope
+                const newNewScope: Scope = {
+                    first: newScope.first,
+                    last: newScope.last,
+                    now: newScopeNows,
+                    id: newScope.id
+                }
+
+                return newNewScope
             })
-            return { ...newTask, ...{ scopes: newScopes } }
+
+            const newSubject: Subject = {
+                color: newTask.subject.color ?? defaultTask.subject.color,
+                name: newTask.subject.name ?? defaultTask.subject.name
+            }
+            const newWorkon = newTask.workon as string[]
+
+            return { ...newTask, ...{ scopes: newScopes, subject: newSubject, workon: newWorkon } }
         })
 
         return newTasks ?? []
@@ -60,10 +75,8 @@ export default async (groupID: string) => {
         const subjectNames = subjects.map(subject => subject.name)
 
         const taskFromText = await createTaskFromTextRepository(subjectNames, taskText)
-        console.log(taskFromText)
         const newTasks = await getTask([{
             name: taskFromText.name,
-            //@ts-ignore
             scopes: taskFromText.scopes,
             subject: subjects.find(subject => subject.name == taskFromText.subject),
             term: taskFromText.term
@@ -89,14 +102,6 @@ export default async (groupID: string) => {
     }, { deep: true })
 
     const { logTasksAnalytics } = await useTasksAnalytics()
-    /*function deleteTask(index: number){
-        logTasksAnalytics({
-            name: "deleteTask",
-            kadai_id: tasks.value[index].id
-        })
-        //tasks.value.splice(index, 1)
-        tasks.value[index].deleted = true
-    }*/
 
     const { getUserData } = await useAuth()
     const { uid } = await getUserData()

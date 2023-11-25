@@ -69,10 +69,9 @@ async function createGroup(){
     }else if( /[^a-zA-Z]/.test(newGroupID.value) ){
         console.log("半角英字以外の文字が含まれています！")
     }else{
-        console.log(newGroup.value) //TODO:グループを作成するときの処理の追加
         const result = await createGroupRepository({ groupID: newGroupID.value, groupData: newGroup.value })
         if(result.data){
-            console.log(result.data)
+            console.error(result.data)
         }else{
             const { addGroupToList } = await useGroups()
             addGroupToList(newGroupID.value)
