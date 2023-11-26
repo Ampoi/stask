@@ -1,6 +1,6 @@
 <template>
     <button
-        class="border-2 rounded-full basis-60 grid place-content-center"
+        class="border-2 rounded-full basis-8 grid place-content-center"
         :style="buttonStyle"
         @click="turnDone()">
         <i class="bi bi-check text-3xl"/>

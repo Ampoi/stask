@@ -22,7 +22,7 @@
 					leave-from="translate-y-0"
 					leave="duration-300 ease-out"
 					leave-to="translate-y-full"
-					class="bg-white p-6 pt-10 rounded-t-3xl h-full relative"
+					class="bg-white p-6 pt-10 rounded-t-3xl h-full max-w-xl mx-auto relative"
 					as="div">
 					<div class="absolute -top-14 w-[calc(100%-48px)]">
 						<button class="h-10 w-10 bg-white rounded-full mx-auto block" @click="turnOpen()">
