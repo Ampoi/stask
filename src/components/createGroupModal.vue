@@ -46,6 +46,7 @@ import { Group } from "../models/group"
 import useAuth from '../hooks/useAuth';
 import { createGroupRepository } from "../infra/createGroupRepository";
 import useGroups from '../hooks/useGroups';
+import { createUid } from '../utils/createUid';
 
 const props = defineProps<{
     open: boolean
@@ -69,6 +70,9 @@ async function createGroup(){
     }else if( /[^a-zA-Z]/.test(newGroupID.value) ){
         console.log("半角英字以外の文字が含まれています！")
     }else{
+        const groupInviteKey = createUid()
+        newGroup.value.settings.invites[groupInviteKey] = { expires: "2023-12-30" }
+        
         const result = await createGroupRepository({ groupID: newGroupID.value, groupData: newGroup.value })
         if(result.data){
             console.error(result.data)

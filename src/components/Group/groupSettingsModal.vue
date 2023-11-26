@@ -6,6 +6,7 @@
             <h1 class="text-3xl font-semibold">グループの設定</h1>
             <div class="mx-4 grow w-full flex flex-col gap-4 overflow-y-auto">
                 <NameSection v-model:name="newGroupSettings.name"/>
+                <InviteSection :invites="newGroupSettings.invites" :groupID="groupID"/>
                 <NoteSection v-model:note="newGroupSettings.note"/>
                 <SubjectSection v-model:subjects="newGroupSettings.subjects"/>
                 <MemberSection v-model:members="newGroupSettings.members"/>
@@ -31,6 +32,7 @@ import NameSection from "./groupSettingsModal/nameSection.vue";
 import SubjectSection from "./groupSettingsModal/subjectSection.vue";
 import MemberSection from "./groupSettingsModal/memberSection.vue";
 import PermissionSection from "./groupSettingsModal/permissionSection.vue";
+import InviteSection from "./groupSettingsModal/inviteSection.vue";
 
 import useGroupSettings from "../../hooks/useGroupSettings";
 import NoteSection from "./groupSettingsModal/noteSection.vue";

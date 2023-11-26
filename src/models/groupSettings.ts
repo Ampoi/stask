@@ -66,7 +66,7 @@ export type GroupSettings = {
     subjects: Subject[]
     members: { [key: Uid]: Member }
     permissions: Permissions,
-    invites: Invite[]
+    invites: { [key: string]: Invite }
 }
 
 export const GroupSettings = {
@@ -89,7 +89,7 @@ export const GroupSettings = {
                 }
             },
             permissions: Permissions.create(),
-            invites: []
+            invites: {}
         }
     }
 }
